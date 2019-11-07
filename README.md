@@ -1,4 +1,5 @@
-# Project2_Groep1_WieBehoudtDeRust
+# Project2 Wie behoudt de rust
+## Groep 1 - Emile Goeminne, Robbe Van den Daele, Luka De Bakker, Nick Langens
 
 ### Dutch :
 

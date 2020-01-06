@@ -25,8 +25,7 @@ namespace project2Functions
             //Payment payment = JsonConvert.DeserializeObject<Payment>(bodyString);
             //SendPayment sendPayment = new SendPayment();
             //sendPayment.SendCosmosPayment(payment);
-            string returnMessage = "data received";
-            outMessage = new MqttMessage("/python/response", Encoding.ASCII.GetBytes(returnMessage), MqttQualityOfServiceLevel.AtLeastOnce, true);
+            outMessage = new MqttMessage("/python/response", Encoding.ASCII.GetBytes("hallo"), MqttQualityOfServiceLevel.AtLeastOnce, true);
         }
     }
 }

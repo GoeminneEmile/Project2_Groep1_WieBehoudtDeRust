@@ -17,7 +17,7 @@ namespace project2Functions
     {
         [FunctionName("mqttTester")]
         public static void Run(
-        [MqttTrigger("/luemniro/id/request")] IMqttMessage message, [Mqtt] out IMqttMessage outMessage, ILogger logger)
+        [MqttTrigger("/luemniro/id/req")] IMqttMessage message, [Mqtt] out IMqttMessage outMessage, ILogger logger)
         {
             var body = message.GetMessage();
             var bodyString = Encoding.UTF8.GetString(body);
@@ -27,7 +27,7 @@ namespace project2Functions
             //sendPayment.SendCosmosPayment(payment);
             var response = new { id = bodyString, status = "OK" };
             var jsonResponse = JsonConvert.SerializeObject(response);
-            outMessage = new MqttMessage("luemniro/id/response", Encoding.ASCII.GetBytes(jsonResponse), MqttQualityOfServiceLevel.AtLeastOnce, true);
+            outMessage = new MqttMessage("/luemniro/id", Encoding.ASCII.GetBytes(jsonResponse), MqttQualityOfServiceLevel.AtLeastOnce, true);
         }
     }
 }

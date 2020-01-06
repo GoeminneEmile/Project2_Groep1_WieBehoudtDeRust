@@ -7,6 +7,9 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using project2Functions.Models;
 
 namespace project2Functions
 {
@@ -17,17 +20,38 @@ namespace project2Functions
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
+            string connectionString = Environment.GetEnvironmentVariable("ConnectionString");
+            List<Question> questions = new List<Question>();
+            try
+            {
+                using (SqlConnection connection = new SqlConnection())
+                {
+                    connection.ConnectionString = connectionString;
+                    await connection.OpenAsync();
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandText = "SELECT * FROM ProjectQuestions";
 
-            string name = req.Query["name"];
+                        var result = await command.ExecuteReaderAsync();
+                        while (await result.ReadAsync())
+                        {
+                            Console.WriteLine(result.ToString());
+                            Question question = new Question()
+                            {
+                                QuestionName = result["Question"].ToString(),
+                            };
+                            questions.Add(question);
+                        }
+                    }
+                }
+                return new OkObjectResult(questions);
 
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            name = name ?? data?.name;
-
-            return name != null
-                ? (ActionResult)new OkObjectResult($"Hello, {name}")
-                : new BadRequestObjectResult("Please pass a name on the query string or in the request body");
+            }
+            catch (Exception ex)
+            {
+                return new StatusCodeResult(500);
+            }
         }
     }
 }

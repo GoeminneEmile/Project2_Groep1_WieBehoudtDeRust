@@ -4,11 +4,23 @@
 from evdev import InputDevice, categorize, ecodes
 import paho.mqtt.client as mqtt
 import json
+import random
+
+
+# --------------------
+# Globale variabelen
+# --------------------
+PI_ID = None
 
 
 # --------------------
 # Methodes
 # --------------------
+def send_id_request():
+    random_number = random.randint(0, 999999)
+    client.publish('luemniro/id/request', "{'id', '" + str(random_number) + "'}")
+
+
 def mqtt_test():
     client.subscribe("/python/response")
     client.publish("/python/test", "{'test': 'test'}")
@@ -40,9 +52,17 @@ def read_keyboard():
 # Callback
 # --------------------
 def mqtt_on_message(client, userdata, msg):
-    print(msg.topic + ": " + str(msg.payload))
-    obj = json.loads(msg.payload)
-    print(obj)
+    global PI_ID
+    print(msg.topic)
+    if msg.topic == "/python/response": # Test topic
+        print(msg.payload)
+    if msg.topic == "luemniro/id/response": # Aanvragen ID topic
+        obj = json.loads(msg.payload) # Omzetten json
+        print(obj)
+        if obj['status'] == "OK":
+            PI_ID = obj['status']
+        else:
+            send_id_request()
 
 
 def mqtt_on_connect(client, userdata, flags, rc):
@@ -59,6 +79,8 @@ client = mqtt.Client()
 client.on_connect = mqtt_on_connect
 client.on_message = mqtt_on_message
 client.connect("mct-mqtt.westeurope.cloudapp.azure.com", 1883, 60)
+# Genereren + controle van ID
+send_id_request()
 
 
 # --------------------

@@ -65,6 +65,5 @@ client.connect("mct-mqtt.westeurope.cloudapp.azure.com", 1883, 60)
 # Main
 # --------------------
 mqtt_test()
-# read_keyboard()
-input()
+read_keyboard()
 print("End")

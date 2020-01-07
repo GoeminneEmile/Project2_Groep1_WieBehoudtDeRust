@@ -6,6 +6,7 @@ namespace project2Functions.Models
 {
     public class Question
     {
+        public string QuestionID;
         public string QuestionName;
     }
 }

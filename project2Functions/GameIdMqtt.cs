@@ -7,16 +7,16 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using System.Text;
 using CaseOnline.Azure.WebJobs.Extensions.Mqtt;
 using CaseOnline.Azure.WebJobs.Extensions.Mqtt.Messaging;
 using project2Functions.Models;
+using System.Text;
 
 namespace project2Functions
 {
-    public static class mqttTester
+    public static class GameIdMqtt
     {
-        [FunctionName("mqttTester")]
+        [FunctionName("GameIdMqtt")]    
         public static void Run(
         [MqttTrigger("/luemniro/id/request")] IMqttMessage message, [Mqtt] out IMqttMessage outMessage, ILogger logger)
         {

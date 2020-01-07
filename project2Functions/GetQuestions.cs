@@ -31,18 +31,27 @@ namespace project2Functions
                     using (SqlCommand command = new SqlCommand())
                     {
                         command.Connection = connection;
-                        command.CommandText = "SELECT * FROM ProjectQuestions";
+                        command.CommandText = "Select * From ProjectAnswers as a left join ProjectQuestions as b on a.QuestionAnswer = b.QuestionID";
 
                         var result = await command.ExecuteReaderAsync();
+                        string QuestionIDCurrent = "";
+                        Question newQuestion = new Question();
                         while (await result.ReadAsync())
                         {
-                            Console.WriteLine(result.ToString());
-                            Question question = new Question()
+                            if(result["QuestionID"].ToString() != QuestionIDCurrent)
                             {
-                                QuestionID = result["QuestionID"].ToString(),
-                                QuestionName = result["Question"].ToString(),
-                            };
-                            questions.Add(question);
+                                Question question = new Question() { QuestionID = result["QuestionID"].ToString(), QuestionName = result["Question"].ToString() };
+                                questions.Add(question);
+                                QuestionIDCurrent = result["QuestionID"].ToString();
+                                QuestionAnswer questionAnswer = new QuestionAnswer() { Answer = result["Answer"].ToString(), QuestionAnswerGuid = result["QuestionID"].ToString(), Correct = Int32.Parse(result["Correct"].ToString()) };
+                                questions[questions.Count - 1].questionAnswers.Add(questionAnswer);
+                            }
+                            else
+                            {
+                                QuestionAnswer questionAnswer = new QuestionAnswer() { Answer = result["Answer"].ToString(), QuestionAnswerGuid = result["QuestionID"].ToString(), Correct = Int32.Parse(result["Correct"].ToString()) };
+                                questions[questions.Count - 1].questionAnswers.Add(questionAnswer);
+                            }
+                            Console.WriteLine(result.ToString());
                         }
                     }
                 }

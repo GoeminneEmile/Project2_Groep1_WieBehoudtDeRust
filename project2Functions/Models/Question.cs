@@ -8,5 +8,6 @@ namespace project2Functions.Models
     {
         public string QuestionID;
         public string QuestionName;
+        public List<QuestionAnswer> questionAnswers = new List<QuestionAnswer>();
     }
 }

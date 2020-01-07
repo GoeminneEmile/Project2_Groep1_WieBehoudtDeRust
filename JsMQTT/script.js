@@ -1,24 +1,33 @@
-// Create a client instance
-let topic = '/test/luka';
-let clientID = 'clientID_' + parseInt(Math.random() * 100);
-let client = new Paho.Client('/mct-mqtt.westeurope.cloudapp.azure.com', 80, clientID);
-console.log('client made');
+let SubmitButton, InputFieldValue;
+let client;
 
-// set callback handlers
-client.onConnectionLost = onConnectionLost;
-client.onMessageArrived = onMessageArrived;
-console.log('handlers set');
+const ConnectToMQTT = function() {
+	// generate a random client id
+	let clientID = 'clientID_' + parseInt(Math.random() * 100);
+	//create an MQTT instance
+	client = new Paho.Client('/mct-mqtt.westeurope.cloudapp.azure.com', 80, clientID);
+	console.log('client made');
 
-// connect the client
-client.connect({ onSuccess: onConnect });
+	// set callback handlers
+	client.onConnectionLost = onConnectionLost;
+	client.onMessageArrived = onMessageArrived;
+	console.log('handlers set');
+
+	// connect the client
+	client.connect({ onSuccess: onConnect });
+};
 
 // called when the client connects
 function onConnect() {
 	// Once a connection has been made, make a subscription and send a message.
 	console.log('onConnect');
-	client.subscribe(topic);
-	message = new Paho.Message('Connection has been made, first message sent!');
-	message.destinationName = topic;
+	// client subscribed op topic!
+	client.subscribe(`/luemniro/PiToJs/${InputFieldValue}`);
+	// message opbouwen
+	message = new Paho.Message(JSON.stringify({ first_name: 'Luka', last_name: 'De Bakker' }));
+	// topic beslissen voor op te sturen
+	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
+	// bericht versturen
 	client.send(message);
 }
 
@@ -31,5 +40,20 @@ function onConnectionLost(responseObject) {
 
 // called when a message arrives
 function onMessageArrived(message) {
-	console.log('onMessageArrived:' + message.payloadString);
+	// message versturen
+	console.log('onMessageArrived: ' + message.payloadString);
 }
+
+const Buttonchecked = function() {
+	// waarde van input box ophalen
+	InputFieldValue = document.querySelector('.js-input').value;
+	ConnectToMQTT();
+};
+
+const init = function() {
+	console.log('Dom Content Loaded');
+	SubmitButton = document.querySelector('.js-submit');
+	SubmitButton.addEventListener('click', Buttonchecked);
+};
+
+document.addEventListener('DOMContentLoaded', init);

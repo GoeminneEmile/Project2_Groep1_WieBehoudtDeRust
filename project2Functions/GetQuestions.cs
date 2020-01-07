@@ -51,7 +51,7 @@ namespace project2Functions
             }
             catch (Exception ex)
             {
-                log.LogInformation(ex.ToString());
+                Console.WriteLine(ex);
                 return new StatusCodeResult(500);
             }
         }

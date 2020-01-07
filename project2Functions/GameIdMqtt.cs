@@ -23,9 +23,19 @@ namespace project2Functions
             var body = message.GetMessage();
             var bodyString = Encoding.UTF8.GetString(body);
             ID iD = JsonConvert.DeserializeObject<ID>(bodyString);
-            var response = new { id = iD.Id, status = "OK" };
-            var jsonResponse = JsonConvert.SerializeObject(response);
-            outMessage = new MqttMessage("/luemniro/id/response", Encoding.ASCII.GetBytes(jsonResponse), MqttQualityOfServiceLevel.AtLeastOnce, true);
+            bool IDResponse = InsertGameID.InsertId(iD.Id);
+            if (IDResponse)
+            {
+                var response = new { id = iD.Id, status = "OK" };
+                var jsonResponse = JsonConvert.SerializeObject(response);
+                outMessage = new MqttMessage("/luemniro/id/response", Encoding.ASCII.GetBytes(jsonResponse), MqttQualityOfServiceLevel.AtLeastOnce, true);
+            }
+            else
+            {
+                var response = new { id = iD.Id, status = "NOK" };
+                var jsonResponse = JsonConvert.SerializeObject(response);
+                outMessage = new MqttMessage("/luemniro/id/response", Encoding.ASCII.GetBytes(jsonResponse), MqttQualityOfServiceLevel.AtLeastOnce, true);
+            }
         }
     }
 }

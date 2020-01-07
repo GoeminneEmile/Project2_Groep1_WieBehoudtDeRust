@@ -1,20 +1,18 @@
 using System;
 using System.Data.SqlClient;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
 
 namespace project2Functions
 {
-    public static class DeleteIdTimer
+    public static class TimerTriggerDelete
     {
-        [FunctionName("DeleteIdTimer")]
-        public static async System.Threading.Tasks.Task<StatusCodeResult> RunAsync([TimerTrigger("0 */1 * * * *")]TimerInfo myTimer, ILogger log)
+        [FunctionName("TimerTriggerDelete")]
+        public static async System.Threading.Tasks.Task RunAsync([TimerTrigger("0 30 7 * * *")]TimerInfo myTimer, ILogger log)
         {
-           string connectionString = Environment.GetEnvironmentVariable("connectionString");
-            try
-            {
+            string connectionString = Environment.GetEnvironmentVariable("connectionString");
+
                 using (SqlConnection connection = new SqlConnection())
                 {
                     connection.ConnectionString = connectionString;
@@ -22,19 +20,15 @@ namespace project2Functions
                     using (SqlCommand command = new SqlCommand())
                     {
                         command.Connection = connection;
-                        command.CommandText = "DELETE * FROM dbo.ProjectIDs";
-
+                        command.CommandText = "TRUNCATE TABLE dbo.ProjectIDs";
                         var result = await command.ExecuteReaderAsync();
-                        
+
                     }
                 }
-                return new StatusCodeResult(200);
+             
 
-            }
-            catch (Exception ex)
-            {
-                return new StatusCodeResult(500);
-            }
+
+
         }
     }
 }

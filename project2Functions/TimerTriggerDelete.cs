@@ -20,13 +20,14 @@ namespace project2Functions
                     using (SqlCommand command = new SqlCommand())
                     {
                         command.Connection = connection;
-                        command.CommandText = "DELETE * FROM dbo.ProjectIDs";
+                        command.CommandText = "DELETE FROM dbo.ProjectIDs";
                         var result = await command.ExecuteReaderAsync();
 
                     }
                 }
-           
-            
+             
+
+
 
         }
     }

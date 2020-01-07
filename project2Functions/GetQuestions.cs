@@ -39,6 +39,7 @@ namespace project2Functions
                             Console.WriteLine(result.ToString());
                             Question question = new Question()
                             {
+                                QuestionID = result["QuestionID"].ToString(),
                                 QuestionName = result["Question"].ToString(),
                             };
                             questions.Add(question);

@@ -34,11 +34,11 @@ function onConnect() {
 	client.send(message);
 }
 
-const initializeCommunication = function(){
-	message = new Paho.Message(JSON.stringify({ type: "test_com"}));
+const initializeCommunication = function() {
+	message = new Paho.Message(JSON.stringify({ type: 'test_com' }));
 	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 	client.send(message);
-}
+};
 
 // called when the client loses its connection
 function onConnectionLost(responseObject) {
@@ -52,23 +52,22 @@ function onMessageArrived(message) {
 	// message versturen
 	let jsonMessage = JSON.parse(message.payloadString);
 	switch (jsonMessage.type) {
-		case "test_com":
+		case 'test_com':
 			Communication = true;
-			message = new Paho.Message(JSON.stringify({ type: "avatar",player: modifyPlayer}));
+			message = new Paho.Message(JSON.stringify({ type: 'avatar', player: modifyPlayer }));
 			message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 			client.send(message);
 			break;
-		case "avatar":
-			if(selectedAvatars.includes(jsonMessage.avatar)){
-				message = new Paho.Message(JSON.stringify({ type: "avatar",player: modifyPlayer}));
+		case 'avatar':
+			if (selectedAvatars.includes(jsonMessage.avatar)) {
+				message = new Paho.Message(JSON.stringify({ type: 'avatar', player: modifyPlayer }));
 				message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 				client.send(message);
-			}
-			else{
-				players.push({player:jsonMessage.player,avatar:jsonMessage.avatar,points:0,time_left:20})
+			} else {
+				players.push({ player: jsonMessage.player, avatar: jsonMessage.avatar, points: 0, time_left: 20 });
 				modifyPlayer++;
 				selectedAvatars.push(jsonMessage.avatar);
-				message = new Paho.Message(JSON.stringify({ type: "avatar",player: modifyPlayer}));
+				message = new Paho.Message(JSON.stringify({ type: 'avatar', player: modifyPlayer }));
 				message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 				client.send(message);
 			}
@@ -77,22 +76,21 @@ function onMessageArrived(message) {
 			break;
 	}
 
-	console.log(typeof(jsonMessage.type));
+	console.log(typeof jsonMessage.type);
 }
 
 const Buttonchecked = function() {
 	// waarde van input box ophalen
-	InputFieldValue = document.querySelector('.js-input').value;
+	InputFieldValue = document.querySelector('#js-input').value;
 	ConnectToMQTT();
 };
 
 const init = function() {
 	console.log('Dom Content Loaded');
 	SubmitButton = document.querySelector('#js-submit');
-	InitializeButton = document.querySelector("#js-initialize");
+	//InitializeButton = document.querySelector('#js-initialize');
 	SubmitButton.addEventListener('click', Buttonchecked);
-	InitializeButton.addEventListener('click', initializeCommunication);
-
+	//InitializeButton.addEventListener('click', initializeCommunication);
 };
 
 document.addEventListener('DOMContentLoaded', init);

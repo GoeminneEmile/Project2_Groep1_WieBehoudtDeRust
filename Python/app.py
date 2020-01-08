@@ -74,10 +74,11 @@ def mqtt_on_message(client, userdata, msg):
         print("Test MQTT")
     # Aanvragen ID topic
     elif msg.topic == "/luemniro/id/response":
-        obj = json.loads(msg.payload) # Omzetten json
         # Kijken of ID voor deze pi is
-        if obj['id'] == PI_ID:
-            if obj['status'] == "OK":
+        string = msg.payload.decode()
+        obj = json.loads(string)  # Omzetten json
+        if obj["id"] == PI_ID:
+            if obj["status"] == "OK":
                 print("---- ID is toegestaan ----")
                 save_js_mqtt_topic() # Topic opslaan
                 ID_OK = True

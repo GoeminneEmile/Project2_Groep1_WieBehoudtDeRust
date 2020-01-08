@@ -5,7 +5,7 @@ const ConnectToMQTT = function() {
 	// generate a random client id
 	let clientID = 'clientID_' + parseInt(Math.random() * 100);
 	//create an MQTT instance
-	client = new Paho.Client('/mct-mqtt.westeurope.cloudapp.azure.com', 80, clientID);
+	client = new Paho.Client('/mct-mqtt.westeurope.cloudapp.azure.com', 443, clientID);
 	console.log('client made');
 
 	// set callback handlers

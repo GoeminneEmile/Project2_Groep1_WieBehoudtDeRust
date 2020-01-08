@@ -10,6 +10,8 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using project2Functions.Models;
+using Microsoft.Build.Utilities;
+
 
 namespace project2Functions
 {
@@ -18,7 +20,7 @@ namespace project2Functions
         [FunctionName("GetQuestions")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
-            ILogger log)
+            ILogger logger)
         {
             string connectionString = Environment.GetEnvironmentVariable("ConnectionString");
             List<Question> questions = new List<Question>();
@@ -32,7 +34,6 @@ namespace project2Functions
                     {
                         command.Connection = connection;
                         command.CommandText = "Select * From ProjectAnswers as a left join ProjectQuestions as b on a.QuestionAnswer = b.QuestionID";
-
                         var result = await command.ExecuteReaderAsync();
                         string QuestionIDCurrent = "";
                         Question newQuestion = new Question();
@@ -45,13 +46,15 @@ namespace project2Functions
                                 QuestionIDCurrent = result["QuestionID"].ToString();
                                 QuestionAnswer questionAnswer = new QuestionAnswer() { Answer = result["Answer"].ToString(), QuestionAnswerGuid = result["QuestionID"].ToString(), Correct = Int32.Parse(result["Correct"].ToString()) };
                                 questions[questions.Count - 1].questionAnswers.Add(questionAnswer);
+
                             }
                             else
                             {
                                 QuestionAnswer questionAnswer = new QuestionAnswer() { Answer = result["Answer"].ToString(), QuestionAnswerGuid = result["QuestionID"].ToString(), Correct = Int32.Parse(result["Correct"].ToString()) };
                                 questions[questions.Count - 1].questionAnswers.Add(questionAnswer);
                             }
-                            Console.WriteLine(result.ToString());
+                            logger.LogInformation("GET has been succesfully executed");
+                           Console.WriteLine(result.ToString());
                         }
                     }
                 }
@@ -60,8 +63,11 @@ namespace project2Functions
             }
             catch (Exception ex)
             {
+                
                 Console.WriteLine(ex);
+                logger.LogInformation("GET ERROR: " + ex);
                 return new StatusCodeResult(500);
+
             }
         }
     }

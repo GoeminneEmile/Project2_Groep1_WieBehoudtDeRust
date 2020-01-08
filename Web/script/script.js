@@ -3,7 +3,6 @@ let client;
 let Communication;
 let players = [];
 let selectedAvatars = [];
-let modifyPlayer = 1;
 const ConnectToMQTT = function() {
 	// generate a random client id
 	let clientID = 'clientID_' + parseInt(Math.random() * 100);
@@ -26,6 +25,7 @@ function onConnect() {
 	console.log('onConnect');
 	// client subscribed op topic!
 	client.subscribe(`/luemniro/PiToJs/${InputFieldValue}`);
+	console.log(InputFieldValue);
 	// message opbouwen
 	message = new Paho.Message(JSON.stringify({ first_name: 'Luka', last_name: 'De Bakker' }));
 	// topic beslissen voor op te sturen
@@ -46,7 +46,15 @@ function onConnectionLost(responseObject) {
 		console.log('onConnectionLost:' + responseObject.errorMessage);
 	}
 }
-
+const checkPlayerCreated = function(player){
+	return player.player != this.id;
+}
+const stopPlayerInit = function(){
+	message = new Paho.Message(JSON.stringify({type: "avatar",status: "end"}));
+	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
+	client.send(message);
+	
+}
 // called when a message arrives
 function onMessageArrived(message) {
 	// message versturen
@@ -54,23 +62,19 @@ function onMessageArrived(message) {
 	switch (jsonMessage.type) {
 		case 'test_com':
 			Communication = true;
-			message = new Paho.Message(JSON.stringify({ type: 'avatar', player: modifyPlayer }));
+			message = new Paho.Message(JSON.stringify({type: "avatar",status: "start"}));
 			message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 			client.send(message);
 			break;
 		case 'avatar':
-			if (selectedAvatars.includes(jsonMessage.avatar)) {
-				message = new Paho.Message(JSON.stringify({ type: 'avatar', player: modifyPlayer }));
+			console.log(players);
+			if (!selectedAvatars.includes(jsonMessage.button) && players.every(checkPlayerCreated,{id:jsonMessage.player})) {
+				players.push({ player: jsonMessage.player, avatar: jsonMessage.button, points: 0, time_left: 20 });
+				selectedAvatars.push(jsonMessage.button);
+				message = new Paho.Message(JSON.stringify({type: "avatar",status: "stop",player: jsonMessage.player}));
 				message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 				client.send(message);
-			} else {
-				players.push({ player: jsonMessage.player, avatar: jsonMessage.avatar, points: 0, time_left: 20 });
-				modifyPlayer++;
-				selectedAvatars.push(jsonMessage.avatar);
-				message = new Paho.Message(JSON.stringify({ type: 'avatar', player: modifyPlayer }));
-				message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
-				client.send(message);
-			}
+			} 
 			break;
 		default:
 			break;
@@ -81,7 +85,7 @@ function onMessageArrived(message) {
 
 const Buttonchecked = function() {
 	// waarde van input box ophalen
-	InputFieldValue = document.querySelector('#js-input').value;
+	InputFieldValue = document.querySelector('#gamePin').value;
 	ConnectToMQTT();
 };
 

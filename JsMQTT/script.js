@@ -1,6 +1,9 @@
 let SubmitButton, InputFieldValue;
 let client;
-
+let Communication;
+let players = [];
+let selectedAvatars = [];
+let modifyPlayer = 1;
 const ConnectToMQTT = function() {
 	// generate a random client id
 	let clientID = 'clientID_' + parseInt(Math.random() * 100);
@@ -31,6 +34,12 @@ function onConnect() {
 	client.send(message);
 }
 
+const initializeCommunication = function(){
+	message = new Paho.Message(JSON.stringify({ type: "test_com"}));
+	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
+	client.send(message);
+}
+
 // called when the client loses its connection
 function onConnectionLost(responseObject) {
 	if (responseObject.errorCode !== 0) {
@@ -41,7 +50,34 @@ function onConnectionLost(responseObject) {
 // called when a message arrives
 function onMessageArrived(message) {
 	// message versturen
-	console.log('onMessageArrived: ' + message.payloadString);
+	let jsonMessage = JSON.parse(message.payloadString);
+	switch (jsonMessage.type) {
+		case "test_com":
+			Communication = true;
+			message = new Paho.Message(JSON.stringify({ type: "avatar",player: modifyPlayer}));
+			message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
+			client.send(message);
+			break;
+		case "avatar":
+			if(selectedAvatars.includes(jsonMessage.avatar)){
+				message = new Paho.Message(JSON.stringify({ type: "avatar",player: modifyPlayer}));
+				message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
+				client.send(message);
+			}
+			else{
+				players.push({player:jsonMessage.player,avatar:jsonMessage.avatar,points:0,time_left:20})
+				modifyPlayer++;
+				selectedAvatars.push(jsonMessage.avatar);
+				message = new Paho.Message(JSON.stringify({ type: "avatar",player: modifyPlayer}));
+				message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
+				client.send(message);
+			}
+			break;
+		default:
+			break;
+	}
+
+	console.log(typeof(jsonMessage.type));
 }
 
 const Buttonchecked = function() {
@@ -52,8 +88,11 @@ const Buttonchecked = function() {
 
 const init = function() {
 	console.log('Dom Content Loaded');
-	SubmitButton = document.querySelector('.js-submit');
+	SubmitButton = document.querySelector('#js-submit');
+	InitializeButton = document.querySelector("#js-initialize");
 	SubmitButton.addEventListener('click', Buttonchecked);
+	InitializeButton.addEventListener('click', initializeCommunication);
+
 };
 
 document.addEventListener('DOMContentLoaded', init);

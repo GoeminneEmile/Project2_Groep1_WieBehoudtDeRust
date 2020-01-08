@@ -10,6 +10,8 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using project2Functions.Models;
+using Microsoft.Build.Utilities;
+using Microsoft.ApplicationInsights;
 
 namespace project2Functions
 {
@@ -18,8 +20,9 @@ namespace project2Functions
         [FunctionName("GetQuestions")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
-            ILogger log)
+            ILogger logger)
         {
+            TelemetryClient telemetry = new TelemetryClient();
             string connectionString = Environment.GetEnvironmentVariable("ConnectionString");
             List<Question> questions = new List<Question>();
             try
@@ -32,7 +35,6 @@ namespace project2Functions
                     {
                         command.Connection = connection;
                         command.CommandText = "Select * From ProjectAnswers as a left join ProjectQuestions as b on a.QuestionAnswer = b.QuestionID";
-
                         var result = await command.ExecuteReaderAsync();
                         string QuestionIDCurrent = "";
                         Question newQuestion = new Question();
@@ -45,12 +47,15 @@ namespace project2Functions
                                 QuestionIDCurrent = result["QuestionID"].ToString();
                                 QuestionAnswer questionAnswer = new QuestionAnswer() { Answer = result["Answer"].ToString(), QuestionAnswerGuid = result["QuestionID"].ToString(), Correct = Int32.Parse(result["Correct"].ToString()) };
                                 questions[questions.Count - 1].questionAnswers.Add(questionAnswer);
+
                             }
                             else
                             {
                                 QuestionAnswer questionAnswer = new QuestionAnswer() { Answer = result["Answer"].ToString(), QuestionAnswerGuid = result["QuestionID"].ToString(), Correct = Int32.Parse(result["Correct"].ToString()) };
                                 questions[questions.Count - 1].questionAnswers.Add(questionAnswer);
                             }
+                            logger.LogInformation("GET has been succesfully executed");
+                            telemetry.TrackEvent("GetQuestions");
                             Console.WriteLine(result.ToString());
                         }
                     }
@@ -60,8 +65,11 @@ namespace project2Functions
             }
             catch (Exception ex)
             {
+                
                 Console.WriteLine(ex);
+                logger.LogInformation("GET ERROR: " + ex);
                 return new StatusCodeResult(500);
+
             }
         }
     }

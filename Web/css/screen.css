@@ -168,7 +168,9 @@ h1 {
 
 h2 {
   font-size: 32px;
-  font-size: "ff-cocon-pro", Helvetica, sans-serif;
+  font-family: "ff-cocon-pro-condensed", Helvetica, sans-serif;
+  letter-spacing: 2.5px;
+  text-align: center;
   line-height: calc(var(--global-baseline) * 5);
   margin: 0 0 var(--global-whitespace);
 }
@@ -339,6 +341,11 @@ text{
   margin-right: auto;
   max-width: 79.5em; /* 79.5 * 16px = 1272 */
   width: 100%;
+}
+.o-container__centered{
+    width: 100%;
+    position: absolute;
+    top:100px;
 }
 
 /*
@@ -572,6 +579,46 @@ text{
 /*------------------------------------*\
 #COMPONENTS
 \*------------------------------------*/
+
+.c-align--middle{
+    transform: translate(-29px, 0);
+}
+
+.u-1-of-6 > .c-image{
+    width: 50%;
+}
+
+.u-1-of-2:first-child .c-image{
+    margin-right: 0px;
+}
+
+.u-1-of-2:last-child .c-image{
+    margin: 0;
+}
+
+.c-image{
+    width: 25%;
+    margin: 0 auto;
+}
+
+.c-image--xl{
+    width: 10%;
+    justify-content: center;
+    margin: 0 auto;
+}
+.c-image__selection{
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    align-self: center;
+}
+.c-image__svg{
+    width: 100%;
+}
+
+.u-1-of-3{
+    padding: 32px 0px;
+}
 
 /*
     Component: Button
@@ -1427,6 +1474,10 @@ li span {
     Utility classes to put specific widths onto elements
     Will be mostly used on o-layout__item
 */
+
+.u-width-full {
+  width: 100% !important;
+}
 
 .u-width-auto {
   width: auto !important;

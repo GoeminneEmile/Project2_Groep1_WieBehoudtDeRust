@@ -1,5 +1,6 @@
 using System;
 using System.Data.SqlClient;
+using Microsoft.ApplicationInsights;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
@@ -11,6 +12,7 @@ namespace project2Functions
         [FunctionName("TimerTriggerDelete")]
         public static async System.Threading.Tasks.Task RunAsync([TimerTrigger("0 30 4 * * *")]TimerInfo myTimer, ILogger logger)
         {
+            TelemetryClient telemetry = new TelemetryClient();
             string connectionString = Environment.GetEnvironmentVariable("connectionString");
             try
             {
@@ -25,6 +27,7 @@ namespace project2Functions
                         var result = await command.ExecuteReaderAsync();
                         
                     }
+                    telemetry.TrackEvent("Table_Truncate");
                     logger.LogInformation("Table truncated succesfully");
                 }
             }

@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using project2Functions.Models;
 using Microsoft.Build.Utilities;
-
+using Microsoft.ApplicationInsights;
 
 namespace project2Functions
 {
@@ -22,6 +22,7 @@ namespace project2Functions
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
             ILogger logger)
         {
+            TelemetryClient telemetry = new TelemetryClient();
             string connectionString = Environment.GetEnvironmentVariable("ConnectionString");
             List<Question> questions = new List<Question>();
             try
@@ -54,7 +55,8 @@ namespace project2Functions
                                 questions[questions.Count - 1].questionAnswers.Add(questionAnswer);
                             }
                             logger.LogInformation("GET has been succesfully executed");
-                           Console.WriteLine(result.ToString());
+                            telemetry.TrackEvent("GetQuestions");
+                            Console.WriteLine(result.ToString());
                         }
                     }
                 }

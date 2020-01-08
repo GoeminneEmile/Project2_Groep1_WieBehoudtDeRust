@@ -46,7 +46,9 @@ function onConnectionLost(responseObject) {
 		console.log('onConnectionLost:' + responseObject.errorMessage);
 	}
 }
-
+const checkPlayerCreated = function(player){
+	return player.player != this.id;
+}
 // called when a message arrives
 function onMessageArrived(message) {
 	// message versturen
@@ -59,14 +61,13 @@ function onMessageArrived(message) {
 			client.send(message);
 			break;
 		case 'avatar':
-			if (!selectedAvatars.includes(jsonMessage.button)) {
+			console.log(players);
+			if (!selectedAvatars.includes(jsonMessage.button) && players.every(checkPlayerCreated,{id:jsonMessage.player})) {
 				players.push({ player: jsonMessage.player, avatar: jsonMessage.button, points: 0, time_left: 20 });
 				selectedAvatars.push(jsonMessage.button);
 				message = new Paho.Message(JSON.stringify({type: "avatar",status: "stop",player: jsonMessage.player}));
 				message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 				client.send(message);
-				console.log(players);
-				console.log(selectedAvatars);
 			} 
 			break;
 		default:

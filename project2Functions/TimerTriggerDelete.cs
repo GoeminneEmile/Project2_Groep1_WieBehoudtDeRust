@@ -9,7 +9,7 @@ namespace project2Functions
     public static class TimerTriggerDelete
     {
         [FunctionName("TimerTriggerDelete")]
-        public static async System.Threading.Tasks.Task RunAsync([TimerTrigger("0 */15 * * * *")]TimerInfo myTimer, ILogger log)
+        public static async System.Threading.Tasks.Task RunAsync([TimerTrigger("0 30 4 * * *")]TimerInfo myTimer, ILogger log)
         {
             string connectionString = Environment.GetEnvironmentVariable("connectionString");
 

@@ -49,6 +49,12 @@ function onConnectionLost(responseObject) {
 const checkPlayerCreated = function(player){
 	return player.player != this.id;
 }
+const stopPlayerInit = function(){
+	message = new Paho.Message(JSON.stringify({type: "avatar",status: "end"}));
+	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
+	client.send(message);
+	
+}
 // called when a message arrives
 function onMessageArrived(message) {
 	// message versturen

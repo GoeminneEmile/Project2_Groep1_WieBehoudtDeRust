@@ -13,6 +13,7 @@ namespace project2Functions
         public static async System.Threading.Tasks.Task RunAsync([TimerTrigger("0 30 4 * * *")]TimerInfo myTimer, ILogger logger)
         {
             TelemetryClient telemetry = new TelemetryClient();
+            telemetry.InstrumentationKey = Environment.GetEnvironmentVariable("insightsString");
             string connectionString = Environment.GetEnvironmentVariable("connectionString");
             try
             {

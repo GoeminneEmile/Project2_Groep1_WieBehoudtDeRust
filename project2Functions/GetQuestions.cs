@@ -22,6 +22,7 @@ namespace project2Functions
             ILogger logger)
         {
             TelemetryClient telemetry = new TelemetryClient();
+            telemetry.InstrumentationKey = Environment.GetEnvironmentVariable("insightsString");
             string connectionString = Environment.GetEnvironmentVariable("ConnectionString");
             List<Question> questions = new List<Question>();
             try

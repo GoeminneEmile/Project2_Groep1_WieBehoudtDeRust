@@ -32,7 +32,7 @@ def save_js_mqtt_topic():
 def send_id_request():
     global PI_ID
     random_number = random.randint(0, 999999)
-    PI_ID = random_number
+    PI_ID = str(random_number).zfill(6)
     print('---- ID request send ----')
     client.publish('/luemniro/id/request', "{'id': '" + str(random_number) + "'}")
 
@@ -77,7 +77,7 @@ def mqtt_on_message(client, userdata, msg):
         # Kijken of ID voor deze pi is
         string = msg.payload.decode()
         obj = json.loads(string)  # Omzetten json
-        if obj["id"] == PI_ID:
+        if obj["id"] == int(PI_ID):
             if obj["status"] == "OK":
                 print("---- ID is toegestaan ----")
                 save_js_mqtt_topic() # Topic opslaan

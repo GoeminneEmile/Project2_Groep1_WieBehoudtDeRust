@@ -272,6 +272,16 @@ input {
   display: block;
 }
 
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance:textfield;
+}
 select {
   width: 100%;
 }
@@ -909,10 +919,21 @@ text{
   border: var(--input-borderWidth, var(--global-borderWidth)) solid  var(--global-color-alpha);
 }
 
+.c-input__icon-background{
+    position: absolute;
+    top: 34px;
+    right: 4px;
+    background: white;
+    padding: 38.5px 28px;
+    pointer-events: none;
+    border-radius: 0px 6px 6px 0px;
+}
+
 .c-input__icon{
     position: absolute;
-    top: 55px;
-    right: 20px;
+    top: 20px;
+    right: 10px;
+    z-index: 99;
 }
 
 .c-input:hover {
@@ -1006,33 +1027,14 @@ more padding on the right to avoid overlap
 
 .c-submit {
     position: absolute;
-    top: 33px;
+    top: 34px;
+    width: 50px;
+    height: 77.8px;
     right: 5px;
-  font-size: 16px;
-  font-weight: 600;
-  overflow: hidden;
-  border-radius: var(--button-borderRadius, var(--global-borderRadius));
-  color: var(--global-color-alpha);
-  padding: calc(var(--global-baseline) * 0.5 - var(--button-borderWidth, var(--global-borderWidth))) var(--global-whitespace-md);
-  line-height: calc(var(--global-baseline) * 3);
-  outline: none;
-  box-shadow: var(--button-boxShadow, 0);
-  transition: all var(--global-transitionDuration-alpha) var(--global-transitionEasing-out);
+    overflow: hidden;
+    box-shadow: var(--button-boxShadow);
 }
 
-.c-submit:hover {
-  border-color: var(--button-hover-borderColor, var(--global-color-alpha-dark));
-}
-
-.c-submit:focus {
-  border-color: var(--button-focus-borderColor, var(--global-color-alpha-dark));
-  box-shadow: var(--global-input-focus-boxShadowSpread) var(--button-focus-boxShadowColor, var(--global-input-focus-boxShadowColor));
-}
-
-.c-submit:active {
-  border-color: var(--button-active-borderColor, var(--global-color-alpha-dark));
-  box-shadow: var(--button-active-boxShadow, 0);
-}
 
 @media (prefers-color-scheme: dark) {
   ..c-submit {

@@ -22,6 +22,7 @@ namespace project2Functions
         [MqttTrigger("/luemniro/id/request")] IMqttMessage message, [Mqtt] out IMqttMessage outMessage, ILogger logger)
         {
             TelemetryClient telemetry = new TelemetryClient();
+            telemetry.InstrumentationKey = Environment.GetEnvironmentVariable("insightsString");
             var body = message.GetMessage();
             var bodyString = Encoding.UTF8.GetString(body);
             ID iD = JsonConvert.DeserializeObject<ID>(bodyString);

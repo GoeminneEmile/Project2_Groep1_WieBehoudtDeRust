@@ -10,7 +10,6 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using project2Functions.Models;
-using Microsoft.Build.Utilities;
 using Microsoft.ApplicationInsights;
 
 namespace project2Functions

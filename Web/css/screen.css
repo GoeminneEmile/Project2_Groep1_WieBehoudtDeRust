@@ -174,6 +174,11 @@ h2 {
   line-height: calc(var(--global-baseline) * 5);
   margin: 0 0 var(--global-whitespace);
 }
+text{
+    font-family: "ff-cocon-pro-condensed", Helvetica, sans-serif;
+    font-size: 48px;
+    letter-spacing:0.11em;
+}
 @media (min-width: 960px) {
     h2 {
       font-size: 48px;

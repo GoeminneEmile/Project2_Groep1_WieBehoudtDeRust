@@ -8,20 +8,84 @@ import paho.mqtt.client as mqtt
 from evdev import ecodes
 from helpers.LCD_4_20_SPI import LCD_4_20_SPI
 
+from bluepy.btle import AssignedNumbers, Scanner, DefaultDelegate, Peripheral, ADDR_TYPE_PUBLIC
+
 # --------------------
 # Globale variabelen
 # --------------------
+# Pi ID
 PI_ID = None
-JS_SEND_TOPIC = None
-JS_RECEIVE_TOPIC= None
 ID_OK = False
 
+# MQTT
+JS_SEND_TOPIC = None
+JS_RECEIVE_TOPIC= None
 client = None
+
+# Bluetooth
+BT_DEVICES = []
+
+
+# --------------------
+# Klasses
+# --------------------
+# Klasse voor connecteren Hartslag sensor
+class HRM(Peripheral):
+    def __init__(self, addr):
+        Peripheral.__init__(self, addr, addrType=ADDR_TYPE_PUBLIC)
 
 
 # --------------------
 # Methodes
 # --------------------
+def ontvangen_hartslag(cHandle, data):
+    print("Hartslag: " + str(data[1]))
+
+
+def uitlezen_bt_device(device_id, aantal_lees_acties):
+    # uuid's opvragen
+    cccid = AssignedNumbers.client_characteristic_configuration
+    hrmid = AssignedNumbers.heart_rate
+    hrmmid = AssignedNumbers.heart_rate_measurement
+    # Start connecteren en uitlezen
+    hrm = None
+    try:
+        # Connecteren met device id
+        hrm = HRM(device_id)
+        print("Connected")
+        # uuid's uitlezen
+        service, = [s for s in hrm.getServices() if s.uuid == hrmid]
+        ccc, = service.getCharacteristics(forUUID=str(hrmmid))
+        # Descriptors ophalen
+        desc = hrm.getDescriptors(service.hndStart, service.hndEnd)
+        d, = [d for d in desc if d.uuid == cccid]
+        # Karakteristieken schrijven
+        hrm.writeCharacteristic(d.handle, b'\1\0')
+        # Callback zetten op print_hr functie bij het ontvangen van notificatie
+        hrm.delegate.handleNotification = ontvangen_hartslag
+        # 200 keer de data uitlezen
+        for x in range(aantal_lees_acties):
+            hrm.waitForNotifications(3.)
+    # Deconnecteren wanneer hartslag sensor is geconnecteerd
+    finally:
+        if hrm:
+            hrm.disconnect()
+
+
+def start_bluetooth_scan():
+    bt_device = {}
+    print("---- Start Bluetooth Scan ----")
+    scanner = Scanner()
+    devices = scanner.scan(10.0)
+    # Tonen van devices
+    for dev in devices:
+        if str(dev.getValueText(0x09)).find("Polar OH1") is not -1:
+            bt_device['name'] = dev.getValueText(0x09)
+            bt_device['mac'] = dev.addr
+            BT_DEVICES.append(bt_device)
+            bt_device = {}
+
+
 def save_js_mqtt_topic():
     global JS_SEND_TOPIC, JS_RECEIVE_TOPIC
     JS_SEND_TOPIC = "/luemniro/PiToJs/{0}".format(PI_ID)
@@ -115,6 +179,8 @@ try:
     client.loop_start()
     # Genereren + controle van ID
     send_id_request()
+    # Bluetooth
+    start_bluetooth_scan()
 except Exception as ex:
     print(ex)
 

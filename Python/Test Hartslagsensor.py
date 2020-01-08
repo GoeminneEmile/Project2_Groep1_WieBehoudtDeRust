@@ -71,7 +71,7 @@ def main(device_id, x):
 
 
 # Start de scan
-print("------ Start Scan ------")
+print("---- Start Bluetooth Scan ----")
 scanner = Scanner()
 devices = scanner.scan(10.0)
 # Tonen van devices

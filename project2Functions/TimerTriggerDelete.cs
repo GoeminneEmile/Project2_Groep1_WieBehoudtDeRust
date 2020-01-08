@@ -9,11 +9,12 @@ namespace project2Functions
     public static class TimerTriggerDelete
     {
         [FunctionName("TimerTriggerDelete")]
-        public static async System.Threading.Tasks.Task RunAsync([TimerTrigger("0 30 4 * * *")]TimerInfo myTimer, ILogger log)
+        public static async System.Threading.Tasks.Task RunAsync([TimerTrigger("0 30 4 * * *")]TimerInfo myTimer, ILogger logger)
         {
             string connectionString = Environment.GetEnvironmentVariable("connectionString");
-
-                using (SqlConnection connection = new SqlConnection())
+            try
+            {
+                 using (SqlConnection connection = new SqlConnection())
                 {
                     connection.ConnectionString = connectionString;
                     await connection.OpenAsync();
@@ -22,9 +23,17 @@ namespace project2Functions
                         command.Connection = connection;
                         command.CommandText = "TRUNCATE TABLE dbo.ProjectIDs";
                         var result = await command.ExecuteReaderAsync();
-
+                        
                     }
+                    logger.LogInformation("Table truncated succesfully");
                 }
+            }
+            catch (Exception ex)
+            {
+                logger.LogInformation("Error while truncating table: " + ex);
+                throw;
+            }
+               
              
 
 

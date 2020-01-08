@@ -29,12 +29,14 @@ namespace project2Functions
                 var response = new { id = iD.Id, status = "OK" };
                 var jsonResponse = JsonConvert.SerializeObject(response);
                 outMessage = new MqttMessage("/luemniro/id/response", Encoding.ASCII.GetBytes(jsonResponse), MqttQualityOfServiceLevel.AtLeastOnce, true);
+                logger.LogInformation("ID {iD.Id} is OK", iD.Id);
             }
             else
             {
                 var response = new { id = iD.Id, status = "NOK" };
                 var jsonResponse = JsonConvert.SerializeObject(response);
                 outMessage = new MqttMessage("/luemniro/id/response", Encoding.ASCII.GetBytes(jsonResponse), MqttQualityOfServiceLevel.AtLeastOnce, true);
+                logger.LogInformation("ID {iD.Id} is NOK, ID already in database", iD.Id);
             }
         }
     }

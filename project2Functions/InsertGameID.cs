@@ -28,10 +28,7 @@ namespace project2Functions
                         command.Connection = connection;
                         command.CommandText = "insert into ProjectIDs (GameID) VALUES (@id);";
                         command.Parameters.AddWithValue("@id", iD);
-
-
                         var result = command.ExecuteReader();
-                        
                     }
                 }
                 return true;

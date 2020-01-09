@@ -7,6 +7,7 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System.Data.SqlClient;
 
 namespace project2Functions
 {
@@ -21,14 +22,49 @@ namespace project2Functions
 
             string name = req.Query["user"];
             string password = req.Query["password"];
+            Hash hash = new Hash();
+            string passwordHash = hash.ComputeHash(password);
+            string connectionString = Environment.GetEnvironmentVariable("connectionString");
+            // opening SQL connection
+            try
+            {
+                using (SqlConnection connection = new SqlConnection())
+                {
+                    // Setting connection string
+                    connection.ConnectionString = connectionString;
+                    // opening connection
+                    await connection.OpenAsync();
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        // setting and executing a command
+                        command.Connection = connection;
+                        command.CommandText = "Select * from Users Where UserName = @username and Password = @password";
+                        command.Parameters.AddWithValue("@username", name);
+                        command.Parameters.AddWithValue("@password", passwordHash);
 
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            name = name ?? data?.name;
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                string UserName = reader["UserName"].ToString() ;
+                                return new OkObjectResult(200);
 
-            return name != null
-                ? (ActionResult)new OkObjectResult($"Hello, {name}")
-                : new BadRequestObjectResult("Please pass a name on the query string or in the request body");
+                            }
+                            else
+                            {
+                                return new OkObjectResult(400);
+                            }
+                        }
+                    }
+                }
+            }
+            // catching an error
+            catch (Exception ex)
+            {
+                // logging an error
+                return new StatusCodeResult(500);
+                throw;
+            }
         }
     }
 }

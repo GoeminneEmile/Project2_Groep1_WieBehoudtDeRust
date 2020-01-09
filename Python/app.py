@@ -182,28 +182,31 @@ def send_id_request():
 
 def read_keyboard():
     global knoppen_pressed, knop_pressed, threat_knoppen_versturen
-    for event in dev.read_loop():
-        if event.type == ecodes.EV_KEY and event.value == KNOP_PRESS:
-            threat_knoppen_versturen = threading.Thread(target=mqtt_doorsturen_knop)
-            if event.code == ecodes.KEY_UP:
-                knop_pressed = ecodes.KEY_UP
-            elif event.code == ecodes.KEY_DOWN:
-                knop_pressed = ecodes.KEY_DOWN
-            elif event.code == ecodes.KEY_W:
-                knop_pressed = ecodes.KEY_W
-            elif event.code == ecodes.KEY_A:
-                knop_pressed = ecodes.KEY_A
-            elif event.code == ecodes.KEY_S:
-                knop_pressed = ecodes.KEY_S
-            elif event.code == ecodes.KEY_D:
-                knop_pressed = ecodes.KEY_D
-            elif event.code == ecodes.KEY_F:
-                knop_pressed = ecodes.KEY_F
-            elif event.code == ecodes.KEY_G:
-                knop_pressed = ecodes.KEY_G
-            threat_knoppen_versturen.start()
-            threat_knoppen_versturen.join()
-
+    while knoppen_stoppen is False:
+        try:
+            for event in dev.read():
+                if event.type == ecodes.EV_KEY and event.value == KNOP_PRESS:
+                    threat_knoppen_versturen = threading.Thread(target=mqtt_doorsturen_knop)
+                    if event.code == ecodes.KEY_UP:
+                        knop_pressed = ecodes.KEY_UP
+                    elif event.code == ecodes.KEY_DOWN:
+                        knop_pressed = ecodes.KEY_DOWN
+                    elif event.code == ecodes.KEY_W:
+                        knop_pressed = ecodes.KEY_W
+                    elif event.code == ecodes.KEY_A:
+                        knop_pressed = ecodes.KEY_A
+                    elif event.code == ecodes.KEY_S:
+                        knop_pressed = ecodes.KEY_S
+                    elif event.code == ecodes.KEY_D:
+                        knop_pressed = ecodes.KEY_D
+                    elif event.code == ecodes.KEY_F:
+                        knop_pressed = ecodes.KEY_F
+                    elif event.code == ecodes.KEY_G:
+                        knop_pressed = ecodes.KEY_G
+                    threat_knoppen_versturen.start()
+                    threat_knoppen_versturen.join()
+        except Exception as ex:
+            pass
 
 
 # --------------------
@@ -265,7 +268,7 @@ def mqtt_on_disconnect(client, userdata, flags, rc):
 # Init
 # --------------------
 async def init():
-    global work_queue, client, lcd, dev, pool
+    global client, lcd, dev
     try:
         # Init LCD
         lcd = LCD_4_20_SPI()

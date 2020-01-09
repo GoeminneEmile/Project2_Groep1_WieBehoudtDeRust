@@ -30,10 +30,11 @@ namespace project2Functions
             var bodyString = Encoding.UTF8.GetString(body);
             ID iD = JsonConvert.DeserializeObject<ID>(bodyString);
             // Checking if the ID isn't already in the database
-            bool IDResponse = InsertGameID.InsertId(iD.Id);
+           
             // Checking if the ID is exactly 6 digits long
             if(iD.Id.ToString().Length == 6)
             {
+                bool IDResponse = InsertGameID.InsertId(iD.Id);
                 // If it's 6 digits long and NOT in the database
                 if (IDResponse)
                 {

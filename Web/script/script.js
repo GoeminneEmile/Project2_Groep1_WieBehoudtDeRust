@@ -58,7 +58,7 @@ function onConnectionLost(responseObject) {
 	//start interval for reconnecting to mqtt server
 	interval = setInterval(function() {
 		ConnectToMQTT();
-	}, 5000);
+	}, 10000);
 
 	console.log('ik ga eruit');
 	if (responseObject.errorCode !== 0) {
@@ -78,14 +78,19 @@ const stopPlayerInit = function() {
 
 // called when a message arrives
 function onMessageArrived(message) {
+	console.log(message);
 	// Receiving message
 	// Read it as a JSOn
 	let jsonMessage = JSON.parse(message.payloadString);
+	console.log(jsonMessage);
+	//console.log(jsonMessage);
 	switch (jsonMessage.type) {
 		// Switch case checks which Type is present in the Json message, this depends on the python back-end
 		// Depending on the type in the JSON, we send something specific back
 		case 'test_com':
 			// Change page here, go from load page to avatar selection page
+			//window.location = 'https://website1999.z6.web.core.windows.net/loading.html';
+			// We now have connection, now we can send the message for the next step, selecting the avatar
 			Communication = true;
 			message = new Paho.Message(JSON.stringify({ type: 'avatar', status: 'start' }));
 			message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;

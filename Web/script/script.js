@@ -1,9 +1,10 @@
+// global variables
 let SubmitButton, InputFieldValue;
 let client;
 let Communication;
 let players = [];
 let selectedAvatars = [];
-let modifyPlayer = 1;
+
 const ConnectToMQTT = function() {
 	// generate a random client id
 	let clientID = 'clientID_' + parseInt(Math.random() * 100);
@@ -26,6 +27,7 @@ function onConnect() {
 	console.log('onConnect');
 	// client subscribed op topic!
 	client.subscribe(`/luemniro/PiToJs/${InputFieldValue}`);
+	console.log(InputFieldValue);
 	// message opbouwen
 	message = new Paho.Message(JSON.stringify({ first_name: 'Luka', last_name: 'De Bakker' }));
 	// topic beslissen voor op te sturen
@@ -34,11 +36,12 @@ function onConnect() {
 	client.send(message);
 }
 
-const initializeCommunication = function(){
-	message = new Paho.Message(JSON.stringify({ type: "test_com"}));
+// Initializing communication, we send a test and the python back-end sends a test back
+const initializeCommunication = function() {
+	message = new Paho.Message(JSON.stringify({ type: 'test_com' }));
 	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 	client.send(message);
-}
+};
 
 // called when the client loses its connection
 function onConnectionLost(responseObject) {
@@ -47,28 +50,36 @@ function onConnectionLost(responseObject) {
 	}
 }
 
+const checkPlayerCreated = function(player) {
+	return player.player != this.id;
+};
+
+const stopPlayerInit = function() {
+	message = new Paho.Message(JSON.stringify({ type: 'avatar', status: 'end' }));
+	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
+	client.send(message);
+};
+
 // called when a message arrives
 function onMessageArrived(message) {
-	// message versturen
+	// Receiving message
+	// Read it as a JSOn
 	let jsonMessage = JSON.parse(message.payloadString);
 	switch (jsonMessage.type) {
-		case "test_com":
+		// Switch case checks which Type is present in the Json message, this depends on the python back-end
+		// Depending on the type in the JSON, we send something specific back
+		case 'test_com':
 			Communication = true;
-			message = new Paho.Message(JSON.stringify({ type: "avatar",player: modifyPlayer}));
+			message = new Paho.Message(JSON.stringify({ type: 'avatar', status: 'start' }));
 			message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 			client.send(message);
 			break;
-		case "avatar":
-			if(selectedAvatars.includes(jsonMessage.avatar)){
-				message = new Paho.Message(JSON.stringify({ type: "avatar",player: modifyPlayer}));
-				message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
-				client.send(message);
-			}
-			else{
-				players.push({player:jsonMessage.player,avatar:jsonMessage.avatar,points:0,time_left:20})
-				modifyPlayer++;
-				selectedAvatars.push(jsonMessage.avatar);
-				message = new Paho.Message(JSON.stringify({ type: "avatar",player: modifyPlayer}));
+		case 'avatar':
+			console.log(players);
+			if (!selectedAvatars.includes(jsonMessage.button) && players.every(checkPlayerCreated, { id: jsonMessage.player })) {
+				players.push({ player: jsonMessage.player, avatar: jsonMessage.button, points: 0, time_left: 20 });
+				selectedAvatars.push(jsonMessage.button);
+				message = new Paho.Message(JSON.stringify({ type: 'avatar', status: 'stop', player: jsonMessage.player }));
 				message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 				client.send(message);
 			}
@@ -77,22 +88,23 @@ function onMessageArrived(message) {
 			break;
 	}
 
-	console.log(typeof(jsonMessage.type));
+	console.log(typeof jsonMessage.type);
 }
 
 const Buttonchecked = function() {
 	// waarde van input box ophalen
-	InputFieldValue = document.querySelector('.js-input').value;
+	InputFieldValue = document.querySelector('#gamePin').value;
 	ConnectToMQTT();
 };
 
 const init = function() {
+	// Init function
 	console.log('Dom Content Loaded');
 	SubmitButton = document.querySelector('#js-submit');
-	InitializeButton = document.querySelector("#js-initialize");
+	// Need to use this one later
+	//InitializeButton = document.querySelector('#js-initialize');
 	SubmitButton.addEventListener('click', Buttonchecked);
-	InitializeButton.addEventListener('click', initializeCommunication);
-
+	//InitializeButton.addEventListener('click', initializeCommunication);
 };
 
 document.addEventListener('DOMContentLoaded', init);

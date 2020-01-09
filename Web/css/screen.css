@@ -15,7 +15,20 @@
        url('../fonts/ubuntu-v14-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
        url('../fonts/ubuntu-v14-latin-regular.svg#Ubuntu') format('svg'); /* Legacy iOS */
 }
-/* ubuntu-bold - latin */
+/* ubuntu-500 - latin */
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: 500;
+  src: url('../fonts/ubuntu-v14-latin-500.eot'); /* IE9 Compat Modes */
+  src: local('Ubuntu Medium'), local('Ubuntu-Medium'),
+       url('../fonts/ubuntu-v14-latin-500.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../fonts/ubuntu-v14-latin-500.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../fonts/ubuntu-v14-latin-500.woff') format('woff'), /* Modern Browsers */
+       url('../fonts/ubuntu-v14-latin-500.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../fonts/ubuntu-v14-latin-500.svg#Ubuntu') format('svg'); /* Legacy iOS */
+}
+/* ubuntu-700 - latin */
 @font-face {
   font-family: 'Ubuntu';
   font-style: normal;
@@ -163,7 +176,7 @@ h3 {
 h1 {
   font-size: 36px;
   line-height: calc(var(--global-baseline) * 6);
-  margin: 0 0 var(--global-whitespace);
+  margin: 0 0 6px;
 }
 
 h2 {
@@ -209,6 +222,9 @@ table,
 address,
 figure {
   margin: 0 0 var(--global-whitespace);
+}
+p{
+    margin: 0 0 10px;
 }
 
 ul,
@@ -319,7 +335,16 @@ text{
   padding: 24px 24px 0;
 }
 
+.o-row--xs {
+  position: relative;
+}
+
 /* size modifiers */
+
+.o-row--sm {
+  padding-top: 24px;
+  padding-bottom: 8px;
+}
 
 .o-row--lg {
   padding-top: 48px;
@@ -327,8 +352,7 @@ text{
 }
 
 .o-row--xl {
-  padding-top: 72px;
-  padding-bottom: 48px;
+  padding-bottom: 30px;
 }
 
 @media (min-width: 768px) {
@@ -336,12 +360,10 @@ text{
     padding-left: 48px;
     padding-right: 48px;
   }
-}
 
-@media (min-width: 992px) {
-  .o-row--xl {
-    padding-top: 96px;
-    padding-bottom: 72px;
+  .o-row-xs {
+    padding-left: 48px;
+    padding-right: 48px;
   }
 }
 
@@ -374,6 +396,10 @@ text{
   padding: var(--global-whitespace) var(--global-whitespace) 0;
 }
 
+.o-row--xs {
+  position: relative;
+}
+
 .o-row--login {
   min-height: 100vh;
   display: -webkit-flex;
@@ -392,6 +418,11 @@ text{
 
 @media (min-width: 768px) {
   .o-row {
+    padding-left: var(--global-whitespace-lg);
+    padding-right: var(--global-whitespace-lg);
+  }
+
+  .o-row--xs {
     padding-left: var(--global-whitespace-lg);
     padding-right: var(--global-whitespace-lg);
   }
@@ -455,6 +486,14 @@ text{
   width: 100%;
 }
 
+.o-layout-answer__gutter{
+    margin-right: 60px;
+}
+
+.o-layout-answer__gutter + .o-layout-answer__gutter{
+    margin-left: 60px;
+}
+
 /* gutter modifiers, these affect o-layout__item too */
 
 .o-layout--gutter {
@@ -474,6 +513,7 @@ text{
 }
 
 .o-layout--gutter-lg {
+    padding: 20px 0px;
   margin: 0 calc(var(--global-whitespace) * -1);
 }
 
@@ -594,6 +634,36 @@ text{
 /*------------------------------------*\
 #COMPONENTS
 \*------------------------------------*/
+.c-avatar__text{
+    font-family: "ff-cocon-pro", Helvetica, arial, sans-serif;
+    letter-spacing: 3px;
+    color: #DA7086;
+    font-size: 24px;
+}
+.c-avatar--orange{
+    font-family: "Ubuntu", Helvetica, arial, sans-serif;
+    color: #E6A34C;
+    font-size: 18px;
+    font-weight: 500;
+}
+.c-answer{
+    box-sizing: content-box;
+    letter-spacing: 3px;
+    padding: 20px 30px;
+    text-align: center;
+    font-size: 48px;
+    color: #fff;
+    border-radius: 15px;
+    font-weight: 500;
+}
+
+.c-background--white{
+    background: white;
+    color: var(--global-color-alpha)
+}
+.c-custom-header{
+    text-align: center;
+}
 
 .c-align--middle{
     transform: translate(-29px, 0);
@@ -794,12 +864,52 @@ text{
   background: #555;
 }
 
-.c-app_main{
+.c-app{
     padding-top: 25px;
+    height: auto;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding-bottom: 100px;
 }
 
 .c-not-selected{
     color:darkgrey;
+}
+
+/*
+    Component: avatar
+    ---
+    Website main avatars
+*/
+
+.c-avatar {
+  height: 72px;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  margin-bottom: var(--global-whitespace-sm);
+}
+
+.c-avatar__symbol {
+  height: 100%;
+}
+
+/*
+    Component: svg
+    ---
+    Website main svg's
+*/
+
+.c-svg--sm {
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.c-svg__symbol {
+  height: 100%;
 }
 
 /*
@@ -813,7 +923,6 @@ text{
   display: flex;
   justify-content: center;
   text-align: center;
-  margin-bottom: var(--global-whitespace-lg);
 }
 
 .c-logo__symbol {
@@ -1328,6 +1437,25 @@ li span {
 /*------------------------------------*\
 #UTILITIES
 \*------------------------------------*/
+
+.u-align-middle-svg{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.u-background-yellow{
+    background:#FFA517;
+}
+.u-background-red{
+    background:#FF715B;
+}
+.u-background-green{
+    background:#9BE564;
+}
+.u-background-blue{
+    background:#295BD4;
+}
 
 
 .u-margin__0{

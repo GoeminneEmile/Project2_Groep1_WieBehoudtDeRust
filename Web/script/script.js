@@ -113,9 +113,9 @@ function onMessageArrived(message) {
 
 const Buttonchecked = function() {
 	// Change page here, go from load page to avatar selection page
-	window.location = 'https://website1999.z6.web.core.windows.net/animate.html';
 	// waarde van input box ophalen
 	InputFieldValue = document.querySelector('#gamePin').value;
+	window.location = 'https://website1999.z6.web.core.windows.net/animate.html';
 	ConnectToMQTT();
 };
 

@@ -11,20 +11,30 @@ const ConnectToMQTT = function() {
 	//create an MQTT instance
 	client = new Paho.Client('/mct-mqtt.westeurope.cloudapp.azure.com', 443, clientID);
 	console.log('client made');
-
+	console.log(client);
+	console.log("dit is de client");
 	// set callback handlers
 	client.onConnectionLost = onConnectionLost;
 	client.onMessageArrived = onMessageArrived;
 	console.log('handlers set');
 
 	// connect the client
-	client.connect({ onSuccess: onConnect });
-};
+	client.connect({ onSuccess: onConnect,onFailure: onConnectionLost});
 
+};
+const disconnectTest = function(){
+	client.disconnect();
+	console
+}
 // called when the client connects
 function onConnect() {
 	// Once a connection has been made, make a subscription and send a message.
 	console.log('onConnect');
+	try {
+		clearInterval(interval);
+	} 
+	catch (error) {
+	}
 	// client subscribed op topic!
 	client.subscribe(`/luemniro/PiToJs/${InputFieldValue}`);
 	console.log(InputFieldValue);
@@ -45,6 +55,13 @@ const initializeCommunication = function() {
 
 // called when the client loses its connection
 function onConnectionLost(responseObject) {
+	//start interval for reconnecting to mqtt server
+	interval = setInterval(function() {
+			ConnectToMQTT();
+	}, 5000);
+	
+	
+	console.log("ik ga eruit");
 	if (responseObject.errorCode !== 0) {
 		console.log('onConnectionLost:' + responseObject.errorMessage);
 	}

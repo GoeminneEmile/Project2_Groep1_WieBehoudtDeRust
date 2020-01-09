@@ -6,48 +6,48 @@ let players = [];
 let selectedAvatars = [];
 
 const ConnectToMQTT = function() {
+	// Go from index page to load page
 	// generate a random client id
 	let clientID = 'clientID_' + parseInt(Math.random() * 100);
 	//create an MQTT instance
 	client = new Paho.Client('/mct-mqtt.westeurope.cloudapp.azure.com', 443, clientID);
 	console.log('client made');
 	console.log(client);
-	console.log("dit is de client");
+	console.log('dit is de client');
 	// set callback handlers
 	client.onConnectionLost = onConnectionLost;
 	client.onMessageArrived = onMessageArrived;
 	console.log('handlers set');
 
 	// connect the client
-	client.connect({ onSuccess: onConnect,onFailure: onConnectionLost});
-
+	client.connect({ onSuccess: onConnect, onFailure: onConnectionLost });
 };
-const disconnectTest = function(){
+const disconnectTest = function() {
 	client.disconnect();
-	console
-}
+	console;
+};
 // called when the client connects
 function onConnect() {
 	// Once a connection has been made, make a subscription and send a message.
 	console.log('onConnect');
 	try {
 		clearInterval(interval);
-	} 
-	catch (error) {
-	}
+	} catch (error) {}
 	// client subscribed op topic!
 	client.subscribe(`/luemniro/PiToJs/${InputFieldValue}`);
 	console.log(InputFieldValue);
 	// message opbouwen
-	message = new Paho.Message(JSON.stringify({ first_name: 'Luka', last_name: 'De Bakker' }));
+	//message = new Paho.Message(JSON.stringify({ first_name: 'Luka', last_name: 'De Bakker' }));
 	// topic beslissen voor op te sturen
-	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
+	//message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 	// bericht versturen
-	client.send(message);
+	//client.send(message);
+	initializeCommunication();
 }
 
 // Initializing communication, we send a test and the python back-end sends a test back
 const initializeCommunication = function() {
+	console.log('Initializing Communication');
 	message = new Paho.Message(JSON.stringify({ type: 'test_com' }));
 	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 	client.send(message);
@@ -57,11 +57,10 @@ const initializeCommunication = function() {
 function onConnectionLost(responseObject) {
 	//start interval for reconnecting to mqtt server
 	interval = setInterval(function() {
-			ConnectToMQTT();
+		ConnectToMQTT();
 	}, 5000);
-	
-	
-	console.log("ik ga eruit");
+
+	console.log('ik ga eruit');
 	if (responseObject.errorCode !== 0) {
 		console.log('onConnectionLost:' + responseObject.errorMessage);
 	}
@@ -86,6 +85,7 @@ function onMessageArrived(message) {
 		// Switch case checks which Type is present in the Json message, this depends on the python back-end
 		// Depending on the type in the JSON, we send something specific back
 		case 'test_com':
+			// Change page here, go from load page to avatar selection page
 			Communication = true;
 			message = new Paho.Message(JSON.stringify({ type: 'avatar', status: 'start' }));
 			message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
@@ -119,9 +119,7 @@ const init = function() {
 	console.log('Dom Content Loaded');
 	SubmitButton = document.querySelector('#js-submit');
 	// Need to use this one later
-	//InitializeButton = document.querySelector('#js-initialize');
 	SubmitButton.addEventListener('click', Buttonchecked);
-	//InitializeButton.addEventListener('click', initializeCommunication);
 };
 
 document.addEventListener('DOMContentLoaded', init);

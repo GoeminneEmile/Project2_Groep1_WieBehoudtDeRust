@@ -51,7 +51,7 @@ namespace project2Functions
                             // We want to get a question, and nest all the answers inside of the question in JSON format
                             if(result["QuestionID"].ToString() != QuestionIDCurrent)
                             {
-                                Question question = new Question() { QuestionID = result["QuestionID"].ToString(), QuestionName = result["Question"].ToString() };
+                                Question question = new Question() { QuestionID = Guid.Parse(result["QuestionID"].ToString()), QuestionName = result["Question"].ToString() };
                                 questions.Add(question);
                                 QuestionIDCurrent = result["QuestionID"].ToString();
                                 QuestionAnswer questionAnswer = new QuestionAnswer() { Answer = result["Answer"].ToString(), QuestionAnswerGuid = result["QuestionID"].ToString(), Correct = Int32.Parse(result["Correct"].ToString()) };

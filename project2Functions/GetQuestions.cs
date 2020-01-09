@@ -54,13 +54,13 @@ namespace project2Functions
                                 Question question = new Question() { QuestionID = Guid.Parse(result["QuestionID"].ToString()), QuestionName = result["Question"].ToString() };
                                 questions.Add(question);
                                 QuestionIDCurrent = result["QuestionID"].ToString();
-                                QuestionAnswer questionAnswer = new QuestionAnswer() { Answer = result["Answer"].ToString(), QuestionAnswerGuid = result["QuestionID"].ToString(), Correct = Int32.Parse(result["Correct"].ToString()) };
+                                QuestionAnswer questionAnswer = new QuestionAnswer() { Answer = result["Answer"].ToString(), QuestionAnswerGuid = Guid.Parse(result["QuestionID"].ToString()), Correct = Int32.Parse(result["Correct"].ToString()) };
                                 questions[questions.Count - 1].questionAnswers.Add(questionAnswer);
 
                             }
                             else
                             {
-                                QuestionAnswer questionAnswer = new QuestionAnswer() { Answer = result["Answer"].ToString(), QuestionAnswerGuid = result["QuestionID"].ToString(), Correct = Int32.Parse(result["Correct"].ToString()) };
+                                QuestionAnswer questionAnswer = new QuestionAnswer() { Answer = result["Answer"].ToString(), QuestionAnswerGuid = Guid.Parse(result["QuestionID"].ToString()), Correct = Int32.Parse(result["Correct"].ToString()) };
                                 questions[questions.Count - 1].questionAnswers.Add(questionAnswer);
                             }
                             // logging event

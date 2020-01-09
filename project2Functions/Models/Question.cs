@@ -6,7 +6,7 @@ namespace project2Functions.Models
 {
     public class Question
     {
-        public string QuestionID;
+        public Guid QuestionID;
         public string QuestionName;
         public List<QuestionAnswer> questionAnswers = new List<QuestionAnswer>();
     }

@@ -21,25 +21,34 @@ namespace project2Functions
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
             ILogger logger)
         {
+            // Creating Telemetry client for logging events!
             TelemetryClient telemetry = new TelemetryClient();
+            // Getting connection strings
             telemetry.InstrumentationKey = Environment.GetEnvironmentVariable("insightsString");
             string connectionString = Environment.GetEnvironmentVariable("ConnectionString");
             List<Question> questions = new List<Question>();
             try
             {
+                // setting up SQL connection
                 using (SqlConnection connection = new SqlConnection())
                 {
+                    // Setting connection strings
                     connection.ConnectionString = connectionString;
+                    // Opening the connection
                     await connection.OpenAsync();
                     using (SqlCommand command = new SqlCommand())
                     {
+                        // Setting up and executing a SQL command
                         command.Connection = connection;
                         command.CommandText = "Select * From ProjectAnswers as a left join ProjectQuestions as b on a.QuestionAnswer = b.QuestionID";
                         var result = await command.ExecuteReaderAsync();
+                        // Creating empty variable to change later
                         string QuestionIDCurrent = "";
                         Question newQuestion = new Question();
                         while (await result.ReadAsync())
                         {
+                            // Receiving and structuring the data like we want it to be
+                            // We want to get a question, and nest all the answers inside of the question in JSON format
                             if(result["QuestionID"].ToString() != QuestionIDCurrent)
                             {
                                 Question question = new Question() { QuestionID = result["QuestionID"].ToString(), QuestionName = result["Question"].ToString() };
@@ -54,6 +63,7 @@ namespace project2Functions
                                 QuestionAnswer questionAnswer = new QuestionAnswer() { Answer = result["Answer"].ToString(), QuestionAnswerGuid = result["QuestionID"].ToString(), Correct = Int32.Parse(result["Correct"].ToString()) };
                                 questions[questions.Count - 1].questionAnswers.Add(questionAnswer);
                             }
+                            // logging event
                             logger.LogInformation("GET has been succesfully executed");
                             telemetry.TrackEvent("GetQuestions");
                             Console.WriteLine(result.ToString());
@@ -63,9 +73,10 @@ namespace project2Functions
                 return new OkObjectResult(questions);
 
             }
+            // Catching error
             catch (Exception ex)
             {
-                
+                // Logging error
                 Console.WriteLine(ex);
                 logger.LogInformation("GET ERROR: " + ex);
                 return new StatusCodeResult(500);

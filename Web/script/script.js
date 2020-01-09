@@ -89,7 +89,7 @@ function onMessageArrived(message) {
 		// Depending on the type in the JSON, we send something specific back
 		case 'test_com':
 			// Change page here, go from load page to avatar selection page
-			//window.location = 'https://website1999.z6.web.core.windows.net/loading.html';
+			window.location = 'https://website1999.z6.web.core.windows.net/animate.html';
 			// We now have connection, now we can send the message for the next step, selecting the avatar
 			Communication = true;
 			message = new Paho.Message(JSON.stringify({ type: 'avatar', status: 'start' }));

@@ -1,7 +1,7 @@
 # ---------------------------------------------------------------
-# - Aanvragen ID => OK                                                           -
-# - Testen van communicatie => OK                                          -
-# -                                                             -
+# - Aanvragen ID => OK                                          -
+# - Testen van communicatie => OK                               -
+# - Kiezen avatar voor 2 spelers => OK                          -
 # -                                                             -
 # ---------------------------------------------------------------
 
@@ -33,13 +33,18 @@ JS_SEND_TOPIC = None
 JS_RECEIVE_TOPIC= None
 TYPE_COM_TEST = "test_com"
 TYPE_COM_AVATAR = "avatar"
+TYPE_COM_SCAN = "scan"
+TYPE_COM_RBPM = "rbpm"
 TYPE_COM_AVATAR_STATUS_START = "start"
 TYPE_COM_AVATAR_STATUS_STOP = "stop"
 TYPE_COM_AVATAR_STATUS_END = "end"
+TYPE_COM_SCAN_STATUS_START= "start"
+TYPE_COM_SCAN_STATUS_DEVICES= "devices"
 client = None
 
 # Bluetooth
 BT_DEVICES = []
+PLAYERS_BT_DEVICES = []
 
 # Players
 PLAYER1_INPUTS = [ecodes.KEY_W, ecodes.KEY_A, ecodes.KEY_S, ecodes.KEY_D]
@@ -84,6 +89,18 @@ class HRM(Peripheral):
 # --------------------
 # Methodes
 # --------------------
+def mqtt_doorsturen_bt_scan():
+    JSON_SEND = {}
+    JSON_SEND["type"] = TYPE_COM_SCAN
+    JSON_SEND["devices"] = BT_DEVICES
+    print(JS_SEND_TOPIC)
+    print(str(JSON_SEND).replace("'", '"'))
+    # time.sleep(5)
+    client.publish(JS_SEND_TOPIC, str(JSON_SEND).replace("'", '"'))
+    print(client.is_connected())
+    print("---- Bluetooth scan send ----")
+
+
 def mqtt_doorsturen_knop():
     global knoppen_pressed, KNOPPEN_INLEZEN, threat_knoppen_versturen
     knop = knop_pressed
@@ -153,7 +170,7 @@ def uitlezen_bt_device(device_id, aantal_lees_acties):
 
 def start_bluetooth_scan():
     bt_device = {}
-    print("---- Start Bluetooth Scan ----")
+    print("---- Start bluetooth scan ----")
     scanner = Scanner()
     devices = scanner.scan(10.0)
     # Tonen van devices
@@ -163,6 +180,8 @@ def start_bluetooth_scan():
             bt_device['mac'] = dev.addr
             BT_DEVICES.append(bt_device)
             bt_device = {}
+    print("---- Bluetooth scan end ----")
+    mqtt_doorsturen_bt_scan()
 
 
 def save_js_mqtt_topic():
@@ -213,7 +232,7 @@ def read_keyboard():
 # Callback
 # --------------------
 def mqtt_on_message(client, userdata, msg):
-    global PI_ID, ID_OK, KNOPPEN_INLEZEN, player1_send, player2_send, knoppen_stoppen
+    global PI_ID, ID_OK, KNOPPEN_INLEZEN, player1_send, player2_send, knoppen_stoppen, PLAYERS_BT_DEVICES
     # Aanvragen ID topic
     if msg.topic == "/luemniro/id/response":
         # Kijken of ID voor deze pi is
@@ -254,10 +273,23 @@ def mqtt_on_message(client, userdata, msg):
             if obj["status"] == TYPE_COM_AVATAR_STATUS_END:
                 print("---- Stop reading buttons ----")
                 knoppen_stoppen = True
+        # Lezen van bluetooth
+        elif obj["type"] == TYPE_COM_SCAN:
+            # Start scan
+            if obj["status"] == TYPE_COM_SCAN_STATUS_START:
+                threat_bt = threading.Thread(target=start_bluetooth_scan)
+                threat_bt.start()
+            # Ontvangen BT devices per speler
+            if obj["status"] == TYPE_COM_SCAN_STATUS_DEVICES:
+                PLAYERS_BT_DEVICES = obj["devices"]
+                print("---- Received choosen bluetooth devices ----")
+        # Lezen van rusthartslag
+        elif obj["type"] == TYPE_COM_RBPM:
+            pass
 
 
 def mqtt_on_connect(client, userdata, flags, rc):
-    print("---- Connected with result code " + str(rc) + " ----")
+    print("---- Succesfully connected with MQTT broker (result code " + str(rc) + ") ----")
 
 
 def mqtt_on_disconnect(client, userdata, flags, rc):
@@ -268,7 +300,7 @@ def mqtt_on_disconnect(client, userdata, flags, rc):
 # Init
 # --------------------
 async def init():
-    global client, lcd, dev
+    global client, lcd, dev, ID_OK
     try:
         # Init LCD
         lcd = LCD_4_20_SPI()
@@ -285,8 +317,12 @@ async def init():
         client.subscribe("/luemniro/id/response")
         # Genereren + controle van ID
         send_id_request()
-        # Bluetooth
-        # start_bluetooth_scan()
+        print("---- ID is accepted ----")
+        save_js_mqtt_topic()  # Topic opslaan
+        ID_OK = True
+        # Display aansturen
+        lcd.clear_display()
+        lcd.write_string("Game ID: " + str(PI_ID))
         client.loop_forever()
     except Exception as ex:
         print(ex)

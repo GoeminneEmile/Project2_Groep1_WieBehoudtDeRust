@@ -665,6 +665,91 @@ text{
     text-align: center;
 }
 
+.rotate-center {
+    transform-origin: center center;
+    -webkit-animation: rotate-center 2s ease-in-out infinite ;
+            animation: rotate-center 2s ease-in-out infinite ;
+}
+
+@-webkit-keyframes rotate-center {
+  0% {
+    -webkit-transform: rotate(0);
+            transform: rotate(0);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+@keyframes rotate-center {
+  0% {
+    -webkit-transform: rotate(0);
+            transform: rotate(0);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+  .c-path-1 {
+    isolation: isolate;
+  }
+
+  .c-path-2, .c-path-3, .c-path-4, .c-path-5 {
+      fill: none;
+      stroke-miterlimit: 10;
+      stroke-width: 11px;
+    transform-origin:center center;
+  }
+
+  .c-path-2 {
+    stroke: #ffa517;
+  }
+
+  .c-path-3 {
+    stroke: #9be564;
+  }
+
+  .c-path-4 {
+    stroke: #295bd4;
+  }
+
+  .c-path-5 {
+    stroke: #ff715b;
+  }
+
+
+.c-avatar__text{
+    font-family: "ff-cocon-pro", Helvetica, arial, sans-serif;
+    letter-spacing: 3px;
+    color: #DA7086;
+    font-size: 24px;
+}
+.c-avatar--orange{
+    font-family: "Ubuntu", Helvetica, arial, sans-serif;
+    color: #E6A34C;
+    font-size: 18px;
+    font-weight: 500;
+}
+.c-answer{
+    box-sizing: content-box;
+    letter-spacing: 3px;
+    padding: 20px 30px;
+    text-align: center;
+    font-size: 48px;
+    color: #fff;
+    border-radius: 15px;
+    font-weight: 500;
+}
+
+.c-background--white{
+    background: white;
+    color: var(--global-color-alpha)
+}
+.c-custom-header{
+    text-align: center;
+}
+
 .c-align--middle{
     transform: translate(-29px, 0);
 }
@@ -927,6 +1012,22 @@ text{
 
 .c-logo__symbol {
   height: 100%;
+}
+
+.c-loader {
+  height: 256px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  text-align: center;
+}
+
+.c-loader__symbol {
+  height: 100%;
+}
+.c-loader__inside{
+    padding: 100px;
 }
 
 /*

@@ -21,7 +21,8 @@ let loader = `<svg class="c-loader__symbol" id="Layer_1" data-name="Layer 1" xml
 </svg>`;
 //#endregion
 //#region Avatars
-let Avatars = `<h2>Speler 1 kies je avatar!</h2>
+let Avatars = `<div>
+<h2>Speler 1 kies je avatar!</h2>
 <div class="o-row">
 	<div class="o-container__centered">
 		<div class="c-align--middle">
@@ -63,6 +64,7 @@ let Avatars = `<h2>Speler 1 kies je avatar!</h2>
 			</div>
 		</div>
 	</div>
+</div>
 </div>`;
 //#endregion
 
@@ -72,9 +74,6 @@ const ConnectToMQTT = function() {
 	let clientID = 'clientID_' + parseInt(Math.random() * 100);
 	//create an MQTT instance
 	client = new Paho.Client('/mct-mqtt.westeurope.cloudapp.azure.com', 443, clientID);
-	console.log('client made');
-	console.log(client);
-	console.log('dit is de client');
 	// set callback handlers
 	client.onConnectionLost = onConnectionLost;
 	client.onMessageArrived = onMessageArrived;
@@ -94,15 +93,10 @@ function onConnect() {
 	try {
 		clearInterval(interval);
 	} catch (error) {}
-	// client subscribed op topic!
+	// client subscribed op dynamische topic!
 	client.subscribe(`/luemniro/PiToJs/${InputFieldValue}`);
 	console.log(InputFieldValue);
-	// message opbouwen
-	//message = new Paho.Message(JSON.stringify({ first_name: 'Luka', last_name: 'De Bakker' }));
-	// topic beslissen voor op te sturen
-	//message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
-	// bericht versturen
-	//client.send(message);
+	// Kijken of juiste ID is ingegeven!
 	initializeCommunication();
 }
 

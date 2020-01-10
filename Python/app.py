@@ -45,12 +45,17 @@ client = None
 # Bluetooth
 BT_DEVICES = []
 PLAYERS_BT_DEVICES = []
+aantal_lees_acties = 0
 
 # Players
 PLAYER1_INPUTS = [ecodes.KEY_W, ecodes.KEY_A, ecodes.KEY_S, ecodes.KEY_D]
 PLAYER2_INPUTS = [ecodes.KEY_F, ecodes.KEY_G, ecodes.KEY_UP, ecodes.KEY_DOWN]
 player1_send = True
 player2_send = True
+ontvangen_hartslag_1 = 0
+ontvangen_hartslag_2 = 0
+ontvangen_hartslag_3 = 0
+ontvangen_hartslag_4 = 0
 
 # Knoppen
 dev = None
@@ -89,15 +94,20 @@ class HRM(Peripheral):
 # --------------------
 # Methodes
 # --------------------
+def mqtt_doorsturen_hartslag(player_id, bpm):
+    JSON_SEND = {}
+    JSON_SEND["type"] = TYPE_COM_RBPM
+    JSON_SEND["player"] = int(player_id)
+    JSON_SEND["heartbeat"] = int(bpm)
+    client.publish(JS_SEND_TOPIC, str(JSON_SEND).replace("'", '"'))
+    print("---- Heartbeat player {0} send ----".format(player_id))
+
+
 def mqtt_doorsturen_bt_scan():
     JSON_SEND = {}
     JSON_SEND["type"] = TYPE_COM_SCAN
     JSON_SEND["devices"] = BT_DEVICES
-    print(JS_SEND_TOPIC)
-    print(str(JSON_SEND).replace("'", '"'))
-    # time.sleep(5)
     client.publish(JS_SEND_TOPIC, str(JSON_SEND).replace("'", '"'))
-    print(client.is_connected())
     print("---- Bluetooth scan send ----")
 
 
@@ -134,11 +144,41 @@ def mqtt_init_communicatie():
     client.publish(JS_SEND_TOPIC, str(JSON_SEND).replace("'", '"'))
 
 
-def ontvangen_hartslag(cHandle, data):
-    print("Hartslag: " + str(data[1]))
+def show_hartslag_1(cHandle, data):
+    global ontvangen_hartslag_1
+    print("Hartslag speler 1: " + str(data[1]))
+    ontvangen_hartslag_1 += 1
+    if ontvangen_hartslag_1 == aantal_lees_acties:
+        mqtt_doorsturen_hartslag(1, data[1])
 
 
-def uitlezen_bt_device(device_id, aantal_lees_acties):
+def show_hartslag_2(cHandle, data):
+    global ontvangen_hartslag_2
+    print("Hartslag speler 2: " + str(data[1]))
+    ontvangen_hartslag_2 += 1
+    if ontvangen_hartslag_2 == aantal_lees_acties:
+        mqtt_doorsturen_hartslag(2, data[1])
+
+
+def show_hartslag_3(cHandle, data):
+    global ontvangen_hartslag_3
+    print("Hartslag speler 3: " + str(data[1]))
+    ontvangen_hartslag_3 += 1
+    if ontvangen_hartslag_3 == aantal_lees_acties:
+        mqtt_doorsturen_hartslag(3, data[1])
+
+
+def show_hartslag_4(cHandle, data):
+    global ontvangen_hartslag_4
+    print("Hartslag speler 4: " + str(data[1]))
+    ontvangen_hartslag_4 += 1
+    if ontvangen_hartslag_4 == aantal_lees_acties:
+        mqtt_doorsturen_hartslag(4, data[1])
+
+
+def uitlezen_bt_device(device_id, aantal_lees_acties, player):
+    global ontvangen_hartslag_1, ontvangen_hartslag_2, ontvangen_hartslag_3, ontvangen_hartslag_4
+    ontvangen_hartslag_1, ontvangen_hartslag_2, ontvangen_hartslag_3, ontvangen_hartslag_4 = 0, 0, 0, 0
     # uuid's opvragen
     cccid = AssignedNumbers.client_characteristic_configuration
     hrmid = AssignedNumbers.heart_rate
@@ -148,7 +188,7 @@ def uitlezen_bt_device(device_id, aantal_lees_acties):
     try:
         # Connecteren met device id
         hrm = HRM(device_id)
-        print("Connected")
+        print("---- Connected with bluetooth device {0} ----".format(device_id))
         # uuid's uitlezen
         service, = [s for s in hrm.getServices() if s.uuid == hrmid]
         ccc, = service.getCharacteristics(forUUID=str(hrmmid))
@@ -158,17 +198,27 @@ def uitlezen_bt_device(device_id, aantal_lees_acties):
         # Karakteristieken schrijven
         hrm.writeCharacteristic(d.handle, b'\1\0')
         # Callback zetten op print_hr functie bij het ontvangen van notificatie
-        hrm.delegate.handleNotification = ontvangen_hartslag
-        # 200 keer de data uitlezen
+        if player == 1:
+            hrm.delegate.handleNotification = show_hartslag_1
+        elif player == 2:
+            hrm.delegate.handleNotification = show_hartslag_2
+        elif player == 3:
+            hrm.delegate.handleNotification = show_hartslag_3
+        elif player == 4:
+            hrm.delegate.handleNotification = show_hartslag_4
+        # Aantal keer de data uitlezen
         for x in range(aantal_lees_acties):
             hrm.waitForNotifications(3.)
     # Deconnecteren wanneer hartslag sensor is geconnecteerd
     finally:
         if hrm:
             hrm.disconnect()
+            print("---- Stop reading and deconnected with bluetooth device {0} ----".format(device_id))
 
 
 def start_bluetooth_scan():
+    global BT_DEVICES
+    BT_DEVICES = []
     bt_device = {}
     print("---- Start bluetooth scan ----")
     scanner = Scanner()
@@ -232,7 +282,8 @@ def read_keyboard():
 # Callback
 # --------------------
 def mqtt_on_message(client, userdata, msg):
-    global PI_ID, ID_OK, KNOPPEN_INLEZEN, player1_send, player2_send, knoppen_stoppen, PLAYERS_BT_DEVICES
+    global PI_ID, ID_OK, KNOPPEN_INLEZEN, player1_send, player2_send, knoppen_stoppen, PLAYERS_BT_DEVICES,\
+        aantal_lees_acties
     # Aanvragen ID topic
     if msg.topic == "/luemniro/id/response":
         # Kijken of ID voor deze pi is
@@ -285,7 +336,11 @@ def mqtt_on_message(client, userdata, msg):
                 print("---- Received choosen bluetooth devices ----")
         # Lezen van rusthartslag
         elif obj["type"] == TYPE_COM_RBPM:
-            pass
+            print("---- Start reading rest bpm ----")
+            for device in PLAYERS_BT_DEVICES:
+                aantal_lees_acties = 1
+                threat_lezen_rusthartslag = threading.Thread(target=uitlezen_bt_device, args=(device["mac"], 1, device["player"]))
+                threat_lezen_rusthartslag.start()
 
 
 def mqtt_on_connect(client, userdata, flags, rc):

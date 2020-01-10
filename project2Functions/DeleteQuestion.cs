@@ -33,10 +33,17 @@ namespace project2Functions
                     {
                         // setting and executing a command
                         command.Connection = connection;
-                        command.CommandText = "DELETE FROM QuestionID WHERE Question = @questionguid";
+                        command.CommandText = "DELETE FROM ProjectQuestions WHERE QuestionID = @questionguid";
                         command.Parameters.AddWithValue("@questionguid", guid);
-                        var result = await command.ExecuteReaderAsync();
+                        var resultQuestion = await command.ExecuteReaderAsync();
+                        command.Parameters.Clear();
+                        resultQuestion.Close();
+                        command.Connection = connection;
+                        command.CommandText = "DELETE FROM ProjectAnswers WHERE QuestionAnswer = @questionguid";
+                        command.Parameters.AddWithValue("@questionguid", guid);
+                        var resultAnswer = await command.ExecuteReaderAsync();
                         return new OkObjectResult(201);
+
 
                     }
                 }
@@ -44,7 +51,7 @@ namespace project2Functions
             // catching an error
             catch (Exception ex)
             {
-                throw;
+                return new OkObjectResult(400);
             }
         }
     }

@@ -11,6 +11,7 @@ using project2Functions.Models;
 using System.Data.SqlClient;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.ApplicationInsights;
 
 namespace project2Functions
 {
@@ -19,16 +20,22 @@ namespace project2Functions
         [FunctionName("AddUser")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
-            ILogger log)
+            ILogger logger)
         {
-            
+            // Creating Telemetry client for logging events!
+            TelemetryClient telemetry = new TelemetryClient();
+            // Getting connection string.
+            telemetry.InstrumentationKey = Environment.GetEnvironmentVariable("insightsString");
+            // Reading the body of the received json.
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+            // Creating the user object from received data.
             User user = JsonConvert.DeserializeObject<User>(requestBody);
+            // Hashing the password of the created user.
             Hash hash = new Hash();
             string Password = hash.ComputeHash(user.Password);
             user.Password = Password;
             user.UserGuid = Guid.NewGuid();
-
+            // Getting connection string.
             string connectionString = Environment.GetEnvironmentVariable("connectionString");
             try
             {
@@ -53,19 +60,24 @@ namespace project2Functions
                             var result = command.ExecuteReader();
                             result.Close();
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
-
+                            logger.LogInformation("ERROR with SQL command: " + ex);
+                            telemetry.TrackEvent("User_Added_NOK");
                             return new StatusCodeResult(400) ;
                         }
                         
                     }
                 }
+                logger.LogInformation("User {user.UserName} has been added to database", user.UserName);
+                telemetry.TrackEvent("User_Added_OK");
                 return new OkObjectResult(201);
 
             }
             catch (Exception ex)
             {
+                logger.LogInformation("ERROR with SQL connection:   " +  ex);
+                telemetry.TrackEvent("User_Added_NOK");
                 return new StatusCodeResult(500);
             }
 

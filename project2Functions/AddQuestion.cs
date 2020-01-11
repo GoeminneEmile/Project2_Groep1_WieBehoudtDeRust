@@ -52,6 +52,7 @@ namespace project2Functions
 
                         var result = command.ExecuteReader();
                         result.Close();
+                        // for every answer in a question, we insert the answer with the SAME guid as the question into the database, this is how we link a question to an answer
                         foreach(QuestionAnswer questionAnswer in question.questionAnswers)
                         {
                             questionAnswer.QuestionAnswerGuid = Guid.NewGuid();
@@ -73,6 +74,7 @@ namespace project2Functions
             }
             catch (Exception ex)
             {
+                logger.LogInformation("ERROR with SQL Connection: " + ex);
                 telemetry.TrackEvent("Question_Added_NOK");
                 return new StatusCodeResult(500) ;
             }

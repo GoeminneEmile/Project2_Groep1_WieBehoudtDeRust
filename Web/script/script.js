@@ -152,7 +152,8 @@ function onMessageArrived(message) {
 			break;
 		case 'avatar':
 			console.log(players);
-			if (!selectedAvatars.includes(jsonMessage.button) && players.every(checkPlayerCreated, { id: jsonMessage.player })) {
+			if (!selectedAvatars.includes(jsonMessage.button) && players.every(checkPlayerCreated, { id: jsonMessage.player })) 
+			{
 				players.push({ player: jsonMessage.player, avatar: jsonMessage.button, points: 0, time_left: 20 });
 				selectedAvatars.push(jsonMessage.button);
 				message = new Paho.Message(JSON.stringify({ type: 'avatar', status: 'stop', player: jsonMessage.player }));

@@ -68,6 +68,16 @@ let Avatars = `<div>
 </div>`;
 //#endregion
 
+let customheaders = new Headers();
+customheaders.append('accept', 'application/json');
+
+const GetQuestions = async function() {
+	let serverEndPoint = `https://project2functions.azurewebsites.net/api/GetQuestions`;
+	const response = await fetch(serverEndPoint, { headers: customheaders });
+	const data = await response.json();
+	console.log(data);
+};
+
 const ConnectToMQTT = function() {
 	// Go from index page to load page
 	// generate a random client id
@@ -152,8 +162,7 @@ function onMessageArrived(message) {
 			break;
 		case 'avatar':
 			console.log(players);
-			if (!selectedAvatars.includes(jsonMessage.button) && players.every(checkPlayerCreated, { id: jsonMessage.player })) 
-			{
+			if (!selectedAvatars.includes(jsonMessage.button) && players.every(checkPlayerCreated, { id: jsonMessage.player })) {
 				players.push({ player: jsonMessage.player, avatar: jsonMessage.button, points: 0, time_left: 20 });
 				selectedAvatars.push(jsonMessage.button);
 				message = new Paho.Message(JSON.stringify({ type: 'avatar', status: 'stop', player: jsonMessage.player }));
@@ -178,12 +187,13 @@ const Buttonchecked = function() {
 
 const init = function() {
 	// Init function
-	console.log('Dom Content Loaded');
+
 	SubmitButton = document.querySelector('#js-submit');
 	ReplaceRow = document.querySelector('.js-row');
 	AnimateRow = document.querySelector('.js-animate');
 	// Need to use this one later
 	SubmitButton.addEventListener('click', Buttonchecked);
+	GetQuestions();
 };
 
 document.addEventListener('DOMContentLoaded', init);

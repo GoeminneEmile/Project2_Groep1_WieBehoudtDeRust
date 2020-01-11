@@ -40,7 +40,7 @@ namespace project2Functions
                     {
                         // Setting up and executing a SQL command
                         command.Connection = connection;
-                        command.CommandText = "Select * From ProjectAnswers as a left join ProjectQuestions as b on a.QuestionAnswer = b.QuestionID";
+                        command.CommandText = "Select * From ProjectAnswers as a left join ProjectQuestions as b on a.QuestionAnswer = b.QuestionID left join Users as c on b.UserID = c.UserGuid";
                         var result = await command.ExecuteReaderAsync();
                         // Creating empty variable to change later
                         string QuestionIDCurrent = "";
@@ -51,7 +51,7 @@ namespace project2Functions
                             // We want to get a question, and nest all the answers inside of the question in JSON format
                             if(result["QuestionID"].ToString() != QuestionIDCurrent)
                             {
-                                Question question = new Question() { QuestionID = Guid.Parse(result["QuestionID"].ToString()), QuestionName = result["Question"].ToString() };
+                                Question question = new Question() { QuestionID = Guid.Parse(result["QuestionID"].ToString()), UserId = Guid.Parse(result["UserId"].ToString()), QuestionName = result["Question"].ToString() };
                                 questions.Add(question);
                                 QuestionIDCurrent = result["QuestionID"].ToString();
                                 QuestionAnswer questionAnswer = new QuestionAnswer() { Answer = result["Answer"].ToString(), QuestionAnswerGuid = Guid.Parse(result["QuestionID"].ToString()), Correct = Int32.Parse(result["Correct"].ToString()) };
@@ -63,13 +63,13 @@ namespace project2Functions
                                 QuestionAnswer questionAnswer = new QuestionAnswer() { Answer = result["Answer"].ToString(), QuestionAnswerGuid = Guid.Parse(result["QuestionID"].ToString()), Correct = Int32.Parse(result["Correct"].ToString()) };
                                 questions[questions.Count - 1].questionAnswers.Add(questionAnswer);
                             }
-                            // logging event
-                            logger.LogInformation("GET has been succesfully executed");
-                            telemetry.TrackEvent("GetQuestions");
                             Console.WriteLine(result.ToString());
                         }
                     }
                 }
+                // logging event
+                logger.LogInformation("GET has been succesfully executed");
+                telemetry.TrackEvent("GetQuestions");
                 return new OkObjectResult(questions);
 
             }

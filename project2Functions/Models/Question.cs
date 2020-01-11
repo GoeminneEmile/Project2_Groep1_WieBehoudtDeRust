@@ -9,5 +9,6 @@ namespace project2Functions.Models
         public Guid QuestionID;
         public string QuestionName;
         public List<QuestionAnswer> questionAnswers = new List<QuestionAnswer>();
+        public Guid UserId;
     }
 }

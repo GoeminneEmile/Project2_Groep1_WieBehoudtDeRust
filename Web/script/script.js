@@ -1,5 +1,5 @@
 // global variables
-let SubmitButton, InputFieldValue, ReplaceRow;
+let SubmitButton, InputFieldValue, ReplaceRow, AnimateRow;
 let client;
 let Communication;
 let players = [];
@@ -171,8 +171,7 @@ const Buttonchecked = function() {
 	// Change page here, go from load page to avatar selection page
 	// waarde van input box ophalen
 	InputFieldValue = document.querySelector('#gamePin').value;
-	//window.location = `https://website1999.z6.web.core.windows.net/animate.html`;
-	ReplaceRow.innerHTML = loader;
+	AnimateRow.innerHTML = loader;
 	ConnectToMQTT();
 };
 
@@ -181,6 +180,7 @@ const init = function() {
 	console.log('Dom Content Loaded');
 	SubmitButton = document.querySelector('#js-submit');
 	ReplaceRow = document.querySelector('.js-row');
+	AnimateRow = document.querySelector('.js-animate');
 	// Need to use this one later
 	SubmitButton.addEventListener('click', Buttonchecked);
 };

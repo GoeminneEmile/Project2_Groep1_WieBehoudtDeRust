@@ -106,7 +106,6 @@ const initializeCommunication = function() {
 	message = new Paho.Message(JSON.stringify({ type: 'test_com' }));
 	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 	client.send(message);
-	ReplaceRow.innerHTML = Avatars;
 };
 
 // called when the client loses its connection
@@ -145,7 +144,7 @@ function onMessageArrived(message) {
 		// Depending on the type in the JSON, we send something specific back
 		case 'test_com':
 			// We now have connection, now we can send the message for the next step, selecting the avatar
-			//ReplaceRow.innerHTML = Avatars;
+			ReplaceRow.innerHTML = Avatars;
 			Communication = true;
 			message = new Paho.Message(JSON.stringify({ type: 'avatar', status: 'start' }));
 			message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;

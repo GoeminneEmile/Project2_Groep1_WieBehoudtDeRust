@@ -106,6 +106,7 @@ const initializeCommunication = function() {
 	message = new Paho.Message(JSON.stringify({ type: 'test_com' }));
 	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 	client.send(message);
+	ReplaceRow.innerHTML = Avatars;
 };
 
 // called when the client loses its connection
@@ -144,7 +145,7 @@ function onMessageArrived(message) {
 		// Depending on the type in the JSON, we send something specific back
 		case 'test_com':
 			// We now have connection, now we can send the message for the next step, selecting the avatar
-			ReplaceRow.innerHTML = Avatars;
+			//ReplaceRow.innerHTML = Avatars;
 			Communication = true;
 			message = new Paho.Message(JSON.stringify({ type: 'avatar', status: 'start' }));
 			message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
@@ -172,7 +173,7 @@ const Buttonchecked = function() {
 	// waarde van input box ophalen
 	InputFieldValue = document.querySelector('#gamePin').value;
 	//window.location = `https://website1999.z6.web.core.windows.net/animate.html`;
-	ReplaceRow.innerHTML = loader;
+	AnimateRow.innerHTML = loader;
 	ConnectToMQTT();
 };
 
@@ -181,6 +182,7 @@ const init = function() {
 	console.log('Dom Content Loaded');
 	SubmitButton = document.querySelector('#js-submit');
 	ReplaceRow = document.querySelector('.js-row');
+	AnimateRow = document.querySelector('.js-animate');
 	// Need to use this one later
 	SubmitButton.addEventListener('click', Buttonchecked);
 };

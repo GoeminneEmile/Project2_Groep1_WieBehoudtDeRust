@@ -51,9 +51,13 @@ aantal_lees_acties = 0
 
 # Players
 PLAYER1_INPUTS = [ecodes.KEY_W, ecodes.KEY_A, ecodes.KEY_S, ecodes.KEY_D]
-PLAYER2_INPUTS = [ecodes.KEY_F, ecodes.KEY_G, ecodes.KEY_UP, ecodes.KEY_DOWN]
+PLAYER2_INPUTS = [ecodes.KEY_F, ecodes.KEY_G, 272, ecodes.KEY_SPACE] # 272 is de click event
+PLAYER3_INPUTS = [ecodes.KEY_UP, ecodes.KEY_DOWN, ecodes.KEY_LEFT, ecodes.KEY_RIGHT]
+PLAYER4_INPUTS = [10000, 10001, 10002, 10003]
 player1_send = True
 player2_send = True
+player3_send = True
+player4_send = True
 ontvangen_hartslag_1 = 0
 ontvangen_hartslag_2 = 0
 ontvangen_hartslag_3 = 0
@@ -71,8 +75,16 @@ KNOPPEN = {
     ecodes.KEY_D: 4,
     ecodes.KEY_F: 1,
     ecodes.KEY_G: 2,
-    ecodes.KEY_UP: 3,
-    ecodes.KEY_DOWN: 4
+    272: 3,
+    ecodes.KEY_SPACE: 4,
+    ecodes.KEY_LEFT: 1,
+    ecodes.KEY_UP: 2,
+    ecodes.KEY_RIGHT: 3,
+    ecodes.KEY_DOWN: 4,
+    10000: 1,
+    10001: 2,
+    10002: 3,
+    10003: 4
 }
 knoppen_pressed = []
 knop_pressed = None
@@ -143,6 +155,12 @@ def mqtt_doorsturen_knop_avatar():
     elif knop in PLAYER2_INPUTS:
         if player2_send:
             ok = True
+    elif knop in PLAYER3_INPUTS:
+        if player3_send:
+            ok = True
+    elif knop in PLAYER4_INPUTS:
+        if player4_send:
+            ok = True
     # Controlleren of knop al werd ingedrukt
     if ok:
         JSON_SEND = {}
@@ -153,6 +171,10 @@ def mqtt_doorsturen_knop_avatar():
             JSON_SEND["player"] = 1
         elif knop in PLAYER2_INPUTS:
             JSON_SEND["player"] = 2
+        elif knop in PLAYER3_INPUTS:
+            JSON_SEND["player"] = 3
+        elif knop in PLAYER4_INPUTS:
+            JSON_SEND["player"] = 4
         client.publish(JS_SEND_TOPIC, str(JSON_SEND).replace("'", '"'))
         print("---- Avatar send ----")
 
@@ -278,12 +300,36 @@ def read_keyboard_avatar():
     while knoppen_stoppen is False:
         try:
             for event in dev.read():
-                if event.type == ecodes.EV_KEY and event.value == KNOP_PRESS:
+                if event.code == 0 and event.value == -4: # Left
+                    knop_pressed = 10000
                     threat_knoppen_versturen = threading.Thread(target=mqtt_doorsturen_knop_avatar)
+                    threat_knoppen_versturen.start()
+                    threat_knoppen_versturen.join()
+                elif event.code == 1 and event.value == -4: # Up
+                    knop_pressed = 10001
+                    threat_knoppen_versturen = threading.Thread(target=mqtt_doorsturen_knop_avatar)
+                    threat_knoppen_versturen.start()
+                    threat_knoppen_versturen.join()
+                elif event.code == 0 and event.value == 4: # Right
+                    knop_pressed = 10002
+                    threat_knoppen_versturen = threading.Thread(target=mqtt_doorsturen_knop_avatar)
+                    threat_knoppen_versturen.start()
+                    threat_knoppen_versturen.join()
+                elif event.code == 1 and event.value == 4: # Down
+                    knop_pressed = 10003
+                    threat_knoppen_versturen = threading.Thread(target=mqtt_doorsturen_knop_avatar)
+                    threat_knoppen_versturen.start()
+                    threat_knoppen_versturen.join()
+
+                if event.type == ecodes.EV_KEY and event.value == KNOP_PRESS:
                     if event.code == ecodes.KEY_UP:
                         knop_pressed = ecodes.KEY_UP
                     elif event.code == ecodes.KEY_DOWN:
                         knop_pressed = ecodes.KEY_DOWN
+                    elif event.code == ecodes.KEY_LEFT:
+                        knop_pressed = ecodes.KEY_LEFT
+                    elif event.code == ecodes.KEY_RIGHT:
+                        knop_pressed = ecodes.KEY_RIGHT
                     elif event.code == ecodes.KEY_W:
                         knop_pressed = ecodes.KEY_W
                     elif event.code == ecodes.KEY_A:
@@ -296,6 +342,11 @@ def read_keyboard_avatar():
                         knop_pressed = ecodes.KEY_F
                     elif event.code == ecodes.KEY_G:
                         knop_pressed = ecodes.KEY_G
+                    elif event.code == ecodes.KEY_SPACE:
+                        knop_pressed = ecodes.KEY_SPACE
+                    elif event.code == 272: # left click
+                        knop_pressed = 272
+                    threat_knoppen_versturen = threading.Thread(target=mqtt_doorsturen_knop_avatar)
                     threat_knoppen_versturen.start()
                     threat_knoppen_versturen.join()
         except Exception as ex:
@@ -310,11 +361,25 @@ def read_keyboard_question(player_id, time_left):
     while read_knoppen is True:
         try:
             for event in dev.read():
+                # Uitlezen knoppen
+                if event.code == 0 and event.value == -4: # Left
+                    knop = 10000
+                elif event.code == 1 and event.value == -4: # Up
+                    knop = 10001
+                elif event.code == 0 and event.value == 4: # Right
+                    knop = 10002
+                elif event.code == 1 and event.value == 4: # Down
+                    knop = 10003
+
                 if event.type == ecodes.EV_KEY:
                     if event.code == ecodes.KEY_UP:
                         knop = ecodes.KEY_UP
                     elif event.code == ecodes.KEY_DOWN:
                         knop = ecodes.KEY_DOWN
+                    elif event.code == ecodes.KEY_LEFT:
+                        knop = ecodes.KEY_LEFT
+                    elif event.code == ecodes.KEY_RIGHT:
+                        knop = ecodes.KEY_RIGHT
                     elif event.code == ecodes.KEY_W:
                         knop = ecodes.KEY_W
                     elif event.code == ecodes.KEY_A:
@@ -327,13 +392,20 @@ def read_keyboard_question(player_id, time_left):
                         knop = ecodes.KEY_F
                     elif event.code == ecodes.KEY_G:
                         knop = ecodes.KEY_G
+                    elif event.code == ecodes.KEY_SPACE:
+                        knop = ecodes.KEY_SPACE
+                    elif event.code == 272: # left click
+                        knop = 272
 
-                    if (player_id == 1 and knop in PLAYER1_INPUTS) or (player_id == 2 and knop in PLAYER2_INPUTS):
-                        threat = threading.Thread(target=mqtt_doorsturen_knop_question,
-                                                  args=(player_id, huidige_tijd, knop))
-                        threat.start()
-                        threat.join()
-                        read_knoppen = False
+                # Controlle van knoppen en speler
+                if (player_id == 1 and knop in PLAYER1_INPUTS) or (player_id == 2 and knop in PLAYER2_INPUTS) or \
+                        (player_id == 3 and knop in PLAYER3_INPUTS) or (player_id == 4 and knop in PLAYER4_INPUTS):
+                    threat = threading.Thread(target=mqtt_doorsturen_knop_question,
+                                              args=(player_id, huidige_tijd, knop))
+                    threat.start()
+                    threat.join()
+                    knop = None
+                    read_knoppen = False
         except Exception as ex:
             huidige_tijd = round((time.time() - start_tijd) * 1000, 0)
             if huidige_tijd > time_left:
@@ -347,8 +419,8 @@ def read_keyboard_question(player_id, time_left):
 # Callback
 # --------------------
 def mqtt_on_message(client, userdata, msg):
-    global PI_ID, ID_OK, KNOPPEN_INLEZEN, player1_send, player2_send, knoppen_stoppen, PLAYERS_BT_DEVICES,\
-        aantal_lees_acties
+    global PI_ID, ID_OK, KNOPPEN_INLEZEN, player1_send, player2_send, player3_send, player4_send, knoppen_stoppen,\
+        PLAYERS_BT_DEVICES, aantal_lees_acties
     # Aanvragen ID topic
     if msg.topic == "/luemniro/id/response":
         # Kijken of ID voor deze pi is
@@ -385,6 +457,10 @@ def mqtt_on_message(client, userdata, msg):
                     player1_send = False
                 if obj["player"] == 2:
                     player2_send = False
+                if obj["player"] == 3:
+                    player3_send = False
+                if obj["player"] == 4:
+                    player4_send = False
             # Speler laten stoppen
             if obj["status"] == TYPE_COM_AVATAR_STATUS_END:
                 print("---- Stop reading buttons ----")

@@ -50,6 +50,7 @@
   /* Global colors */
   --global-color-alpha: #192A9A;
   --global-color-beta: #E2887C;
+  --global-color-gamma: #FFA517;
 
   --global-color-neutral-xxxx-light: #ffffff;
   --global-color-neutral: #8b8c9a;
@@ -634,6 +635,7 @@ text{
 /*------------------------------------*\
 #COMPONENTS
 \*------------------------------------*/
+
 .c-avatar__text{
     font-family: "ff-cocon-pro", Helvetica, arial, sans-serif;
     letter-spacing: 3px;
@@ -820,10 +822,18 @@ text{
 
 .c-button:focus {
     color: var(--global-color-alpha);
+    background: var(--global-color-beta);
 }
 
 .c-button:active {
     color: var(--global-color-alpha);
+}
+
+.c-button--xl{
+    position: relative;
+    background: var(--global-color-gamma);
+    border-radius: 6px;
+    padding: 24px 104px;
 }
 
 

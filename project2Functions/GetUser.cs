@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.Data.SqlClient;
+using Microsoft.ApplicationInsights;
 
 namespace project2Functions
 {
@@ -16,18 +17,24 @@ namespace project2Functions
         [FunctionName("GetUser")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
-            ILogger log)
+            ILogger logger)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
-
-            string name = req.Query["user"];
+            // Creating Telemetry client for logging events!
+            TelemetryClient telemetry = new TelemetryClient();
+            // Getting connection string.
+            telemetry.InstrumentationKey = Environment.GetEnvironmentVariable("insightsString");
+            // Take the data out of the reauest
+            string name = req.Query["username"];
             string password = req.Query["password"];
+            // Create hash
             Hash hash = new Hash();
             string passwordHash = hash.ComputeHash(password);
+            // Get connection string
             string connectionString = Environment.GetEnvironmentVariable("connectionString");
             // opening SQL connection
             try
             {
+                // Using SQL connection
                 using (SqlConnection connection = new SqlConnection())
                 {
                     // Setting connection string
@@ -44,14 +51,20 @@ namespace project2Functions
 
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
+                            // Correct username and password entered
                             if (reader.Read())
                             {
                                 string UserName = reader["UserName"].ToString() ;
+                                logger.LogInformation("Login succeeded");
+                                telemetry.TrackEvent("User_Login_OK");
                                 return new OkObjectResult(200);
 
                             }
+                            // If the wrong username or password are entered
                             else
                             {
+                                logger.LogInformation("Wrong Username or Password");
+                                telemetry.TrackEvent("User_Login_NOK");
                                 return new OkObjectResult(400);
                             }
                         }
@@ -62,6 +75,8 @@ namespace project2Functions
             catch (Exception ex)
             {
                 // logging an error
+                logger.LogInformation("ERROR with SQL connection" + ex);
+                telemetry.TrackEvent("Login_SQLError");
                 return new StatusCodeResult(500);
                 throw;
             }

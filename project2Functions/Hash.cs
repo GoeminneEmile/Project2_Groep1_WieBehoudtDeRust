@@ -9,6 +9,7 @@ namespace project2Functions
     {
         public string ComputeHash(string input)
         {
+            // Hash function
             Byte[] inputBytes = Encoding.UTF8.GetBytes(input);
             HashAlgorithm hashAlgorithm = new SHA256CryptoServiceProvider();
             Byte[] hashedBytes = hashAlgorithm.ComputeHash(inputBytes);

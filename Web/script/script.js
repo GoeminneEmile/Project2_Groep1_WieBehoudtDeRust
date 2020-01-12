@@ -1,5 +1,5 @@
 // global variables
-let SubmitButton, InputFieldValue, ReplaceRow;
+let SubmitButton, InputFieldValue, ReplaceRow, AnimateRow;
 let client;
 let Communication;
 let players = [];
@@ -67,6 +67,16 @@ let Avatars = `<div>
 </div>
 </div>`;
 //#endregion
+
+let customheaders = new Headers();
+customheaders.append('accept', 'application/json');
+
+const GetQuestions = async function() {
+	let serverEndPoint = `https://project2functions.azurewebsites.net/api/GetQuestions`;
+	const response = await fetch(serverEndPoint, { headers: customheaders });
+	const data = await response.json();
+	console.log(data);
+};
 
 const ConnectToMQTT = function() {
 	// Go from index page to load page
@@ -171,18 +181,19 @@ const Buttonchecked = function() {
 	// Change page here, go from load page to avatar selection page
 	// waarde van input box ophalen
 	InputFieldValue = document.querySelector('#gamePin').value;
-	//window.location = `https://website1999.z6.web.core.windows.net/animate.html`;
-	ReplaceRow.innerHTML = loader;
+	AnimateRow.innerHTML = loader;
 	ConnectToMQTT();
 };
 
 const init = function() {
 	// Init function
-	console.log('Dom Content Loaded');
+
 	SubmitButton = document.querySelector('#js-submit');
 	ReplaceRow = document.querySelector('.js-row');
+	AnimateRow = document.querySelector('.js-animate');
 	// Need to use this one later
 	SubmitButton.addEventListener('click', Buttonchecked);
+	GetQuestions();
 };
 
 document.addEventListener('DOMContentLoaded', init);

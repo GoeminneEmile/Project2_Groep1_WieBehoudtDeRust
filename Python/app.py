@@ -12,6 +12,7 @@ import json
 import random
 import time
 import threading
+import datetime
 
 import paho.mqtt.client as mqtt
 from evdev import ecodes, InputDevice
@@ -34,7 +35,8 @@ JS_RECEIVE_TOPIC= None
 TYPE_COM_TEST = "test_com"
 TYPE_COM_AVATAR = "avatar"
 TYPE_COM_SCAN = "scan"
-TYPE_COM_RBPM = "rbpm"
+TYPE_COM_BPM = "bpm"
+TYPE_COM_QUESTION = "questions"
 TYPE_COM_AVATAR_STATUS_START = "start"
 TYPE_COM_AVATAR_STATUS_STOP = "stop"
 TYPE_COM_AVATAR_STATUS_END = "end"
@@ -61,6 +63,7 @@ ontvangen_hartslag_4 = 0
 dev = None
 KNOPPEN_INLEZEN = False
 KNOP_PRESS = 1
+KNOP_RELEASE = 0
 KNOPPEN = {
     ecodes.KEY_W: 1,
     ecodes.KEY_A: 2,
@@ -88,7 +91,10 @@ threat_knoppen_versturen = None
 # Klasse voor connecteren Hartslag sensor
 class HRM(Peripheral):
     def __init__(self, addr):
-        Peripheral.__init__(self, addr, addrType=ADDR_TYPE_PUBLIC)
+        try:
+            Peripheral.__init__(self, addr, addrType=ADDR_TYPE_PUBLIC)
+        except Exception:
+            raise ConnectionError
 
 
 # --------------------
@@ -96,7 +102,7 @@ class HRM(Peripheral):
 # --------------------
 def mqtt_doorsturen_hartslag(player_id, bpm):
     JSON_SEND = {}
-    JSON_SEND["type"] = TYPE_COM_RBPM
+    JSON_SEND["type"] = TYPE_COM_BPM
     JSON_SEND["player"] = int(player_id)
     JSON_SEND["heartbeat"] = int(bpm)
     client.publish(JS_SEND_TOPIC, str(JSON_SEND).replace("'", '"'))
@@ -111,7 +117,22 @@ def mqtt_doorsturen_bt_scan():
     print("---- Bluetooth scan send ----")
 
 
-def mqtt_doorsturen_knop():
+def mqtt_doorsturen_knop_question(player_id, needed_time, knop):
+    tijd = 0
+    JSON_SEND = {}
+    JSON_SEND["button"] = 0
+    if needed_time is not None:
+        tijd = needed_time
+    if knop is not None:
+        JSON_SEND["button"] = KNOPPEN[knop]
+    JSON_SEND["type"] = TYPE_COM_QUESTION
+    JSON_SEND["player"] = player_id
+    JSON_SEND["time_needed"] = tijd
+    client.publish(JS_SEND_TOPIC, str(JSON_SEND).replace("'", '"'))
+    print("---- Question answer from player {0} send ----".format(player_id))
+
+
+def mqtt_doorsturen_knop_avatar():
     global knoppen_pressed, KNOPPEN_INLEZEN, threat_knoppen_versturen
     knop = knop_pressed
     ok = False
@@ -187,7 +208,10 @@ def uitlezen_bt_device(device_id, aantal_lees_acties, player):
     hrm = None
     try:
         # Connecteren met device id
-        hrm = HRM(device_id)
+        while True:
+            hrm = HRM(device_id)
+            if hrm is not ConnectionError:
+                break
         print("---- Connected with bluetooth device {0} ----".format(device_id))
         # uuid's uitlezen
         service, = [s for s in hrm.getServices() if s.uuid == hrmid]
@@ -249,13 +273,13 @@ def send_id_request():
     client.publish('/luemniro/id/request', "{'id': '" + str(random_number) + "'}")
 
 
-def read_keyboard():
+def read_keyboard_avatar():
     global knoppen_pressed, knop_pressed, threat_knoppen_versturen
     while knoppen_stoppen is False:
         try:
             for event in dev.read():
                 if event.type == ecodes.EV_KEY and event.value == KNOP_PRESS:
-                    threat_knoppen_versturen = threading.Thread(target=mqtt_doorsturen_knop)
+                    threat_knoppen_versturen = threading.Thread(target=mqtt_doorsturen_knop_avatar)
                     if event.code == ecodes.KEY_UP:
                         knop_pressed = ecodes.KEY_UP
                     elif event.code == ecodes.KEY_DOWN:
@@ -276,6 +300,47 @@ def read_keyboard():
                     threat_knoppen_versturen.join()
         except Exception as ex:
             pass
+
+
+def read_keyboard_question(player_id, time_left):
+    read_knoppen = True
+    start_tijd = time.time()
+    huidige_tijd = 0
+    knop = None
+    while read_knoppen is True:
+        try:
+            for event in dev.read():
+                if event.type == ecodes.EV_KEY:
+                    if event.code == ecodes.KEY_UP:
+                        knop = ecodes.KEY_UP
+                    elif event.code == ecodes.KEY_DOWN:
+                        knop = ecodes.KEY_DOWN
+                    elif event.code == ecodes.KEY_W:
+                        knop = ecodes.KEY_W
+                    elif event.code == ecodes.KEY_A:
+                        knop = ecodes.KEY_A
+                    elif event.code == ecodes.KEY_S:
+                        knop = ecodes.KEY_S
+                    elif event.code == ecodes.KEY_D:
+                        knop = ecodes.KEY_D
+                    elif event.code == ecodes.KEY_F:
+                        knop = ecodes.KEY_F
+                    elif event.code == ecodes.KEY_G:
+                        knop = ecodes.KEY_G
+
+                    if (player_id == 1 and knop in PLAYER1_INPUTS) or (player_id == 2 and knop in PLAYER2_INPUTS):
+                        threat = threading.Thread(target=mqtt_doorsturen_knop_question,
+                                                  args=(player_id, huidige_tijd, knop))
+                        threat.start()
+                        threat.join()
+                        read_knoppen = False
+        except Exception as ex:
+            huidige_tijd = round((time.time() - start_tijd) * 1000, 0)
+            if huidige_tijd > time_left:
+                read_knoppen = False
+                threat = threading.Thread(target=mqtt_doorsturen_knop_question, args=(player_id, None, None))
+                threat.start()
+                threat.join()
 
 
 # --------------------
@@ -311,7 +376,7 @@ def mqtt_on_message(client, userdata, msg):
             # Start van uitlezen
             if obj["status"] == TYPE_COM_AVATAR_STATUS_START:
                 print("---- Reading buttons ----")
-                threat = threading.Thread(target=read_keyboard)
+                threat = threading.Thread(target=read_keyboard_avatar)
                 threat.start()
             # Speler laten stoppen
             if obj["status"] == TYPE_COM_AVATAR_STATUS_STOP:
@@ -334,13 +399,19 @@ def mqtt_on_message(client, userdata, msg):
             if obj["status"] == TYPE_COM_SCAN_STATUS_DEVICES:
                 PLAYERS_BT_DEVICES = obj["devices"]
                 print("---- Received choosen bluetooth devices ----")
-        # Lezen van rusthartslag
-        elif obj["type"] == TYPE_COM_RBPM:
+        # Lezen van hartslag
+        elif obj["type"] == TYPE_COM_BPM:
             print("---- Start reading rest bpm ----")
             for device in PLAYERS_BT_DEVICES:
                 aantal_lees_acties = 1
                 threat_lezen_rusthartslag = threading.Thread(target=uitlezen_bt_device, args=(device["mac"], 1, device["player"]))
                 threat_lezen_rusthartslag.start()
+        # Antwoorden op vraag
+        elif obj["type"] == TYPE_COM_QUESTION:
+            print("---- Reading buttons ----")
+            for player in obj["player"]:
+                threat_lezen_knoppen = threading.Thread(target=read_keyboard_question, args=(player["player"], player["time_left"]))
+                threat_lezen_knoppen.start()
 
 
 def mqtt_on_connect(client, userdata, flags, rc):

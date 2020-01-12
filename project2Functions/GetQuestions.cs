@@ -7,6 +7,10 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using project2Functions.Models;
+using Microsoft.ApplicationInsights;
 
 namespace project2Functions
 {
@@ -15,19 +19,71 @@ namespace project2Functions
         [FunctionName("GetQuestions")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
-            ILogger log)
+            ILogger logger)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
+            // Creating Telemetry client for logging events!
+            TelemetryClient telemetry = new TelemetryClient();
+            // Take the data out of the reauest
+            string name = req.Query["username"];
+            // Getting connection strings
+            telemetry.InstrumentationKey = Environment.GetEnvironmentVariable("insightsString");
+            string connectionString = Environment.GetEnvironmentVariable("ConnectionString");
+            List<Question> questions = new List<Question>();
+            try
+            {
+                // setting up SQL connection
+                using (SqlConnection connection = new SqlConnection())
+                {
+                    // Setting connection strings
+                    connection.ConnectionString = connectionString;
+                    // Opening the connection
+                    await connection.OpenAsync();
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        // Setting up and executing a SQL command
+                        command.Connection = connection;
+                        command.CommandText = "Select * From ProjectAnswers as a left join ProjectQuestions as b on a.QuestionAnswer = b.QuestionID left join Users as c on b.UserID = c.UserGuid where c.UserName = @username;";
+                        command.Parameters.AddWithValue("@username", name);
+                        var result = await command.ExecuteReaderAsync();
+                        // Creating empty variable to change later
+                        string QuestionIDCurrent = "";
+                        Question newQuestion = new Question();
+                        while (await result.ReadAsync())
+                        {
+                            // Receiving and structuring the data like we want it to be
+                            // We want to get a question, and nest all the answers inside of the question in JSON format
+                            if(result["QuestionID"].ToString() != QuestionIDCurrent)
+                            {
+                                Question question = new Question() { QuestionID = Guid.Parse(result["QuestionID"].ToString()), UserId = Guid.Parse(result["UserId"].ToString()), QuestionName = result["Question"].ToString() };
+                                questions.Add(question);
+                                QuestionIDCurrent = result["QuestionID"].ToString();
+                                QuestionAnswer questionAnswer = new QuestionAnswer() { Answer = result["Answer"].ToString(), QuestionAnswerGuid = Guid.Parse(result["QuestionID"].ToString()), Correct = Int32.Parse(result["Correct"].ToString()) };
+                                questions[questions.Count - 1].questionAnswers.Add(questionAnswer);
 
-            string name = req.Query["name"];
+                            }
+                            else
+                            {
+                                QuestionAnswer questionAnswer = new QuestionAnswer() { Answer = result["Answer"].ToString(), QuestionAnswerGuid = Guid.Parse(result["QuestionID"].ToString()), Correct = Int32.Parse(result["Correct"].ToString()) };
+                                questions[questions.Count - 1].questionAnswers.Add(questionAnswer);
+                            }
+                        }
+                    }
+                }
+                // logging event
+                logger.LogInformation("GET has been succesfully executed");
+                telemetry.TrackEvent("GetQuestions");
+                return new OkObjectResult(questions);
 
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            name = name ?? data?.name;
+            }
+            // Catching error
+            catch (Exception ex)
+            {
+                // Logging error
+                Console.WriteLine(ex);
+                logger.LogInformation("GET ERROR: " + ex);
+                return new StatusCodeResult(500);
 
-            return name != null
-                ? (ActionResult)new OkObjectResult($"Hello, {name}")
-                : new BadRequestObjectResult("Please pass a name on the query string or in the request body");
+            }
         }
     }
 }

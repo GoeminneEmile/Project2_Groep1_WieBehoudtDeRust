@@ -117,6 +117,13 @@ class HRM(Peripheral):
 # --------------------
 # Methodes
 # --------------------
+def lcd_toon_error(string):
+    lcd.change_cursor_position(1, 0)
+    lcd.write_string("Error:")
+    lcd.change_cursor_position(2, 0)
+    lcd.write_string(string)
+
+
 def azure_log(event, data):
     azure_logger.track_event(event, data)
     azure_logger.flush()
@@ -311,26 +318,31 @@ def send_id_request():
 
 def read_keyboard_avatar():
     global knoppen_pressed, knop_pressed, threat_knoppen_versturen
+    mouse_done = []
     while knoppen_stoppen is False:
         try:
             for event in dev.read():
-                if event.code == 0 and event.value == -4: # Left
+                if event.code == 0 and event.value == -4 and 10000 not in mouse_done: # Left
                     knop_pressed = 10000
+                    mouse_done.append(10000)
                     threat_knoppen_versturen = threading.Thread(target=mqtt_doorsturen_knop_avatar)
                     threat_knoppen_versturen.start()
                     threat_knoppen_versturen.join()
-                elif event.code == 1 and event.value == -4: # Up
+                elif event.code == 1 and event.value == -4 and 10001 not in mouse_done: # Up
                     knop_pressed = 10001
+                    mouse_done.append(10001)
                     threat_knoppen_versturen = threading.Thread(target=mqtt_doorsturen_knop_avatar)
                     threat_knoppen_versturen.start()
                     threat_knoppen_versturen.join()
-                elif event.code == 0 and event.value == 4: # Right
+                elif event.code == 0 and event.value == 4 and 10002 not in mouse_done: # Right
                     knop_pressed = 10002
+                    mouse_done.append(10002)
                     threat_knoppen_versturen = threading.Thread(target=mqtt_doorsturen_knop_avatar)
                     threat_knoppen_versturen.start()
                     threat_knoppen_versturen.join()
-                elif event.code == 1 and event.value == 4: # Down
+                elif event.code == 1 and event.value == 4 and 10003 not in mouse_done: # Down
                     knop_pressed = 10003
+                    mouse_done.append(10004)
                     threat_knoppen_versturen = threading.Thread(target=mqtt_doorsturen_knop_avatar)
                     threat_knoppen_versturen.start()
                     threat_knoppen_versturen.join()
@@ -465,6 +477,8 @@ def mqtt_on_message(client, userdata, msg):
             # Start van uitlezen
             if obj["status"] == TYPE_COM_AVATAR_STATUS_START:
                 print("---- Reading buttons ----")
+                knoppen_stoppen = False
+                player1_send, player2_send, player3_send, player4_send = True, True, True, True
                 threat = threading.Thread(target=read_keyboard_avatar)
                 threat.start()
             # Speler laten stoppen
@@ -544,6 +558,9 @@ async def init():
         # Genereren + controle van ID
         send_id_request()
         client.loop_forever()
+    except FileNotFoundError:
+        azure_log("RPI script opgestart zonder Makey Makey", None)
+        lcd_toon_error("Geen makey makey gevonden")
     except Exception as ex:
         print(ex)
 

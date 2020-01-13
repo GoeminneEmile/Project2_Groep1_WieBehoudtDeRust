@@ -204,7 +204,6 @@ text{
 h3 {
   font-size: 26px;
   line-height: calc(var(--global-baseline) * 4);
-  margin: 0 0 var(--global-whitespace);
   padding: 0 0 var(--global-whitespace);
 }
 
@@ -215,6 +214,7 @@ h6 {
   font-weight: 600;
   line-height: calc(var(--global-baseline) * 3);
   margin: 0 0 var(--global-whitespace);
+  color: var(--global-color-alpha)
 }
 
 p,
@@ -637,6 +637,13 @@ text{
 /*------------------------------------*\
 #COMPONENTS
 \*------------------------------------*/
+.c-winner{
+    background: var(--global-color-gamma);
+    padding: 24px 36px;
+    border-radius: 6px;
+    margin: 0 auto;
+}
+
 .c-activity{
     width: 384px;
     margin: 0 auto;
@@ -1685,6 +1692,9 @@ li span {
 
 .u-mb-xl {
   margin-bottom: 48px !important;
+}
+.u-pb-xl {
+  padding-bottom: 160px !important;
 }
 
 /*

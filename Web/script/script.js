@@ -251,8 +251,8 @@ let Answers = `<div class="c-app o-row--xl c-background--white">
 let Pulsar = `<h2>Pair je hartritme sensors!</h2>
 <div class="o-row">
 	<div class="o-container__centered">
-		<div class="c-align--middle">
-			<div class="o-layout u-align-text-center js-pulsarItems">
+		<div class="c-align--middle js-pulsarItems">
+			<div class="o-layout u-align-text-center">
 				
 			</div>
 			<div class="o-layout u-align-text-center">
@@ -265,58 +265,80 @@ let Pulsar = `<h2>Pair je hartritme sensors!</h2>
 </div>`;
 //#endregion
 //#endregion
+
 const addPulsarDevice = function(){
+	const sendPolarButton = document.querySelector(".js-sendPolar");
+	sendPolarButton.addEventListener("click",sendPulsarDevices);
+
 	console.log(this.dataset.mac);
 	for(let i = 0;i < 4;i++){
-		console.log(i + "is checked");
-		console.log(this.dataset.player);
-		console.log("dit was de value");
-		console.log(this.dataset.player === "-1");
-		console.log("dit was de if");
 		if(tempPulsarList[i] === undefined && this.dataset.player == "-1"){
 			tempPulsarList[i] = this.dataset.id;
 			this.innerHTML = `Player ${i + 1}`;
-			console.log(tempPulsarList);
 			this.dataset.player = i;
 			break;
 		}else if(tempPulsarList[i]!= undefined && i != this.dataset.player){
-			console.log('pass');
 		}
 		else{
-			console.log("ik zit er weer in");
 			tempPulsarList[this.dataset.player] = undefined;
 			this.innerHTML = "Pair";
 			this.dataset.player = -1;
 			break;
 		}
 	}
+	let returnState = false;
+	console.log("wtf");
+	for(let i = 0;i<4;i++){
+		console.log(tempPulsarList[i]);
+		if(tempPulsarList[i] != undefined){
+			returnState = true;
+		}
+	}
+	if(returnState){
+		if(sendPolarButton.classList.contains("o-hidden")){
+			sendPolarButton.classList.toggle("o-hidden");
+		}
+	}else{
+		if(!sendPolarButton.classList.contains("o-hidden")){
+			sendPolarButton.classList.toggle("o-hidden");
+		}
+	}
+
 }
 const sendPulsarDevices = function(){
 	let devicesList = [];
 	for(let i = 0;i<4;i++){
-		console.log(tempPulsarList[i]);
 		if(tempPulsarList[i] != undefined){
-			console.log("ik zit erin");
 			let json = {name:pulsarList[tempPulsarList[i]].name,mac:pulsarList[tempPulsarList[i]].mac,player:i+1};
-			console.log("dit is de json");
 			devicesList.push(json);
 		}
 	}
-	console.log('dit waren de devices');
 	const jsonPulsar = {
 		type:"scan",
 		status:"devices",
 		devices:devicesList
 	};
-	console.log(jsonPulsar);
+	message = new Paho.Message(JSON.stringify(jsonPulsar));
+	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
+	client.send(message);
 }
 const loadPulsarDevices = function(){
 	ReplaceRow.innerHTML = Pulsar;
 	let html = "";
 	let pulsarDiv = document.querySelector(".js-pulsarItems");
 	let index = 0;
+	let columnCount = -1;
 	for(let pulsar of pulsarList){
-		console.log(pulsar);
+		if(columnCount == -1){
+			html += `<div class="o-layout u-align-text-center">`;
+			columnCount++;
+		}else if(columnCount == 3){
+			html += `</div><div class="o-layout u-align-text-center">`;
+			columnCount = 0;
+		}
+		else{
+			columnCount++;
+		}
 		html += `<div class="o-layout__item u-pb-xl u-1-of-4">
 		<h3>${pulsar.name}</h3>
 		<div class="c-image">
@@ -335,10 +357,17 @@ const loadPulsarDevices = function(){
 		<button data-id="${index}" data-player="-1" class="c-button c-button--xl js-pulsarButton"> Pair </button>
 	</div>`;
 	index += 1;
-	
 	}
+	if(columnCount != 0){
+		html += `</div>`;
+	}
+	html += `<div class="o-layout u-align-text-center js-sendPolar o-hidden">
+	<div class="o-layout__item">
+		<button class="c-button c-button--xl"> Start </button>
+	</div></div>`;
 	pulsarDiv.innerHTML = html;
 	let pulsarButtons = document.querySelectorAll(".js-pulsarButton");
+
 	for(let button of pulsarButtons){
 		button.addEventListener("click",addPulsarDevice);
 	}

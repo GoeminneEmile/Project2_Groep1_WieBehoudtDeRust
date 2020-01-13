@@ -52,6 +52,8 @@
   --global-color-beta: #E2887C;
   --global-color-gamma: #FFA517;
 
+  --global-color-alpha-x-dark: #003049;
+
   --global-color-neutral-xxxx-light: #ffffff;
   --global-color-neutral: #8b8c9a;
 
@@ -635,6 +637,17 @@ text{
 /*------------------------------------*\
 #COMPONENTS
 \*------------------------------------*/
+.c-activity{
+    width: 384px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.c-countdown{
+    position: absolute;
+    top: -20px;
+    right: -50px;
+}
 
 .c-avatar__text{
     font-family: "ff-cocon-pro", Helvetica, arial, sans-serif;
@@ -748,8 +761,8 @@ text{
     background: white;
     color: var(--global-color-alpha)
 }
-.c-custom-header{
-    text-align: center;
+.c-text--dark{
+    color: var(--global-color-alpha-x-dark);
 }
 
 .c-align--middle{
@@ -1548,6 +1561,11 @@ li span {
 /*------------------------------------*\
 #UTILITIES
 \*------------------------------------*/
+
+.u-font-size--lg{
+    font-size: 32px;
+    font-weight: 700;
+}
 
 .u-align-middle-svg{
     display: flex;

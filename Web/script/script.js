@@ -269,16 +269,10 @@ const addPulsarDevice = function() {
 };
 const sendPulsarDevices = function() {
 	let devicesList = [];
-<<<<<<< HEAD
 	let playerIndex = 0;
 	for(let i = 0;i<4;i++){
 		if(tempPulsarList[i] != undefined){
 			let json = {name:pulsarList[tempPulsarList[i]].name,mac:pulsarList[tempPulsarList[i]].mac,player:i+1};
-=======
-	for (let i = 0; i < 4; i++) {
-		if (tempPulsarList[i] != undefined) {
-			let json = { name: pulsarList[tempPulsarList[i]].name, mac: pulsarList[tempPulsarList[i]].mac, player: i + 1 };
->>>>>>> develop
 			devicesList.push(json);
 			playerIndex++;
 		}

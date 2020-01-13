@@ -270,9 +270,9 @@ const addPulsarDevice = function() {
 const sendPulsarDevices = function() {
 	let devicesList = [];
 	let playerIndex = 0;
-	for(let i = 0;i<4;i++){
-		if(tempPulsarList[i] != undefined){
-			let json = {name:pulsarList[tempPulsarList[i]].name,mac:pulsarList[tempPulsarList[i]].mac,player:i+1};
+	for (let i = 0; i < 4; i++) {
+		if (tempPulsarList[i] != undefined) {
+			let json = { name: pulsarList[tempPulsarList[i]].name, mac: pulsarList[tempPulsarList[i]].mac, player: i + 1 };
 			devicesList.push(json);
 			playerIndex++;
 		}
@@ -352,6 +352,7 @@ const ShowQuestionAndAnswers = function() {
 		message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 		client.send(message);
 	}
+
 	QuestionRow.innerHTML = Answers;
 	GetQuestions().then((x) => {
 		console.log(x);
@@ -366,6 +367,10 @@ const ShowQuestionAndAnswers = function() {
 			AnswerList[i].innerHTML = RandomQuestion.questionAnswers[i].answer;
 		}
 	});
+
+	interval = setInterval(function() {
+		ScoreList[i].innerHTML = ScoreList[i].value - 1;
+	}, 1000);
 };
 
 const ShowLoadingScreen = function() {
@@ -540,7 +545,6 @@ function onMessageArrived(message) {
 					QuestionAvatarsList = document.querySelectorAll('.c-avatar');
 					ScoreList = document.querySelectorAll('.c-avatar--orange');
 					GenerateQuestionPage();
-					
 				}
 			}
 			break;

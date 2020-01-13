@@ -7,7 +7,10 @@ let selectedAvatars = [];
 let username = 'Luka';
 let customheaders = new Headers();
 let QuestionList = [];
+let pulsarList = [];
+let tempPulsarList = {0:undefined,1:undefined,2:undefined,3:undefined};
 customheaders.append('accept', 'application/json');
+
 
 // Pre generated HTML code
 //#region HTMLCode
@@ -245,9 +248,101 @@ let Answers = `<div class="c-app o-row--xl c-background--white">
 	</div>
 </div>
 </div>`;
+let Pulsar = `<h2>Pair je hartritme sensors!</h2>
+<div class="o-row">
+	<div class="o-container__centered">
+		<div class="c-align--middle">
+			<div class="o-layout u-align-text-center js-pulsarItems">
+				
+			</div>
+			<div class="o-layout u-align-text-center">
+				<div class="o-layout__item">
+					<button class="c-button c-button--xl"> Start </button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>`;
 //#endregion
 //#endregion
-
+const addPulsarDevice = function(){
+	console.log(this.dataset.mac);
+	for(let i = 0;i < 4;i++){
+		console.log(i + "is checked");
+		console.log(this.dataset.player);
+		console.log("dit was de value");
+		console.log(this.dataset.player === "-1");
+		console.log("dit was de if");
+		if(tempPulsarList[i] === undefined && this.dataset.player == "-1"){
+			tempPulsarList[i] = this.dataset.id;
+			this.innerHTML = `Player ${i + 1}`;
+			console.log(tempPulsarList);
+			this.dataset.player = i;
+			break;
+		}else if(tempPulsarList[i]!= undefined && i != this.dataset.player){
+			console.log('pass');
+		}
+		else{
+			console.log("ik zit er weer in");
+			tempPulsarList[this.dataset.player] = undefined;
+			this.innerHTML = "Pair";
+			this.dataset.player = -1;
+			break;
+		}
+	}
+}
+const sendPulsarDevices = function(){
+	let devicesList = [];
+	for(let i = 0;i<4;i++){
+		console.log(tempPulsarList[i]);
+		if(tempPulsarList[i] != undefined){
+			console.log("ik zit erin");
+			let json = {name:pulsarList[tempPulsarList[i]].name,mac:pulsarList[tempPulsarList[i]].mac,player:i+1};
+			console.log("dit is de json");
+			devicesList.push(json);
+		}
+	}
+	console.log('dit waren de devices');
+	const jsonPulsar = {
+		type:"scan",
+		status:"devices",
+		devices:devicesList
+	};
+	console.log(jsonPulsar);
+}
+const loadPulsarDevices = function(){
+	ReplaceRow.innerHTML = Pulsar;
+	let html = "";
+	let pulsarDiv = document.querySelector(".js-pulsarItems");
+	let index = 0;
+	for(let pulsar of pulsarList){
+		console.log(pulsar);
+		html += `<div class="o-layout__item u-pb-xl u-1-of-4">
+		<h3>${pulsar.name}</h3>
+		<div class="c-image">
+			<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 102 102">
+			  <g>
+				<circle cx="51" cy="51" r="46.5" fill="#fff"/>
+				<path d="M64,22A42,42,0,1,1,22,64,42,42,0,0,1,64,22m0-9a51,51,0,1,0,51,51A51,51,0,0,0,64,13Z" transform="translate(-13 -13)" fill="#295bd4"/>
+			  </g>
+			  <circle cx="50.5" cy="50.5" r="29.5" fill="#295bd4"/>
+			  <circle cx="50.5" cy="71.5" r="2.5" fill="#ff0"/>
+			  <circle cx="29.5" cy="50.5" r="2.5" fill="#ff0"/>
+			  <circle cx="71.5" cy="50.5" r="2.5" fill="#ff0"/>
+			  <circle cx="50.5" cy="30.5" r="2.5" fill="#ff0"/>
+			</svg>
+		</div>
+		<button data-id="${index}" data-player="-1" class="c-button c-button--xl js-pulsarButton"> Pair </button>
+	</div>`;
+	index += 1;
+	
+	}
+	pulsarDiv.innerHTML = html;
+	let pulsarButtons = document.querySelectorAll(".js-pulsarButton");
+	for(let button of pulsarButtons){
+		button.addEventListener("click",addPulsarDevice);
+	}
+}
 const ShowQuestionAndAnswers = function() {
 	QuestionRow.innerHTML = Answers;
 	GetQuestions().then((x) => {
@@ -357,11 +452,26 @@ function onMessageArrived(message) {
 		case 'test_com':
 			// We now have connection, now we can send the message for the next step, selecting the avatar
 			// Showing the avatar page when connection is made
-			ReplaceRow.innerHTML = Avatars;
 			Communication = true;
-			message = new Paho.Message(JSON.stringify({ type: 'avatar', status: 'start' }));
+			//message = new Paho.Message(JSON.stringify({ type: 'avatar', status: 'start' }));
+			message = new Paho.Message(JSON.stringify({ type: 'scan', status: 'start' }));
 			message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 			client.send(message);
+			break;
+		case 'scan':
+			if(jsonMessage.status == "devices"){
+				console.log("ik zit in de devices");
+			}
+			else{
+				console.log("error opgevangen");
+				for(let i of jsonMessage.devices){
+					pulsarList.push(i);
+				}
+				console.log(pulsarList);
+				loadPulsarDevices();
+				
+
+			}
 			break;
 		case 'avatar':
 			console.log(players);

@@ -52,6 +52,8 @@
   --global-color-beta: #E2887C;
   --global-color-gamma: #FFA517;
 
+  --global-color-alpha-x-dark: #003049;
+
   --global-color-neutral-xxxx-light: #ffffff;
   --global-color-neutral: #8b8c9a;
 
@@ -202,7 +204,6 @@ text{
 h3 {
   font-size: 26px;
   line-height: calc(var(--global-baseline) * 4);
-  margin: 0 0 var(--global-whitespace);
   padding: 0 0 var(--global-whitespace);
 }
 
@@ -213,6 +214,7 @@ h6 {
   font-weight: 600;
   line-height: calc(var(--global-baseline) * 3);
   margin: 0 0 var(--global-whitespace);
+  color: var(--global-color-alpha)
 }
 
 p,
@@ -635,6 +637,24 @@ text{
 /*------------------------------------*\
 #COMPONENTS
 \*------------------------------------*/
+.c-winner{
+    background: var(--global-color-gamma);
+    padding: 24px 36px;
+    border-radius: 6px;
+    margin: 0 auto;
+}
+
+.c-activity{
+    width: 384px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.c-countdown{
+    position: absolute;
+    top: -20px;
+    right: -50px;
+}
 
 .c-avatar__text{
     font-family: "ff-cocon-pro", Helvetica, arial, sans-serif;
@@ -649,12 +669,12 @@ text{
     font-weight: 500;
 }
 .c-answer{
+    overflow: hidden;
     box-sizing: content-box;
-    letter-spacing: 3px;
     padding: 20px 30px;
     text-align: center;
-    font-size: 48px;
     color: #fff;
+    font-size: 32px;
     border-radius: 15px;
     font-weight: 500;
 }
@@ -733,27 +753,17 @@ text{
     font-size: 18px;
     font-weight: 500;
 }
-.c-answer{
-    box-sizing: content-box;
-    letter-spacing: 3px;
-    padding: 20px 30px;
-    text-align: center;
-    font-size: 48px;
-    color: #fff;
-    border-radius: 15px;
-    font-weight: 500;
-}
-
 .c-background--white{
     background: white;
     color: var(--global-color-alpha)
 }
-.c-custom-header{
-    text-align: center;
+.c-text--dark{
+    color: var(--global-color-alpha-x-dark);
 }
-
-.c-align--middle{
-    transform: translate(-29px, 0);
+ @media (min-width: 1200px){
+    .c-align--middle{
+        transform: translate(-29px, 0);
+    }
 }
 
 .u-1-of-6 > .c-image{
@@ -828,14 +838,23 @@ text{
 .c-button:active {
     color: var(--global-color-alpha);
 }
-
 .c-button--xl{
     position: relative;
     background: var(--global-color-gamma);
     border-radius: 6px;
-    padding: 24px 104px;
+    padding: 24px 48px;
+}
+@media (min-width: 1200px){
+    .c-button--xl{
+        padding: 24px 104px;
+    }
 }
 
+.c-button__active{
+    background-color: var(--global-color-alpha-x-dark);
+    color: var(--global-color-gamma);
+    opacity: 0.65;
+}
 
 .c-daySelected{
   font-size: 26px;
@@ -1108,16 +1127,28 @@ text{
 .c-form-field {
     display: flex;
     justify-content: center;
-    height: 500px
 }
 .c-input__middle{
-    align-self: center;
     display: flex;
-    width: 23%;
+    width: 100%;
     justify-content: center;
     flex-direction: column;
     position: relative;
 }
+
+ @media (min-width: 1200px){
+     .c-form-field {
+         height: 500px
+     }
+     .c-input__middle{
+         align-self: center;
+         display: flex;
+         width: 23%;
+         justify-content: center;
+         flex-direction: column;
+         position: relative;
+     }
+ }
 
 /*
     Component: Input
@@ -1142,6 +1173,10 @@ text{
   transition: var(--input-transition);
   border-radius: var(--input-borderRadius, var(--global-borderRadius));
   border: var(--input-borderWidth, var(--global-borderWidth)) solid  var(--global-color-alpha);
+}
+
+.c-input--sm{
+    font-size: 24px;
 }
 
 .c-input__icon-background{
@@ -1209,6 +1244,10 @@ more padding on the right to avoid overlap
   color: var(--label-color, var(--global-label-color));
 }
 
+.c-label--sm{
+    font-size: 24px;
+}
+
 .c-label--option {
   padding-bottom: 0;
 }
@@ -1242,6 +1281,14 @@ more padding on the right to avoid overlap
   .c-label--floating {
     --label--floating-backgroundColor: transparent;
   }
+}
+
+.c-field{
+    font-size: 24px;
+}
+
+.c-field + .c-field{
+    padding-top: 50px;
 }
 
 /*
@@ -1403,91 +1450,6 @@ more padding on the right to avoid overlap
   fill: var(--global-color-neutral-x-light);
 }
 
-
-/*
-    Component: dashboard
-    ---
-    Website dashboard
-*/
-
-.c-dashboard__item{
-    padding: 20px 0px;
-}
-
-.c-image-full__absolute {
-    position: relative;
-}
-
-.c-absolute--full{
-    position: relative;
-    background-image: url('../img/mars.png');
-    background-repeat:no-repeat;
-    background-size:contain;
-    background-position:center;
-     z-index: -1;
-     width: 100%;
-     height: 20vh;
-}
-
-
-@media (min-width: 600px) {
-    .c-absolute--full{
-        position: absolute;
-        top: 150px;
-        right: 0;
-        background-image: url('../img/mars-2.png');
-        background-position: right;
-        height: 70vh;
-    }
-    .c-dashboard{
-        display: grid;
-        grid-template-columns: repeat(8, 1fr);
-        grid-column-gap: 30px;
-        grid-row-gap: 30px;
-    }
-
-    .c-dashboard-sm{
-        display: grid;
-        grid-template-columns: repeat(6, 1fr);
-        grid-column-gap: 30px;
-        grid-row-gap: 30px;
-    }
- }
-
- @media (min-width: 800px) {
-     .c-absolute--full{
-        height: 80vh;
-        top: 100px;
-     }
-
- }
- @media (min-width: 1200px) {
-     .c-absolute--full{
-        height: 100vh;
-        top: 0px;
-     }
-     .c-app_main{
-         padding-top: 50px;
-     }
-     .c-dashboard__item{
-         max-height: 100px;
-     }
-
-     .c-dashboard{
-         display: grid;
-         grid-template-columns: repeat(12, 1fr);
-         grid-column-gap: 30px;
-         grid-row-gap: 30px;
-     }
-
-     .c-dashboard-sm{
-         display: grid;
-         grid-template-columns: repeat(8, 1fr);
-         grid-column-gap: 30px;
-         grid-row-gap: 30px;
-     }
- }
-
  .c-radio:checked + .c-daySelected {
   color: white
 }
@@ -1548,6 +1510,11 @@ li span {
 /*------------------------------------*\
 #UTILITIES
 \*------------------------------------*/
+
+.u-font-size--lg{
+    font-size: 32px;
+    font-weight: 700;
+}
 
 .u-align-middle-svg{
     display: flex;
@@ -1667,6 +1634,13 @@ li span {
 
 .u-mb-xl {
   margin-bottom: 48px !important;
+}
+.u-pb-xl {
+  padding-bottom: 160px !important;
+}
+
+.u-mb-xxxl {
+  margin-bottom: 128px !important;
 }
 
 /*
@@ -1879,9 +1853,9 @@ li span {
   .u-5-of-6-bp3 {
     width: 83.3333333333% !important;
   }
-  .u-align-text-center {
-    text-align: center;
-  }
+}
+.u-align-text-center {
+  text-align: center;
 }
 
 @media (min-width: 1200px) {

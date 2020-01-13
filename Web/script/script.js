@@ -341,42 +341,61 @@ const loadPulsarDevices = function() {
 		button.addEventListener('click', addPulsarDevice);
 	}
 };
+
+// Function that GETS questions + answers, and shows them!
 const ShowQuestionAndAnswers = function() {
+	// IF this is the first question of the quiz, we will send a message to the back-end to read the 'resting' heart beat
 	if (IsFirstQuestion == true) {
 		message = new Paho.Message(
 			JSON.stringify({
 				type: 'bpm'
 			})
 		);
+
+		// Setting bool on false, so this only gets executed once.
 		IsFirstQuestion = false;
 		message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 		client.send(message);
 	}
 
+	// Inserting HTML
 	QuestionRow.innerHTML = Answers;
+
+	// GET's questions and inserts them onto the HTML, async.
 	GetQuestions().then((x) => {
 		console.log(x);
 		QuestionList = x;
+
+		// Random number to generate random question!
 		let RandomQuestion = QuestionList[Math.floor(Math.random() * QuestionList.length)];
 		console.log(RandomQuestion);
+
+		// Selecting question
 		let Question = document.querySelector('.c-question');
 		Question.innerHTML = RandomQuestion.questionName;
+
+		// Selecting answers
 		let AnswerList = document.querySelectorAll('.c-answer');
+
+		// Inserting everything
 		for (let i = 0; i < RandomQuestion.questionAnswers.length; i++) {
 			console.log('ik zit in for loop');
 			AnswerList[i].innerHTML = RandomQuestion.questionAnswers[i].answer;
 		}
 	});
 
+	// WIP, have the time tick down over time
 	interval = setInterval(function() {
 		ScoreList[i].innerHTML = ScoreList[i].value - 1;
 	}, 1000);
 };
 
+// Function to show the animation screen
 const ShowLoadingScreen = function() {
 	AnimateRow.innerHTML = loader;
 };
 
+// Function to GET all questions
 const GetQuestions = async function() {
 	let serverEndPoint = `https://project2functions.azurewebsites.net/api/GetQuestions?username=${username}`;
 	const response = await fetch(serverEndPoint, { headers: customheaders });
@@ -445,34 +464,39 @@ const checkPlayerCreated = function(player) {
 	return player.player != this.id;
 };
 
+// Tell the back end to stop reading avatars
 const stopPlayerInit = function() {
 	message = new Paho.Message(JSON.stringify({ type: 'avatar', status: 'end' }));
 	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 	client.send(message);
 };
 
+// Function to generate the page with quesiton and answers on it
 const GenerateQuestionPage = function() {
-	message = new Paho.Message(
-		JSON.stringify({
-			type: 'avatar',
-			status: 'end'
-		})
-	);
-	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
-	client.send(message);
+	// Tell the back end to stop reading avatars
+	stopPlayerInit();
 
+	// Generate the HTML for the question page
 	ReplaceRow.innerHTML = Header;
 	HeaderRow = document.querySelector('.js-headerRow');
 
+	// For every person playing, generating an avatar
 	for (let i = 0; i < selectedAvatars.length; i++) {
 		HeaderRow.innerHTML += Avatar;
 	}
 	HeaderRow.innerHTML += footer;
 
+	// Selecting all avatars
 	let QuestionAvatarsList = document.querySelectorAll('.c-avatar');
 	console.log(QuestionAvatarsList);
+
+	// Selecting all scores
 	let ScoreList = document.querySelectorAll('.c-avatar--orange');
+
+	// Selecting all player names
 	PlayerName = document.querySelectorAll('.js-PlayerClass');
+
+	// For every player, filling in all the info
 	for (let i = 0; i < selectedAvatars.length; i++) {
 		console.log(i);
 		let GekozenAvatar = players[i].avatar;
@@ -483,8 +507,9 @@ const GenerateQuestionPage = function() {
 		let Avatar = avatars[GekozenAvatar - 1];
 		QuestionAvatarsList[i].innerHTML = Avatar;
 		ScoreList[i].innerHTML = players[i].time_left;
-		console.log('ik zit in for loop');
 	}
+
+	// Generating a random question and filling in all the HTML in this function
 	ShowQuestionAndAnswers();
 };
 

@@ -284,6 +284,10 @@ const sendPulsarDevices = function(){
 	message = new Paho.Message(JSON.stringify(jsonPulsar));
 	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 	client.send(message);
+	ReplaceRow.innerHTML = Avatars;
+	message = new Paho.Message(JSON.stringify({ type: 'avatar', status: 'start' }));
+	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
+	client.send(message);
 }
 const loadPulsarDevices = function(){
 	ReplaceRow.innerHTML = Pulsar;
@@ -481,11 +485,8 @@ function onMessageArrived(message) {
 		case 'test_com':
 			// We now have connection, now we can send the message for the next step, selecting the avatar
 			// Showing the avatar page when connection is made
-			ReplaceRow.innerHTML = Avatars;
-
-			AvatarButton = document.querySelector('.c-button');
-			AvatarButton.style.visibility = 'hidden';
-			AvatarButton.addEventListener('click', GenerateQuestionPage);
+			//ReplaceRow.innerHTML = Avatars;
+			
 			// Getting the 4 generated avatars from the Avatar HTML
 			console.log(avatars);
 			Communication = true;
@@ -499,7 +500,7 @@ function onMessageArrived(message) {
 				console.log("ik zit in de devices");
 			}
 			else{
-				console.log("error opgevangen");
+				ReplaceRow.innerHTML = Pulsar;
 				for(let i of jsonMessage.devices){
 					pulsarList.push(i);
 				}
@@ -510,6 +511,9 @@ function onMessageArrived(message) {
 			}
 			break;
 		case 'avatar':
+			AvatarButton = document.querySelector('.c-button');
+			AvatarButton.style.visibility = 'hidden';
+			AvatarButton.addEventListener('click', GenerateQuestionPage);
 			console.log(players);
 			// Receiving which avatars are being chosen
 			if (!selectedAvatars.includes(jsonMessage.button) && players.every(checkPlayerCreated, { id: jsonMessage.player })) {

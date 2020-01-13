@@ -7,6 +7,7 @@ let selectedAvatars = [];
 let username = 'Luka';
 let customheaders = new Headers();
 let QuestionList = [];
+let playerCount = 0;
 let pulsarList = [];
 let tempPulsarList = {0:undefined,1:undefined,2:undefined,3:undefined};
 
@@ -270,12 +271,16 @@ const addPulsarDevice = function(){
 }
 const sendPulsarDevices = function(){
 	let devicesList = [];
+	let playerIndex = 0;
 	for(let i = 0;i<4;i++){
 		if(tempPulsarList[i] != undefined){
 			let json = {name:pulsarList[tempPulsarList[i]].name,mac:pulsarList[tempPulsarList[i]].mac,player:i+1};
 			devicesList.push(json);
+			playerIndex++;
 		}
 	}
+	playerCount = playerIndex;
+
 	const jsonPulsar = {
 		type:"scan",
 		status:"devices",
@@ -527,31 +532,11 @@ function onMessageArrived(message) {
 					AvatarButton.style.visibility = 'visible';
 				}
 				// If all 4 avatars have been chosen
-				if (players.length == 4) {
-					message = new Paho.Message(
-						JSON.stringify({
-							type: 'avatar',
-							status: 'end'
-						})
-					);
-					message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
-					client.send(message);
-					// Showing a question
-
+				if (players.length == playerCount) {
 					QuestionAvatarsList = document.querySelectorAll('.c-avatar');
 					ScoreList = document.querySelectorAll('.c-avatar--orange');
-					console.log(Avatars.length);
-					for (let i = 0; i < selectedAvatars.length; i++) {
-						console.log(i);
-						let GekozenAvatar = players[i].avatar;
-						let GekozenPlayer = players[i].player;
-						console.log('Speler ' + GekozenPlayer + ' heeft gekozen voor avatar ' + GekozenAvatar);
-						//console.log('Speler ' + GekozenPlayer + 'heeft gekozen voor avatar ' + avatars[GekozenAvatar - 1]);
-						let Avatar = avatars[GekozenAvatar - 1];
-						QuestionAvatarsList[GekozenPlayer - 1].innerHTML = Avatar;
-						ScoreList[i].innerHTML = players[i].time_left;
-						console.log('ik zit in for loop');
-					}
+					GenerateQuestionPage();
+					
 				}
 			}
 			break;

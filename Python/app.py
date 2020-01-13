@@ -540,11 +540,10 @@ def mqtt_on_disconnect(client, userdata, flags, rc):
 async def init():
     global client, lcd, dev, ID_OK
     try:
-        # Loggen
-        azure_log("RPI boot", None)
         # Init LCD
         lcd = LCD_4_20_SPI()
-        lcd.write_string("Aanvragen van ID ...")
+        # Loggen
+        azure_log("RPI boot", None)
         # Inlezen Makey Makey
         # dev = None
         dev = InputDevice('/dev/input/by-id/usb-Unknown_USB_IO_Board-if02-event-mouse')
@@ -555,6 +554,7 @@ async def init():
         client.on_disconnect = mqtt_on_disconnect
         client.connect("mct-mqtt.westeurope.cloudapp.azure.com", 1883, 5)
         client.subscribe("/luemniro/id/response")
+        lcd.write_string("Aanvragen van ID ...")
         # Genereren + controle van ID
         send_id_request()
         client.loop_forever()

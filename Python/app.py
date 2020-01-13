@@ -21,6 +21,7 @@ from multiprocessing import Pool
 import asyncio
 
 from bluepy.btle import AssignedNumbers, Scanner, DefaultDelegate, Peripheral, ADDR_TYPE_PUBLIC
+from applicationinsights import TelemetryClient
 
 # --------------------
 # Globale variabelen
@@ -96,6 +97,10 @@ lcd = None
 # Async
 threat_knoppen_versturen = None
 
+# Logger
+INSTRUMENTATION_KEY = "ca700d89-5fed-471f-8887-e4658b179b73"
+azure_logger = TelemetryClient(INSTRUMENTATION_KEY)
+
 
 # --------------------
 # Klasses
@@ -112,12 +117,18 @@ class HRM(Peripheral):
 # --------------------
 # Methodes
 # --------------------
+def azure_log(event, data):
+    azure_logger.track_event(event, data)
+    azure_logger.flush()
+
+
 def mqtt_doorsturen_hartslag(player_id, bpm):
     JSON_SEND = {}
     JSON_SEND["type"] = TYPE_COM_BPM
     JSON_SEND["player"] = int(player_id)
     JSON_SEND["heartbeat"] = int(bpm)
     client.publish(JS_SEND_TOPIC, str(JSON_SEND).replace("'", '"'))
+    azure_log("RPI heartbeat read player {0}".format(player_id), str(bpm))
     print("---- Heartbeat player {0} send ----".format(player_id))
 
 
@@ -234,7 +245,10 @@ def uitlezen_bt_device(device_id, aantal_lees_acties, player):
             hrm = HRM(device_id)
             if hrm is not ConnectionError:
                 break
+            else:
+                azure_log("RPI can't connect to bluetooth device", device_id)
         print("---- Connected with bluetooth device {0} ----".format(device_id))
+        azure_log("RPI connected to bluetooth device", device_id)
         # uuid's uitlezen
         service, = [s for s in hrm.getServices() if s.uuid == hrmid]
         ccc, = service.getCharacteristics(forUUID=str(hrmmid))
@@ -429,12 +443,14 @@ def mqtt_on_message(client, userdata, msg):
         if obj["id"] == int(PI_ID):
             if obj["status"] == "OK":
                 print("---- ID is accepted ----")
+                azure_log("RPI ID accepted", PI_ID)
                 save_js_mqtt_topic() # Topic opslaan
                 ID_OK = True
                 # Display aansturen
                 lcd.clear_display()
                 lcd.write_string("Game ID: " + str(PI_ID))
             else:
+                azure_log("RPI ID rejected", PI_ID)
                 send_id_request() # Nieuwe ID request sturen
     # Ontvangen JavaScript topic
     elif msg.topic == JS_RECEIVE_TOPIC:
@@ -442,6 +458,7 @@ def mqtt_on_message(client, userdata, msg):
         obj = json.loads(string)  # Omzetten json
         # Test COM
         if obj["type"] == TYPE_COM_TEST:
+            azure_log("RPI test com", None)
             mqtt_init_communicatie()
         # Avatar selectie
         elif obj["type"] == TYPE_COM_AVATAR:
@@ -452,6 +469,7 @@ def mqtt_on_message(client, userdata, msg):
                 threat.start()
             # Speler laten stoppen
             if obj["status"] == TYPE_COM_AVATAR_STATUS_STOP:
+                azure_log("RPI player received avatar", obj["player"])
                 print("---- Player {0} received avatar ----".format(obj["player"]))
                 if obj["player"] == 1:
                     player1_send = False
@@ -469,6 +487,7 @@ def mqtt_on_message(client, userdata, msg):
         elif obj["type"] == TYPE_COM_SCAN:
             # Start scan
             if obj["status"] == TYPE_COM_SCAN_STATUS_START:
+                azure_log("RPI start bluetooth scan", None)
                 threat_bt = threading.Thread(target=start_bluetooth_scan)
                 threat_bt.start()
             # Ontvangen BT devices per speler
@@ -477,7 +496,8 @@ def mqtt_on_message(client, userdata, msg):
                 print("---- Received choosen bluetooth devices ----")
         # Lezen van hartslag
         elif obj["type"] == TYPE_COM_BPM:
-            print("---- Start reading rest bpm ----")
+            print("---- Start reading bpm ----")
+            azure_log("RPI start reading bpm", None)
             for device in PLAYERS_BT_DEVICES:
                 aantal_lees_acties = 1
                 threat_lezen_rusthartslag = threading.Thread(target=uitlezen_bt_device, args=(device["mac"], 1, device["player"]))
@@ -485,12 +505,14 @@ def mqtt_on_message(client, userdata, msg):
         # Antwoorden op vraag
         elif obj["type"] == TYPE_COM_QUESTION:
             print("---- Reading buttons ----")
+            azure_log("RPI start answering on question", None)
             for player in obj["player"]:
                 threat_lezen_knoppen = threading.Thread(target=read_keyboard_question, args=(player["player"], player["time_left"]))
                 threat_lezen_knoppen.start()
 
 
 def mqtt_on_connect(client, userdata, flags, rc):
+    azure_log("RPI connected to MQTT broker", "Result code: {0}".format(str(rc)))
     print("---- Succesfully connected with MQTT broker (result code " + str(rc) + ") ----")
 
 
@@ -504,6 +526,8 @@ def mqtt_on_disconnect(client, userdata, flags, rc):
 async def init():
     global client, lcd, dev, ID_OK
     try:
+        # Loggen
+        azure_log("RPI boot", None)
         # Init LCD
         lcd = LCD_4_20_SPI()
         lcd.write_string("Aanvragen van ID ...")

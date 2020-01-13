@@ -292,7 +292,7 @@ def send_id_request():
     random_number = random.randint(0, 999999)
     PI_ID = str(random_number).zfill(6)
     print('---- ID request send ----')
-    client.publish('/luemniro/id/request', "{'id': '" + str(random_number) + "'}")
+    client.publish('/luemniro/id/request', "{'id': '" + str(PI_ID) + "'}")
 
 
 def read_keyboard_avatar():
@@ -519,12 +519,6 @@ async def init():
         client.subscribe("/luemniro/id/response")
         # Genereren + controle van ID
         send_id_request()
-        print("---- ID is accepted ----")
-        save_js_mqtt_topic()  # Topic opslaan
-        ID_OK = True
-        # Display aansturen
-        lcd.clear_display()
-        lcd.write_string("Game ID: " + str(PI_ID))
         client.loop_forever()
     except Exception as ex:
         print(ex)

@@ -117,6 +117,13 @@ class HRM(Peripheral):
 # --------------------
 # Methodes
 # --------------------
+def lcd_toon_error(string):
+    lcd.change_cursor_position(1, 0)
+    lcd.write_string("Error:")
+    lcd.change_cursor_position(2, 0)
+    lcd.write_string(string)
+
+
 def azure_log(event, data):
     azure_logger.track_event(event, data)
     azure_logger.flush()
@@ -174,7 +181,6 @@ def mqtt_doorsturen_knop_avatar():
             ok = True
     # Controlleren of knop al werd ingedrukt
     if ok:
-        print("ok")
         JSON_SEND = {}
         JSON_SEND["type"] = TYPE_COM_AVATAR
         JSON_SEND["button"] = KNOPPEN[knop]
@@ -552,6 +558,9 @@ async def init():
         # Genereren + controle van ID
         send_id_request()
         client.loop_forever()
+    except FileNotFoundError:
+        azure_log("RPI script opgestart zonder Makey Makey", None)
+        lcd_toon_error("Geen makey makey gevonden")
     except Exception as ex:
         print(ex)
 

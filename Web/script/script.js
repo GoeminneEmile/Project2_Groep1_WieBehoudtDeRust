@@ -491,22 +491,28 @@ const GenerateQuestionPage = function() {
 	console.log(QuestionAvatarsList);
 
 	// Selecting all scores
-	let ScoreList = document.querySelectorAll('.c-avatar--orange');
+	ScoreList = document.querySelectorAll('.c-avatar--orange');
 
 	// Selecting all player names
 	PlayerName = document.querySelectorAll('.js-PlayerClass');
 
 	// For every player, filling in all the info
 	for (let i = 0; i < selectedAvatars.length; i++) {
-		console.log(i);
 		let GekozenAvatar = players[i].avatar;
-		console.log(GekozenAvatar);
 		let GekozenPlayer = players[i].player;
 		console.log('Speler ' + GekozenPlayer + ' heeft gekozen voor avatar ' + GekozenAvatar);
+
+		// Filling in stats in the header such as score and time_left
 		PlayerName[i].innerHTML = 'Speler ' + GekozenPlayer;
 		let Avatar = avatars[GekozenAvatar - 1];
 		QuestionAvatarsList[i].innerHTML = Avatar;
 		ScoreList[i].innerHTML = players[i].time_left;
+		// Chosen Avatar gets opacity faded to 0.5
+		avatars[GekozenAvatar - 1].style.opacity = 1;
+		avatars[GekozenAvatar - 1].style.transition = 'opacity 1s';
+		const f_fade = () => {
+			avatars[GekozenAvatar].style.opacity = 0.5;
+		};
 	}
 
 	// Generating a random question and filling in all the HTML in this function
@@ -525,19 +531,20 @@ function onMessageArrived(message) {
 		// Switch case checks which Type is present in the Json message, this depends on the python back-end
 		// Depending on the type in the JSON, we send something specific back
 		case 'test_com':
-			// We now have connection, now we can send the message for the next step, selecting the avatar
-			// Showing the avatar page when connection is made
-			//ReplaceRow.innerHTML = Avatars;
-
+			// We now have connection, now we can send the message for the next step, scanning the available bluetooth devices
 			// Getting the 4 generated avatars from the Avatar HTML
 			console.log(avatars);
+
+			// Communication is made
 			Communication = true;
-			//message = new Paho.Message(JSON.stringify({ type: 'avatar', status: 'start' }));
+
+			// Tell the back-end to start scanning
 			message = new Paho.Message(JSON.stringify({ type: 'scan', status: 'start' }));
 			message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 			client.send(message);
 			break;
 		case 'scan':
+			// When we receive a list of devices in the area, add them to a list
 			if (jsonMessage.status == 'devices') {
 				console.log('ik zit in de devices');
 			} else {
@@ -546,15 +553,19 @@ function onMessageArrived(message) {
 					pulsarList.push(i);
 				}
 				console.log(pulsarList);
+				// Items in global list will get shown on screen
 				loadPulsarDevices();
 			}
 			break;
 		case 'avatar':
+			// Selecting the button and making it hidden
 			AvatarButton = document.querySelector('.c-button');
 			AvatarButton.style.visibility = 'hidden';
 			AvatarButton.addEventListener('click', GenerateQuestionPage);
 			console.log(players);
+
 			// Receiving which avatars are being chosen
+			// Also creating objects of players, with their own stats ie: Time_left, points
 			if (!selectedAvatars.includes(jsonMessage.button) && players.every(checkPlayerCreated, { id: jsonMessage.player })) {
 				players.push({ player: jsonMessage.player, avatar: jsonMessage.button, points: 0, time_left: 20 });
 				selectedAvatars.push(jsonMessage.button);
@@ -562,9 +573,11 @@ function onMessageArrived(message) {
 				message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 				client.send(message);
 
+				// If there are more than 0 avatars chosen
 				if (players.length != 0) {
 					AvatarButton.style.visibility = 'visible';
 				}
+
 				// If all 4 avatars have been chosen
 				if (players.length == playerCount) {
 					QuestionAvatarsList = document.querySelectorAll('.c-avatar');

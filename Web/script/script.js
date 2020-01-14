@@ -464,11 +464,34 @@ const ShowQuestionAndAnswers = function() {
 	client.send(message);
 
 	// WIP, have the time tick down over time
-	/*
-	interval = setInterval(function () {
-		ScoreList[i].innerHTML = ScoreList[i].value - 1;
+	// 4 timers that count down the amount of seconds, these also get saved in the player variables.
+	interval1 = setInterval(function() {
+		console.log('timer begint');
+		let TimeLeft = players[0].time_left;
+		ScoreList[0].innerHTML = TimeLeft / 1000;
+		players[0].time_left = TimeLeft - 1000;
 	}, 1000);
-	*/
+
+	interval2 = setInterval(function() {
+		console.log('timer begint');
+		let TimeLeft = players[1].time_left;
+		ScoreList[1].innerHTML = TimeLeft / 1000;
+		players[1].time_left = TimeLeft - 1000;
+	}, 1000);
+
+	interval3 = setInterval(function() {
+		console.log('timer begint');
+		let TimeLeft = players[2].time_left;
+		ScoreList[2].innerHTML = TimeLeft / 1000;
+		players[2].time_left = TimeLeft - 1000;
+	}, 1000);
+
+	interval4 = setInterval(function() {
+		console.log('timer begint');
+		let TimeLeft = players[3].time_left;
+		ScoreList[3].innerHTML = TimeLeft / 1000;
+		players[3].time_left = TimeLeft - 1000;
+	}, 1000);
 };
 
 // Function to show the animation screen
@@ -592,7 +615,7 @@ const GenerateQuestionPage = function() {
 		PlayerName[i].innerHTML = 'Speler ' + GekozenPlayer;
 		let Avatar = avatars[GekozenAvatar - 1];
 		QuestionAvatarsList[i].innerHTML = Avatar;
-		ScoreList[i].innerHTML = players[i].time_left /1000;
+		ScoreList[i].innerHTML = players[i].time_left / 1000;
 		// Chosen Avatar gets opacity faded to 0.5
 		//QuestionAvatarsList[GekozenAvatar - 1].style.opacity = 1;
 		//QuestionAvatarsList[GekozenAvatar - 1].style.transition = 'opacity 1s';
@@ -602,20 +625,32 @@ const GenerateQuestionPage = function() {
 	ShowQuestionAndAnswers();
 };
 const playerAnswer = function(userInfo) {
+	switch (userInfo.player) {
+		case 1:
+			clearInterval(interval1);
+			break;
+		case 2:
+			clearInterval(interval2);
+			break;
+		case 3:
+			clearInterval(interval3);
+			break;
+		case 4:
+			clearInterval(interval4);
+			break;
+	}
 	let QuestionAvatarsList = document.querySelectorAll('.c-avatar');
-	for(let i = 0;i<players.length;i++){
+	for (let i = 0; i < players.length; i++) {
 		console.log(QuestionAvatarsList[i].dataset.id);
-		console.log("________________");
-		if(QuestionAvatarsList[i].dataset.id == userInfo.player){
-			console.log("ik zit erin");
+		console.log('________________');
+		if (QuestionAvatarsList[i].dataset.id == userInfo.player) {
+			console.log('ik zit erin');
 			console.log(QuestionAvatarsList[i]);
 			console.log(QuestionAvatarsList);
 			QuestionAvatarsList[i].style.opacity = 0.3;
 			break;
 		}
 	}
-	
-
 };
 // called when a message arrives
 function onMessageArrived(message) {

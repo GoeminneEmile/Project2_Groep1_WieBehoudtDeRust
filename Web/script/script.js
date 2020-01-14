@@ -1,5 +1,5 @@
 // global variables
-let SubmitButton, InputFieldValue, ReplaceRow, AnimateRow, QuestionRow, RandomQuestion, AvatarButton, QuestionAvatarsList, ScoreList, PlayerName;
+let SubmitButton, InputFieldValue, ReplaceRow, AnimateRow, QuestionRow, RandomQuestion, AvatarButton, QuestionAvatarsList, ScoreList, PlayerName,userGuid;
 let client;
 let Communication;
 let players = [];
@@ -268,6 +268,18 @@ let loginPage = `<div>
 			<div class=" u-align-text-center">
 				<button class="c-button js-submitLogin c-button--xl"> Login </button>
 			</div>
+		</div>
+	</div>
+</div>
+</div>`;
+let startPage = `<div class="o-container__centered">
+<div class="c-align--middle">
+	<div class="o-layout u-align-text-center">
+		<div class="o-layout__item u-1-of-2">
+			<button class="c-button c-button--xl js-question"> Vragen toevoegen </button>
+		</div>
+		<div class="o-layout__item u-1-of-2">
+			<button class="c-button c-button--xl js-game"> Nu spelen </button>
 		</div>
 	</div>
 </div>
@@ -648,29 +660,48 @@ const Buttonchecked = function() {
 const loginRequest = async function(){
 	const username = document.querySelector('#username').value;
 	const password = document.querySelector('#password').value;
-	let serverEndPoint = `https://project2functions.azurewebsites.net/api/GetQuestions?username=admin`;
-	const response = await fetch(serverEndPoint, { headers: customheaders});
+	AnimateRow.innerHTML = loader;
+	let serverEndPoint = `https://project2functions.azurewebsites.net/api/GetUser?username=${username}&password=${password}`;
+	const response = await fetch(serverEndPoint, { headers: customheaders,mode:"cors"});
 	const data = await response.json();
 	return data;
 }
 const login = function(){
-	loginRequest().then(data => console.log(data)); 
+	loginRequest().then((x) => {
+		if(x == 400){
+			console.log("wrong credentials");
+			ReplaceRow.innerHTML = loginPage;
+			let loginSubmit = document.querySelector(".js-submitLogin");
+			loginSubmit.addEventListener("click",login);
+		}
+		else{
+			userGuid = x.userGuid;
+			ReplaceRow.innerHTML = startPage;
+			const game = document.querySelector(".js-game");
+			const question = document.querySelector(".js-question");
+			game.addEventListener("click",loadPinPage);
+
+		}
+	});
+}
+const loadPinPage = function(){
+	ReplaceRow.innerHTML = pinPage;
+	SubmitButton = document.querySelector('#js-submit');
+	SubmitButton.addEventListener('click', Buttonchecked);
 }
 const loadLoginPage = function(){
 	ReplaceRow.innerHTML = loginPage;
+	// Need to use this one later
 	let loginSubmit = document.querySelector(".js-submitLogin");
 	loginSubmit.addEventListener("click",login);
 
 }
 const init = function() {
 	// Init function
-	SubmitButton = document.querySelector('#js-submit');
 	ReplaceRow = document.querySelector('.js-row');
-	AnimateRow = document.querySelector('.js-animate');
 	QuestionRow = document.querySelector('.c-app');
-	// Need to use this one later
-	//SubmitButton.addEventListener('click', Buttonchecked);
 	loadLoginPage();
+	AnimateRow = document.querySelector('.js-animate');
 
 };
 

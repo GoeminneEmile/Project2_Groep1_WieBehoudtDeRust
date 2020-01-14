@@ -451,13 +451,8 @@ const ShowQuestionAndAnswers = function() {
 	for (i = 0; i < players.length; i++) {
 		playerTime = {};
 		playerTime.player = i + 1;
-<<<<<<< HEAD
-		playerTime.time_left = player[i].time_left;
-		playersTimes.push(playerTime);
-=======
 		playerTime.time_left = players[i].time_left
 		playersTimes.push(playerTime)
->>>>>>> develop
 	}
 	message = new Paho.Message(
 		JSON.stringify({
@@ -469,24 +464,16 @@ const ShowQuestionAndAnswers = function() {
 	client.send(message);
 
 	// WIP, have the time tick down over time
-<<<<<<< HEAD
-	interval = setInterval(function() {
-=======
 	/*
 	interval = setInterval(function () {
->>>>>>> develop
 		ScoreList[i].innerHTML = ScoreList[i].value - 1;
 	}, 1000);
 	*/
 };
 
 // Function to show the animation screen
-<<<<<<< HEAD
-const ShowLoadingScreen = function() {
-=======
 const ShowLoadingScreen = function () {
 	AnimateRow = document.querySelector('.js-animate');
->>>>>>> develop
 	AnimateRow.innerHTML = loader;
 };
 
@@ -586,13 +573,8 @@ const GenerateQuestionPage = function() {
 	HeaderRow.innerHTML += footer;
 
 	// Selecting all avatars
-<<<<<<< HEAD
-	let QuestionAvatarsList = document.querySelectorAll('.c-avatar');
-	//console.log(QuestionAvatarsList);
-=======
 	var QuestionAvatarsList = document.querySelectorAll('.c-avatar');
 	console.log(QuestionAvatarsList);
->>>>>>> develop
 
 	// Selecting all scores
 	ScoreList = document.querySelectorAll('.c-avatar--orange');
@@ -694,15 +676,6 @@ function onMessageArrived(message) {
 			break;
 		case 'questions':
 			//This code saves the received button and time needed into a object en adds the object to an array
-<<<<<<< HEAD
-			playerAnswer = {};
-			playerAnswer.player = jsonMessage.player;
-			playerAnswer.button = jsonMessage.button;
-			playerAnswer.time_needed = jsonMessage.time_needed;
-			playerAnswers.push(playerAnswer);
-
-			//If the length of playerAnswers equals the length of players we know that we received all answers
-=======
 			answer = {};
 			answer.player = jsonMessage.player;
 			answer.button = jsonMessage.button;
@@ -710,7 +683,6 @@ function onMessageArrived(message) {
 			answer.push(playerAnswer);
 			playerAnswer(answer);
 			//If the length of playerAnswers equals the length of players we know that we received all answers 
->>>>>>> develop
 			if (playerAnswers.length == players.length) {
 				//1. Tijd die ik krijg (van robbe z'n python) delen door de totale tijd.
 				//bv: Ik krijg een json waarin staat dat een speler 5 seconden nodig had. 5 / 20 = 0,25.

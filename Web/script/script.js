@@ -465,37 +465,34 @@ const ShowQuestionAndAnswers = function() {
 
 	// WIP, have the time tick down over time
 	// 4 timers that count down the amount of seconds, these also get saved in the player variables.
-	try {
-		interval1 = setInterval(function() {
-			console.log('timer begint');
-			let TimeLeft = players[0].time_left;
-			ScoreList[0].innerHTML = TimeLeft / 1000;
-			players[0].time_left = TimeLeft - 1000;
-		}, 1000);
 
-		interval2 = setInterval(function() {
-			console.log('timer begint');
-			let TimeLeft = players[1].time_left;
-			ScoreList[1].innerHTML = TimeLeft / 1000;
-			players[1].time_left = TimeLeft - 1000;
-		}, 1000);
+	interval1 = setInterval(function() {
+		console.log('timer begint');
+		let TimeLeft = players[0].time_left;
+		ScoreList[0].innerHTML = TimeLeft / 1000;
+		players[0].time_left = TimeLeft - 1000;
+	}, 1000);
 
-		interval3 = setInterval(function() {
-			console.log('timer begint');
-			let TimeLeft = players[2].time_left;
-			ScoreList[2].innerHTML = TimeLeft / 1000;
-			players[2].time_left = TimeLeft - 1000;
-		}, 1000);
+	interval2 = setInterval(function() {
+		console.log('timer begint');
+		let TimeLeft = players[1].time_left;
+		ScoreList[1].innerHTML = TimeLeft / 1000;
+		players[1].time_left = TimeLeft - 1000;
+	}, 1000);
 
-		interval4 = setInterval(function() {
-			console.log('timer begint');
-			let TimeLeft = players[3].time_left;
-			ScoreList[3].innerHTML = TimeLeft / 1000;
-			players[3].time_left = TimeLeft - 1000;
-		}, 1000);
-	} catch (error) {
-		console.log('Less than 4 players have been defined');
-	}
+	interval3 = setInterval(function() {
+		console.log('timer begint');
+		let TimeLeft = players[2].time_left;
+		ScoreList[2].innerHTML = TimeLeft / 1000;
+		players[2].time_left = TimeLeft - 1000;
+	}, 1000);
+
+	interval4 = setInterval(function() {
+		console.log('timer begint');
+		let TimeLeft = players[3].time_left;
+		ScoreList[3].innerHTML = TimeLeft / 1000;
+		players[3].time_left = TimeLeft - 1000;
+	}, 1000);
 };
 
 // Function to show the animation screen
@@ -711,7 +708,6 @@ function onMessageArrived(message) {
 				message = new Paho.Message(JSON.stringify({ type: 'avatar', status: 'stop', player: jsonMessage.player }));
 				message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 				client.send(message);
-
 				// If there are more than 0 avatars chosen
 				if (players.length != 0) {
 					AvatarButton.style.visibility = 'visible';
@@ -726,7 +722,7 @@ function onMessageArrived(message) {
 
 				// If an avatar is chosen, it gets a lower opacity, as to show that it's chosen
 				let LijstIcons = [ 'Koala', 'Dolphin', 'Panda', 'Elephant' ];
-				console.log(LijstIcons[jsonMessage.button - 1]);
+				//console.log(LijstIcons[jsonMessage.button - 1]);
 				switch (LijstIcons[jsonMessage.button - 1]) {
 					case 'Koala':
 						icon = document.querySelector('.js-koala');

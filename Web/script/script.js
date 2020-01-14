@@ -1,5 +1,5 @@
 // global variables
-let SubmitButton, InputFieldValue, ReplaceRow, AnimateRow, QuestionRow, RandomQuestion, AvatarButton, QuestionAvatarsList, ScoreList, PlayerName,userGuid;
+let SubmitButton, InputFieldValue, ReplaceRow, AnimateRow, QuestionRow, RandomQuestion, AvatarButton, QuestionAvatarsList, ScoreList, PlayerName, userGuid;
 let client;
 let Communication;
 let players = [];
@@ -10,11 +10,15 @@ let QuestionList = [];
 let playerCount = 0;
 let pulsarList = [];
 let tempPulsarList = { 0: undefined, 1: undefined, 2: undefined, 3: undefined };
-let IsFirstQuestion = true, IsRestBpm = true, RestBpmCount = 0, playersBpmCount = 0;
+let IsFirstQuestion = true,
+	IsRestBpm = true,
+	RestBpmCount = 0,
+	playersBpmCount = 0;
 let player1_rest_bpm, player2_rest_bpm, player3_rest_bpm, player4_rest_bpm;
 let player1_bpm, player2_bpm, player3_bpm, player4_bpm;
 let playerAnswers = [];
-
+let playerRestBPM = [ player1_rest_bpm, player2_rest_bpm, player3_rest_bpm, player4_rest_bpm ];
+let playerBPM = [ player1_bpm, player2_bpm, player3_bpm, player4_bpm ];
 
 //#region Panda
 let Panda = `
@@ -37,7 +41,7 @@ let Koala = `
 </div>`;
 //#endregion
 
-let avatars = [Koala, Dolphin, Panda, Elephant];
+let avatars = [ Koala, Dolphin, Panda, Elephant ];
 customheaders.append('accept', 'application/json');
 
 // Pre generated HTML code
@@ -291,11 +295,11 @@ let startPage = `<div class="o-container__centered">
 //#endregion
 //#endregion
 
-const addPulsarDevice = function () {
+const addPulsarDevice = function() {
 	const sendPolarButton = document.querySelector('.js-sendPolar');
 	sendPolarButton.addEventListener('click', sendPulsarDevices);
 
-	console.log(this.dataset.mac);
+	//console.log(this.dataset.mac);
 	for (let i = 0; i < 4; i++) {
 		if (tempPulsarList[i] === undefined && this.dataset.player == '-1') {
 			tempPulsarList[i] = this.dataset.id;
@@ -311,7 +315,6 @@ const addPulsarDevice = function () {
 		}
 	}
 	let returnState = false;
-	console.log('wtf');
 	for (let i = 0; i < 4; i++) {
 		console.log(tempPulsarList[i]);
 		if (tempPulsarList[i] != undefined) {
@@ -328,7 +331,7 @@ const addPulsarDevice = function () {
 		}
 	}
 };
-const sendPulsarDevices = function () {
+const sendPulsarDevices = function() {
 	let devicesList = [];
 	let playerIndex = 0;
 	for (let i = 0; i < 4; i++) {
@@ -353,7 +356,7 @@ const sendPulsarDevices = function () {
 	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 	client.send(message);
 };
-const loadPulsarDevices = function () {
+const loadPulsarDevices = function() {
 	ReplaceRow.innerHTML = Pulsar;
 	let html = '';
 	let pulsarDiv = document.querySelector('.js-pulsarItems');
@@ -404,7 +407,7 @@ const loadPulsarDevices = function () {
 };
 
 // Function that GETS questions + answers, and shows them!
-const ShowQuestionAndAnswers = function () {
+const ShowQuestionAndAnswers = function() {
 	// IF this is the first question of the quiz, we will send a message to the back-end to read the 'resting' heart beat
 	if (IsFirstQuestion == true) {
 		message = new Paho.Message(
@@ -440,18 +443,17 @@ const ShowQuestionAndAnswers = function () {
 
 		// Inserting everything
 		for (let i = 0; i < RandomQuestion.questionAnswers.length; i++) {
-			console.log('ik zit in for loop');
 			AnswerList[i].innerHTML = RandomQuestion.questionAnswers[i].answer;
 		}
 	});
 
 	//Send a message to Raspberry Pi to indicate that the buttons should be read with a specific time per player
-	playersTimes = []
+	playersTimes = [];
 	for (i = 0; i < players.length; i++) {
-		playerTime = {}
+		playerTime = {};
 		playerTime.player = i + 1;
-		playerTime.time_left = player[i].time_left
-		playersTimes.push(playerTime)
+		playerTime.time_left = player[i].time_left;
+		playersTimes.push(playerTime);
 	}
 	message = new Paho.Message(
 		JSON.stringify({
@@ -463,18 +465,18 @@ const ShowQuestionAndAnswers = function () {
 	client.send(message);
 
 	// WIP, have the time tick down over time
-	interval = setInterval(function () {
+	interval = setInterval(function() {
 		ScoreList[i].innerHTML = ScoreList[i].value - 1;
 	}, 1000);
 };
 
 // Function to show the animation screen
-const ShowLoadingScreen = function () {
+const ShowLoadingScreen = function() {
 	AnimateRow.innerHTML = loader;
 };
 
 // Function to GET all questions
-const GetQuestions = async function () {
+const GetQuestions = async function() {
 	let serverEndPoint = `https://project2functions.azurewebsites.net/api/GetQuestions?username=${username}`;
 	const response = await fetch(serverEndPoint, { headers: customheaders });
 	const data = await response.json();
@@ -482,7 +484,7 @@ const GetQuestions = async function () {
 	return data;
 };
 
-const ConnectToMQTT = function () {
+const ConnectToMQTT = function() {
 	// Go from index page to load page
 	// generate a random client id
 	let clientID = 'clientID_' + parseInt(Math.random() * 100);
@@ -491,31 +493,31 @@ const ConnectToMQTT = function () {
 	// set callback handlers
 	client.onConnectionLost = onConnectionLost;
 	client.onMessageArrived = onMessageArrived;
-	console.log('handlers set');
+	//console.log('handlers set');
 
 	// connect the client
 	client.connect({ onSuccess: onConnect, onFailure: onConnectionLost });
 };
-const disconnectTest = function () {
+const disconnectTest = function() {
 	client.disconnect();
 	console;
 };
 // called when the client connects
 function onConnect() {
 	// Once a connection has been made, make a subscription and send a message.
-	console.log('onConnect');
+	//console.log('onConnect');
 	try {
 		clearInterval(interval);
-	} catch (error) { }
+	} catch (error) {}
 	// client subscribed op dynamische topic!
 	client.subscribe(`/luemniro/PiToJs/${InputFieldValue}`);
-	console.log(InputFieldValue);
+	//console.log(InputFieldValue);
 	// Kijken of juiste ID is ingegeven!
 	initializeCommunication();
 }
 
 // Initializing communication, we send a test and the python back-end sends a test back
-const initializeCommunication = function () {
+const initializeCommunication = function() {
 	//ReplaceRow.innerHTML = Avatars;
 	//ReplaceRow.innerHTML = Header;
 	//ShowQuestionAndAnswers();
@@ -528,29 +530,28 @@ const initializeCommunication = function () {
 // called when the client loses its connection
 function onConnectionLost(responseObject) {
 	//start interval for reconnecting to mqtt server
-	interval = setInterval(function () {
+	interval = setInterval(function() {
 		ConnectToMQTT();
 	}, 10000);
 
-	console.log('ik ga eruit');
 	if (responseObject.errorCode !== 0) {
 		console.log('onConnectionLost:' + responseObject.errorMessage);
 	}
 }
 
-const checkPlayerCreated = function (player) {
+const checkPlayerCreated = function(player) {
 	return player.player != this.id;
 };
 
 // Tell the back end to stop reading avatars
-const stopPlayerInit = function () {
+const stopPlayerInit = function() {
 	message = new Paho.Message(JSON.stringify({ type: 'avatar', status: 'end' }));
 	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 	client.send(message);
 };
 
 // Function to generate the page with quesiton and answers on it
-const GenerateQuestionPage = function () {
+const GenerateQuestionPage = function() {
 	// Tell the back end to stop reading avatars
 	stopPlayerInit();
 
@@ -566,7 +567,7 @@ const GenerateQuestionPage = function () {
 
 	// Selecting all avatars
 	let QuestionAvatarsList = document.querySelectorAll('.c-avatar');
-	console.log(QuestionAvatarsList);
+	//console.log(QuestionAvatarsList);
 
 	// Selecting all scores
 	ScoreList = document.querySelectorAll('.c-avatar--orange');
@@ -624,13 +625,13 @@ function onMessageArrived(message) {
 		case 'scan':
 			// When we receive a list of devices in the area, add them to a list
 			if (jsonMessage.status == 'devices') {
-				console.log('ik zit in de devices');
+				//console.log('ik zit in de devices');
 			} else {
 				ReplaceRow.innerHTML = Pulsar;
 				for (let i of jsonMessage.devices) {
 					pulsarList.push(i);
 				}
-				console.log(pulsarList);
+				//console.log(pulsarList);
 				// Items in global list will get shown on screen
 				loadPulsarDevices();
 			}
@@ -672,10 +673,23 @@ function onMessageArrived(message) {
 			playerAnswer.time_needed = jsonMessage.time_needed;
 			playerAnswers.push(playerAnswer);
 
-			//If the length of playerAnswers equals the length of players we know that we received all answers 
+			//If the length of playerAnswers equals the length of players we know that we received all answers
 			if (playerAnswers.length == players.length) {
+				//1. Tijd die ik krijg (van robbe z'n python) delen door de totale tijd.
+				//bv: Ik krijg een json waarin staat dat een speler 5 seconden nodig had. 5 / 20 = 0,25.
+				//2. Deel die waarde door 2.
+				//3. Trek die waarde van 1 af. Dus 1 - 0,125 = 0,875.
+				//4. Vermenigvuldig de punten met de maximale waarde die je kan krijgen. Dus 0,875 x 10 = 8,75.
+				//5. Rond af wanneer nodig.
 				//LUKA hier moet de punten berekening gebeuren aan de hand van de knop dar werd gegeven en de tijd die nodig was
-				console.log("Lukaaaaa fix deze shit pleassss");
+				for (let i = 0; i < players.length; i++) {
+					let Berekening = jsonMessage.time_needed / players.time_left;
+					let Berekening2 = Berekening / 2;
+					let Berekening3 = 1 - Berekening2;
+					let Berekening4 = Berekening3 * 10;
+					let FinalBerekening = Math.floor(Berekening4);
+					players[i].points = FinalBerekening;
+				}
 			}
 			break;
 		case 'bpm':
@@ -700,11 +714,36 @@ function onMessageArrived(message) {
 				if (playersBpmCount == players.length) {
 					playersBpmCount = 0;
 					// LUKA deze if wordt uitgevoerd bij het krijgen van de laatste hartslag, hier moet de berekening doen van wie het meest heeft gesport en wie dus het meeste tijd krijgt
-					console.log("Lukaaaaa fix deze shit pleassss");
+					let player1Diff = player1_bpm - player1_rest_bpm;
+					let player2Diff = player2_bpm - player2_rest_bpm;
+					let player3Diff = player3_bpm - player3_rest_bpm;
+					let player4Diff = player4_bpm - player4_rest_bpm;
+					let lijst = [ player1Diff, player2Diff, player3Diff, player4Diff ];
+					Console.log(lijst);
+					let timeToGive = [ 20, 15, 10, 5 ];
+					// Get the index from the biggest number
+					var arrayMaxIndex = function(array) {
+						return array.indexOf(Math.max.apply(null, array));
+					};
+					// Checking which index is the highest number
+					let highest = arrayMaxIndex(lijst);
+					// Giving the player with this index the highest amount of seconds
+					players[highest].time_left += timeToGive[0];
+					// Removing this player from the to-check list with BPM
+					lijst.splice(highest, 1);
+					// Checking the list for highest, because the previous highest was removed so we can keep checking etc....
+					let highest2 = arrayMaxIndex(lijst);
+					players[highes2].time_left += timeToGive[1];
+					lijst.splice(highest2, 1);
+					let highest3 = arrayMaxIndex(lijst);
+					players[highes3].time_left += timeToGive[2];
+					lijst.splice(highest3, 1);
+					let highest4 = arrayMaxIndex(lijst);
+					players[highes4].time_left += timeToGive[3];
+					lijst.splice(highest4, 1);
 				}
-			}
-			// If the RestBpmCount does not equal to players list length, we know we asked for the rest heartbeats
-			else {
+			} else {
+				// If the RestBpmCount does not equal to players list length, we know we asked for the rest heartbeats
 				switch (jsonMessage.player) {
 					case 1:
 						player1_rest_bpm = jsonMessage.heartbeat;
@@ -729,59 +768,55 @@ function onMessageArrived(message) {
 	console.log(typeof jsonMessage.type);
 }
 
-const Buttonchecked = function () {
+const Buttonchecked = function() {
 	// Change page here, go from load page to avatar selection page
 	// waarde van input box ophalen
 	InputFieldValue = document.querySelector('#gamePin').value;
 	ShowLoadingScreen();
 	ConnectToMQTT();
 };
-const loginRequest = async function(){
+const loginRequest = async function() {
 	const username = document.querySelector('#username').value;
 	const password = document.querySelector('#password').value;
 	AnimateRow.innerHTML = loader;
 	let serverEndPoint = `https://project2functions.azurewebsites.net/api/GetUser?username=${username}&password=${password}`;
-	const response = await fetch(serverEndPoint, { headers: customheaders,mode:"cors"});
+	const response = await fetch(serverEndPoint, { headers: customheaders, mode: 'cors' });
 	const data = await response.json();
 	return data;
-}
-const login = function(){
+};
+const login = function() {
 	loginRequest().then((x) => {
-		if(x == 400){
-			console.log("wrong credentials");
+		if (x == 400) {
+			console.log('wrong credentials');
 			ReplaceRow.innerHTML = loginPage;
-			let loginSubmit = document.querySelector(".js-submitLogin");
-			loginSubmit.addEventListener("click",login);
-		}
-		else{
+			let loginSubmit = document.querySelector('.js-submitLogin');
+			loginSubmit.addEventListener('click', login);
+		} else {
 			userGuid = x.userGuid;
 			ReplaceRow.innerHTML = startPage;
-			const game = document.querySelector(".js-game");
-			const question = document.querySelector(".js-question");
-			game.addEventListener("click",loadPinPage);
-
+			const game = document.querySelector('.js-game');
+			const question = document.querySelector('.js-question');
+			game.addEventListener('click', loadPinPage);
 		}
 	});
-}
-const loadPinPage = function(){
+};
+const loadPinPage = function() {
 	ReplaceRow.innerHTML = pinPage;
 	SubmitButton = document.querySelector('#js-submit');
 	SubmitButton.addEventListener('click', Buttonchecked);
-}
-const loadLoginPage = function(){
+};
+const loadLoginPage = function() {
 	ReplaceRow.innerHTML = loginPage;
 	// Need to use this one later
-	let loginSubmit = document.querySelector(".js-submitLogin");
-	loginSubmit.addEventListener("click",login);
-
-}
+	let loginSubmit = document.querySelector('.js-submitLogin');
+	loginSubmit.addEventListener('click', login);
+};
 const init = function() {
 	// Init function
 	ReplaceRow = document.querySelector('.js-row');
 	QuestionRow = document.querySelector('.c-app');
 	loadLoginPage();
 	AnimateRow = document.querySelector('.js-animate');
-
 };
 
 document.addEventListener('DOMContentLoaded', init);

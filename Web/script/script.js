@@ -445,14 +445,14 @@ const ShowQuestionAndAnswers = function() {
 			AnswerList[i].innerHTML = RandomQuestion.questionAnswers[i].answer;
 		}
 	});
-	console.log("yes this is it");
+	console.log('yes this is it');
 	//Send a message to Raspberry Pi to indicate that the buttons should be read with a specific time per player
 	playersTimes = [];
 	for (i = 0; i < players.length; i++) {
 		playerTime = {};
 		playerTime.player = i + 1;
-		playerTime.time_left = players[i].time_left
-		playersTimes.push(playerTime)
+		playerTime.time_left = players[i].time_left;
+		playersTimes.push(playerTime);
 	}
 	message = new Paho.Message(
 		JSON.stringify({
@@ -472,7 +472,7 @@ const ShowQuestionAndAnswers = function() {
 };
 
 // Function to show the animation screen
-const ShowLoadingScreen = function () {
+const ShowLoadingScreen = function() {
 	AnimateRow = document.querySelector('.js-animate');
 	AnimateRow.innerHTML = loader;
 };
@@ -560,16 +560,16 @@ const GenerateQuestionPage = function() {
 	// Generate the HTML for the question page
 	ReplaceRow.innerHTML = Header;
 	HeaderRow = document.querySelector('.js-headerRow');
-	let html = "";
+	let html = '';
 	// For every person playing, generating an avatar
 	for (let i = 0; i < selectedAvatars.length; i++) {
 		html += `<div class="o-layout__item u-1-of-4 c-avatar__text u-align-text-center">
-		<div class="c-avatar" data-id="${i+1}">`;
-		html += Avatar
-		console.log("ik zit in de loooooop");
+		<div class="c-avatar" data-id="${i + 1}">`;
+		html += Avatar;
+		console.log('ik zit in de loooooop');
 	}
 	console.log(html);
-	HeaderRow.innerHTML += html; 
+	HeaderRow.innerHTML += html;
 	HeaderRow.innerHTML += footer;
 
 	// Selecting all avatars
@@ -594,19 +594,16 @@ const GenerateQuestionPage = function() {
 		QuestionAvatarsList[i].innerHTML = Avatar;
 		ScoreList[i].innerHTML = players[i].time_left;
 		// Chosen Avatar gets opacity faded to 0.5
-		QuestionAvatarsList[GekozenAvatar - 1].style.opacity = 1;
-		QuestionAvatarsList[GekozenAvatar - 1].style.transition = 'opacity 1s';
-		
+		//QuestionAvatarsList[GekozenAvatar - 1].style.opacity = 1;
+		//QuestionAvatarsList[GekozenAvatar - 1].style.transition = 'opacity 1s';
 	}
 
 	// Generating a random question and filling in all the HTML in this function
 	ShowQuestionAndAnswers();
 };
-const playerAnswer = function(userInfo){
-	for(let i = 0;i< QuestionAvatarsList.length;i++){
-		
-	}
-}
+const playerAnswer = function(userInfo) {
+	for (let i = 0; i < QuestionAvatarsList.length; i++) {}
+};
 // called when a message arrives
 function onMessageArrived(message) {
 	console.log(message);
@@ -680,9 +677,8 @@ function onMessageArrived(message) {
 			answer.player = jsonMessage.player;
 			answer.button = jsonMessage.button;
 			answer.time_needed = jsonMessage.time_needed;
-			answer.push(playerAnswer);
 			playerAnswer(answer);
-			//If the length of playerAnswers equals the length of players we know that we received all answers 
+			//If the length of playerAnswers equals the length of players we know that we received all answers
 			if (playerAnswers.length == players.length) {
 				//1. Tijd die ik krijg (van robbe z'n python) delen door de totale tijd.
 				//bv: Ik krijg een json waarin staat dat een speler 5 seconden nodig had. 5 / 20 = 0,25.

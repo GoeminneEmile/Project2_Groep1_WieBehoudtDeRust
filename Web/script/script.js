@@ -227,6 +227,51 @@ let Pulsar = `<h2>Pair je hartritme sensors!</h2>
 		</div>
 	</div>
 </div>`;
+let pinPage = `<form class="c-form-field js-animate">
+<div class="c-input__middle">
+	<label class="c-label" for="gamePin">Game pin</label>
+	<input id="gamePin" class="c-input" type="number" name="gamePin" id="gamePin" min=100000 max=999999 placeholder="000000" />
+	<button id="js-submit" class="c-submit" type="button">
+		<svg class="c-input__icon" xmlns="http://www.w3.org/2000/svg" width="20.486" height="35.827" viewBox="0 0 20.486 35.827">
+		  <g id="Group_84" data-name="Group 84" transform="translate(-1281.077 -521.848)">
+			<g id="next" transform="translate(1170.167 523.348)">
+			  <path id="Path_55" data-name="Path 55" d="M129.629,15.759,114.143.273a.929.929,0,0,0-1.314,1.314l14.825,14.825L112.829,31.237a.932.932,0,0,0,.654,1.589.906.906,0,0,0,.654-.275l15.485-15.485A.924.924,0,0,0,129.629,15.759Z" fill="#e2887c" stroke="#e2887c" stroke-width="3"/>
+			</g>
+		  </g>
+		</svg>
+	</button>
+	<svg class="c-input__icon-background" xmlns="http://www.w3.org/2000/svg" width="20.486" height="35.827" viewBox="0 0 20.486 35.827">
+	  <g id="Group_84" data-name="Group 84" transform="translate(-1281.077 -521.848)">
+		<g id="next" transform="translate(1170.167 523.348)">
+		  <path id="Path_55" data-name="Path 55" d="M129.629,15.759,114.143.273a.929.929,0,0,0-1.314,1.314l14.825,14.825L112.829,31.237a.932.932,0,0,0,.654,1.589.906.906,0,0,0,.654-.275l15.485-15.485A.924.924,0,0,0,129.629,15.759Z" fill="#e2887c" stroke="#e2887c" stroke-width="3"/>
+		</g>
+	  </g>
+	</svg>
+</div>
+</form>`;
+let loginPage = `<div>
+<div class="c-align--middle">
+	<div class="o-layout">
+		<div class="o-layout__item u-width-full">
+			<form class="c-form-field js-animate">
+				<div class="c-input__middle">
+					<div class="c-field">
+						<label class="c-label c-label--sm" for="username">Username</label>
+						<input id="username" id="username" class="c-input c-input--sm" type="text" name="username" placeholder="JohnDoe" />
+					</div>
+					<div class="c-field">
+						<label class="c-label c-label--sm" for="password">Password</label>
+						<input id="password" id="password" class="c-input c-input--sm" type="password" name="password" />
+					</div>
+				</div>
+			</form>
+			<div class=" u-align-text-center">
+				<button class="c-button js-submitLogin c-button--xl"> Login </button>
+			</div>
+		</div>
+	</div>
+</div>
+</div>`;
 //#endregion
 //#endregion
 
@@ -600,7 +645,23 @@ const Buttonchecked = function() {
 	ShowLoadingScreen();
 	ConnectToMQTT();
 };
+const loginRequest = async function(){
+	const username = document.querySelector('#username').value;
+	const password = document.querySelector('#password').value;
+	let serverEndPoint = `https://project2functions.azurewebsites.net/api/GetQuestions?username=admin`;
+	const response = await fetch(serverEndPoint, { headers: customheaders});
+	const data = await response.json();
+	return data;
+}
+const login = function(){
+	loginRequest().then(data => console.log(data)); 
+}
+const loadLoginPage = function(){
+	ReplaceRow.innerHTML = loginPage;
+	let loginSubmit = document.querySelector(".js-submitLogin");
+	loginSubmit.addEventListener("click",login);
 
+}
 const init = function() {
 	// Init function
 	SubmitButton = document.querySelector('#js-submit');
@@ -608,7 +669,9 @@ const init = function() {
 	AnimateRow = document.querySelector('.js-animate');
 	QuestionRow = document.querySelector('.c-app');
 	// Need to use this one later
-	SubmitButton.addEventListener('click', Buttonchecked);
+	//SubmitButton.addEventListener('click', Buttonchecked);
+	loadLoginPage();
+
 };
 
 document.addEventListener('DOMContentLoaded', init);

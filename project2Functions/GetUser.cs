@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.Data.SqlClient;
 using Microsoft.ApplicationInsights;
+using project2Functions.Models;
 
 namespace project2Functions
 {
@@ -57,7 +58,8 @@ namespace project2Functions
                                 string UserName = reader["UserName"].ToString() ;
                                 logger.LogInformation("Login succeeded");
                                 telemetry.TrackEvent("User_Login_OK");
-                                return new OkObjectResult(200);
+                                User user = new User() { UserGuid = Guid.Parse(reader["UserGuid"].ToString()) };
+                                return new OkObjectResult(user);
 
                             }
                             // If the wrong username or password are entered

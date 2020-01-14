@@ -697,7 +697,7 @@ function onMessageArrived(message) {
 					let Berekening3 = 1 - Berekening2;
 					let Berekening4 = Berekening3 * 10;
 					let FinalBerekening = Math.floor(Berekening4);
-					players[i].points = FinalBerekening;
+					players[i].points += FinalBerekening;
 				}
 			}
 			break;

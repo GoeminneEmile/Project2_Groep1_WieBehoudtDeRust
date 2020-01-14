@@ -586,11 +586,9 @@ const GenerateQuestionPage = function () {
 		QuestionAvatarsList[i].innerHTML = Avatar;
 		ScoreList[i].innerHTML = players[i].time_left;
 		// Chosen Avatar gets opacity faded to 0.5
-		avatars[GekozenAvatar - 1].style.opacity = 1;
-		avatars[GekozenAvatar - 1].style.transition = 'opacity 1s';
-		const f_fade = () => {
-			avatars[GekozenAvatar].style.opacity = 0.5;
-		};
+		QuestionAvatarsList[GekozenAvatar - 1].style.opacity = 1;
+		QuestionAvatarsList[GekozenAvatar - 1].style.transition = 'opacity 1s';
+		
 	}
 
 	// Generating a random question and filling in all the HTML in this function

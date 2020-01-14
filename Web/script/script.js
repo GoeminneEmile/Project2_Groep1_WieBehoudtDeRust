@@ -8,6 +8,7 @@ let username = 'Luka';
 let customheaders = new Headers();
 let QuestionList = [];
 let playerCount = 0;
+let gameStep = 0;
 let pulsarList = [];
 let tempPulsarList = { 0: undefined, 1: undefined, 2: undefined, 3: undefined };
 let IsFirstQuestion = true,
@@ -673,11 +674,14 @@ function onMessageArrived(message) {
 
 			// Communication is made
 			Communication = true;
-
+			if(gameStep == 0){
+				message = new Paho.Message(JSON.stringify({ type: 'scan', status: 'start' }));
+				message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
+				client.send(message);
+				gameStep++;
+			}
 			// Tell the back-end to start scanning
-			message = new Paho.Message(JSON.stringify({ type: 'scan', status: 'start' }));
-			message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
-			client.send(message);
+			
 			break;
 		case 'scan':
 			// When we receive a list of devices in the area, add them to a list

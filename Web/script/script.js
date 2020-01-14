@@ -7,8 +7,10 @@ let selectedAvatars = [];
 let username = 'Luka';
 let customheaders = new Headers();
 let QuestionList = [];
+let playerCount = 0;
 let pulsarList = [];
-let tempPulsarList = {0:undefined,1:undefined,2:undefined,3:undefined};
+let tempPulsarList = { 0: undefined, 1: undefined, 2: undefined, 3: undefined };
+let IsFirstQuestion = true;
 
 //#region Panda
 let Panda = `
@@ -33,7 +35,6 @@ let Koala = `
 
 let avatars = [ Koala, Dolphin, Panda, Elephant ];
 customheaders.append('accept', 'application/json');
-
 
 // Pre generated HTML code
 //#region HTMLCode
@@ -229,57 +230,59 @@ let Pulsar = `<h2>Pair je hartritme sensors!</h2>
 //#endregion
 //#endregion
 
-const addPulsarDevice = function(){
-	const sendPolarButton = document.querySelector(".js-sendPolar");
-	sendPolarButton.addEventListener("click",sendPulsarDevices);
+const addPulsarDevice = function() {
+	const sendPolarButton = document.querySelector('.js-sendPolar');
+	sendPolarButton.addEventListener('click', sendPulsarDevices);
 
 	console.log(this.dataset.mac);
-	for(let i = 0;i < 4;i++){
-		if(tempPulsarList[i] === undefined && this.dataset.player == "-1"){
+	for (let i = 0; i < 4; i++) {
+		if (tempPulsarList[i] === undefined && this.dataset.player == '-1') {
 			tempPulsarList[i] = this.dataset.id;
 			this.innerHTML = `Player ${i + 1}`;
 			this.dataset.player = i;
 			break;
-		}else if(tempPulsarList[i]!= undefined && i != this.dataset.player){
-		}
-		else{
+		} else if (tempPulsarList[i] != undefined && i != this.dataset.player) {
+		} else {
 			tempPulsarList[this.dataset.player] = undefined;
-			this.innerHTML = "Pair";
+			this.innerHTML = 'Pair';
 			this.dataset.player = -1;
 			break;
 		}
 	}
 	let returnState = false;
-	console.log("wtf");
-	for(let i = 0;i<4;i++){
+	console.log('wtf');
+	for (let i = 0; i < 4; i++) {
 		console.log(tempPulsarList[i]);
-		if(tempPulsarList[i] != undefined){
+		if (tempPulsarList[i] != undefined) {
 			returnState = true;
 		}
 	}
-	if(returnState){
-		if(sendPolarButton.classList.contains("o-hidden")){
-			sendPolarButton.classList.toggle("o-hidden");
+	if (returnState) {
+		if (sendPolarButton.classList.contains('o-hidden')) {
+			sendPolarButton.classList.toggle('o-hidden');
 		}
-	}else{
-		if(!sendPolarButton.classList.contains("o-hidden")){
-			sendPolarButton.classList.toggle("o-hidden");
+	} else {
+		if (!sendPolarButton.classList.contains('o-hidden')) {
+			sendPolarButton.classList.toggle('o-hidden');
 		}
 	}
-
-}
-const sendPulsarDevices = function(){
+};
+const sendPulsarDevices = function() {
 	let devicesList = [];
-	for(let i = 0;i<4;i++){
-		if(tempPulsarList[i] != undefined){
-			let json = {name:pulsarList[tempPulsarList[i]].name,mac:pulsarList[tempPulsarList[i]].mac,player:i+1};
+	let playerIndex = 0;
+	for (let i = 0; i < 4; i++) {
+		if (tempPulsarList[i] != undefined) {
+			let json = { name: pulsarList[tempPulsarList[i]].name, mac: pulsarList[tempPulsarList[i]].mac, player: i + 1 };
 			devicesList.push(json);
+			playerIndex++;
 		}
 	}
+	playerCount = playerIndex;
+
 	const jsonPulsar = {
-		type:"scan",
-		status:"devices",
-		devices:devicesList
+		type: 'scan',
+		status: 'devices',
+		devices: devicesList
 	};
 	message = new Paho.Message(JSON.stringify(jsonPulsar));
 	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
@@ -288,22 +291,21 @@ const sendPulsarDevices = function(){
 	message = new Paho.Message(JSON.stringify({ type: 'avatar', status: 'start' }));
 	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 	client.send(message);
-}
-const loadPulsarDevices = function(){
+};
+const loadPulsarDevices = function() {
 	ReplaceRow.innerHTML = Pulsar;
-	let html = "";
-	let pulsarDiv = document.querySelector(".js-pulsarItems");
+	let html = '';
+	let pulsarDiv = document.querySelector('.js-pulsarItems');
 	let index = 0;
 	let columnCount = -1;
-	for(let pulsar of pulsarList){
-		if(columnCount == -1){
+	for (let pulsar of pulsarList) {
+		if (columnCount == -1) {
 			html += `<div class="o-layout u-align-text-center">`;
 			columnCount++;
-		}else if(columnCount == 3){
+		} else if (columnCount == 3) {
 			html += `</div><div class="o-layout u-align-text-center">`;
 			columnCount = 0;
-		}
-		else{
+		} else {
 			columnCount++;
 		}
 		html += `<div class="o-layout__item u-pb-xl u-1-of-4">
@@ -323,9 +325,9 @@ const loadPulsarDevices = function(){
 		</div>
 		<button data-id="${index}" data-player="-1" class="c-button c-button--xl js-pulsarButton"> Pair </button>
 	</div>`;
-	index += 1;
+		index += 1;
 	}
-	if(columnCount != 0){
+	if (columnCount != 0) {
 		html += `</div>`;
 	}
 	html += `<div class="o-layout u-align-text-center js-sendPolar o-hidden">
@@ -333,33 +335,67 @@ const loadPulsarDevices = function(){
 		<button class="c-button c-button--xl"> Start </button>
 	</div></div>`;
 	pulsarDiv.innerHTML = html;
-	let pulsarButtons = document.querySelectorAll(".js-pulsarButton");
+	let pulsarButtons = document.querySelectorAll('.js-pulsarButton');
 
-	for(let button of pulsarButtons){
-		button.addEventListener("click",addPulsarDevice);
+	for (let button of pulsarButtons) {
+		button.addEventListener('click', addPulsarDevice);
 	}
-}
+};
+
+// Function that GETS questions + answers, and shows them!
 const ShowQuestionAndAnswers = function() {
+	// IF this is the first question of the quiz, we will send a message to the back-end to read the 'resting' heart beat
+	if (IsFirstQuestion == true) {
+		message = new Paho.Message(
+			JSON.stringify({
+				type: 'bpm'
+			})
+		);
+
+		// Setting bool on false, so this only gets executed once.
+		IsFirstQuestion = false;
+		message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
+		client.send(message);
+	}
+
+	// Inserting HTML
 	QuestionRow.innerHTML = Answers;
+
+	// GET's questions and inserts them onto the HTML, async.
 	GetQuestions().then((x) => {
 		console.log(x);
 		QuestionList = x;
+
+		// Random number to generate random question!
 		let RandomQuestion = QuestionList[Math.floor(Math.random() * QuestionList.length)];
 		console.log(RandomQuestion);
+
+		// Selecting question
 		let Question = document.querySelector('.c-question');
 		Question.innerHTML = RandomQuestion.questionName;
+
+		// Selecting answers
 		let AnswerList = document.querySelectorAll('.c-answer');
+
+		// Inserting everything
 		for (let i = 0; i < RandomQuestion.questionAnswers.length; i++) {
 			console.log('ik zit in for loop');
 			AnswerList[i].innerHTML = RandomQuestion.questionAnswers[i].answer;
 		}
 	});
+
+	// WIP, have the time tick down over time
+	interval = setInterval(function() {
+		ScoreList[i].innerHTML = ScoreList[i].value - 1;
+	}, 1000);
 };
 
+// Function to show the animation screen
 const ShowLoadingScreen = function() {
 	AnimateRow.innerHTML = loader;
 };
 
+// Function to GET all questions
 const GetQuestions = async function() {
 	let serverEndPoint = `https://project2functions.azurewebsites.net/api/GetQuestions?username=${username}`;
 	const response = await fetch(serverEndPoint, { headers: customheaders });
@@ -428,46 +464,58 @@ const checkPlayerCreated = function(player) {
 	return player.player != this.id;
 };
 
+// Tell the back end to stop reading avatars
 const stopPlayerInit = function() {
 	message = new Paho.Message(JSON.stringify({ type: 'avatar', status: 'end' }));
 	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 	client.send(message);
 };
 
+// Function to generate the page with quesiton and answers on it
 const GenerateQuestionPage = function() {
-	message = new Paho.Message(
-		JSON.stringify({
-			type: 'avatar',
-			status: 'end'
-		})
-	);
-	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
-	client.send(message);
+	// Tell the back end to stop reading avatars
+	stopPlayerInit();
 
+	// Generate the HTML for the question page
 	ReplaceRow.innerHTML = Header;
 	HeaderRow = document.querySelector('.js-headerRow');
 
+	// For every person playing, generating an avatar
 	for (let i = 0; i < selectedAvatars.length; i++) {
 		HeaderRow.innerHTML += Avatar;
 	}
 	HeaderRow.innerHTML += footer;
 
+	// Selecting all avatars
 	let QuestionAvatarsList = document.querySelectorAll('.c-avatar');
 	console.log(QuestionAvatarsList);
-	let ScoreList = document.querySelectorAll('.c-avatar--orange');
+
+	// Selecting all scores
+	ScoreList = document.querySelectorAll('.c-avatar--orange');
+
+	// Selecting all player names
 	PlayerName = document.querySelectorAll('.js-PlayerClass');
+
+	// For every player, filling in all the info
 	for (let i = 0; i < selectedAvatars.length; i++) {
-		console.log(i);
 		let GekozenAvatar = players[i].avatar;
-		console.log(GekozenAvatar);
 		let GekozenPlayer = players[i].player;
 		console.log('Speler ' + GekozenPlayer + ' heeft gekozen voor avatar ' + GekozenAvatar);
+
+		// Filling in stats in the header such as score and time_left
 		PlayerName[i].innerHTML = 'Speler ' + GekozenPlayer;
 		let Avatar = avatars[GekozenAvatar - 1];
 		QuestionAvatarsList[i].innerHTML = Avatar;
 		ScoreList[i].innerHTML = players[i].time_left;
-		console.log('ik zit in for loop');
+		// Chosen Avatar gets opacity faded to 0.5
+		avatars[GekozenAvatar - 1].style.opacity = 1;
+		avatars[GekozenAvatar - 1].style.transition = 'opacity 1s';
+		const f_fade = () => {
+			avatars[GekozenAvatar].style.opacity = 0.5;
+		};
 	}
+
+	// Generating a random question and filling in all the HTML in this function
 	ShowQuestionAndAnswers();
 };
 
@@ -483,39 +531,41 @@ function onMessageArrived(message) {
 		// Switch case checks which Type is present in the Json message, this depends on the python back-end
 		// Depending on the type in the JSON, we send something specific back
 		case 'test_com':
-			// We now have connection, now we can send the message for the next step, selecting the avatar
-			// Showing the avatar page when connection is made
-			//ReplaceRow.innerHTML = Avatars;
-			
+			// We now have connection, now we can send the message for the next step, scanning the available bluetooth devices
 			// Getting the 4 generated avatars from the Avatar HTML
 			console.log(avatars);
+
+			// Communication is made
 			Communication = true;
-			//message = new Paho.Message(JSON.stringify({ type: 'avatar', status: 'start' }));
+
+			// Tell the back-end to start scanning
 			message = new Paho.Message(JSON.stringify({ type: 'scan', status: 'start' }));
 			message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 			client.send(message);
 			break;
 		case 'scan':
-			if(jsonMessage.status == "devices"){
-				console.log("ik zit in de devices");
-			}
-			else{
+			// When we receive a list of devices in the area, add them to a list
+			if (jsonMessage.status == 'devices') {
+				console.log('ik zit in de devices');
+			} else {
 				ReplaceRow.innerHTML = Pulsar;
-				for(let i of jsonMessage.devices){
+				for (let i of jsonMessage.devices) {
 					pulsarList.push(i);
 				}
 				console.log(pulsarList);
+				// Items in global list will get shown on screen
 				loadPulsarDevices();
-				
-
 			}
 			break;
 		case 'avatar':
+			// Selecting the button and making it hidden
 			AvatarButton = document.querySelector('.c-button');
 			AvatarButton.style.visibility = 'hidden';
 			AvatarButton.addEventListener('click', GenerateQuestionPage);
 			console.log(players);
+
 			// Receiving which avatars are being chosen
+			// Also creating objects of players, with their own stats ie: Time_left, points
 			if (!selectedAvatars.includes(jsonMessage.button) && players.every(checkPlayerCreated, { id: jsonMessage.player })) {
 				players.push({ player: jsonMessage.player, avatar: jsonMessage.button, points: 0, time_left: 20 });
 				selectedAvatars.push(jsonMessage.button);
@@ -523,35 +573,16 @@ function onMessageArrived(message) {
 				message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 				client.send(message);
 
+				// If there are more than 0 avatars chosen
 				if (players.length != 0) {
 					AvatarButton.style.visibility = 'visible';
 				}
-				// If all 4 avatars have been chosen
-				if (players.length == 4) {
-					message = new Paho.Message(
-						JSON.stringify({
-							type: 'avatar',
-							status: 'end'
-						})
-					);
-					message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
-					client.send(message);
-					// Showing a question
 
+				// If all 4 avatars have been chosen
+				if (players.length == playerCount) {
 					QuestionAvatarsList = document.querySelectorAll('.c-avatar');
 					ScoreList = document.querySelectorAll('.c-avatar--orange');
-					console.log(Avatars.length);
-					for (let i = 0; i < selectedAvatars.length; i++) {
-						console.log(i);
-						let GekozenAvatar = players[i].avatar;
-						let GekozenPlayer = players[i].player;
-						console.log('Speler ' + GekozenPlayer + ' heeft gekozen voor avatar ' + GekozenAvatar);
-						//console.log('Speler ' + GekozenPlayer + 'heeft gekozen voor avatar ' + avatars[GekozenAvatar - 1]);
-						let Avatar = avatars[GekozenAvatar - 1];
-						QuestionAvatarsList[GekozenPlayer - 1].innerHTML = Avatar;
-						ScoreList[i].innerHTML = players[i].time_left;
-						console.log('ik zit in for loop');
-					}
+					GenerateQuestionPage();
 				}
 			}
 			break;

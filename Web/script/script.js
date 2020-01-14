@@ -564,7 +564,7 @@ const GenerateQuestionPage = function() {
 	// For every person playing, generating an avatar
 	for (let i = 0; i < selectedAvatars.length; i++) {
 		html += `<div class="o-layout__item u-1-of-4 c-avatar__text u-align-text-center">
-		<div class="c-avatar" data-id="${i + 1}">`;
+		<div class="c-avatar" data-id="${players[i].player}">`;
 		html += Avatar;
 		console.log('ik zit in de loooooop');
 	}
@@ -592,7 +592,7 @@ const GenerateQuestionPage = function() {
 		PlayerName[i].innerHTML = 'Speler ' + GekozenPlayer;
 		let Avatar = avatars[GekozenAvatar - 1];
 		QuestionAvatarsList[i].innerHTML = Avatar;
-		ScoreList[i].innerHTML = players[i].time_left;
+		ScoreList[i].innerHTML = players[i].time_left /1000;
 		// Chosen Avatar gets opacity faded to 0.5
 		//QuestionAvatarsList[GekozenAvatar - 1].style.opacity = 1;
 		//QuestionAvatarsList[GekozenAvatar - 1].style.transition = 'opacity 1s';
@@ -603,7 +603,18 @@ const GenerateQuestionPage = function() {
 };
 const playerAnswer = function(userInfo) {
 	let QuestionAvatarsList = document.querySelectorAll('.c-avatar');
-	QuestionAvatarsList[userInfo.player -1].style.opacity = 0.3;
+	for(let i = 0;i<players.length;i++){
+		console.log(QuestionAvatarsList[i].dataset.id);
+		console.log("________________");
+		if(QuestionAvatarsList[i].dataset.id == userInfo.player){
+			console.log("ik zit erin");
+			console.log(QuestionAvatarsList[i]);
+			console.log(QuestionAvatarsList);
+			QuestionAvatarsList[i].style.opacity = 0.3;
+			break;
+		}
+	}
+	
 
 };
 // called when a message arrives
@@ -727,7 +738,7 @@ function onMessageArrived(message) {
 					let player4Diff = player4_bpm - player4_rest_bpm;
 					let lijst = [ player1Diff, player2Diff, player3Diff, player4Diff ];
 					Console.log(lijst);
-					let timeToGive = [ 20, 15, 10, 5 ];
+					let timeToGive = [ 20000, 15000, 10000, 5000 ];
 					// Get the index from the biggest number
 					var arrayMaxIndex = function(array) {
 						return array.indexOf(Math.max.apply(null, array));

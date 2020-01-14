@@ -18,6 +18,7 @@ let IsFirstQuestion = true,
 let player1_rest_bpm, player2_rest_bpm, player3_rest_bpm, player4_rest_bpm;
 let player1_bpm, player2_bpm, player3_bpm, player4_bpm;
 let playerAnswers = [];
+let playersAnswered = [];
 let playerRestBPM = [ player1_rest_bpm, player2_rest_bpm, player3_rest_bpm, player4_rest_bpm ];
 let playerBPM = [ player1_bpm, player2_bpm, player3_bpm, player4_bpm ];
 
@@ -409,6 +410,9 @@ const loadPulsarDevices = function() {
 // Function that GETS questions + answers, and shows them!
 const ShowQuestionAndAnswers = function() {
 	// IF this is the first question of the quiz, we will send a message to the back-end to read the 'resting' heart beat
+	for(let i = 0; i < players.length;i++){
+		playersAnswered.push({player:players[i].player,answered:false})
+	}
 	if (IsFirstQuestion == true) {
 		message = new Paho.Message(
 			JSON.stringify({
@@ -466,7 +470,18 @@ const ShowQuestionAndAnswers = function() {
 
 	// WIP, have the time tick down over time
 	// 4 timers that count down the amount of seconds, these also get saved in the player variables.
-
+	intervalAll = setInterval(function(){
+		for(let i = 0;i < ScoreList.length;i++){
+			
+				let TimeLeft = players[i].time_left;
+				let answered = playersAnswered.find(findIfAnswered,players[i].player);
+				if(!answered){
+					ScoreList[i].innerHTML = TimeLeft / 1000;
+					players[i].time_left = TimeLeft - 1000;
+				}
+		}
+	},1000)
+	/*
 	interval1 = setInterval(function() {
 		console.log('timer begint');
 		let TimeLeft = players[0].time_left;
@@ -494,8 +509,21 @@ const ShowQuestionAndAnswers = function() {
 		ScoreList[3].innerHTML = TimeLeft / 1000;
 		players[3].time_left = TimeLeft - 1000;
 	}, 1000);
+	*/
 };
-
+const findIfAnswered = function(dict){
+	if(dict.player == this){
+		if(dict.answered == true){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	else{
+		return false;
+	}
+}
 // Function to show the animation screen
 const ShowLoadingScreen = function() {
 	AnimateRow = document.querySelector('.js-animate');
@@ -630,7 +658,14 @@ const GenerateQuestionPage = function() {
 // A player has answered, the userinfo (the player who has answered) gets sent here, and this function is activated
 const playerAnswer = function(userInfo) {
 	// Clearing the correct interval
+	for(let i = 0;i< players.length;i++){
+		if(userInfo.player == playersAnswered[i].player){
+			playersAnswered[i].answered = true;
+		}
+	}
+	/*
 	switch (userInfo.player) {
+
 		case 1:
 			clearInterval(interval1);
 			break;
@@ -644,6 +679,7 @@ const playerAnswer = function(userInfo) {
 			clearInterval(interval4);
 			break;
 	}
+	*/
 	// Seeing who answered, and greying out their avatar
 	let QuestionAvatarsList = document.querySelectorAll('.c-avatar');
 	for (let i = 0; i < players.length; i++) {

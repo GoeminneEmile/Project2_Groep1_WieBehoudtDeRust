@@ -538,6 +538,12 @@ text{
   flex-direction: row-reverse;
 }
 
+/* reverse horizontal column */
+
+.o-layout--column {
+  flex-direction: column;
+}
+
 /* Horizontal alignment modifiers*/
 
 .o-layout--justify-start {
@@ -637,6 +643,9 @@ text{
 /*------------------------------------*\
 #COMPONENTS
 \*------------------------------------*/
+.c-admin{
+    border-radius: 6px;
+}
 .c-winner{
     background: var(--global-color-gamma);
     padding: 24px 36px;
@@ -1025,6 +1034,13 @@ text{
 .c-svg__symbol {
   height: 100%;
 }
+.c-svg__check{
+    opacity: 0.5;
+}
+
+.c-svg__active{
+    opacity: 1;
+}
 
 /*
     Component: Logo
@@ -1174,9 +1190,16 @@ text{
   border-radius: var(--input-borderRadius, var(--global-borderRadius));
   border: var(--input-borderWidth, var(--global-borderWidth)) solid  var(--global-color-alpha);
 }
-
+.c-input--xs{
+    font-size: 16px;
+    letter-spacing: 0;
+    color: rgba(226,136,124,0.6);
+}
 .c-input--sm{
     font-size: 24px;
+}
+.c-input__answer{
+    border-color: rgba(226,136,124,0.3);
 }
 
 .c-input__icon-background{
@@ -1510,6 +1533,10 @@ li span {
 /*------------------------------------*\
 #UTILITIES
 \*------------------------------------*/
+.u-border-right{
+    border-right: solid 4px;
+    height: 48px;
+}
 
 .u-font-size--lg{
     font-size: 32px;
@@ -1520,6 +1547,10 @@ li span {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.u-align-center-clear{
+    align-items: baseline;
 }
 
 .u-background-yellow{
@@ -1605,11 +1636,15 @@ li span {
 
 .u-pt-clear {
   padding-top: 0 !important;
+  padding-bottom: 0 !important;
 }
 
 .u-plr-clear {
   padding-left: 0 !important;
   padding-right: 0 !important;
+}
+.u-pb-clear {
+  padding-bottom: 0 !important;
 }
 
 .u-mb-clear {
@@ -1628,8 +1663,15 @@ li span {
   margin-bottom: 16px !important;
 }
 
+.u-pt-md {
+  padding-top: 24px !important;
+}
+
 .u-mb-lg {
   margin-bottom: 32px !important;
+}
+.u-pb-lg {
+  padding-bottom: 48px !important;
 }
 
 .u-mb-xl {
@@ -1641,6 +1683,15 @@ li span {
 
 .u-mb-xxxl {
   margin-bottom: 128px !important;
+}
+
+.u-tr-clear{
+    top: 0;
+    right: 0;
+}
+
+.u-border-bottom{
+    border-bottom: 4px solid #192A9A1A;
 }
 
 /*

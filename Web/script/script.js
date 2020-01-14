@@ -1,5 +1,5 @@
 // global variables
-let SubmitButton, InputFieldValue, ReplaceRow, AnimateRow, QuestionRow, RandomQuestion, AvatarButton, QuestionAvatarsList, ScoreList, PlayerName;
+let SubmitButton, InputFieldValue, ReplaceRow, AnimateRow, QuestionRow, RandomQuestion, AvatarButton, QuestionAvatarsList, ScoreList, PlayerName, userGuid;
 let client;
 let Communication;
 let players = [];
@@ -7,8 +7,18 @@ let selectedAvatars = [];
 let username = 'Luka';
 let customheaders = new Headers();
 let QuestionList = [];
+let playerCount = 0;
 let pulsarList = [];
-let tempPulsarList = {0:undefined,1:undefined,2:undefined,3:undefined};
+let tempPulsarList = { 0: undefined, 1: undefined, 2: undefined, 3: undefined };
+let IsFirstQuestion = true,
+	IsRestBpm = true,
+	RestBpmCount = 0,
+	playersBpmCount = 0;
+let player1_rest_bpm, player2_rest_bpm, player3_rest_bpm, player4_rest_bpm;
+let player1_bpm, player2_bpm, player3_bpm, player4_bpm;
+let playerAnswers = [];
+let playerRestBPM = [ player1_rest_bpm, player2_rest_bpm, player3_rest_bpm, player4_rest_bpm ];
+let playerBPM = [ player1_bpm, player2_bpm, player3_bpm, player4_bpm ];
 
 //#region Panda
 let Panda = `
@@ -33,7 +43,6 @@ let Koala = `
 
 let avatars = [ Koala, Dolphin, Panda, Elephant ];
 customheaders.append('accept', 'application/json');
-
 
 // Pre generated HTML code
 //#region HTMLCode
@@ -105,8 +114,7 @@ let Avatars = `<div>
 //#region Header
 let Header = ` <div class="o-row--xs ">
 <div class="o-layout js-headerRow">`;
-let Avatar = `<div class="o-layout__item u-1-of-4 c-avatar__text u-align-text-center">
-<div class="c-avatar">
+let Avatar = `
 	<?xml version="1.0" encoding="UTF-8"?><svg class="c-avatar__symbol" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 48 48" xml:space="preserve"><style type="text/css">.st0{fill:#FFD4C3;stroke:#504B46;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st1{fill:#FFC258;} .st2{fill:#4F4B45;} .st3{fill:#FABFA5;} .st4{fill:none;stroke:#504B46;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .Graphic_x0020_Style{opacity:0.15;fill:#45413C;} .st5{opacity:0.15;fill:#45413C;} .st6{fill:#DEBB7E;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st7{fill:#F0D5A8;} .st8{fill:#F7E5C6;} .st9{fill:#DEBB7E;} .st10{fill:none;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st11{fill:#FFE500;} .st12{fill:#EBCB00;} .st13{fill:none;stroke:#EBCB00;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st14{fill:#FF6242;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st15{fill:#FFFFFF;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st16{fill:#E5F8FF;} .st17{fill:#FFFFFF;} .st18{fill:#E8F4FA;} .st19{fill:#E8F4FA;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st20{fill:#FFCCDD;} .st21{fill:#FFB0CA;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st22{fill:#FF87AF;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st23{fill:#E5F8FF;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st24{fill:#BF8256;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st25{fill:#9CEB60;} .st26{fill:#6DD627;} .st27{fill:#C8FFA1;} .st28{fill:#FFFACF;} .st29{fill:#FF87AF;} .st30{fill:#FFB0CA;} .st31{fill:#FF6196;} .st32{fill:#FFCCDD;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st33{fill:#FF6196;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st34{fill:#FFE5EE;} .st35{fill:#00B8F0;} .st36{fill:#4ACFFF;} .st37{fill:#BF8256;} .st38{fill:#DEA47A;} .st39{fill:#915E3A;} .st40{fill:#FFF5E3;} .st41{fill:#F0F0F0;} .st42{fill:#8CA4B8;} .st43{fill:#627B8C;} .st44{fill:#C0DCEB;} .st45{fill:#FFF48C;} .st46{fill:#FFE500;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st47{fill:#FFAA54;} .st48{fill:#6DD627;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st49{fill:#FF8A14;} .st50{fill:#FFCC99;} .st51{fill:#EBCB00;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st52{fill:#00F5BC;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st53{fill:#BF8DF2;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st54{fill:#FF8A14;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st55{fill:#4AEFF7;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st56{fill:#FFF48C;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st57{fill:#FF6242;} .st58{fill:#E04122;} .st59{fill:#46B000;} .st60{fill:none;stroke:#45413C;stroke-miterlimit:10;} .st61{fill:#00B8F0;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st62{fill:#FF866E;} .st63{fill:#9F5AE5;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st64{fill:#E4FFD1;} .st65{fill:#FFFEF2;} .st66{fill:#B89558;} .st67{fill:none;stroke:#915E3A;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st68{fill:#915E3A;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st69{fill:#BF8DF2;} .st70{fill:#9F5AE5;} .st71{fill:#DABFF5;} .st72{fill:none;stroke:#45413C;stroke-linejoin:round;stroke-miterlimit:10;} .st73{fill:#656769;} .st74{fill:#87898C;} .st75{fill:#E0E0E0;} .st76{fill:#BDBEC0;} .st77{fill:#656769;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st78{fill:#45413C;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st79{fill:#FFA694;} .st80{fill:#E04122;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st81{fill:#E0E0E0;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st82{fill:#F0F0F0;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st83{fill:#DAEDF7;} .st84{fill:#BDBEC0;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st85{fill:#87898C;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st86{fill:#00DFEB;} .st87{fill:#4AEFF7;} .st88{fill:#DAEDF7;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st89{fill:#FFDA8F;} .st90{fill:#FFBE3D;} .st91{fill:#FFE9BD;} .st92{fill:#DEA47A;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st93{fill:#45413C;} .st94{fill:#F0C2A1;} .st95{fill:none;stroke:#45413C;stroke-width:1.0064;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st96{fill:#525252;} .st97{fill:#EB6D00;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st98{fill:#EB6D00;} .st99{fill:#E5FEFF;} .st100{fill:#FF866E;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st101{fill:#627B8C;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st102{fill:#FFFCE5;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st103{fill:#A6FBFF;} .st104{fill:#D9FDFF;} .st105{fill:#FFFACF;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st106{fill:#B8ECFF;} .st107{fill:#FFCABF;} .st108{fill:#E5FFF9;} .st109{fill:#C8FFA1;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st110{fill:#4CF4FC;} .st111{fill:#F0D5A8;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st112{fill:#FFDCD1;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st113{fill:#80DDFF;} .st114{fill:#46B000;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st115{fill:#4ACFFF;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st116{fill:#ADC4D9;} .st117{fill:#BDBEC0;stroke:#45413C;stroke-width:1.0064;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st118{fill:#FFFCE5;} .st119{fill:#947746;} .st120{fill:#525252;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}</style><symbol id="New_Symbol_14" viewBox="-6.5 -6.5 13 13"><path class="st0" d="M0-6c2.2 0 4.1 1.5 4.7 3.5C6.3-2.5 6.4 0 5 0v1c0 2.8-2.2 5-5 5s-5-2.2-5-5V0c-1.4 0-1.3-2.5.2-2.5C-4.1-4.5-2.2-6 0-6z" fill="#FFD4C3" stroke="#504B46" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><circle class="st1" cx="-1.6" cy="-0.1" r="0.1" fill="#FFC258"/><path class="st2" d="M-1.6.5c-.3 0-.6-.3-.6-.6s.2-.7.6-.7c.3 0 .6.3.6.7s-.3.6-.6.6z" fill="#4F4B45"/><circle class="st1" cx="1.6" cy="-0.1" r="0.1" fill="#FFC258"/><path class="st2" d="M1.6.5C1.3.5 1 .2 1-.1s.3-.6.6-.6.6.3.6.6-.2.6-.6.6z" fill="#4F4B45"/><circle class="st3" cx="-3" cy="-1.5" r="0.5" fill="#FABFA5"/><circle class="st3" cx="3" cy="-1.5" r="0.5" fill="#FABFA5"/><path class="st4" d="M-1.2-3c.8-.5 1.7-.5 2.5 0" fill="none" stroke="#504B46" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/></symbol><g id="Icons"><g id="XMLID_1315_"><ellipse id="XMLID_1328_" class="st5" cx="24" cy="45" rx="15.5" ry="1.7" fill="#45413C" opacity="0.15"/><ellipse id="XMLID_1298_" transform="matrix(0.5813 -0.8137 0.8137 0.5813 5.8823 33.0741)" class="st73" cx="35.1" cy="10.8" rx="10" ry="8.9" fill="#656769"/><path id="XMLID_1297_" class="st74" d="M27.9 7.9c3.2-4.5 9-5.8 13-3 2 1.4 3.1 3.6 3.4 5.9.3-3.2-.8-6.3-3.4-8.2-4-2.8-9.8-1.5-13 3-1.6 2.3-2.3 4.9-2 7.3.2-1.6.8-3.4 2-5z" fill="#87898C"/><ellipse id="XMLID_1296_" transform="matrix(0.5813 -0.8137 0.8137 0.5813 5.8823 33.0741)" class="st10" cx="35.1" cy="10.8" rx="10" ry="8.9" fill="none" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><ellipse id="XMLID_1295_" transform="matrix(0.5813 -0.8137 0.8137 0.5813 5.8203 32.9535)" class="st75" cx="34.9" cy="10.8" rx="6.8" ry="6.1" fill="#E0E0E0"/><ellipse id="XMLID_1294_" transform="matrix(0.8137 -0.5813 0.5813 0.8137 -3.8553 9.6136)" class="st73" cx="13.1" cy="10.8" rx="8.9" ry="10" fill="#656769"/><path id="XMLID_1293_" class="st74" d="M7.3 4.9c4-2.8 9.8-1.5 13 3 1.1 1.6 1.8 3.4 2 5.1.3-2.4-.4-5.1-2-7.3-3.2-4.5-9-5.8-13-3-2.6 1.8-3.7 5-3.4 8.2.2-2.4 1.4-4.6 3.4-6z" fill="#87898C"/><ellipse id="XMLID_1292_" transform="matrix(0.8137 -0.5813 0.5813 0.8137 -3.8553 9.6136)" class="st10" cx="13.1" cy="10.8" rx="8.9" ry="10" fill="none" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><ellipse id="XMLID_1291_" transform="matrix(0.8137 -0.5813 0.5813 0.8137 -3.8277 9.6997)" class="st75" cx="13.2" cy="10.8" rx="6.1" ry="6.8" fill="#E0E0E0"/><path id="XMLID_1290_" class="st76" d="M30 9.8c2.2-3.1 6.2-4 8.9-2 1.2.9 1.9 2.2 2.2 3.6.4-2.4-.3-4.7-2.2-6.1-2.7-1.9-6.7-1-8.9 2-1.2 1.7-1.6 3.7-1.3 5.5.2-1 .6-2.1 1.3-3z" fill="#BDBEC0"/><path id="XMLID_1289_" class="st76" d="M9.3 7.8c2.7-1.9 6.7-1 8.9 2 .7.9 1.1 2 1.3 3 .3-1.8 0-3.8-1.3-5.5-2.2-3.1-6.2-4-8.9-2C7.4 6.6 6.6 9 7 11.4c.3-1.5 1-2.8 2.3-3.6z" fill="#BDBEC0"/><ellipse id="XMLID_1277_" transform="matrix(0.5813 -0.8137 0.8137 0.5813 5.8203 32.9535)" class="st10" cx="34.9" cy="10.8" rx="6.8" ry="6.1" fill="none" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><ellipse id="XMLID_1263_" transform="matrix(0.8137 -0.5813 0.5813 0.8137 -3.8277 9.6997)" class="st10" cx="13.2" cy="10.8" rx="6.1" ry="6.8" fill="none" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><path id="XMLID_1262_" class="st41" d="M44.8 25.2C43 13.8 34.2 5.5 24 5.5c-10.2 0-19 8.3-20.8 19.7-1.2 7.8 4.1 15 11.1 15H16c1.9 1.6 4.7 2.7 7.9 2.7s6-1 7.9-2.7h2c6.9 0 12.2-7.2 11-15z" fill="#F0F0F0"/><path id="XMLID_1261_" class="st17" d="M3.2 29.6C5 18.2 13.8 9.9 24 9.9c10.2 0 19 8.3 20.8 19.7.2-1.4.2-2.9 0-4.4C43 13.8 34.2 5.5 24 5.5c-10.2 0-19 8.3-20.8 19.7-.2 1.5-.2 3 0 4.4z" fill="#FFF"/><path id="XMLID_1260_" class="st10" d="M44.8 25.2C43 13.8 34.2 5.5 24 5.5c-10.2 0-19 8.3-20.8 19.7-1.2 7.8 4.1 15 11.1 15H16c1.9 1.6 4.7 2.7 7.9 2.7s6-1 7.9-2.7h2c6.9 0 12.2-7.2 11-15z" fill="none" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><path id="XMLID_1259_" class="st77" d="M27.9 32.5c0 1.1-1.7 3-3.9 3s-3.9-1.8-3.9-3c0-1.1 1.7-2 3.9-2s3.9.8 3.9 2z" fill="#656769" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><path id="XMLID_1258_" class="st77" d="M28.1 20.1c-.9 5.1 3.1 7.7 6.1 8.8 3.1 1.2 4.8-1 4.8-4.1-.1-3.1-2-7.3-5.4-8.2-3-.7-5.3 2-5.5 3.5z" fill="#656769" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><path id="XMLID_1257_" class="st77" d="M19.8 20.1c.9 5.1-3.1 7.7-6.1 8.8-3.1 1.2-4.8-1-4.8-4.1.1-3.1 2-7.3 5.4-8.2 3-.7 5.2 2 5.5 3.5z" fill="#656769" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><circle id="XMLID_1256_" class="st78" cx="31.8" cy="22.1" r="1.7" fill="#45413C" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><circle id="XMLID_1255_" class="st78" cx="16.2" cy="22.1" r="1.7" fill="#45413C" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><circle id="XMLID_1254_" class="st79" cx="41.4" cy="29.7" r="2" fill="#FFA694"/><circle id="XMLID_1252_" class="st79" cx="6.6" cy="29.7" r="2" fill="#FFA694"/><path id="XMLID_1251_" class="st10" fill="none" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M24 35.4v2.2"/></g></g><metadata><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:Description about="https://iconscout.com/legal#licenses" dc:title="panda,animal" dc:description="panda,animal" dc:publisher="Iconscout" dc:date="2017-09-21" dc:format="image/svg+xml" dc:language="en"><dc:creator><rdf:Bag><rdf:li>Vincent Le Moign</rdf:li></rdf:Bag></dc:creator></rdf:Description></rdf:RDF></metadata></svg>
 </div>
 <div class="c-svg--sm">
@@ -226,60 +234,118 @@ let Pulsar = `<h2>Pair je hartritme sensors!</h2>
 		</div>
 	</div>
 </div>`;
+let pinPage = `<form class="c-form-field js-animate">
+<div class="c-input__middle">
+	<label class="c-label" for="gamePin">Game pin</label>
+	<input id="gamePin" class="c-input" type="number" name="gamePin" id="gamePin" min=100000 max=999999 placeholder="000000" />
+	<button id="js-submit" class="c-submit" type="button">
+		<svg class="c-input__icon" xmlns="http://www.w3.org/2000/svg" width="20.486" height="35.827" viewBox="0 0 20.486 35.827">
+		  <g id="Group_84" data-name="Group 84" transform="translate(-1281.077 -521.848)">
+			<g id="next" transform="translate(1170.167 523.348)">
+			  <path id="Path_55" data-name="Path 55" d="M129.629,15.759,114.143.273a.929.929,0,0,0-1.314,1.314l14.825,14.825L112.829,31.237a.932.932,0,0,0,.654,1.589.906.906,0,0,0,.654-.275l15.485-15.485A.924.924,0,0,0,129.629,15.759Z" fill="#e2887c" stroke="#e2887c" stroke-width="3"/>
+			</g>
+		  </g>
+		</svg>
+	</button>
+	<svg class="c-input__icon-background" xmlns="http://www.w3.org/2000/svg" width="20.486" height="35.827" viewBox="0 0 20.486 35.827">
+	  <g id="Group_84" data-name="Group 84" transform="translate(-1281.077 -521.848)">
+		<g id="next" transform="translate(1170.167 523.348)">
+		  <path id="Path_55" data-name="Path 55" d="M129.629,15.759,114.143.273a.929.929,0,0,0-1.314,1.314l14.825,14.825L112.829,31.237a.932.932,0,0,0,.654,1.589.906.906,0,0,0,.654-.275l15.485-15.485A.924.924,0,0,0,129.629,15.759Z" fill="#e2887c" stroke="#e2887c" stroke-width="3"/>
+		</g>
+	  </g>
+	</svg>
+</div>
+</form>`;
+let loginPage = `<div>
+<div class="c-align--middle">
+	<div class="o-layout">
+		<div class="o-layout__item u-width-full">
+			<form class="c-form-field js-animate">
+				<div class="c-input__middle">
+					<div class="c-field">
+						<label class="c-label c-label--sm" for="username">Username</label>
+						<input id="username" id="username" class="c-input c-input--sm" type="text" name="username" placeholder="JohnDoe" />
+					</div>
+					<div class="c-field">
+						<label class="c-label c-label--sm" for="password">Password</label>
+						<input id="password" id="password" class="c-input c-input--sm" type="password" name="password" />
+					</div>
+				</div>
+			</form>
+			<div class=" u-align-text-center">
+				<button class="c-button js-submitLogin c-button--xl"> Login </button>
+			</div>
+		</div>
+	</div>
+</div>
+</div>`;
+let startPage = `<div class="o-container__centered">
+<div class="c-align--middle">
+	<div class="o-layout u-align-text-center">
+		<div class="o-layout__item u-1-of-2">
+			<button class="c-button c-button--xl js-question"> Vragen toevoegen </button>
+		</div>
+		<div class="o-layout__item u-1-of-2">
+			<button class="c-button c-button--xl js-game"> Nu spelen </button>
+		</div>
+	</div>
+</div>
+</div>`;
 //#endregion
 //#endregion
 
-const addPulsarDevice = function(){
-	const sendPolarButton = document.querySelector(".js-sendPolar");
-	sendPolarButton.addEventListener("click",sendPulsarDevices);
+const addPulsarDevice = function() {
+	const sendPolarButton = document.querySelector('.js-sendPolar');
+	sendPolarButton.addEventListener('click', sendPulsarDevices);
 
-	console.log(this.dataset.mac);
-	for(let i = 0;i < 4;i++){
-		if(tempPulsarList[i] === undefined && this.dataset.player == "-1"){
+	//console.log(this.dataset.mac);
+	for (let i = 0; i < 4; i++) {
+		if (tempPulsarList[i] === undefined && this.dataset.player == '-1') {
 			tempPulsarList[i] = this.dataset.id;
 			this.innerHTML = `Player ${i + 1}`;
 			this.dataset.player = i;
 			break;
-		}else if(tempPulsarList[i]!= undefined && i != this.dataset.player){
-		}
-		else{
+		} else if (tempPulsarList[i] != undefined && i != this.dataset.player) {
+		} else {
 			tempPulsarList[this.dataset.player] = undefined;
-			this.innerHTML = "Pair";
+			this.innerHTML = 'Pair';
 			this.dataset.player = -1;
 			break;
 		}
 	}
 	let returnState = false;
-	console.log("wtf");
-	for(let i = 0;i<4;i++){
+	for (let i = 0; i < 4; i++) {
 		console.log(tempPulsarList[i]);
-		if(tempPulsarList[i] != undefined){
+		if (tempPulsarList[i] != undefined) {
 			returnState = true;
 		}
 	}
-	if(returnState){
-		if(sendPolarButton.classList.contains("o-hidden")){
-			sendPolarButton.classList.toggle("o-hidden");
+	if (returnState) {
+		if (sendPolarButton.classList.contains('o-hidden')) {
+			sendPolarButton.classList.toggle('o-hidden');
 		}
-	}else{
-		if(!sendPolarButton.classList.contains("o-hidden")){
-			sendPolarButton.classList.toggle("o-hidden");
+	} else {
+		if (!sendPolarButton.classList.contains('o-hidden')) {
+			sendPolarButton.classList.toggle('o-hidden');
 		}
 	}
-
-}
-const sendPulsarDevices = function(){
+};
+const sendPulsarDevices = function() {
 	let devicesList = [];
-	for(let i = 0;i<4;i++){
-		if(tempPulsarList[i] != undefined){
-			let json = {name:pulsarList[tempPulsarList[i]].name,mac:pulsarList[tempPulsarList[i]].mac,player:i+1};
+	let playerIndex = 0;
+	for (let i = 0; i < 4; i++) {
+		if (tempPulsarList[i] != undefined) {
+			let json = { name: pulsarList[tempPulsarList[i]].name, mac: pulsarList[tempPulsarList[i]].mac, player: i + 1 };
 			devicesList.push(json);
+			playerIndex++;
 		}
 	}
+	playerCount = playerIndex;
+
 	const jsonPulsar = {
-		type:"scan",
-		status:"devices",
-		devices:devicesList
+		type: 'scan',
+		status: 'devices',
+		devices: devicesList
 	};
 	message = new Paho.Message(JSON.stringify(jsonPulsar));
 	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
@@ -288,22 +354,21 @@ const sendPulsarDevices = function(){
 	message = new Paho.Message(JSON.stringify({ type: 'avatar', status: 'start' }));
 	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 	client.send(message);
-}
-const loadPulsarDevices = function(){
+};
+const loadPulsarDevices = function() {
 	ReplaceRow.innerHTML = Pulsar;
-	let html = "";
-	let pulsarDiv = document.querySelector(".js-pulsarItems");
+	let html = '';
+	let pulsarDiv = document.querySelector('.js-pulsarItems');
 	let index = 0;
 	let columnCount = -1;
-	for(let pulsar of pulsarList){
-		if(columnCount == -1){
+	for (let pulsar of pulsarList) {
+		if (columnCount == -1) {
 			html += `<div class="o-layout u-align-text-center">`;
 			columnCount++;
-		}else if(columnCount == 3){
+		} else if (columnCount == 3) {
 			html += `</div><div class="o-layout u-align-text-center">`;
 			columnCount = 0;
-		}
-		else{
+		} else {
 			columnCount++;
 		}
 		html += `<div class="o-layout__item u-pb-xl u-1-of-4">
@@ -323,9 +388,9 @@ const loadPulsarDevices = function(){
 		</div>
 		<button data-id="${index}" data-player="-1" class="c-button c-button--xl js-pulsarButton"> Pair </button>
 	</div>`;
-	index += 1;
+		index += 1;
 	}
-	if(columnCount != 0){
+	if (columnCount != 0) {
 		html += `</div>`;
 	}
 	html += `<div class="o-layout u-align-text-center js-sendPolar o-hidden">
@@ -333,33 +398,86 @@ const loadPulsarDevices = function(){
 		<button class="c-button c-button--xl"> Start </button>
 	</div></div>`;
 	pulsarDiv.innerHTML = html;
-	let pulsarButtons = document.querySelectorAll(".js-pulsarButton");
+	let pulsarButtons = document.querySelectorAll('.js-pulsarButton');
 
-	for(let button of pulsarButtons){
-		button.addEventListener("click",addPulsarDevice);
+	for (let button of pulsarButtons) {
+		button.addEventListener('click', addPulsarDevice);
 	}
-}
+};
+
+// Function that GETS questions + answers, and shows them!
 const ShowQuestionAndAnswers = function() {
+	// IF this is the first question of the quiz, we will send a message to the back-end to read the 'resting' heart beat
+	if (IsFirstQuestion == true) {
+		message = new Paho.Message(
+			JSON.stringify({
+				type: 'bpm'
+			})
+		);
+
+		// Setting bool on false, so this only gets executed once.
+		IsFirstQuestion = false;
+		message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
+		client.send(message);
+	}
+
+	// Inserting HTML
 	QuestionRow.innerHTML = Answers;
+
+	// GET's questions and inserts them onto the HTML, async.
 	GetQuestions().then((x) => {
 		console.log(x);
 		QuestionList = x;
+
+		// Random number to generate random question!
 		let RandomQuestion = QuestionList[Math.floor(Math.random() * QuestionList.length)];
 		console.log(RandomQuestion);
+
+		// Selecting question
 		let Question = document.querySelector('.c-question');
 		Question.innerHTML = RandomQuestion.questionName;
+
+		// Selecting answers
 		let AnswerList = document.querySelectorAll('.c-answer');
+
+		// Inserting everything
 		for (let i = 0; i < RandomQuestion.questionAnswers.length; i++) {
-			console.log('ik zit in for loop');
 			AnswerList[i].innerHTML = RandomQuestion.questionAnswers[i].answer;
 		}
 	});
+	console.log("yes this is it");
+	//Send a message to Raspberry Pi to indicate that the buttons should be read with a specific time per player
+	playersTimes = [];
+	for (i = 0; i < players.length; i++) {
+		playerTime = {};
+		playerTime.player = i + 1;
+		playerTime.time_left = players[i].time_left
+		playersTimes.push(playerTime)
+	}
+	message = new Paho.Message(
+		JSON.stringify({
+			type: 'questions',
+			player: playersTimes
+		})
+	);
+	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
+	client.send(message);
+
+	// WIP, have the time tick down over time
+	/*
+	interval = setInterval(function () {
+		ScoreList[i].innerHTML = ScoreList[i].value - 1;
+	}, 1000);
+	*/
 };
 
-const ShowLoadingScreen = function() {
+// Function to show the animation screen
+const ShowLoadingScreen = function () {
+	AnimateRow = document.querySelector('.js-animate');
 	AnimateRow.innerHTML = loader;
 };
 
+// Function to GET all questions
 const GetQuestions = async function() {
 	let serverEndPoint = `https://project2functions.azurewebsites.net/api/GetQuestions?username=${username}`;
 	const response = await fetch(serverEndPoint, { headers: customheaders });
@@ -377,7 +495,7 @@ const ConnectToMQTT = function() {
 	// set callback handlers
 	client.onConnectionLost = onConnectionLost;
 	client.onMessageArrived = onMessageArrived;
-	console.log('handlers set');
+	//console.log('handlers set');
 
 	// connect the client
 	client.connect({ onSuccess: onConnect, onFailure: onConnectionLost });
@@ -389,13 +507,13 @@ const disconnectTest = function() {
 // called when the client connects
 function onConnect() {
 	// Once a connection has been made, make a subscription and send a message.
-	console.log('onConnect');
+	//console.log('onConnect');
 	try {
 		clearInterval(interval);
 	} catch (error) {}
 	// client subscribed op dynamische topic!
 	client.subscribe(`/luemniro/PiToJs/${InputFieldValue}`);
-	console.log(InputFieldValue);
+	//console.log(InputFieldValue);
 	// Kijken of juiste ID is ingegeven!
 	initializeCommunication();
 }
@@ -418,7 +536,6 @@ function onConnectionLost(responseObject) {
 		ConnectToMQTT();
 	}, 10000);
 
-	console.log('ik ga eruit');
 	if (responseObject.errorCode !== 0) {
 		console.log('onConnectionLost:' + responseObject.errorMessage);
 	}
@@ -428,49 +545,68 @@ const checkPlayerCreated = function(player) {
 	return player.player != this.id;
 };
 
+// Tell the back end to stop reading avatars
 const stopPlayerInit = function() {
 	message = new Paho.Message(JSON.stringify({ type: 'avatar', status: 'end' }));
 	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 	client.send(message);
 };
 
+// Function to generate the page with quesiton and answers on it
 const GenerateQuestionPage = function() {
-	message = new Paho.Message(
-		JSON.stringify({
-			type: 'avatar',
-			status: 'end'
-		})
-	);
-	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
-	client.send(message);
+	// Tell the back end to stop reading avatars
+	stopPlayerInit();
 
+	// Generate the HTML for the question page
 	ReplaceRow.innerHTML = Header;
 	HeaderRow = document.querySelector('.js-headerRow');
-
+	let html = "";
+	// For every person playing, generating an avatar
 	for (let i = 0; i < selectedAvatars.length; i++) {
-		HeaderRow.innerHTML += Avatar;
+		html += `<div class="o-layout__item u-1-of-4 c-avatar__text u-align-text-center">
+		<div class="c-avatar" data-id="${i+1}">`;
+		html += Avatar
+		console.log("ik zit in de loooooop");
 	}
+	console.log(html);
+	HeaderRow.innerHTML += html; 
 	HeaderRow.innerHTML += footer;
 
-	let QuestionAvatarsList = document.querySelectorAll('.c-avatar');
+	// Selecting all avatars
+	var QuestionAvatarsList = document.querySelectorAll('.c-avatar');
 	console.log(QuestionAvatarsList);
-	let ScoreList = document.querySelectorAll('.c-avatar--orange');
+
+	// Selecting all scores
+	ScoreList = document.querySelectorAll('.c-avatar--orange');
+
+	// Selecting all player names
 	PlayerName = document.querySelectorAll('.js-PlayerClass');
+
+	// For every player, filling in all the info
 	for (let i = 0; i < selectedAvatars.length; i++) {
-		console.log(i);
 		let GekozenAvatar = players[i].avatar;
-		console.log(GekozenAvatar);
 		let GekozenPlayer = players[i].player;
 		console.log('Speler ' + GekozenPlayer + ' heeft gekozen voor avatar ' + GekozenAvatar);
+
+		// Filling in stats in the header such as score and time_left
 		PlayerName[i].innerHTML = 'Speler ' + GekozenPlayer;
 		let Avatar = avatars[GekozenAvatar - 1];
 		QuestionAvatarsList[i].innerHTML = Avatar;
 		ScoreList[i].innerHTML = players[i].time_left;
-		console.log('ik zit in for loop');
+		// Chosen Avatar gets opacity faded to 0.5
+		QuestionAvatarsList[GekozenAvatar - 1].style.opacity = 1;
+		QuestionAvatarsList[GekozenAvatar - 1].style.transition = 'opacity 1s';
+		
 	}
+
+	// Generating a random question and filling in all the HTML in this function
 	ShowQuestionAndAnswers();
 };
-
+const playerAnswer = function(userInfo){
+	for(let i = 0;i< QuestionAvatarsList.length;i++){
+		
+	}
+}
 // called when a message arrives
 function onMessageArrived(message) {
 	console.log(message);
@@ -483,39 +619,41 @@ function onMessageArrived(message) {
 		// Switch case checks which Type is present in the Json message, this depends on the python back-end
 		// Depending on the type in the JSON, we send something specific back
 		case 'test_com':
-			// We now have connection, now we can send the message for the next step, selecting the avatar
-			// Showing the avatar page when connection is made
-			//ReplaceRow.innerHTML = Avatars;
-			
+			// We now have connection, now we can send the message for the next step, scanning the available bluetooth devices
 			// Getting the 4 generated avatars from the Avatar HTML
 			console.log(avatars);
+
+			// Communication is made
 			Communication = true;
-			//message = new Paho.Message(JSON.stringify({ type: 'avatar', status: 'start' }));
+
+			// Tell the back-end to start scanning
 			message = new Paho.Message(JSON.stringify({ type: 'scan', status: 'start' }));
 			message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 			client.send(message);
 			break;
 		case 'scan':
-			if(jsonMessage.status == "devices"){
-				console.log("ik zit in de devices");
-			}
-			else{
+			// When we receive a list of devices in the area, add them to a list
+			if (jsonMessage.status == 'devices') {
+				//console.log('ik zit in de devices');
+			} else {
 				ReplaceRow.innerHTML = Pulsar;
-				for(let i of jsonMessage.devices){
+				for (let i of jsonMessage.devices) {
 					pulsarList.push(i);
 				}
-				console.log(pulsarList);
+				//console.log(pulsarList);
+				// Items in global list will get shown on screen
 				loadPulsarDevices();
-				
-
 			}
 			break;
 		case 'avatar':
+			// Selecting the button and making it hidden
 			AvatarButton = document.querySelector('.c-button');
 			AvatarButton.style.visibility = 'hidden';
 			AvatarButton.addEventListener('click', GenerateQuestionPage);
 			console.log(players);
+
 			// Receiving which avatars are being chosen
+			// Also creating objects of players, with their own stats ie: Time_left, points
 			if (!selectedAvatars.includes(jsonMessage.button) && players.every(checkPlayerCreated, { id: jsonMessage.player })) {
 				players.push({ player: jsonMessage.player, avatar: jsonMessage.button, points: 0, time_left: 20 });
 				selectedAvatars.push(jsonMessage.button);
@@ -523,36 +661,113 @@ function onMessageArrived(message) {
 				message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 				client.send(message);
 
+				// If there are more than 0 avatars chosen
 				if (players.length != 0) {
 					AvatarButton.style.visibility = 'visible';
 				}
-				// If all 4 avatars have been chosen
-				if (players.length == 4) {
-					message = new Paho.Message(
-						JSON.stringify({
-							type: 'avatar',
-							status: 'end'
-						})
-					);
-					message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
-					client.send(message);
-					// Showing a question
 
+				// If all 4 avatars have been chosen
+				if (players.length == playerCount) {
 					QuestionAvatarsList = document.querySelectorAll('.c-avatar');
 					ScoreList = document.querySelectorAll('.c-avatar--orange');
-					console.log(Avatars.length);
-					for (let i = 0; i < selectedAvatars.length; i++) {
-						console.log(i);
-						let GekozenAvatar = players[i].avatar;
-						let GekozenPlayer = players[i].player;
-						console.log('Speler ' + GekozenPlayer + ' heeft gekozen voor avatar ' + GekozenAvatar);
-						//console.log('Speler ' + GekozenPlayer + 'heeft gekozen voor avatar ' + avatars[GekozenAvatar - 1]);
-						let Avatar = avatars[GekozenAvatar - 1];
-						QuestionAvatarsList[GekozenPlayer - 1].innerHTML = Avatar;
-						ScoreList[i].innerHTML = players[i].time_left;
-						console.log('ik zit in for loop');
-					}
+					GenerateQuestionPage();
 				}
+			}
+			break;
+		case 'questions':
+			//This code saves the received button and time needed into a object en adds the object to an array
+			answer = {};
+			answer.player = jsonMessage.player;
+			answer.button = jsonMessage.button;
+			answer.time_needed = jsonMessage.time_needed;
+			answer.push(playerAnswer);
+			playerAnswer(answer);
+			//If the length of playerAnswers equals the length of players we know that we received all answers 
+			if (playerAnswers.length == players.length) {
+				//1. Tijd die ik krijg (van robbe z'n python) delen door de totale tijd.
+				//bv: Ik krijg een json waarin staat dat een speler 5 seconden nodig had. 5 / 20 = 0,25.
+				//2. Deel die waarde door 2.
+				//3. Trek die waarde van 1 af. Dus 1 - 0,125 = 0,875.
+				//4. Vermenigvuldig de punten met de maximale waarde die je kan krijgen. Dus 0,875 x 10 = 8,75.
+				//5. Rond af wanneer nodig.
+				//LUKA hier moet de punten berekening gebeuren aan de hand van de knop dar werd gegeven en de tijd die nodig was
+				for (let i = 0; i < players.length; i++) {
+					let Berekening = jsonMessage.time_needed / players.time_left;
+					let Berekening2 = Berekening / 2;
+					let Berekening3 = 1 - Berekening2;
+					let Berekening4 = Berekening3 * 10;
+					let FinalBerekening = Math.floor(Berekening4);
+					players[i].points += FinalBerekening;
+				}
+			}
+			break;
+		case 'bpm':
+			// If the RestBpmCount equals to the players list length, we know that the heartbeats are the current heartbeats
+			if (RestBpmCount == players.length) {
+				playersBpmCount++;
+				switch (jsonMessage.player) {
+					case 1:
+						player1_bpm = jsonMessage.heartbeat;
+						break;
+					case 2:
+						player2_bpm = jsonMessage.heartbeat;
+						break;
+					case 3:
+						player3_bpm = jsonMessage.heartbeat;
+						break;
+					case 4:
+						player4_bpm = jsonMessage.heartbeat;
+						break;
+				}
+				// This if-structure checks if the heartbeat of the last player is received, if so, the player with the highest difference between current heartbeat and rest heartbeat will receive the most seconds
+				if (playersBpmCount == players.length) {
+					playersBpmCount = 0;
+					// LUKA deze if wordt uitgevoerd bij het krijgen van de laatste hartslag, hier moet de berekening doen van wie het meest heeft gesport en wie dus het meeste tijd krijgt
+					let player1Diff = player1_bpm - player1_rest_bpm;
+					let player2Diff = player2_bpm - player2_rest_bpm;
+					let player3Diff = player3_bpm - player3_rest_bpm;
+					let player4Diff = player4_bpm - player4_rest_bpm;
+					let lijst = [ player1Diff, player2Diff, player3Diff, player4Diff ];
+					Console.log(lijst);
+					let timeToGive = [ 20, 15, 10, 5 ];
+					// Get the index from the biggest number
+					var arrayMaxIndex = function(array) {
+						return array.indexOf(Math.max.apply(null, array));
+					};
+					// Checking which index is the highest number
+					let highest = arrayMaxIndex(lijst);
+					// Giving the player with this index the highest amount of seconds
+					players[highest].time_left += timeToGive[0];
+					// Removing this player from the to-check list with BPM
+					lijst.splice(highest, 1);
+					// Checking the list for highest, because the previous highest was removed so we can keep checking etc....
+					let highest2 = arrayMaxIndex(lijst);
+					players[highes2].time_left += timeToGive[1];
+					lijst.splice(highest2, 1);
+					let highest3 = arrayMaxIndex(lijst);
+					players[highes3].time_left += timeToGive[2];
+					lijst.splice(highest3, 1);
+					let highest4 = arrayMaxIndex(lijst);
+					players[highes4].time_left += timeToGive[3];
+					lijst.splice(highest4, 1);
+				}
+			} else {
+				// If the RestBpmCount does not equal to players list length, we know we asked for the rest heartbeats
+				switch (jsonMessage.player) {
+					case 1:
+						player1_rest_bpm = jsonMessage.heartbeat;
+						break;
+					case 2:
+						player2_rest_bpm = jsonMessage.heartbeat;
+						break;
+					case 3:
+						player3_rest_bpm = jsonMessage.heartbeat;
+						break;
+					case 4:
+						player4_rest_bpm = jsonMessage.heartbeat;
+						break;
+				}
+				RestBpmCount++;
 			}
 			break;
 		default:
@@ -569,15 +784,48 @@ const Buttonchecked = function() {
 	ShowLoadingScreen();
 	ConnectToMQTT();
 };
-
+const loginRequest = async function() {
+	const username = document.querySelector('#username').value;
+	const password = document.querySelector('#password').value;
+	AnimateRow.innerHTML = loader;
+	let serverEndPoint = `https://project2functions.azurewebsites.net/api/GetUser?username=${username}&password=${password}`;
+	const response = await fetch(serverEndPoint, { headers: customheaders, mode: 'cors' });
+	const data = await response.json();
+	return data;
+};
+const login = function() {
+	loginRequest().then((x) => {
+		if (x == 400) {
+			console.log('wrong credentials');
+			ReplaceRow.innerHTML = loginPage;
+			let loginSubmit = document.querySelector('.js-submitLogin');
+			loginSubmit.addEventListener('click', login);
+		} else {
+			userGuid = x.userGuid;
+			ReplaceRow.innerHTML = startPage;
+			const game = document.querySelector('.js-game');
+			const question = document.querySelector('.js-question');
+			game.addEventListener('click', loadPinPage);
+		}
+	});
+};
+const loadPinPage = function() {
+	ReplaceRow.innerHTML = pinPage;
+	SubmitButton = document.querySelector('#js-submit');
+	SubmitButton.addEventListener('click', Buttonchecked);
+};
+const loadLoginPage = function() {
+	ReplaceRow.innerHTML = loginPage;
+	// Need to use this one later
+	let loginSubmit = document.querySelector('.js-submitLogin');
+	loginSubmit.addEventListener('click', login);
+};
 const init = function() {
 	// Init function
-	SubmitButton = document.querySelector('#js-submit');
 	ReplaceRow = document.querySelector('.js-row');
-	AnimateRow = document.querySelector('.js-animate');
 	QuestionRow = document.querySelector('.c-app');
-	// Need to use this one later
-	SubmitButton.addEventListener('click', Buttonchecked);
+	loadLoginPage();
+	AnimateRow = document.querySelector('.js-animate');
 };
 
 document.addEventListener('DOMContentLoaded', init);

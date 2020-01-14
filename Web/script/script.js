@@ -573,7 +573,7 @@ const GenerateQuestionPage = function() {
 	HeaderRow.innerHTML += footer;
 
 	// Selecting all avatars
-	var QuestionAvatarsList = document.querySelectorAll('.c-avatar');
+	let QuestionAvatarsList = document.querySelectorAll('.c-avatar');
 	console.log(QuestionAvatarsList);
 
 	// Selecting all scores
@@ -602,7 +602,9 @@ const GenerateQuestionPage = function() {
 	ShowQuestionAndAnswers();
 };
 const playerAnswer = function(userInfo) {
-	for (let i = 0; i < QuestionAvatarsList.length; i++) {}
+	let QuestionAvatarsList = document.querySelectorAll('.c-avatar');
+	QuestionAvatarsList[userInfo.player -1].style.opacity = 0.3;
+
 };
 // called when a message arrives
 function onMessageArrived(message) {
@@ -652,7 +654,7 @@ function onMessageArrived(message) {
 			// Receiving which avatars are being chosen
 			// Also creating objects of players, with their own stats ie: Time_left, points
 			if (!selectedAvatars.includes(jsonMessage.button) && players.every(checkPlayerCreated, { id: jsonMessage.player })) {
-				players.push({ player: jsonMessage.player, avatar: jsonMessage.button, points: 0, time_left: 20 });
+				players.push({ player: jsonMessage.player, avatar: jsonMessage.button, points: 0, time_left: 20000 });
 				selectedAvatars.push(jsonMessage.button);
 				message = new Paho.Message(JSON.stringify({ type: 'avatar', status: 'stop', player: jsonMessage.player }));
 				message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;

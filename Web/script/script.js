@@ -1,5 +1,5 @@
 // global variables
-let SubmitButton, InputFieldValue, ReplaceRow, AnimateRow, QuestionRow, RandomQuestion, AvatarButton, QuestionAvatarsList, ScoreList, PlayerName, userGuid, AnswersList, juistAntwoord, juisteButton;
+let SubmitButton, InputFieldValue, ReplaceRow, AnimateRow, QuestionRow, RandomQuestion, AvatarButton, QuestionAvatarsList, ScoreList, PlayerName, userGuid;
 let client;
 let Communication;
 let players = [];
@@ -10,7 +10,6 @@ let QuestionList = [];
 let playerCount = 0;
 let gameStep = 0;
 let pulsarList = [];
-let StartTime = [];
 let tempPulsarList = { 0: undefined, 1: undefined, 2: undefined, 3: undefined };
 let IsFirstQuestion = true,
 	IsRestBpm = true,
@@ -21,7 +20,6 @@ let player1_bpm, player2_bpm, player3_bpm, player4_bpm;
 let playerAnswers = [];
 let playersAnswers = [];
 let playersAnswered = [];
-let AnswersGotten = [];
 let playerRestBPM = [ player1_rest_bpm, player2_rest_bpm, player3_rest_bpm, player4_rest_bpm ];
 let playerBPM = [ player1_bpm, player2_bpm, player3_bpm, player4_bpm ];
 
@@ -470,6 +468,7 @@ const loadPulsarDevices = function() {
 
 // Function that GETS questions + answers, and shows them!
 const ShowQuestionAndAnswers = function() {
+	console.log("ik zit in de questions");
 	// IF this is the first question of the quiz, we will send a message to the back-end to read the 'resting' heart beat
 	for (let i = 0; i < players.length; i++) {
 		playersAnswered.push({ player: players[i].player, answered: false });
@@ -488,6 +487,8 @@ const ShowQuestionAndAnswers = function() {
 	}
 
 	// Inserting HTML
+	
+	console.log("hier zit het probleem");
 	QuestionRow.innerHTML = Answers;
 
 	// GET's questions and inserts them onto the HTML, async.
@@ -498,12 +499,6 @@ const ShowQuestionAndAnswers = function() {
 		// Random number to generate random question!
 		let RandomQuestion = QuestionList[Math.floor(Math.random() * QuestionList.length)];
 		console.log(RandomQuestion);
-		// for (let i = 0; i < x.length; i++) {
-		// 	if (x[i].questionAnswers[i].correct == 1) {
-		// 		juistAntwoord = x[i].questionAnswers[i].answer;
-		// 		console.log('Het juiste antwoord van de vraag is ' + juistAntwoord);
-		// 	}
-		// }
 
 		// Selecting question
 		let Question = document.querySelector('.c-question');
@@ -515,12 +510,6 @@ const ShowQuestionAndAnswers = function() {
 		// Inserting everything
 		for (let i = 0; i < RandomQuestion.questionAnswers.length; i++) {
 			AnswerList[i].innerHTML = RandomQuestion.questionAnswers[i].answer;
-			if (RandomQuestion.questionAnswers[i].correct == 1) {
-				juistAntwoord = RandomQuestion.questionAnswers[i].answer;
-				juisteButton = i;
-				console.log('Het juiste antwoord van de vraag is ' + juistAntwoord);
-				console.log('Het juiste antwoord staat op button: ' + i);
-			}
 		}
 	});
 	console.log('yes this is it');
@@ -543,16 +532,16 @@ const ShowQuestionAndAnswers = function() {
 
 	// WIP, have the time tick down over time
 	// 4 timers that count down the amount of seconds, these also get saved in the player variables.
-	intervalAll = setInterval(function() {
-		for (let i = 0; i < ScoreList.length; i++) {
-			let TimeLeft = players[i].time_left;
-			let answered = playersAnswered.find(findIfAnswered, players[i].player);
-			if (!answered) {
-				ScoreList[i].innerHTML = TimeLeft / 1000;
-				players[i].time_left = TimeLeft - 1000;
-			}
+	intervalAll = setInterval(function(){
+		for(let i = 0;i < ScoreList.length;i++){
+				let TimeLeft = players[i].time_left;
+				let answered = playersAnswered.find(findIfAnswered,players[i].player);
+				if(!answered){
+					ScoreList[i].innerHTML = TimeLeft / 1000;
+					players[i].time_left = TimeLeft - 1000;
+				}
 		}
-	}, 1000);
+	},1000)
 };
 const findIfAnswered = function(dict) {
 	if (dict.player == this) {
@@ -646,23 +635,24 @@ const stopPlayerInit = function() {
 	client.send(message);
 };
 //pass a 'true' as parameter if the html is meant for the score page, pass a 'false' if html is meant for questionPage
-const generateAvatarHtml = function(scorePage) {
+const generateAvatarHtml = function(scorePage){
 	ReplaceRow.innerHTML = Header;
 	HeaderRow = document.querySelector('.js-headerRow');
 	let html = '';
 	for (let i = 0; i < selectedAvatars.length; i++) {
 		html += `<div class="o-layout__item u-1-of-4 c-avatar__text u-align-text-center">
 		<div class="c-avatar" data-id="${players[i].player}">`;
-		if (!scorePage) {
+		if(!scorePage){
 			html += Avatar;
-		} else {
+		}
+		else{
 			html += AvatarScorePage;
 		}
 		console.log('ik zit in de loooooop');
 	}
 	return html;
-};
-const FillInAvatarHtml = function(scorePage) {
+}
+const FillInAvatarHtml = function(scorePage){
 	let QuestionAvatarsList = document.querySelectorAll('.c-avatar');
 	console.log(QuestionAvatarsList);
 
@@ -672,32 +662,29 @@ const FillInAvatarHtml = function(scorePage) {
 
 	// Selecting all player names
 	console.log(selectedAvatars);
-	console.log('dit zijn de selected');
+	console.log("dit zijn de selected");
 	PlayerName = document.querySelectorAll('.js-PlayerClass');
 	for (let i = 0; i < selectedAvatars.length; i++) {
 		let GekozenAvatar = players[i].avatar;
 		let GekozenPlayer = players[i].player;
-		console.log('Speler ' + GekozenPlayer + ' heeft gekozen voor avatar ' + GekozenAvatar);
+		console.log('Speler ' + GekozenPlayer + ' heeft gekozen voor avatarss ' + GekozenAvatar);
 
 		// Filling in stats in the header such as score and time_left
 		PlayerName[i].innerHTML = 'Speler ' + GekozenPlayer;
 		let Avatar = avatars[GekozenAvatar - 1];
 		QuestionAvatarsList[i].innerHTML = Avatar;
-		if (!scorePage) {
+		if(!scorePage){
 			ScoreList[i].innerHTML = players[i].time_left / 1000;
 		}
 		// Chosen Avatar gets opacity faded to 0.5
 		//QuestionAvatarsList[GekozenAvatar - 1].style.opacity = 1;
 		//QuestionAvatarsList[GekozenAvatar - 1].style.transition = 'opacity 1s';
 	}
-};
+}
 // Function to generate the page with quesiton and answers on it
 const GenerateQuestionPage = function() {
 	// Tell the back end to stop reading avatars
 	stopPlayerInit();
-	for (i = 0; i < players.length; i++) {
-		StartTime.push(players[i].time_left);
-	}
 
 	// Generate the HTML for the question page
 	/*
@@ -712,6 +699,8 @@ const GenerateQuestionPage = function() {
 		console.log('ik zit in de loooooop');
 	}*/
 	avatarHtml = generateAvatarHtml(false);
+	console.log("hier zit hem");
+
 	HeaderRow.innerHTML += avatarHtml;
 	HeaderRow.innerHTML += footer;
 
@@ -736,7 +725,7 @@ const playerAnswer = function(userInfo) {
 		if (QuestionAvatarsList[i].dataset.id == userInfo.player) {
 			console.log(QuestionAvatarsList[i]);
 			console.log(QuestionAvatarsList);
-			console.log('hier zit de fucker');
+			console.log("hier zit de fucker");
 			QuestionAvatarsList[i].style.opacity = 0.3;
 			break;
 		}
@@ -784,7 +773,7 @@ function onMessageArrived(message) {
 			}
 			break;
 		case 'avatar':
-			console.log('er komt iets binne');
+			console.log("er komt iets binne");
 			console.log(message);
 			// Selecting the button and making it hidden
 			AvatarButton = document.querySelector('.c-button');
@@ -805,12 +794,12 @@ function onMessageArrived(message) {
 					AvatarButton.style.visibility = 'visible';
 				}
 
-				// If all avatars have been chosen
+				// If all 4 avatars have been chosen
 				if (players.length == playerCount) {
 					QuestionAvatarsList = document.querySelectorAll('.c-avatar');
 					ScoreList = document.querySelectorAll('.c-avatar--orange');
-
 					GenerateQuestionPage();
+					console.log("thot");
 					break;
 				}
 
@@ -839,19 +828,15 @@ function onMessageArrived(message) {
 			break;
 		case 'questions':
 			//This code saves the received button and time needed into a object en adds the object to an array
-			AnswersList = document.querySelectorAll('.c-answer');
-			let answer = {};
+			answer = {};
 			answer.player = jsonMessage.player;
 			answer.button = jsonMessage.button;
 			answer.time_needed = jsonMessage.time_needed;
 			playersAnswers.push(jsonMessage.player);
-			AnswersGotten.push(answer);
 			playerAnswer(answer);
-			//console.log('er zijn  ' + playersAnswers.length + ' antwoorden ingegeven van de ' + players.length);
+			console.log('er zijn  ' + playersAnswers.length + ' antwoorden ingegeven van de ' + players.length);
 			//If the length of playerAnswers equals the length of players we know that we received all answers
-			console.log('er zijn ' + AnswersGotten.length + ' antwoorden ingedient');
-			console.log('er zijn ' + players.length + ' spelers in het spel');
-			if (AnswersGotten.length == players.length) {
+			if (playersAnswers.length == players.length) {
 				console.log('Alle antwoorden zijn ingegeven');
 				QuestionRow.innerHTML = Sporting;
 
@@ -868,32 +853,18 @@ function onMessageArrived(message) {
 				//LUKA hier moet de punten berekening gebeuren aan de hand van de knop dar werd gegeven en de tijd die nodig was
 				FillInAvatarHtml(true);
 				for (let i = 0; i < players.length; i++) {
-					console.log('speler' + AnswersGotten[i].player + ' heeft gedrukt op knop ' + AnswersGotten[i].button);
-					if (AnswersGotten[i].button == juisteButton) {
-						console.log('het juiste antwoord is ingegeven');
-						console.log(StartTime[i]);
-						console.log(AnswersGotten[i].time_needed);
-						console.log('____________________');
-						let tijd_nodig = AnswersGotten[i].time_needed / 1000;
-						let tijd_over = StartTime[i] / 1000;
-						let Berekening = tijd_nodig / tijd_over;
-						let Berekening2 = Berekening / 2;
-						let Berekening3 = 1 - Berekening2;
-						let Berekening4 = Berekening3 * 20;
-						let FinalBerekening = Math.round(Berekening4);
-						players[i].points += FinalBerekening;
-						console.log('Player ' + (i + 1) + ' krijgt ' + FinalBerekening + ' punten');
-						players[i].time_left = StartTime[i] - AnswersGotten[i].time_needed;
-					}
+					let Berekening = jsonMessage.time_needed / players.time_left;
+					let Berekening2 = Berekening / 2;
+					let Berekening3 = 1 - Berekening2;
+					let Berekening4 = Berekening3 * 10;
+					let FinalBerekening = Math.floor(Berekening4);
+					players[i].points += FinalBerekening;
 				}
-				console.log(players);
 			}
 
 			break;
 		case 'bpm':
 			// If the RestBpmCount equals to the players list length, we know that the heartbeats are the current heartbeats
-			// console.log(RestBpmCount);
-			// console.log(players.length);
 			if (RestBpmCount == players.length) {
 				playersBpmCount++;
 				switch (jsonMessage.player) {
@@ -912,7 +883,6 @@ function onMessageArrived(message) {
 				}
 				// This if-structure checks if the heartbeat of the last player is received, if so, the player with the highest difference between current heartbeat and rest heartbeat will receive the most seconds
 				if (playersBpmCount == players.length) {
-					console.log('ik begin aan de tijd toevoeging');
 					playersBpmCount = 0;
 					// LUKA deze if wordt uitgevoerd bij het krijgen van de laatste hartslag, hier moet de berekening doen van wie het meest heeft gesport en wie dus het meeste tijd krijgt
 					let player1Diff = player1_bpm - player1_rest_bpm;
@@ -924,7 +894,6 @@ function onMessageArrived(message) {
 					let timeToGive = [ 20000, 15000, 10000, 5000 ];
 					// Get the index from the biggest number
 					var arrayMaxIndex = function(array) {
-						console.log('Ik zit in de max function');
 						return array.indexOf(Math.max.apply(null, array));
 					};
 					// Checking which index is the highest number
@@ -1026,7 +995,7 @@ const generateAdminQuestionHtml = function(question){
 		<div class="o-layout__item u-align-middle-svg u-align-center-clear u-1-of-3">
 			<div class="o-layout o-layout--gutter-lg u-pt-clear">
 				<div class="o-layout__item u-border-right u-1-of-2">
-						<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" width="48px" height="48px" viewBox="0 0 512 512" xml:space="preserve"><path fill="#57AB18" d="M461.6 109.6l-54.9-43.3c-1.7-1.4-3.8-2.4-6.2-2.4-2.4 0-4.6 1-6.3 2.5L194.5 323s-78.5-75.5-80.7-77.7c-2.2-2.2-5.1-5.9-9.5-5.9s-6.4 3.1-8.7 5.4c-1.7 1.8-29.7 31.2-43.5 45.8-.8.9-1.3 1.4-2 2.1-1.2 1.7-2 3.6-2 5.7 0 2.2.8 4 2 5.7l2.8 2.6s139.3 133.8 141.6 136.1c2.3 2.3 5.1 5.2 9.2 5.2 4 0 7.3-4.3 9.2-6.2l249.1-320c1.2-1.7 2-3.6 2-5.8 0-2.5-1-4.6-2.4-6.4z"/><metadata><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:Description about="https://iconscout.com/legal#licenses" dc:title="checkmark" dc:description="checkmark" dc:publisher="Iconscout" dc:date="2017-09-24" dc:format="image/svg+xml" dc:language="en"><dc:creator><rdf:Bag><rdf:li>Benjamin J Sperry</rdf:li></rdf:Bag></dc:creator></rdf:Description></rdf:RDF></metadata></svg>
+						<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg xmlns="http://www.w3.org/2000/svg" data- xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" width="48px" height="48px" viewBox="0 0 512 512" xml:space="preserve"><path fill="#57AB18" d="M461.6 109.6l-54.9-43.3c-1.7-1.4-3.8-2.4-6.2-2.4-2.4 0-4.6 1-6.3 2.5L194.5 323s-78.5-75.5-80.7-77.7c-2.2-2.2-5.1-5.9-9.5-5.9s-6.4 3.1-8.7 5.4c-1.7 1.8-29.7 31.2-43.5 45.8-.8.9-1.3 1.4-2 2.1-1.2 1.7-2 3.6-2 5.7 0 2.2.8 4 2 5.7l2.8 2.6s139.3 133.8 141.6 136.1c2.3 2.3 5.1 5.2 9.2 5.2 4 0 7.3-4.3 9.2-6.2l249.1-320c1.2-1.7 2-3.6 2-5.8 0-2.5-1-4.6-2.4-6.4z"/><metadata><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:Description about="https://iconscout.com/legal#licenses" dc:title="checkmark" dc:description="checkmark" dc:publisher="Iconscout" dc:date="2017-09-24" dc:format="image/svg+xml" dc:language="en"><dc:creator><rdf:Bag><rdf:li>Benjamin J Sperry</rdf:li></rdf:Bag></dc:creator></rdf:Description></rdf:RDF></metadata></svg>
 				</div>
 				<div class="o-layout__item u-align-middle-svg u-1-of-2">
 					<svg class=""xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" width="48px" height="48px" viewBox="0 0 48 48"><path fill="#E2887C" d="M36,44H12a3,3,0,0,1-3-3V12a1,1,0,0,1,1-1H38a1,1,0,0,1,1,1V41A3,3,0,0,1,36,44ZM11,13V41a1,1,0,0,0,1,1H36a1,1,0,0,0,1-1V13Z"/><path fill="#E2887C" d="M35,12V38a2,2,0,0,1-2,2H10v1a2,2,0,0,0,2,2H36a2,2,0,0,0,2-2V12Z" opacity=".35"/><path fill="#E2887C" d="M43 13H5a1 1 0 0 1 0-2H43a1 1 0 0 1 0 2zM17 35a1 1 0 0 1-1-1V20a1 1 0 0 1 2 0V34A1 1 0 0 1 17 35zM31 35a1 1 0 0 1-1-1V20a1 1 0 0 1 2 0V34A1 1 0 0 1 31 35zM24 37a1 1 0 0 1-1-1V18a1 1 0 0 1 2 0V36A1 1 0 0 1 24 37z"/><path fill="#E2887C" d="M33,13H15a1,1,0,0,1-1-1V7a3,3,0,0,1,3-3H31a3,3,0,0,1,3,3v5A1,1,0,0,1,33,13ZM16,11H32V7a1,1,0,0,0-1-1H17a1,1,0,0,0-1,1Z"/></svg>

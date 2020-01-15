@@ -503,45 +503,16 @@ const ShowQuestionAndAnswers = function() {
 
 	// WIP, have the time tick down over time
 	// 4 timers that count down the amount of seconds, these also get saved in the player variables.
-	intervalAll = setInterval(function() {
-		for (let i = 0; i < ScoreList.length; i++) {
-			let TimeLeft = players[i].time_left;
-			let answered = playersAnswered.find(findIfAnswered, players[i].player);
-			if (!answered) {
-				ScoreList[i].innerHTML = TimeLeft / 1000;
-				players[i].time_left = TimeLeft - 1000;
-			}
+	intervalAll = setInterval(function(){
+		for(let i = 0;i < ScoreList.length;i++){
+				let TimeLeft = players[i].time_left;
+				let answered = playersAnswered.find(findIfAnswered,players[i].player);
+				if(!answered){
+					ScoreList[i].innerHTML = TimeLeft / 1000;
+					players[i].time_left = TimeLeft - 1000;
+				}
 		}
-	}, 1000);
-	/*
-	interval1 = setInterval(function() {
-		console.log('timer begint');
-		let TimeLeft = players[0].time_left;
-		ScoreList[0].innerHTML = TimeLeft / 1000;
-		players[0].time_left = TimeLeft - 1000;
-	}, 1000);
-
-	interval2 = setInterval(function() {
-		console.log('timer begint');
-		let TimeLeft = players[1].time_left;
-		ScoreList[1].innerHTML = TimeLeft / 1000;
-		players[1].time_left = TimeLeft - 1000;
-	}, 1000);
-
-	interval3 = setInterval(function() {
-		console.log('timer begint');
-		let TimeLeft = players[2].time_left;
-		ScoreList[2].innerHTML = TimeLeft / 1000;
-		players[2].time_left = TimeLeft - 1000;
-	}, 1000);
-
-	interval4 = setInterval(function() {
-		console.log('timer begint');
-		let TimeLeft = players[3].time_left;
-		ScoreList[3].innerHTML = TimeLeft / 1000;
-		players[3].time_left = TimeLeft - 1000;
-	}, 1000);
-	*/
+	},1000)
 };
 const findIfAnswered = function(dict) {
 	if (dict.player == this) {
@@ -693,23 +664,6 @@ const playerAnswer = function(userInfo) {
 			playersAnswered[i].answered = true;
 		}
 	}
-	/*
-	switch (userInfo.player) {
-
-		case 1:
-			clearInterval(interval1);
-			break;
-		case 2:
-			clearInterval(interval2);
-			break;
-		case 3:
-			clearInterval(interval3);
-			break;
-		case 4:
-			clearInterval(interval4);
-			break;
-	}
-	*/
 	// Seeing who answered, and greying out their avatar
 	let QuestionAvatarsList = document.querySelectorAll('.c-avatar');
 	for (let i = 0; i < players.length; i++) {
@@ -717,6 +671,7 @@ const playerAnswer = function(userInfo) {
 		if (QuestionAvatarsList[i].dataset.id == userInfo.player) {
 			console.log(QuestionAvatarsList[i]);
 			console.log(QuestionAvatarsList);
+			console.log("hier zit de fucker");
 			QuestionAvatarsList[i].style.opacity = 0.3;
 			break;
 		}
@@ -764,6 +719,8 @@ function onMessageArrived(message) {
 			}
 			break;
 		case 'avatar':
+			console.log("er komt iets binne");
+			console.log(message);
 			// Selecting the button and making it hidden
 			AvatarButton = document.querySelector('.c-button');
 			AvatarButton.style.visibility = 'hidden';
@@ -788,6 +745,7 @@ function onMessageArrived(message) {
 					QuestionAvatarsList = document.querySelectorAll('.c-avatar');
 					ScoreList = document.querySelectorAll('.c-avatar--orange');
 					GenerateQuestionPage();
+					break;
 				}
 
 				// If an avatar is chosen, it gets a lower opacity, as to show that it's chosen

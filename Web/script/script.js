@@ -429,6 +429,8 @@ const sendPulsarDevices = function () {
 	message = new Paho.Message(JSON.stringify({ type: 'avatar', status: 'start' }));
 	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 	client.send(message);
+	AvatarButton = document.querySelector('.c-button');
+	AvatarButton.style.visibility = 'hidden';
 };
 const loadPulsarDevices = function () {
 	ReplaceRow.innerHTML = Pulsar;
@@ -481,7 +483,7 @@ const loadPulsarDevices = function () {
 };
 
 // Function that GETS questions + answers, and shows them!
-const ShowQuestionAndAnswers = function() {
+const ShowQuestionAndAnswers = function () {
 	console.log("ik zit in de questions");
 	// IF this is the first question of the quiz, we will send a message to the back-end to read the 'resting' heart beat
 	for (let i = 0; i < players.length; i++) {
@@ -501,7 +503,7 @@ const ShowQuestionAndAnswers = function() {
 	}
 
 	// Inserting HTML
-	
+
 	console.log("hier zit het probleem");
 	QuestionRow.innerHTML = Answers;
 
@@ -657,24 +659,24 @@ const stopPlayerInit = function () {
 	client.send(message);
 };
 //pass a 'true' as parameter if the html is meant for the score page, pass a 'false' if html is meant for questionPage
-const generateAvatarHtml = function(scorePage){
+const generateAvatarHtml = function (scorePage) {
 	ReplaceRow.innerHTML = Header;
 	HeaderRow = document.querySelector('.js-headerRow');
 	let html = '';
 	for (let i = 0; i < selectedAvatars.length; i++) {
 		html += `<div class="o-layout__item u-1-of-4 c-avatar__text u-align-text-center">
 		<div class="c-avatar" data-id="${players[i].player}">`;
-		if(!scorePage){
+		if (!scorePage) {
 			html += Avatar;
 		}
-		else{
+		else {
 			html += AvatarScorePage;
 		}
 		console.log('ik zit in de loooooop');
 	}
 	return html;
 }
-const FillInAvatarHtml = function(scorePage){
+const FillInAvatarHtml = function (scorePage) {
 	let QuestionAvatarsList = document.querySelectorAll('.c-avatar');
 	console.log(QuestionAvatarsList);
 
@@ -695,7 +697,7 @@ const FillInAvatarHtml = function(scorePage){
 		PlayerName[i].innerHTML = 'Speler ' + GekozenPlayer;
 		let Avatar = avatars[GekozenAvatar - 1];
 		QuestionAvatarsList[i].innerHTML = Avatar;
-		if(!scorePage){
+		if (!scorePage) {
 			ScoreList[i].innerHTML = players[i].time_left / 1000;
 		}
 		// Chosen Avatar gets opacity faded to 0.5
@@ -704,7 +706,7 @@ const FillInAvatarHtml = function(scorePage){
 	}
 }
 // Function to generate the page with quesiton and answers on it
-const GenerateQuestionPage = function() {
+const GenerateQuestionPage = function () {
 	// Tell the back end to stop reading avatars
 	stopPlayerInit();
 
@@ -801,7 +803,6 @@ function onMessageArrived(message) {
 			console.log(message);
 			// Selecting the button and making it hidden
 			AvatarButton = document.querySelector('.c-button');
-			AvatarButton.style.visibility = 'hidden';
 			AvatarButton.addEventListener('click', GenerateQuestionPage);
 			console.log(players);
 
@@ -1004,11 +1005,11 @@ const login = function () {
 			const game = document.querySelector('.js-game');
 			const question = document.querySelector('.js-question');
 			game.addEventListener('click', Page);
-			question.addEventListener('click',loadAdminPage);
+			question.addEventListener('click', loadAdminPage);
 		}
 	});
 };
-const Page = function() {
+const Page = function () {
 	ReplaceRow.innerHTML = pinPage;
 	SubmitButton = document.querySelector('#js-submit');
 	let pinInput = document.querySelector('.js-input-pin');
@@ -1028,7 +1029,7 @@ const autoEnter = function (event) {
 		let loginSubmit = document.querySelector('.js-submitLogin').click();
 	}
 };
-const generateAdminQuestionHtml = function(question){
+const generateAdminQuestionHtml = function (question) {
 	let html = "";
 	html += `<form class="u-border-bottom">
 	<div class="o-layout">
@@ -1057,17 +1058,17 @@ const generateAdminQuestionHtml = function(question){
 			<input id="question-${question.questionID}" class="c-input c-input--xs" type="text" name="question" id="question" value="${question.questionName}" />
 		</div>
 		<div class="o-layout__item o-layout--column u-align-middle-svg u-1-of-3">`;
-		let svgClass = "";
-		for(let answer of question.questionAnswers){
-			if(answer.correct){
-				svgClass = "c-svg__active";
-			}
-			else{
-				console.log("incorrect");
-				svgClass = "";
-			}
-			
-			html += `<div class="o-layout u-mb-md">
+	let svgClass = "";
+	for (let answer of question.questionAnswers) {
+		if (answer.correct) {
+			svgClass = "c-svg__active";
+		}
+		else {
+			console.log("incorrect");
+			svgClass = "";
+		}
+
+		html += `<div class="o-layout u-mb-md">
 			<div class="o-layout__item u-align-middle-svg u-1-of-3 u-pt-clear">
 				<svg class="c-svg__check ${svgClass} js-check" xmlns="http://www.w3.org/2000/svg" width="18.684" height="18.684" viewBox="0 0 18.684 18.684">
 				  <path id="Icon_22_" d="M80.608,64H66.076A2.082,2.082,0,0,0,64,66.076V80.608a2.082,2.082,0,0,0,2.076,2.076H80.608a2.082,2.082,0,0,0,2.076-2.076V66.076A2.082,2.082,0,0,0,80.608,64ZM71.266,78.532l-5.19-5.19,1.453-1.453,3.737,3.737,7.889-7.889,1.453,1.453Z" transform="translate(-64 -64)" fill="#192a9a"/>
@@ -1077,9 +1078,9 @@ const generateAdminQuestionHtml = function(question){
 				<input id="answer-${question.questionID}" class="c-input c-input--xs c-input__answer" type="text" name="answer" id="answer" value="${answer.answer}" />
 			</div>
 		</div>`;
-		}
-			
-		html += `
+	}
+
+	html += `
 			<svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19">
 			  <g id="Page-1" transform="translate(0 0.414)">
 				<g id="Artboard" transform="translate(1 1)">
@@ -1096,29 +1097,29 @@ const generateAdminQuestionHtml = function(question){
 		</form>`;
 	return html;
 }
-const changeAnswerCorrect = function(){
+const changeAnswerCorrect = function () {
 	this.classList.toggle("c-svg__active");
 }
-const loadAdminPage = function(){
+const loadAdminPage = function () {
 	ReplaceRow.innerHTML = adminPage;
 	let form = document.querySelector(".js-questionsForm");
 	GetQuestions().then((x) => {
 		let htmlQuestions = "";
-		for(let i of x){
+		for (let i of x) {
 			console.log(i);
 			htmlQuestions += generateAdminQuestionHtml(i);
 		}
 		form.innerHTML = htmlQuestions;
 		const checkBoxes = document.querySelectorAll('.js-check');
-		for(let checkBox of checkBoxes){
-			checkBox.addEventListener('click',changeAnswerCorrect);
+		for (let checkBox of checkBoxes) {
+			checkBox.addEventListener('click', changeAnswerCorrect);
 		}
 	});
 
-	
+
 
 }
-const loadLoginPage = function() {
+const loadLoginPage = function () {
 	ReplaceRow.innerHTML = loginPage;
 	// Need to use this one later
 	let loginSubmit = document.querySelector('.js-submitLogin');

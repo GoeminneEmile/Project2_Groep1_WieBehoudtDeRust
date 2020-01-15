@@ -1161,23 +1161,14 @@ const generateAdminQuestionHtml = function(question){
 		</div>
 		</form>`;
 	return html;
-<<<<<<< HEAD
 }
 const saveQuestion = function(){
-	console.log
-	console.log(this.dataset.question);
+	console.log("succes");
 }
 const changeAnswerCorrect = function(){
 	this.classList.toggle("c-svg__active");
 }
 const loadAdminPage = function(){
-=======
-};
-const changeAnswerCorrect = function() {
-	this.classList.toggle('c-svg__active');
-};
-const loadAdminPage = function() {
->>>>>>> develop
 	ReplaceRow.innerHTML = adminPage;
 	let form = document.querySelector('.js-questionsForm');
 	GetQuestions().then((x) => {

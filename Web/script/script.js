@@ -1,5 +1,5 @@
 // global variables
-let SubmitButton, InputFieldValue, ReplaceRow, AnimateRow, QuestionRow, RandomQuestion, AvatarButton, QuestionAvatarsList, ScoreList, PlayerName, userGuid;
+let SubmitButton, InputFieldValue, ReplaceRow, AnimateRow, QuestionRow, RandomQuestion, AvatarButton, QuestionAvatarsList, ScoreList, PlayerName, userGuid, AnswersList, juistAntwoord, juisteButton;
 let client;
 let Communication;
 let players = [];
@@ -10,6 +10,7 @@ let QuestionList = [];
 let playerCount = 0;
 let gameStep = 0;
 let pulsarList = [];
+let StartTime = [];
 let tempPulsarList = { 0: undefined, 1: undefined, 2: undefined, 3: undefined };
 let IsFirstQuestion = true,
 	IsRestBpm = true,
@@ -20,6 +21,7 @@ let player1_bpm, player2_bpm, player3_bpm, player4_bpm;
 let playerAnswers = [];
 let playersAnswers = [];
 let playersAnswered = [];
+let AnswersGotten = [];
 let playerRestBPM = [ player1_rest_bpm, player2_rest_bpm, player3_rest_bpm, player4_rest_bpm ];
 let playerBPM = [ player1_bpm, player2_bpm, player3_bpm, player4_bpm ];
 
@@ -496,6 +498,12 @@ const ShowQuestionAndAnswers = function() {
 		// Random number to generate random question!
 		let RandomQuestion = QuestionList[Math.floor(Math.random() * QuestionList.length)];
 		console.log(RandomQuestion);
+		// for (let i = 0; i < x.length; i++) {
+		// 	if (x[i].questionAnswers[i].correct == 1) {
+		// 		juistAntwoord = x[i].questionAnswers[i].answer;
+		// 		console.log('Het juiste antwoord van de vraag is ' + juistAntwoord);
+		// 	}
+		// }
 
 		// Selecting question
 		let Question = document.querySelector('.c-question');
@@ -507,6 +515,12 @@ const ShowQuestionAndAnswers = function() {
 		// Inserting everything
 		for (let i = 0; i < RandomQuestion.questionAnswers.length; i++) {
 			AnswerList[i].innerHTML = RandomQuestion.questionAnswers[i].answer;
+			if (RandomQuestion.questionAnswers[i].correct == 1) {
+				juistAntwoord = RandomQuestion.questionAnswers[i].answer;
+				juisteButton = i;
+				console.log('Het juiste antwoord van de vraag is ' + juistAntwoord);
+				console.log('Het juiste antwoord staat op button: ' + i);
+			}
 		}
 	});
 	console.log('yes this is it');
@@ -529,16 +543,16 @@ const ShowQuestionAndAnswers = function() {
 
 	// WIP, have the time tick down over time
 	// 4 timers that count down the amount of seconds, these also get saved in the player variables.
-	intervalAll = setInterval(function(){
-		for(let i = 0;i < ScoreList.length;i++){
-				let TimeLeft = players[i].time_left;
-				let answered = playersAnswered.find(findIfAnswered,players[i].player);
-				if(!answered){
-					ScoreList[i].innerHTML = TimeLeft / 1000;
-					players[i].time_left = TimeLeft - 1000;
-				}
+	intervalAll = setInterval(function() {
+		for (let i = 0; i < ScoreList.length; i++) {
+			let TimeLeft = players[i].time_left;
+			let answered = playersAnswered.find(findIfAnswered, players[i].player);
+			if (!answered) {
+				ScoreList[i].innerHTML = TimeLeft / 1000;
+				players[i].time_left = TimeLeft - 1000;
+			}
 		}
-	},1000)
+	}, 1000);
 };
 const findIfAnswered = function(dict) {
 	if (dict.player == this) {
@@ -632,24 +646,23 @@ const stopPlayerInit = function() {
 	client.send(message);
 };
 //pass a 'true' as parameter if the html is meant for the score page, pass a 'false' if html is meant for questionPage
-const generateAvatarHtml = function(scorePage){
+const generateAvatarHtml = function(scorePage) {
 	ReplaceRow.innerHTML = Header;
 	HeaderRow = document.querySelector('.js-headerRow');
 	let html = '';
 	for (let i = 0; i < selectedAvatars.length; i++) {
 		html += `<div class="o-layout__item u-1-of-4 c-avatar__text u-align-text-center">
 		<div class="c-avatar" data-id="${players[i].player}">`;
-		if(!scorePage){
+		if (!scorePage) {
 			html += Avatar;
-		}
-		else{
+		} else {
 			html += AvatarScorePage;
 		}
 		console.log('ik zit in de loooooop');
 	}
 	return html;
-}
-const FillInAvatarHtml = function(scorePage){
+};
+const FillInAvatarHtml = function(scorePage) {
 	let QuestionAvatarsList = document.querySelectorAll('.c-avatar');
 	console.log(QuestionAvatarsList);
 
@@ -659,7 +672,7 @@ const FillInAvatarHtml = function(scorePage){
 
 	// Selecting all player names
 	console.log(selectedAvatars);
-	console.log("dit zijn de selected");
+	console.log('dit zijn de selected');
 	PlayerName = document.querySelectorAll('.js-PlayerClass');
 	for (let i = 0; i < selectedAvatars.length; i++) {
 		let GekozenAvatar = players[i].avatar;
@@ -670,18 +683,21 @@ const FillInAvatarHtml = function(scorePage){
 		PlayerName[i].innerHTML = 'Speler ' + GekozenPlayer;
 		let Avatar = avatars[GekozenAvatar - 1];
 		QuestionAvatarsList[i].innerHTML = Avatar;
-		if(!scorePage){
+		if (!scorePage) {
 			ScoreList[i].innerHTML = players[i].time_left / 1000;
 		}
 		// Chosen Avatar gets opacity faded to 0.5
 		//QuestionAvatarsList[GekozenAvatar - 1].style.opacity = 1;
 		//QuestionAvatarsList[GekozenAvatar - 1].style.transition = 'opacity 1s';
 	}
-}
+};
 // Function to generate the page with quesiton and answers on it
 const GenerateQuestionPage = function() {
 	// Tell the back end to stop reading avatars
 	stopPlayerInit();
+	for (i = 0; i < players.length; i++) {
+		StartTime.push(players[i].time_left);
+	}
 
 	// Generate the HTML for the question page
 	/*
@@ -720,7 +736,7 @@ const playerAnswer = function(userInfo) {
 		if (QuestionAvatarsList[i].dataset.id == userInfo.player) {
 			console.log(QuestionAvatarsList[i]);
 			console.log(QuestionAvatarsList);
-			console.log("hier zit de fucker");
+			console.log('hier zit de fucker');
 			QuestionAvatarsList[i].style.opacity = 0.3;
 			break;
 		}
@@ -768,7 +784,7 @@ function onMessageArrived(message) {
 			}
 			break;
 		case 'avatar':
-			console.log("er komt iets binne");
+			console.log('er komt iets binne');
 			console.log(message);
 			// Selecting the button and making it hidden
 			AvatarButton = document.querySelector('.c-button');
@@ -789,10 +805,11 @@ function onMessageArrived(message) {
 					AvatarButton.style.visibility = 'visible';
 				}
 
-				// If all 4 avatars have been chosen
+				// If all avatars have been chosen
 				if (players.length == playerCount) {
 					QuestionAvatarsList = document.querySelectorAll('.c-avatar');
 					ScoreList = document.querySelectorAll('.c-avatar--orange');
+
 					GenerateQuestionPage();
 					break;
 				}
@@ -822,15 +839,19 @@ function onMessageArrived(message) {
 			break;
 		case 'questions':
 			//This code saves the received button and time needed into a object en adds the object to an array
-			answer = {};
+			AnswersList = document.querySelectorAll('.c-answer');
+			let answer = {};
 			answer.player = jsonMessage.player;
 			answer.button = jsonMessage.button;
 			answer.time_needed = jsonMessage.time_needed;
 			playersAnswers.push(jsonMessage.player);
+			AnswersGotten.push(answer);
 			playerAnswer(answer);
-			console.log('er zijn  ' + playersAnswers.length + ' antwoorden ingegeven van de ' + players.length);
+			//console.log('er zijn  ' + playersAnswers.length + ' antwoorden ingegeven van de ' + players.length);
 			//If the length of playerAnswers equals the length of players we know that we received all answers
-			if (playersAnswers.length == players.length) {
+			console.log('er zijn ' + AnswersGotten.length + ' antwoorden ingedient');
+			console.log('er zijn ' + players.length + ' spelers in het spel');
+			if (AnswersGotten.length == players.length) {
 				console.log('Alle antwoorden zijn ingegeven');
 				QuestionRow.innerHTML = Sporting;
 
@@ -847,18 +868,32 @@ function onMessageArrived(message) {
 				//LUKA hier moet de punten berekening gebeuren aan de hand van de knop dar werd gegeven en de tijd die nodig was
 				FillInAvatarHtml(true);
 				for (let i = 0; i < players.length; i++) {
-					let Berekening = jsonMessage.time_needed / players.time_left;
-					let Berekening2 = Berekening / 2;
-					let Berekening3 = 1 - Berekening2;
-					let Berekening4 = Berekening3 * 10;
-					let FinalBerekening = Math.floor(Berekening4);
-					players[i].points += FinalBerekening;
+					console.log('speler' + AnswersGotten[i].player + ' heeft gedrukt op knop ' + AnswersGotten[i].button);
+					if (AnswersGotten[i].button == juisteButton) {
+						console.log('het juiste antwoord is ingegeven');
+						console.log(StartTime[i]);
+						console.log(AnswersGotten[i].time_needed);
+						console.log('____________________');
+						let tijd_nodig = AnswersGotten[i].time_needed / 1000;
+						let tijd_over = StartTime[i] / 1000;
+						let Berekening = tijd_nodig / tijd_over;
+						let Berekening2 = Berekening / 2;
+						let Berekening3 = 1 - Berekening2;
+						let Berekening4 = Berekening3 * 20;
+						let FinalBerekening = Math.round(Berekening4);
+						players[i].points += FinalBerekening;
+						console.log('Player ' + (i + 1) + ' krijgt ' + FinalBerekening + ' punten');
+						players[i].time_left = StartTime[i] - AnswersGotten[i].time_needed;
+					}
 				}
+				console.log(players);
 			}
 
 			break;
 		case 'bpm':
 			// If the RestBpmCount equals to the players list length, we know that the heartbeats are the current heartbeats
+			// console.log(RestBpmCount);
+			// console.log(players.length);
 			if (RestBpmCount == players.length) {
 				playersBpmCount++;
 				switch (jsonMessage.player) {
@@ -877,6 +912,7 @@ function onMessageArrived(message) {
 				}
 				// This if-structure checks if the heartbeat of the last player is received, if so, the player with the highest difference between current heartbeat and rest heartbeat will receive the most seconds
 				if (playersBpmCount == players.length) {
+					console.log('ik begin aan de tijd toevoeging');
 					playersBpmCount = 0;
 					// LUKA deze if wordt uitgevoerd bij het krijgen van de laatste hartslag, hier moet de berekening doen van wie het meest heeft gesport en wie dus het meeste tijd krijgt
 					let player1Diff = player1_bpm - player1_rest_bpm;
@@ -888,6 +924,7 @@ function onMessageArrived(message) {
 					let timeToGive = [ 20000, 15000, 10000, 5000 ];
 					// Get the index from the biggest number
 					var arrayMaxIndex = function(array) {
+						console.log('Ik zit in de max function');
 						return array.indexOf(Math.max.apply(null, array));
 					};
 					// Checking which index is the highest number

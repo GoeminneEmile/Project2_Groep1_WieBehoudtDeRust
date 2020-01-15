@@ -151,6 +151,11 @@ let Avatar = `
 <p class="js-PlayerClass"> Speler 1 </p>
 <p class="c-avatar--orange"> 999 </p>
 </div>`;
+let AvatarScorePage = `
+	<?xml version="1.0" encoding="UTF-8"?><svg class="c-avatar__symbol" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 48 48" xml:space="preserve"><style type="text/css">.st0{fill:#FFD4C3;stroke:#504B46;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st1{fill:#FFC258;} .st2{fill:#4F4B45;} .st3{fill:#FABFA5;} .st4{fill:none;stroke:#504B46;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .Graphic_x0020_Style{opacity:0.15;fill:#45413C;} .st5{opacity:0.15;fill:#45413C;} .st6{fill:#DEBB7E;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st7{fill:#F0D5A8;} .st8{fill:#F7E5C6;} .st9{fill:#DEBB7E;} .st10{fill:none;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st11{fill:#FFE500;} .st12{fill:#EBCB00;} .st13{fill:none;stroke:#EBCB00;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st14{fill:#FF6242;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st15{fill:#FFFFFF;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st16{fill:#E5F8FF;} .st17{fill:#FFFFFF;} .st18{fill:#E8F4FA;} .st19{fill:#E8F4FA;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st20{fill:#FFCCDD;} .st21{fill:#FFB0CA;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st22{fill:#FF87AF;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st23{fill:#E5F8FF;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st24{fill:#BF8256;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st25{fill:#9CEB60;} .st26{fill:#6DD627;} .st27{fill:#C8FFA1;} .st28{fill:#FFFACF;} .st29{fill:#FF87AF;} .st30{fill:#FFB0CA;} .st31{fill:#FF6196;} .st32{fill:#FFCCDD;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st33{fill:#FF6196;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st34{fill:#FFE5EE;} .st35{fill:#00B8F0;} .st36{fill:#4ACFFF;} .st37{fill:#BF8256;} .st38{fill:#DEA47A;} .st39{fill:#915E3A;} .st40{fill:#FFF5E3;} .st41{fill:#F0F0F0;} .st42{fill:#8CA4B8;} .st43{fill:#627B8C;} .st44{fill:#C0DCEB;} .st45{fill:#FFF48C;} .st46{fill:#FFE500;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st47{fill:#FFAA54;} .st48{fill:#6DD627;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st49{fill:#FF8A14;} .st50{fill:#FFCC99;} .st51{fill:#EBCB00;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st52{fill:#00F5BC;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st53{fill:#BF8DF2;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st54{fill:#FF8A14;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st55{fill:#4AEFF7;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st56{fill:#FFF48C;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st57{fill:#FF6242;} .st58{fill:#E04122;} .st59{fill:#46B000;} .st60{fill:none;stroke:#45413C;stroke-miterlimit:10;} .st61{fill:#00B8F0;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st62{fill:#FF866E;} .st63{fill:#9F5AE5;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st64{fill:#E4FFD1;} .st65{fill:#FFFEF2;} .st66{fill:#B89558;} .st67{fill:none;stroke:#915E3A;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st68{fill:#915E3A;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st69{fill:#BF8DF2;} .st70{fill:#9F5AE5;} .st71{fill:#DABFF5;} .st72{fill:none;stroke:#45413C;stroke-linejoin:round;stroke-miterlimit:10;} .st73{fill:#656769;} .st74{fill:#87898C;} .st75{fill:#E0E0E0;} .st76{fill:#BDBEC0;} .st77{fill:#656769;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st78{fill:#45413C;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st79{fill:#FFA694;} .st80{fill:#E04122;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st81{fill:#E0E0E0;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st82{fill:#F0F0F0;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st83{fill:#DAEDF7;} .st84{fill:#BDBEC0;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st85{fill:#87898C;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st86{fill:#00DFEB;} .st87{fill:#4AEFF7;} .st88{fill:#DAEDF7;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st89{fill:#FFDA8F;} .st90{fill:#FFBE3D;} .st91{fill:#FFE9BD;} .st92{fill:#DEA47A;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st93{fill:#45413C;} .st94{fill:#F0C2A1;} .st95{fill:none;stroke:#45413C;stroke-width:1.0064;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st96{fill:#525252;} .st97{fill:#EB6D00;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st98{fill:#EB6D00;} .st99{fill:#E5FEFF;} .st100{fill:#FF866E;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st101{fill:#627B8C;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st102{fill:#FFFCE5;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st103{fill:#A6FBFF;} .st104{fill:#D9FDFF;} .st105{fill:#FFFACF;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st106{fill:#B8ECFF;} .st107{fill:#FFCABF;} .st108{fill:#E5FFF9;} .st109{fill:#C8FFA1;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st110{fill:#4CF4FC;} .st111{fill:#F0D5A8;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st112{fill:#FFDCD1;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st113{fill:#80DDFF;} .st114{fill:#46B000;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st115{fill:#4ACFFF;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st116{fill:#ADC4D9;} .st117{fill:#BDBEC0;stroke:#45413C;stroke-width:1.0064;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st118{fill:#FFFCE5;} .st119{fill:#947746;} .st120{fill:#525252;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}</style><symbol id="New_Symbol_14" viewBox="-6.5 -6.5 13 13"><path class="st0" d="M0-6c2.2 0 4.1 1.5 4.7 3.5C6.3-2.5 6.4 0 5 0v1c0 2.8-2.2 5-5 5s-5-2.2-5-5V0c-1.4 0-1.3-2.5.2-2.5C-4.1-4.5-2.2-6 0-6z" fill="#FFD4C3" stroke="#504B46" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><circle class="st1" cx="-1.6" cy="-0.1" r="0.1" fill="#FFC258"/><path class="st2" d="M-1.6.5c-.3 0-.6-.3-.6-.6s.2-.7.6-.7c.3 0 .6.3.6.7s-.3.6-.6.6z" fill="#4F4B45"/><circle class="st1" cx="1.6" cy="-0.1" r="0.1" fill="#FFC258"/><path class="st2" d="M1.6.5C1.3.5 1 .2 1-.1s.3-.6.6-.6.6.3.6.6-.2.6-.6.6z" fill="#4F4B45"/><circle class="st3" cx="-3" cy="-1.5" r="0.5" fill="#FABFA5"/><circle class="st3" cx="3" cy="-1.5" r="0.5" fill="#FABFA5"/><path class="st4" d="M-1.2-3c.8-.5 1.7-.5 2.5 0" fill="none" stroke="#504B46" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/></symbol><g id="Icons"><g id="XMLID_1315_"><ellipse id="XMLID_1328_" class="st5" cx="24" cy="45" rx="15.5" ry="1.7" fill="#45413C" opacity="0.15"/><ellipse id="XMLID_1298_" transform="matrix(0.5813 -0.8137 0.8137 0.5813 5.8823 33.0741)" class="st73" cx="35.1" cy="10.8" rx="10" ry="8.9" fill="#656769"/><path id="XMLID_1297_" class="st74" d="M27.9 7.9c3.2-4.5 9-5.8 13-3 2 1.4 3.1 3.6 3.4 5.9.3-3.2-.8-6.3-3.4-8.2-4-2.8-9.8-1.5-13 3-1.6 2.3-2.3 4.9-2 7.3.2-1.6.8-3.4 2-5z" fill="#87898C"/><ellipse id="XMLID_1296_" transform="matrix(0.5813 -0.8137 0.8137 0.5813 5.8823 33.0741)" class="st10" cx="35.1" cy="10.8" rx="10" ry="8.9" fill="none" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><ellipse id="XMLID_1295_" transform="matrix(0.5813 -0.8137 0.8137 0.5813 5.8203 32.9535)" class="st75" cx="34.9" cy="10.8" rx="6.8" ry="6.1" fill="#E0E0E0"/><ellipse id="XMLID_1294_" transform="matrix(0.8137 -0.5813 0.5813 0.8137 -3.8553 9.6136)" class="st73" cx="13.1" cy="10.8" rx="8.9" ry="10" fill="#656769"/><path id="XMLID_1293_" class="st74" d="M7.3 4.9c4-2.8 9.8-1.5 13 3 1.1 1.6 1.8 3.4 2 5.1.3-2.4-.4-5.1-2-7.3-3.2-4.5-9-5.8-13-3-2.6 1.8-3.7 5-3.4 8.2.2-2.4 1.4-4.6 3.4-6z" fill="#87898C"/><ellipse id="XMLID_1292_" transform="matrix(0.8137 -0.5813 0.5813 0.8137 -3.8553 9.6136)" class="st10" cx="13.1" cy="10.8" rx="8.9" ry="10" fill="none" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><ellipse id="XMLID_1291_" transform="matrix(0.8137 -0.5813 0.5813 0.8137 -3.8277 9.6997)" class="st75" cx="13.2" cy="10.8" rx="6.1" ry="6.8" fill="#E0E0E0"/><path id="XMLID_1290_" class="st76" d="M30 9.8c2.2-3.1 6.2-4 8.9-2 1.2.9 1.9 2.2 2.2 3.6.4-2.4-.3-4.7-2.2-6.1-2.7-1.9-6.7-1-8.9 2-1.2 1.7-1.6 3.7-1.3 5.5.2-1 .6-2.1 1.3-3z" fill="#BDBEC0"/><path id="XMLID_1289_" class="st76" d="M9.3 7.8c2.7-1.9 6.7-1 8.9 2 .7.9 1.1 2 1.3 3 .3-1.8 0-3.8-1.3-5.5-2.2-3.1-6.2-4-8.9-2C7.4 6.6 6.6 9 7 11.4c.3-1.5 1-2.8 2.3-3.6z" fill="#BDBEC0"/><ellipse id="XMLID_1277_" transform="matrix(0.5813 -0.8137 0.8137 0.5813 5.8203 32.9535)" class="st10" cx="34.9" cy="10.8" rx="6.8" ry="6.1" fill="none" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><ellipse id="XMLID_1263_" transform="matrix(0.8137 -0.5813 0.5813 0.8137 -3.8277 9.6997)" class="st10" cx="13.2" cy="10.8" rx="6.1" ry="6.8" fill="none" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><path id="XMLID_1262_" class="st41" d="M44.8 25.2C43 13.8 34.2 5.5 24 5.5c-10.2 0-19 8.3-20.8 19.7-1.2 7.8 4.1 15 11.1 15H16c1.9 1.6 4.7 2.7 7.9 2.7s6-1 7.9-2.7h2c6.9 0 12.2-7.2 11-15z" fill="#F0F0F0"/><path id="XMLID_1261_" class="st17" d="M3.2 29.6C5 18.2 13.8 9.9 24 9.9c10.2 0 19 8.3 20.8 19.7.2-1.4.2-2.9 0-4.4C43 13.8 34.2 5.5 24 5.5c-10.2 0-19 8.3-20.8 19.7-.2 1.5-.2 3 0 4.4z" fill="#FFF"/><path id="XMLID_1260_" class="st10" d="M44.8 25.2C43 13.8 34.2 5.5 24 5.5c-10.2 0-19 8.3-20.8 19.7-1.2 7.8 4.1 15 11.1 15H16c1.9 1.6 4.7 2.7 7.9 2.7s6-1 7.9-2.7h2c6.9 0 12.2-7.2 11-15z" fill="none" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><path id="XMLID_1259_" class="st77" d="M27.9 32.5c0 1.1-1.7 3-3.9 3s-3.9-1.8-3.9-3c0-1.1 1.7-2 3.9-2s3.9.8 3.9 2z" fill="#656769" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><path id="XMLID_1258_" class="st77" d="M28.1 20.1c-.9 5.1 3.1 7.7 6.1 8.8 3.1 1.2 4.8-1 4.8-4.1-.1-3.1-2-7.3-5.4-8.2-3-.7-5.3 2-5.5 3.5z" fill="#656769" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><path id="XMLID_1257_" class="st77" d="M19.8 20.1c.9 5.1-3.1 7.7-6.1 8.8-3.1 1.2-4.8-1-4.8-4.1.1-3.1 2-7.3 5.4-8.2 3-.7 5.2 2 5.5 3.5z" fill="#656769" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><circle id="XMLID_1256_" class="st78" cx="31.8" cy="22.1" r="1.7" fill="#45413C" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><circle id="XMLID_1255_" class="st78" cx="16.2" cy="22.1" r="1.7" fill="#45413C" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><circle id="XMLID_1254_" class="st79" cx="41.4" cy="29.7" r="2" fill="#FFA694"/><circle id="XMLID_1252_" class="st79" cx="6.6" cy="29.7" r="2" fill="#FFA694"/><path id="XMLID_1251_" class="st10" fill="none" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M24 35.4v2.2"/></g></g><metadata><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:Description about="https://iconscout.com/legal#licenses" dc:title="panda,animal" dc:description="panda,animal" dc:publisher="Iconscout" dc:date="2017-09-21" dc:format="image/svg+xml" dc:language="en"><dc:creator><rdf:Bag><rdf:li>Vincent Le Moign</rdf:li></rdf:Bag></dc:creator></rdf:Description></rdf:RDF></metadata></svg>
+</div>
+<p class="js-PlayerClass"> Speler 1 </p>
+</div>`;
 let footer = `</div>
 </div>`;
 //#endregion
@@ -341,6 +346,27 @@ let Sporting = `<div class="c-app o-row--xl c-background--white">
 </div>
 </div>`;
 //#endregion
+//#region adminPage
+let adminPage = `            
+<div class="o-container c-admin c-background--white js-questionsForm">
+
+
+<div class="o-layout u-pb-lg">
+	<div class="o-layout__item u-align-middle-svg u-pt-md">
+		<svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19">
+		  <g id="Page-1" transform="translate(0 0.414)">
+			<g id="Artboard" transform="translate(1 1)">
+			  <g id="plus-square" transform="translate(0 0)">
+				<rect id="Rectangle-path" width="17" height="17" rx="1" stroke-width="2" transform="translate(0 -0.414)" stroke="#e2887c" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+				<path id="Shape" d="M9,5v7.371" transform="translate(-0.707 -0.393)" fill="none" stroke="#e2887c" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" fill-rule="evenodd"/>
+				<path id="Shape-2" data-name="Shape" stroke="#e2887c" d="M5,9h7.371" fill="none" transform="translate(-0.393 -0.707)" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" fill-rule="evenodd"/>
+			  </g>
+			</g>
+		  </g>
+		</svg>
+	</div>
+</div>`;
+//#endregion
 //#endregion
 
 const addPulsarDevice = function () {
@@ -455,7 +481,12 @@ const loadPulsarDevices = function () {
 };
 
 // Function that GETS questions + answers, and shows them!
+<<<<<<< HEAD
 const ShowQuestionAndAnswers = function () {
+=======
+const ShowQuestionAndAnswers = function() {
+	console.log("ik zit in de questions");
+>>>>>>> develop
 	// IF this is the first question of the quiz, we will send a message to the back-end to read the 'resting' heart beat
 	for (let i = 0; i < players.length; i++) {
 		playersAnswered.push({ player: players[i].player, answered: false });
@@ -474,6 +505,8 @@ const ShowQuestionAndAnswers = function () {
 	}
 
 	// Inserting HTML
+	
+	console.log("hier zit het probleem");
 	QuestionRow.innerHTML = Answers;
 
 	// GET's questions and inserts them onto the HTML, async.
@@ -627,6 +660,7 @@ const stopPlayerInit = function () {
 	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 	client.send(message);
 };
+<<<<<<< HEAD
 
 // Function to generate the page with quesiton and answers on it
 const GenerateQuestionPage = function () {
@@ -634,6 +668,62 @@ const GenerateQuestionPage = function () {
 	stopPlayerInit();
 
 	// Generate the HTML for the question page
+=======
+//pass a 'true' as parameter if the html is meant for the score page, pass a 'false' if html is meant for questionPage
+const generateAvatarHtml = function(scorePage){
+>>>>>>> develop
+	ReplaceRow.innerHTML = Header;
+	HeaderRow = document.querySelector('.js-headerRow');
+	let html = '';
+	for (let i = 0; i < selectedAvatars.length; i++) {
+		html += `<div class="o-layout__item u-1-of-4 c-avatar__text u-align-text-center">
+		<div class="c-avatar" data-id="${players[i].player}">`;
+		if(!scorePage){
+			html += Avatar;
+		}
+		else{
+			html += AvatarScorePage;
+		}
+		console.log('ik zit in de loooooop');
+	}
+	return html;
+}
+const FillInAvatarHtml = function(scorePage){
+	let QuestionAvatarsList = document.querySelectorAll('.c-avatar');
+	console.log(QuestionAvatarsList);
+
+	// Selecting all scores
+	ScoreList = document.querySelectorAll('.c-avatar--orange');
+	console.log(ScoreList);
+
+	// Selecting all player names
+	console.log(selectedAvatars);
+	console.log("dit zijn de selected");
+	PlayerName = document.querySelectorAll('.js-PlayerClass');
+	for (let i = 0; i < selectedAvatars.length; i++) {
+		let GekozenAvatar = players[i].avatar;
+		let GekozenPlayer = players[i].player;
+		console.log('Speler ' + GekozenPlayer + ' heeft gekozen voor avatarss ' + GekozenAvatar);
+
+		// Filling in stats in the header such as score and time_left
+		PlayerName[i].innerHTML = 'Speler ' + GekozenPlayer;
+		let Avatar = avatars[GekozenAvatar - 1];
+		QuestionAvatarsList[i].innerHTML = Avatar;
+		if(!scorePage){
+			ScoreList[i].innerHTML = players[i].time_left / 1000;
+		}
+		// Chosen Avatar gets opacity faded to 0.5
+		//QuestionAvatarsList[GekozenAvatar - 1].style.opacity = 1;
+		//QuestionAvatarsList[GekozenAvatar - 1].style.transition = 'opacity 1s';
+	}
+}
+// Function to generate the page with quesiton and answers on it
+const GenerateQuestionPage = function() {
+	// Tell the back end to stop reading avatars
+	stopPlayerInit();
+
+	// Generate the HTML for the question page
+	/*
 	ReplaceRow.innerHTML = Header;
 	HeaderRow = document.querySelector('.js-headerRow');
 	let html = '';
@@ -643,37 +733,15 @@ const GenerateQuestionPage = function () {
 		<div class="c-avatar" data-id="${players[i].player}">`;
 		html += Avatar;
 		console.log('ik zit in de loooooop');
-	}
-	console.log(html);
-	HeaderRow.innerHTML += html;
+	}*/
+	avatarHtml = generateAvatarHtml(false);
+	console.log("hier zit hem");
+
+	HeaderRow.innerHTML += avatarHtml;
 	HeaderRow.innerHTML += footer;
 
-	// Selecting all avatars
-	let QuestionAvatarsList = document.querySelectorAll('.c-avatar');
-	console.log(QuestionAvatarsList);
-
-	// Selecting all scores
-	ScoreList = document.querySelectorAll('.c-avatar--orange');
-
-	// Selecting all player names
-	PlayerName = document.querySelectorAll('.js-PlayerClass');
-
 	// For every player, filling in all the info
-	for (let i = 0; i < selectedAvatars.length; i++) {
-		let GekozenAvatar = players[i].avatar;
-		let GekozenPlayer = players[i].player;
-		console.log('Speler ' + GekozenPlayer + ' heeft gekozen voor avatar ' + GekozenAvatar);
-
-		// Filling in stats in the header such as score and time_left
-		PlayerName[i].innerHTML = 'Speler ' + GekozenPlayer;
-		let Avatar = avatars[GekozenAvatar - 1];
-		QuestionAvatarsList[i].innerHTML = Avatar;
-		ScoreList[i].innerHTML = players[i].time_left / 1000;
-		// Chosen Avatar gets opacity faded to 0.5
-		//QuestionAvatarsList[GekozenAvatar - 1].style.opacity = 1;
-		//QuestionAvatarsList[GekozenAvatar - 1].style.transition = 'opacity 1s';
-	}
-
+	FillInAvatarHtml(false);
 	// Generating a random question and filling in all the HTML in this function
 	ShowQuestionAndAnswers();
 };
@@ -769,6 +837,7 @@ function onMessageArrived(message) {
 					QuestionAvatarsList = document.querySelectorAll('.c-avatar');
 					ScoreList = document.querySelectorAll('.c-avatar--orange');
 					GenerateQuestionPage();
+					console.log("thot");
 					break;
 				}
 
@@ -810,18 +879,8 @@ function onMessageArrived(message) {
 				QuestionRow.innerHTML = Sporting;
 
 				// Generate the HTML for the question page
-				ReplaceRow.innerHTML = Header;
-				HeaderRow = document.querySelector('.js-headerRow');
-				let html = '';
-				// For every person playing, generating an avatar
-				for (let i = 0; i < selectedAvatars.length; i++) {
-					html += `<div class="o-layout__item u-1-of-4 c-avatar__text u-align-text-center">
-					<div class="c-avatar" data-id="${players[i].player}">`;
-					html += Avatar;
-					console.log('ik zit in de loooooop');
-				}
-				console.log(html);
-				HeaderRow.innerHTML += html;
+				avatarHtml = generateAvatarHtml(true);
+				HeaderRow.innerHTML += avatarHtml;
 				HeaderRow.innerHTML += footer;
 				//1. Tijd die ik krijg (van robbe z'n python) delen door de totale tijd.
 				//bv: Ik krijg een json waarin staat dat een speler 5 seconden nodig had. 5 / 20 = 0,25.
@@ -830,6 +889,7 @@ function onMessageArrived(message) {
 				//4. Vermenigvuldig de punten met de maximale waarde die je kan krijgen. Dus 0,875 x 10 = 8,75.
 				//5. Rond af wanneer nodig.
 				//LUKA hier moet de punten berekening gebeuren aan de hand van de knop dar werd gegeven en de tijd die nodig was
+				FillInAvatarHtml(true);
 				for (let i = 0; i < players.length; i++) {
 					let Berekening = jsonMessage.time_needed / players.time_left;
 					let Berekening2 = Berekening / 2;
@@ -957,11 +1017,16 @@ const login = function () {
 			ReplaceRow.innerHTML = startPage;
 			const game = document.querySelector('.js-game');
 			const question = document.querySelector('.js-question');
-			game.addEventListener('click', loadPinPage);
+			game.addEventListener('click', Page);
+			question.addEventListener('click',loadAdminPage);
 		}
 	});
 };
+<<<<<<< HEAD
 const loadPinPage = function () {
+=======
+const Page = function() {
+>>>>>>> develop
 	ReplaceRow.innerHTML = pinPage;
 	SubmitButton = document.querySelector('#js-submit');
 	let pinInput = document.querySelector('.js-input-pin');
@@ -981,7 +1046,101 @@ const autoEnter = function (event) {
 		let loginSubmit = document.querySelector('.js-submitLogin').click();
 	}
 };
+<<<<<<< HEAD
 const loadLoginPage = function () {
+=======
+const generateAdminQuestionHtml = function(question){
+	let html = "";
+	html += `<form class="u-border-bottom">
+	<div class="o-layout">
+		<div class="o-layout__item u-align-middle-svg u-1-of-3 u-pb-clear">
+			<h4>Question ID : ${question.questionID}</h4>
+		</div>
+		<div class="o-layout__item u-align-middle-svg u-1-of-3 u-pb-clear">
+			<h4>Vraag</h4>
+		</div>
+		<div class="o-layout__item u-align-middle-svg u-1-of-3 u-pb-clear">
+			<h4>Antwoorden</h4>
+		</div>
+	</div>
+		<div class="o-layout">
+		<div class="o-layout__item u-align-middle-svg u-align-center-clear u-1-of-3">
+			<div class="o-layout o-layout--gutter-lg u-pt-clear">
+				<div class="o-layout__item u-border-right u-1-of-2">
+						<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg xmlns="http://www.w3.org/2000/svg" data- xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" width="48px" height="48px" viewBox="0 0 512 512" xml:space="preserve"><path fill="#57AB18" d="M461.6 109.6l-54.9-43.3c-1.7-1.4-3.8-2.4-6.2-2.4-2.4 0-4.6 1-6.3 2.5L194.5 323s-78.5-75.5-80.7-77.7c-2.2-2.2-5.1-5.9-9.5-5.9s-6.4 3.1-8.7 5.4c-1.7 1.8-29.7 31.2-43.5 45.8-.8.9-1.3 1.4-2 2.1-1.2 1.7-2 3.6-2 5.7 0 2.2.8 4 2 5.7l2.8 2.6s139.3 133.8 141.6 136.1c2.3 2.3 5.1 5.2 9.2 5.2 4 0 7.3-4.3 9.2-6.2l249.1-320c1.2-1.7 2-3.6 2-5.8 0-2.5-1-4.6-2.4-6.4z"/><metadata><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:Description about="https://iconscout.com/legal#licenses" dc:title="checkmark" dc:description="checkmark" dc:publisher="Iconscout" dc:date="2017-09-24" dc:format="image/svg+xml" dc:language="en"><dc:creator><rdf:Bag><rdf:li>Benjamin J Sperry</rdf:li></rdf:Bag></dc:creator></rdf:Description></rdf:RDF></metadata></svg>
+				</div>
+				<div class="o-layout__item u-align-middle-svg u-1-of-2">
+					<svg class=""xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" width="48px" height="48px" viewBox="0 0 48 48"><path fill="#E2887C" d="M36,44H12a3,3,0,0,1-3-3V12a1,1,0,0,1,1-1H38a1,1,0,0,1,1,1V41A3,3,0,0,1,36,44ZM11,13V41a1,1,0,0,0,1,1H36a1,1,0,0,0,1-1V13Z"/><path fill="#E2887C" d="M35,12V38a2,2,0,0,1-2,2H10v1a2,2,0,0,0,2,2H36a2,2,0,0,0,2-2V12Z" opacity=".35"/><path fill="#E2887C" d="M43 13H5a1 1 0 0 1 0-2H43a1 1 0 0 1 0 2zM17 35a1 1 0 0 1-1-1V20a1 1 0 0 1 2 0V34A1 1 0 0 1 17 35zM31 35a1 1 0 0 1-1-1V20a1 1 0 0 1 2 0V34A1 1 0 0 1 31 35zM24 37a1 1 0 0 1-1-1V18a1 1 0 0 1 2 0V36A1 1 0 0 1 24 37z"/><path fill="#E2887C" d="M33,13H15a1,1,0,0,1-1-1V7a3,3,0,0,1,3-3H31a3,3,0,0,1,3,3v5A1,1,0,0,1,33,13ZM16,11H32V7a1,1,0,0,0-1-1H17a1,1,0,0,0-1,1Z"/></svg>
+				</div>
+			</div>
+		</div>
+		<div class="o-layout__item u-1-of-3">
+			<input id="question-${question.questionID}" class="c-input c-input--xs" type="text" name="question" id="question" value="${question.questionName}" />
+		</div>
+		<div class="o-layout__item o-layout--column u-align-middle-svg u-1-of-3">`;
+		let svgClass = "";
+		for(let answer of question.questionAnswers){
+			if(answer.correct){
+				svgClass = "c-svg__active";
+			}
+			else{
+				console.log("incorrect");
+				svgClass = "";
+			}
+			
+			html += `<div class="o-layout u-mb-md">
+			<div class="o-layout__item u-align-middle-svg u-1-of-3 u-pt-clear">
+				<svg class="c-svg__check ${svgClass} js-check" xmlns="http://www.w3.org/2000/svg" width="18.684" height="18.684" viewBox="0 0 18.684 18.684">
+				  <path id="Icon_22_" d="M80.608,64H66.076A2.082,2.082,0,0,0,64,66.076V80.608a2.082,2.082,0,0,0,2.076,2.076H80.608a2.082,2.082,0,0,0,2.076-2.076V66.076A2.082,2.082,0,0,0,80.608,64ZM71.266,78.532l-5.19-5.19,1.453-1.453,3.737,3.737,7.889-7.889,1.453,1.453Z" transform="translate(-64 -64)" fill="#192a9a"/>
+				</svg>
+			</div>
+			<div class="o-layout__item u-align-middle-svg u-2-of-3">
+				<input id="answer-${question.questionID}" class="c-input c-input--xs c-input__answer" type="text" name="answer" id="answer" value="${answer.answer}" />
+			</div>
+		</div>`;
+		}
+			
+		html += `
+			<svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19">
+			  <g id="Page-1" transform="translate(0 0.414)">
+				<g id="Artboard" transform="translate(1 1)">
+				  <g id="plus-square" transform="translate(0 0)">
+					<rect id="Rectangle-path" width="17" height="17" rx="1" stroke-width="2" transform="translate(0 -0.414)" stroke="#e2887c" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+					<path id="Shape" d="M9,5v7.371" transform="translate(-0.707 -0.393)" fill="none" stroke="#e2887c" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" fill-rule="evenodd"/>
+					<path id="Shape-2" data-name="Shape" stroke="#e2887c" d="M5,9h7.371" fill="none" transform="translate(-0.393 -0.707)" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" fill-rule="evenodd"/>
+				  </g>
+				</g>
+			  </g>
+			</svg>
+		</div>
+		</div>
+		</form>`;
+	return html;
+}
+const changeAnswerCorrect = function(){
+	this.classList.toggle("c-svg__active");
+}
+const loadAdminPage = function(){
+	ReplaceRow.innerHTML = adminPage;
+	let form = document.querySelector(".js-questionsForm");
+	GetQuestions().then((x) => {
+		let htmlQuestions = "";
+		for(let i of x){
+			console.log(i);
+			htmlQuestions += generateAdminQuestionHtml(i);
+		}
+		form.innerHTML = htmlQuestions;
+		const checkBoxes = document.querySelectorAll('.js-check');
+		for(let checkBox of checkBoxes){
+			checkBox.addEventListener('click',changeAnswerCorrect);
+		}
+	});
+
+	
+
+}
+const loadLoginPage = function() {
+>>>>>>> develop
 	ReplaceRow.innerHTML = loginPage;
 	// Need to use this one later
 	let loginSubmit = document.querySelector('.js-submitLogin');

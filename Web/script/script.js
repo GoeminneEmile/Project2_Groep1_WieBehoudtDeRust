@@ -348,26 +348,7 @@ let Sporting = `<div class="c-app o-row--xl c-background--white">
 </div>
 </div>`;
 //#endregion
-//#region adminPage
-let adminPage = `            
-<div class="o-container c-admin c-background--white js-questionsForm">
 
-
-<div class="o-layout u-pb-lg">
-	<div class="o-layout__item u-align-middle-svg u-pt-md">
-		<svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19">
-		  <g id="Page-1" transform="translate(0 0.414)">
-			<g id="Artboard" transform="translate(1 1)">
-			  <g id="plus-square" transform="translate(0 0)">
-				<rect id="Rectangle-path" width="17" height="17" rx="1" stroke-width="2" transform="translate(0 -0.414)" stroke="#e2887c" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-				<path id="Shape" d="M9,5v7.371" transform="translate(-0.707 -0.393)" fill="none" stroke="#e2887c" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" fill-rule="evenodd"/>
-				<path id="Shape-2" data-name="Shape" stroke="#e2887c" d="M5,9h7.371" fill="none" transform="translate(-0.393 -0.707)" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" fill-rule="evenodd"/>
-			  </g>
-			</g>
-		  </g>
-		</svg>
-	</div>
-</div>`;
 //#endregion
 //#region SportsWinPage
 let SportsWinPage = `<div class="c-app o-row--xl c-background--white">
@@ -1125,7 +1106,7 @@ const login = function() {
 			const question = document.querySelector('.js-question');
 			game.addEventListener('click', Page);
 			question.addEventListener('click', function() {
-				window.location = 'file:///C:/Users/Luka%20De%20Bakker/Desktop/project%202/CODE%20REPO/Project2_Groep1_WieBehoudtDeRust/Web/adminQuestions.html';
+				loadAdminPage();
 			});
 		}
 	});

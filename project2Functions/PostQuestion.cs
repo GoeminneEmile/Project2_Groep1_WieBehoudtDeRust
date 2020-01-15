@@ -7,44 +7,48 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using project2Functions.Models;
 using System.Data.SqlClient;
-using Microsoft.ApplicationInsights;
+using project2Functions.Models;
 
 namespace project2Functions
 {
-    public static class AddQuestion
+    public static class PostQuestion
     {
-        [FunctionName("AddQuestion")]
+        [FunctionName("PostQuestion")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
-            ILogger logger)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
+            ILogger log)
         {
-            // Creating Telemetry client for logging events!
-            TelemetryClient telemetry = new TelemetryClient();
-            // Getting connection string
-            telemetry.InstrumentationKey = Environment.GetEnvironmentVariable("insightsString");
-            // Reading the body of the received json.
+
+
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            // Deserializing the json
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            // Converting json to Question Objects
             Question question = JsonConvert.DeserializeObject<Question>(requestBody);
-            question.QuestionID = Guid.NewGuid();
-            // Getting connection string.
             string connectionString = Environment.GetEnvironmentVariable("connectionString");
+            // opening SQL connection
             try
             {
-                // Using SQL connection
+                // Opening SQL connection
                 using (SqlConnection connection = new SqlConnection())
                 {
-                    // Setting connection strings
+                    // Setting connection string
                     connection.ConnectionString = connectionString;
-                    // Opening connection
-                    connection.Open();
+                    // opening connection
+                    await connection.OpenAsync();
                     using (SqlCommand command = new SqlCommand())
                     {
-                        // Setting and executing SQL command
+                        // setting and executing a command
+                        command.Connection = connection;
+                        command.CommandText = "DELETE FROM ProjectQuestions WHERE QuestionID = @questionguid";
+                        command.Parameters.AddWithValue("@questionguid", question.QuestionID);
+                        var resultQuestion = await command.ExecuteReaderAsync();
+                        command.Parameters.Clear();
+                        resultQuestion.Close();
+                        command.Connection = connection;
+                        command.CommandText = "DELETE FROM ProjectAnswers WHERE QuestionAnswer = @questionguid";
+                        command.Parameters.AddWithValue("@questionguid", question.QuestionID);
+                        var resultAnswer = await command.ExecuteReaderAsync();
+                        resultAnswer.Close();
+                        question.QuestionID = Guid.NewGuid();
                         command.Connection = connection;
                         command.CommandText = "insert into ProjectQuestions (QuestionID,Question) VALUES (@id,@question);";
                         command.Parameters.AddWithValue("@id", question.QuestionID);
@@ -53,7 +57,7 @@ namespace project2Functions
                         var result = command.ExecuteReader();
                         result.Close();
                         // for every answer in a question, we insert the answer with the SAME guid as the question into the database, this is how we link a question to an answer
-                        foreach(QuestionAnswers questionAnswer in question.questionAnswers)
+                        foreach (QuestionAnswers questionAnswer in question.questionAnswers)
                         {
                             questionAnswer.QuestionAnswer = Guid.NewGuid();
                             command.Connection = connection;
@@ -61,22 +65,21 @@ namespace project2Functions
                             command.Parameters.AddWithValue("@questionid", question.QuestionID);
                             command.Parameters.AddWithValue("@answer", questionAnswer.Answer);
                             command.Parameters.AddWithValue("@correct", questionAnswer.Correct);
-                            logger.LogInformation("Question with ID: {question.QuestionID} has been added", question.QuestionID);
                             result = command.ExecuteReader();
                             command.Parameters.Clear();
                             result.Close();
                         }
+                        return new OkObjectResult(201);
+
+
+
                     }
                 }
-                telemetry.TrackEvent("Question_Added_OK");
-                return new OkObjectResult(201);
-
             }
+            // catching an error
             catch (Exception ex)
             {
-                logger.LogInformation("ERROR with SQL Connection: " + ex);
-                telemetry.TrackEvent("Question_Added_NOK");
-                return new StatusCodeResult(500) ;
+                return new OkObjectResult(400);
             }
         }
     }

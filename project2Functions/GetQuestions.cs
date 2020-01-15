@@ -57,13 +57,13 @@ namespace project2Functions
                                 Question question = new Question() { QuestionID = Guid.Parse(result["QuestionID"].ToString()), UserId = Guid.Parse(result["UserId"].ToString()), QuestionName = result["Question"].ToString() };
                                 questions.Add(question);
                                 QuestionIDCurrent = result["QuestionID"].ToString();
-                                QuestionAnswer questionAnswer = new QuestionAnswer() { Answer = result["Answer"].ToString(), QuestionAnswerGuid = Guid.Parse(result["QuestionID"].ToString()), Correct = Int32.Parse(result["Correct"].ToString()) };
+                                QuestionAnswers questionAnswer = new QuestionAnswers() { Answer = result["Answer"].ToString(), QuestionAnswer = Guid.Parse(result["QuestionID"].ToString()), Correct = Int32.Parse(result["Correct"].ToString()) };
                                 questions[questions.Count - 1].questionAnswers.Add(questionAnswer);
 
                             }
                             else
                             {
-                                QuestionAnswer questionAnswer = new QuestionAnswer() { Answer = result["Answer"].ToString(), QuestionAnswerGuid = Guid.Parse(result["QuestionID"].ToString()), Correct = Int32.Parse(result["Correct"].ToString()) };
+                                QuestionAnswers questionAnswer = new QuestionAnswers() { Answer = result["Answer"].ToString(), QuestionAnswer = Guid.Parse(result["QuestionID"].ToString()), Correct = Int32.Parse(result["Correct"].ToString()) };
                                 questions[questions.Count - 1].questionAnswers.Add(questionAnswer);
                             }
                         }

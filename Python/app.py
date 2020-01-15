@@ -52,8 +52,8 @@ aantal_lees_acties = 0
 
 # Players
 PLAYER1_INPUTS = [ecodes.KEY_W, ecodes.KEY_A, ecodes.KEY_S, ecodes.KEY_D]
-PLAYER2_INPUTS = [ecodes.KEY_F, ecodes.KEY_G, 272, ecodes.KEY_SPACE] # 272 is de click event
-PLAYER3_INPUTS = [ecodes.KEY_UP, ecodes.KEY_DOWN, ecodes.KEY_LEFT, ecodes.KEY_RIGHT]
+PLAYER2_INPUTS = [ecodes.KEY_UP, ecodes.KEY_DOWN, ecodes.KEY_LEFT, ecodes.KEY_RIGHT]
+PLAYER3_INPUTS = [ecodes.KEY_F, ecodes.KEY_G, 272, ecodes.KEY_SPACE] # 272 is de click event
 PLAYER4_INPUTS = [10000, 10001, 10002, 10003]
 player1_send = True
 player2_send = True
@@ -273,11 +273,14 @@ def uitlezen_bt_device(device_id, aantal_lees_acties, player):
     try:
         # Connecteren met device id
         while True:
-            hrm = HRM(device_id)
-            if hrm is not ConnectionError:
-                break
-            else:
-                azure_log("RPI can't connect to bluetooth device", device_id)
+            try:
+                hrm = HRM(device_id)
+                if hrm is not ConnectionError:
+                    break
+                else:
+                    azure_log("RPI can't connect to bluetooth device", device_id)
+            except ConnectionError:
+                pass
         print("---- Connected with bluetooth device {0} ----".format(device_id))
         azure_log("RPI connected to bluetooth device", device_id)
         # uuid's uitlezen

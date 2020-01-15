@@ -1756,6 +1756,10 @@ li span {
 	border-bottom: 4px solid #192A9A1A;
 }
 
+.u-font-size-xl{
+    font-size: 32px;
+}
+
 /*
     Utilities: max-width
     ---

@@ -80,7 +80,7 @@ let loader = `<div class="o-row">
 <div class="c-message__loader js-loading-message">
 </div>`;
 //#endregion
-//#region Avatars
+//#region Avatars	
 let Avatars = `<div>
 <h2>Speler 1 kies je avatar!</h2>
 <div class="o-row">
@@ -283,8 +283,8 @@ let pinPage = `<form class="c-form-field js-animate" onSubmit="return false;">
 let loginPage = `<div>
 <div class="c-align--middle">
 	<div class="o-layout">
-		<div class="o-layout__item u-width-full">
-			<form class="c-form-field js-animate">
+		<div class="o-layout__item u-width-full js-animate">
+			<form class="c-form-field">
 				<div class="c-input__middle">
 					<div class="c-field">
 						<label class="c-label c-label--sm" for="username">Username</label>
@@ -293,6 +293,8 @@ let loginPage = `<div>
 					<div class="c-field">
 						<label class="c-label c-label--sm" for="password">Password</label>
 						<input id="password" id="password" class="c-input c-input--sm js-input--password" type="password" name="password" />
+					</div>
+					<div class="c-message__loader js-loading-message">
 					</div>
 				</div>
 			</form>
@@ -509,9 +511,7 @@ const loadPulsarDevices = function() {
 	</div>`;
 		index += 1;
 	}
-	if (columnCount != 0) {
-		html += `</div>`;
-	}
+	html += `</div>`;
 	html += `<div class="o-layout u-align-text-center js-sendPolar o-hidden">
 	<div class="o-layout__item">
 		<button class="c-button c-button--xl"> Start </button>
@@ -525,7 +525,7 @@ const loadPulsarDevices = function() {
 };
 
 // Function that GETS questions + answers, and shows them!
-const ShowQuestionAndAnswers = function() {
+const ShowQuestionAndAnswers = function () {
 	console.log('ik zit in de questions');
 	// IF this is the first question of the quiz, we will send a message to the back-end to read the 'resting' heart beat
 	for (let i = 0; i < players.length; i++) {
@@ -546,7 +546,7 @@ const ShowQuestionAndAnswers = function() {
 
 	// Inserting HTML
 
-	console.log('hier zit het probleem');
+	console.log("hier zit het probleem");
 	QuestionRow.innerHTML = Answers;
 
 	// GET's questions and inserts them onto the HTML, async.
@@ -708,7 +708,7 @@ const stopPlayerInit = function() {
 	client.send(message);
 };
 //pass a 'true' as parameter if the html is meant for the score page, pass a 'false' if html is meant for questionPage
-const generateAvatarHtml = function(scorePage) {
+const generateAvatarHtml = function (scorePage) {
 	ReplaceRow.innerHTML = Header;
 	HeaderRow = document.querySelector('.js-headerRow');
 	let html = '';
@@ -717,7 +717,8 @@ const generateAvatarHtml = function(scorePage) {
 		<div class="c-avatar" data-id="${players[i].player}">`;
 		if (!scorePage) {
 			html += Avatar;
-		} else {
+		}
+		else {
 			html += AvatarScorePage;
 		}
 		console.log('ik zit in de loooooop');
@@ -804,14 +805,14 @@ const playerAnswer = function(userInfo) {
 	}
 };
 
-const GenerateSportsPage = function() {
+const GenerateSportsPage = function () {
 	App = document.querySelector('.c-app');
 	// SportsSelector.document.querySelector('.c-activity');
 	// SportsSelector = document.querySelector('.c-activity__symbol');
 	App.innerHTML = SportsWinPage;
 	clearInterval(intervalSportsPage);
 	GoddelijkeTimer = document.querySelector('.js-delay-question');
-	intervalSportsActivityPage = setInterval(function() {
+	intervalSportsActivityPage = setInterval(function () {
 		GoddelijkeTimer.innerHTML = GoddelijkeTimer.innerHTML - 1;
 		if (GoddelijkeTimer.innerHTML == 3) {
 			message = new Paho.Message(JSON.stringify({ type: 'bpm' }));
@@ -973,7 +974,7 @@ function onMessageArrived(message) {
 				let Aftelling = document.querySelector('.js-delay-question');
 				Aftelling.innerHTML = 5;
 
-				intervalSportsPage = setInterval(function() {
+				intervalSportsPage = setInterval(function () {
 					Aftelling.innerHTML = Aftelling.innerHTML - 1;
 					if (Aftelling.innerHTML == 0) {
 						console.log('ik tel af');
@@ -1092,12 +1093,14 @@ const Buttonchecked = function() {
 	// waarde van input box ophalen
 	InputFieldValue = document.querySelector('#gamePin').value;
 	ShowLoadingScreen();
+	showMessage(false, "Proberen connectie maken met spel...");
 	ConnectToMQTT();
 };
 const loginRequest = async function() {
 	const username = document.querySelector('#username').value;
 	const password = document.querySelector('#password').value;
 	AnimateRow.innerHTML = loader;
+	showMessage(false, "Trying to log in...");
 	let serverEndPoint = `https://project2functions.azurewebsites.net/api/GetUser?username=${username}&password=${password}`;
 	const response = await fetch(serverEndPoint, { headers: customheaders, mode: 'cors' });
 	const data = await response.json();
@@ -1108,6 +1111,7 @@ const login = function() {
 		if (x == 400) {
 			console.log('wrong credentials');
 			ReplaceRow.innerHTML = loginPage;
+			showMessage(true, "Verkeerde username of paswoord!");
 			let loginSubmit = document.querySelector('.js-submitLogin');
 			let loginUsername = document.querySelector('.js-input--username');
 			let loginPassword = document.querySelector('.js-input--password');

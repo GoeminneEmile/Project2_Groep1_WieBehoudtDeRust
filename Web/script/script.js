@@ -993,9 +993,9 @@ const generateAdminQuestionHtml = function(question){
 	</div>
 		<div class="o-layout">
 		<div class="o-layout__item u-align-middle-svg u-align-center-clear u-1-of-3">
-			<div class="o-layout o-layout--gutter-lg u-pt-clear">
-				<div class="o-layout__item u-border-right u-1-of-2">
-						<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg xmlns="http://www.w3.org/2000/svg" data- xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" width="48px" height="48px" viewBox="0 0 512 512" xml:space="preserve"><path fill="#57AB18" d="M461.6 109.6l-54.9-43.3c-1.7-1.4-3.8-2.4-6.2-2.4-2.4 0-4.6 1-6.3 2.5L194.5 323s-78.5-75.5-80.7-77.7c-2.2-2.2-5.1-5.9-9.5-5.9s-6.4 3.1-8.7 5.4c-1.7 1.8-29.7 31.2-43.5 45.8-.8.9-1.3 1.4-2 2.1-1.2 1.7-2 3.6-2 5.7 0 2.2.8 4 2 5.7l2.8 2.6s139.3 133.8 141.6 136.1c2.3 2.3 5.1 5.2 9.2 5.2 4 0 7.3-4.3 9.2-6.2l249.1-320c1.2-1.7 2-3.6 2-5.8 0-2.5-1-4.6-2.4-6.4z"/><metadata><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:Description about="https://iconscout.com/legal#licenses" dc:title="checkmark" dc:description="checkmark" dc:publisher="Iconscout" dc:date="2017-09-24" dc:format="image/svg+xml" dc:language="en"><dc:creator><rdf:Bag><rdf:li>Benjamin J Sperry</rdf:li></rdf:Bag></dc:creator></rdf:Description></rdf:RDF></metadata></svg>
+			<div  data-question="${question.questionID}" id="js-saveQuestion" class="o-layout o-layout--gutter-lg u-pt-clear">
+				<div  class="o-layout__item u-border-right u-1-of-2 ">
+						<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg xmlns="http://www.w3.org/2000/svg"  xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" width="48px" height="48px" viewBox="0 0 512 512" xml:space="preserve"><path fill="#57AB18" d="M461.6 109.6l-54.9-43.3c-1.7-1.4-3.8-2.4-6.2-2.4-2.4 0-4.6 1-6.3 2.5L194.5 323s-78.5-75.5-80.7-77.7c-2.2-2.2-5.1-5.9-9.5-5.9s-6.4 3.1-8.7 5.4c-1.7 1.8-29.7 31.2-43.5 45.8-.8.9-1.3 1.4-2 2.1-1.2 1.7-2 3.6-2 5.7 0 2.2.8 4 2 5.7l2.8 2.6s139.3 133.8 141.6 136.1c2.3 2.3 5.1 5.2 9.2 5.2 4 0 7.3-4.3 9.2-6.2l249.1-320c1.2-1.7 2-3.6 2-5.8 0-2.5-1-4.6-2.4-6.4z"/><metadata><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:Description about="https://iconscout.com/legal#licenses" dc:title="checkmark" dc:description="checkmark" dc:publisher="Iconscout" dc:date="2017-09-24" dc:format="image/svg+xml" dc:language="en"><dc:creator><rdf:Bag><rdf:li>Benjamin J Sperry</rdf:li></rdf:Bag></dc:creator></rdf:Description></rdf:RDF></metadata></svg>
 				</div>
 				<div class="o-layout__item u-align-middle-svg u-1-of-2">
 					<svg class=""xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" width="48px" height="48px" viewBox="0 0 48 48"><path fill="#E2887C" d="M36,44H12a3,3,0,0,1-3-3V12a1,1,0,0,1,1-1H38a1,1,0,0,1,1,1V41A3,3,0,0,1,36,44ZM11,13V41a1,1,0,0,0,1,1H36a1,1,0,0,0,1-1V13Z"/><path fill="#E2887C" d="M35,12V38a2,2,0,0,1-2,2H10v1a2,2,0,0,0,2,2H36a2,2,0,0,0,2-2V12Z" opacity=".35"/><path fill="#E2887C" d="M43 13H5a1 1 0 0 1 0-2H43a1 1 0 0 1 0 2zM17 35a1 1 0 0 1-1-1V20a1 1 0 0 1 2 0V34A1 1 0 0 1 17 35zM31 35a1 1 0 0 1-1-1V20a1 1 0 0 1 2 0V34A1 1 0 0 1 31 35zM24 37a1 1 0 0 1-1-1V18a1 1 0 0 1 2 0V36A1 1 0 0 1 24 37z"/><path fill="#E2887C" d="M33,13H15a1,1,0,0,1-1-1V7a3,3,0,0,1,3-3H31a3,3,0,0,1,3,3v5A1,1,0,0,1,33,13ZM16,11H32V7a1,1,0,0,0-1-1H17a1,1,0,0,0-1,1Z"/></svg>
@@ -1045,6 +1045,10 @@ const generateAdminQuestionHtml = function(question){
 		</form>`;
 	return html;
 }
+const saveQuestion = function(){
+	console.log
+	console.log(this.dataset.question);
+}
 const changeAnswerCorrect = function(){
 	this.classList.toggle("c-svg__active");
 }
@@ -1058,9 +1062,14 @@ const loadAdminPage = function(){
 			htmlQuestions += generateAdminQuestionHtml(i);
 		}
 		form.innerHTML = htmlQuestions;
+		const saveQuestions = document.querySelectorAll('#js-saveQuestion');
 		const checkBoxes = document.querySelectorAll('.js-check');
 		for(let checkBox of checkBoxes){
 			checkBox.addEventListener('click',changeAnswerCorrect);
+		}
+		for(let saveQuestion of saveQuestions){
+			console.log("yeeeeeeeeeeeeee");
+			saveQuestion.addEventListener('click',saveQuestion);
 		}
 	});
 

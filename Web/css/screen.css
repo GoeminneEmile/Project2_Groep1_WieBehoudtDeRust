@@ -865,6 +865,10 @@ text{
     opacity: 0.65;
 }
 
+.c-button__fix {
+  width: 100%;
+}
+
 .c-daySelected{
   font-size: 26px;
 }

@@ -481,12 +481,8 @@ const loadPulsarDevices = function () {
 };
 
 // Function that GETS questions + answers, and shows them!
-<<<<<<< HEAD
-const ShowQuestionAndAnswers = function () {
-=======
 const ShowQuestionAndAnswers = function() {
 	console.log("ik zit in de questions");
->>>>>>> develop
 	// IF this is the first question of the quiz, we will send a message to the back-end to read the 'resting' heart beat
 	for (let i = 0; i < players.length; i++) {
 		playersAnswered.push({ player: players[i].player, answered: false });
@@ -630,10 +626,10 @@ const initializeCommunication = function () {
 	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 	client.send(message);
 
-	showMessage(false, "Proberen connectie maken met Raspberry Pi...");
+	showMessage(false, "Proberen connectie maken met spel...");
 	//Shows a error message after 10 seconds
 	intervalErrorMessage = setInterval(function () {
-		showMessage(true, "Er kan geen connectie gemaakt worden met de Raspberry Pi! Bent u zeker dat de game pin juist is?")
+		showMessage(true, "Er kan geen connectie gemaakt worden met de spel! Bent u zeker dat de game pin juist is?")
 		clearInterval(intervalErrorMessage);
 	}, errorMessageInterval);
 };
@@ -660,18 +656,8 @@ const stopPlayerInit = function () {
 	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 	client.send(message);
 };
-<<<<<<< HEAD
-
-// Function to generate the page with quesiton and answers on it
-const GenerateQuestionPage = function () {
-	// Tell the back end to stop reading avatars
-	stopPlayerInit();
-
-	// Generate the HTML for the question page
-=======
 //pass a 'true' as parameter if the html is meant for the score page, pass a 'false' if html is meant for questionPage
 const generateAvatarHtml = function(scorePage){
->>>>>>> develop
 	ReplaceRow.innerHTML = Header;
 	HeaderRow = document.querySelector('.js-headerRow');
 	let html = '';
@@ -1022,11 +1008,7 @@ const login = function () {
 		}
 	});
 };
-<<<<<<< HEAD
-const loadPinPage = function () {
-=======
 const Page = function() {
->>>>>>> develop
 	ReplaceRow.innerHTML = pinPage;
 	SubmitButton = document.querySelector('#js-submit');
 	let pinInput = document.querySelector('.js-input-pin');
@@ -1046,9 +1028,6 @@ const autoEnter = function (event) {
 		let loginSubmit = document.querySelector('.js-submitLogin').click();
 	}
 };
-<<<<<<< HEAD
-const loadLoginPage = function () {
-=======
 const generateAdminQuestionHtml = function(question){
 	let html = "";
 	html += `<form class="u-border-bottom">
@@ -1140,7 +1119,6 @@ const loadAdminPage = function(){
 
 }
 const loadLoginPage = function() {
->>>>>>> develop
 	ReplaceRow.innerHTML = loginPage;
 	// Need to use this one later
 	let loginSubmit = document.querySelector('.js-submitLogin');

@@ -52,8 +52,8 @@ aantal_lees_acties = 0
 
 # Players
 PLAYER1_INPUTS = [ecodes.KEY_W, ecodes.KEY_A, ecodes.KEY_S, ecodes.KEY_D]
-PLAYER2_INPUTS = [ecodes.KEY_F, ecodes.KEY_G, 272, ecodes.KEY_SPACE] # 272 is de click event
-PLAYER3_INPUTS = [ecodes.KEY_UP, ecodes.KEY_DOWN, ecodes.KEY_LEFT, ecodes.KEY_RIGHT]
+PLAYER2_INPUTS = [ecodes.KEY_UP, ecodes.KEY_DOWN, ecodes.KEY_LEFT, ecodes.KEY_RIGHT]
+PLAYER3_INPUTS = [ecodes.KEY_F, ecodes.KEY_G, 272, ecodes.KEY_SPACE] # 272 is de click event
 PLAYER4_INPUTS = [10000, 10001, 10002, 10003]
 player1_send = True
 player2_send = True
@@ -117,7 +117,31 @@ class HRM(Peripheral):
 # --------------------
 # Methodes
 # --------------------
+def lcd_reset():
+    start_tijd = time.time()
+    while (time.time() - start_tijd) * 1000.0 < 5000:
+        pass
+    lcd.set_rgb_backlight(0, 80, 0)
+    lcd.clear_display()
+    lcd.write_string("Game ID: " + str(PI_ID))
+
+
+def lcd_toon_info(string):
+    lcd.set_rgb_backlight(0, 0, 80)
+    lcd.clear_display()
+    lcd.write_string("Game ID: " + str(PI_ID))
+    lcd.change_cursor_position(1, 0)
+    lcd.write_string("Info:")
+    lcd.change_cursor_position(2, 0)
+    lcd.write_string(string)
+    threat_lcd_reset = threading.Thread(target=lcd_reset)
+    threat_lcd_reset.start()
+
+
 def lcd_toon_error(string):
+    lcd.set_rgb_backlight(80, 0, 0)
+    lcd.clear_display()
+    lcd.write_string("Game ID: " + str(PI_ID))
     lcd.change_cursor_position(1, 0)
     lcd.write_string("Error:")
     lcd.change_cursor_position(2, 0)
@@ -249,11 +273,14 @@ def uitlezen_bt_device(device_id, aantal_lees_acties, player):
     try:
         # Connecteren met device id
         while True:
-            hrm = HRM(device_id)
-            if hrm is not ConnectionError:
-                break
-            else:
-                azure_log("RPI can't connect to bluetooth device", device_id)
+            try:
+                hrm = HRM(device_id)
+                if hrm is not ConnectionError:
+                    break
+                else:
+                    azure_log("RPI can't connect to bluetooth device", device_id)
+            except ConnectionError:
+                pass
         print("---- Connected with bluetooth device {0} ----".format(device_id))
         azure_log("RPI connected to bluetooth device", device_id)
         # uuid's uitlezen
@@ -502,6 +529,7 @@ def mqtt_on_message(client, userdata, msg):
             # Start scan
             if obj["status"] == TYPE_COM_SCAN_STATUS_START:
                 azure_log("RPI start bluetooth scan", None)
+                lcd_toon_info("Start zoeken naar   sensoren...")
                 threat_bt = threading.Thread(target=start_bluetooth_scan)
                 threat_bt.start()
             # Ontvangen BT devices per speler
@@ -511,6 +539,7 @@ def mqtt_on_message(client, userdata, msg):
         # Lezen van hartslag
         elif obj["type"] == TYPE_COM_BPM:
             print("---- Start reading bpm ----")
+            lcd_toon_info("Lezen van hartslagen...")
             azure_log("RPI start reading bpm", None)
             for device in PLAYERS_BT_DEVICES:
                 aantal_lees_acties = 1
@@ -542,6 +571,7 @@ async def init():
     try:
         # Init LCD
         lcd = LCD_4_20_SPI()
+        lcd.set_rgb_backlight(0, 80, 0)
         # Loggen
         azure_log("RPI boot", None)
         # Inlezen Makey Makey
@@ -557,10 +587,17 @@ async def init():
         lcd.write_string("Aanvragen van ID ...")
         # Genereren + controle van ID
         send_id_request()
+        # print("---- ID is accepted ----")
+        # azure_log("RPI ID accepted", PI_ID)
+        # save_js_mqtt_topic()  # Topic opslaan
+        # ID_OK = True
+        # # Display aansturen
+        # lcd.clear_display()
+        # lcd.write_string("Game ID: " + str(PI_ID))
         client.loop_forever()
     except FileNotFoundError:
         azure_log("RPI script opgestart zonder Makey Makey", None)
-        lcd_toon_error("Geen makey makey gevonden")
+        lcd_toon_error("Geen makey makey    gevonden")
     except Exception as ex:
         print(ex)
 

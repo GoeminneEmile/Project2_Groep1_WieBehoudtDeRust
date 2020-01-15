@@ -4,9 +4,9 @@ using System.Text;
 
 namespace project2Functions.Models
 {
-    public class QuestionAnswer
+    public class QuestionAnswers
     {
-        public Guid QuestionAnswerGuid;
+        public Guid QuestionAnswer;
         public string Answer;
         public int Correct;
     }

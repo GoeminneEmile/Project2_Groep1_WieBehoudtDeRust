@@ -1458,6 +1458,20 @@ more padding on the right to avoid overlap
 	color: white;
 }
 
+/*
+    Component: Message
+    ---
+    Messages
+*/
+.c-message__loader{
+  font-size: calc(var(--global-baseline) * 3.5);
+  text-align: center;
+}
+
+.c-message__loader-error{
+  color: #D8000C;
+}
+
 /*------------------------------------*\
 #OBJECTS
 \*------------------------------------*/

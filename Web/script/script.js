@@ -23,11 +23,11 @@ let playersAnswers = [];
 let playersAnswered = [];
 let AnswersGotten = [];
 let PointsGained = [];
-let playerRestBPM = [ player1_rest_bpm, player2_rest_bpm, player3_rest_bpm, player4_rest_bpm ];
-let playerBPM = [ player1_bpm, player2_bpm, player3_bpm, player4_bpm ];
+let playerRestBPM = [player1_rest_bpm, player2_rest_bpm, player3_rest_bpm, player4_rest_bpm];
+let playerBPM = [player1_bpm, player2_bpm, player3_bpm, player4_bpm];
 let errorMessageInterval = 10000;
 let intervalErrorMessage;
-let Rankings = [ { Points: '0', PointsGained: '0', Player: '1', Avatar: '' }, { Points: '0', PointsGained: '0', Player: '2', Avatar: '' }, { Points: '0', PointsGained: '0', Player: '3', Avatar: '' }, { Points: '0', PointsGained: '0', Player: '4', Avatar: '' } ];
+let Rankings = [{ Points: '0', PointsGained: '0', Player: '1', Avatar: '' }, { Points: '0', PointsGained: '0', Player: '2', Avatar: '' }, { Points: '0', PointsGained: '0', Player: '3', Avatar: '' }, { Points: '0', PointsGained: '0', Player: '4', Avatar: '' }];
 
 //#region Panda
 let Panda = `
@@ -571,7 +571,7 @@ const loadPulsarDevices = function () {
 };
 
 // Function that GETS questions + answers, and shows them!
-const ShowQuestionAndAnswers = function() {
+const ShowQuestionAndAnswers = function () {
 	console.log('ik zit in de questions');
 	// IF this is the first question of the quiz, we will send a message to the back-end to read the 'resting' heart beat
 	for (let i = 0; i < players.length; i++) {
@@ -754,7 +754,7 @@ const stopPlayerInit = function () {
 	client.send(message);
 };
 //pass a 'true' as parameter if the html is meant for the score page, pass a 'false' if html is meant for questionPage
-const generateAvatarHtml = function(scorePage) {
+const generateAvatarHtml = function (scorePage) {
 	console.log('_________________');
 	console.log('ik doe generateavatarhtml met een ' + scorePage);
 	console.log('_________________');
@@ -852,14 +852,14 @@ const playerAnswer = function (userInfo) {
 	}
 };
 
-const GenerateSportsPage = function() {
+const GenerateSportsPage = function () {
 	App = document.querySelector('.c-app');
 	// SportsSelector.document.querySelector('.c-activity');
 	// SportsSelector = document.querySelector('.c-activity__symbol');
 	App.innerHTML = SportsWinPage;
 	clearInterval(intervalSportsPage);
 	GoddelijkeTimer = document.querySelector('.js-delay-question');
-	intervalSportsActivityPage = setInterval(function() {
+	intervalSportsActivityPage = setInterval(function () {
 		GoddelijkeTimer.innerHTML = GoddelijkeTimer.innerHTML - 1;
 		if (GoddelijkeTimer.innerHTML == 3) {
 			message = new Paho.Message(JSON.stringify({ type: 'bpm' }));
@@ -1050,7 +1050,7 @@ function onMessageArrived(message) {
 				let Aftelling = document.querySelector('.js-delay-question');
 				Aftelling.innerHTML = 5;
 
-				intervalSportsPage = setInterval(function() {
+				intervalSportsPage = setInterval(function () {
 					Aftelling.innerHTML = Aftelling.innerHTML - 1;
 					if (Aftelling.innerHTML == 0) {
 						console.log('ik tel af');
@@ -1105,8 +1105,8 @@ function onMessageArrived(message) {
 						}
 					}
 					console.log(lijst);
-
-					for (i = 0; i < lijst.length; i++) {
+					let lengthBegin = lijst.length
+					for (i = 0; i < lengthBegin; i++) {
 						// Checking which index is the highest number, and take the player with the highest heartbeat
 						// Ads the time of the player to the current time
 						players[arrayMaxIndex(lijst)].time_left += timeToGive[0];

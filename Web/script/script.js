@@ -78,7 +78,7 @@ let loader = `<div class="o-row">
 <div class="c-message__loader js-loading-message">
 </div>`;
 //#endregion
-//#region Avatars
+//#region Avatars	
 let Avatars = `<div>
 <h2>Speler 1 kies je avatar!</h2>
 <div class="o-row">
@@ -281,8 +281,8 @@ let pinPage = `<form class="c-form-field js-animate" onSubmit="return false;">
 let loginPage = `<div>
 <div class="c-align--middle">
 	<div class="o-layout">
-		<div class="o-layout__item u-width-full">
-			<form class="c-form-field js-animate">
+		<div class="o-layout__item u-width-full js-animate">
+			<form class="c-form-field">
 				<div class="c-input__middle">
 					<div class="c-field">
 						<label class="c-label c-label--sm" for="username">Username</label>
@@ -291,6 +291,8 @@ let loginPage = `<div>
 					<div class="c-field">
 						<label class="c-label c-label--sm" for="password">Password</label>
 						<input id="password" id="password" class="c-input c-input--sm js-input--password" type="password" name="password" />
+					</div>
+					<div class="c-message__loader js-loading-message">
 					</div>
 				</div>
 			</form>
@@ -507,9 +509,7 @@ const loadPulsarDevices = function () {
 	</div>`;
 		index += 1;
 	}
-	if (columnCount != 0) {
-		html += `</div>`;
-	}
+	html += `</div>`;
 	html += `<div class="o-layout u-align-text-center js-sendPolar o-hidden">
 	<div class="o-layout__item">
 		<button class="c-button c-button--xl"> Start </button>
@@ -523,7 +523,7 @@ const loadPulsarDevices = function () {
 };
 
 // Function that GETS questions + answers, and shows them!
-const ShowQuestionAndAnswers = function() {
+const ShowQuestionAndAnswers = function () {
 	console.log('ik zit in de questions');
 	// IF this is the first question of the quiz, we will send a message to the back-end to read the 'resting' heart beat
 	for (let i = 0; i < players.length; i++) {
@@ -543,7 +543,7 @@ const ShowQuestionAndAnswers = function() {
 	}
 
 	// Inserting HTML
-	
+
 	console.log("hier zit het probleem");
 	QuestionRow.innerHTML = Answers;
 
@@ -668,7 +668,6 @@ const initializeCommunication = function () {
 	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 	client.send(message);
 
-	showMessage(false, "Proberen connectie maken met spel...");
 	//Shows a error message after 10 seconds
 	intervalErrorMessage = setInterval(function () {
 		showMessage(true, "Er kan geen connectie gemaakt worden met de spel! Bent u zeker dat de game pin juist is?")
@@ -699,7 +698,7 @@ const stopPlayerInit = function () {
 	client.send(message);
 };
 //pass a 'true' as parameter if the html is meant for the score page, pass a 'false' if html is meant for questionPage
-const generateAvatarHtml = function(scorePage){
+const generateAvatarHtml = function (scorePage) {
 	ReplaceRow.innerHTML = Header;
 	HeaderRow = document.querySelector('.js-headerRow');
 	let html = '';
@@ -709,14 +708,14 @@ const generateAvatarHtml = function(scorePage){
 		if (!scorePage) {
 			html += Avatar;
 		}
-		else{
+		else {
 			html += AvatarScorePage;
 		}
 		console.log('ik zit in de loooooop');
 	}
 	return html;
 }
-const FillInAvatarHtml = function(scorePage){
+const FillInAvatarHtml = function (scorePage) {
 	let QuestionAvatarsList = document.querySelectorAll('.c-avatar');
 	console.log(QuestionAvatarsList);
 
@@ -796,14 +795,14 @@ const playerAnswer = function (userInfo) {
 	}
 };
 
-const GenerateSportsPage = function() {
+const GenerateSportsPage = function () {
 	App = document.querySelector('.c-app');
 	// SportsSelector.document.querySelector('.c-activity');
 	// SportsSelector = document.querySelector('.c-activity__symbol');
 	App.innerHTML = SportsWinPage;
 	clearInterval(intervalSportsPage);
 	GoddelijkeTimer = document.querySelector('.js-delay-question');
-	intervalSportsActivityPage = setInterval(function() {
+	intervalSportsActivityPage = setInterval(function () {
 		GoddelijkeTimer.innerHTML = GoddelijkeTimer.innerHTML - 1;
 		if (Aftelling.innerHTML == 0) {
 			console.log('ik tel af');
@@ -946,7 +945,7 @@ function onMessageArrived(message) {
 				let Aftelling = document.querySelector('.js-delay-question');
 				Aftelling.innerHTML = 5;
 
-				intervalSportsPage = setInterval(function() {
+				intervalSportsPage = setInterval(function () {
 					Aftelling.innerHTML = Aftelling.innerHTML - 1;
 					if (Aftelling.innerHTML == 0) {
 						console.log('ik tel af');
@@ -1038,19 +1037,21 @@ const showMessage = function (isError, message) {
 	if (isError) {
 		messageBox.classList.add('c-message__loader-error');
 	}
-}
+};
 
 const Buttonchecked = function () {
 	// Change page here, go from load page to avatar selection page
 	// waarde van input box ophalen
 	InputFieldValue = document.querySelector('#gamePin').value;
 	ShowLoadingScreen();
+	showMessage(false, "Proberen connectie maken met spel...");
 	ConnectToMQTT();
 };
 const loginRequest = async function () {
 	const username = document.querySelector('#username').value;
 	const password = document.querySelector('#password').value;
 	AnimateRow.innerHTML = loader;
+	showMessage(false, "Trying to log in...");
 	let serverEndPoint = `https://project2functions.azurewebsites.net/api/GetUser?username=${username}&password=${password}`;
 	const response = await fetch(serverEndPoint, { headers: customheaders, mode: 'cors' });
 	const data = await response.json();
@@ -1061,6 +1062,7 @@ const login = function () {
 		if (x == 400) {
 			console.log('wrong credentials');
 			ReplaceRow.innerHTML = loginPage;
+			showMessage(true, "Verkeerde username of paswoord!");
 			let loginSubmit = document.querySelector('.js-submitLogin');
 			let loginUsername = document.querySelector('.js-input--username');
 			let loginPassword = document.querySelector('.js-input--password');
@@ -1126,17 +1128,17 @@ const generateAdminQuestionHtml = function (question) {
 			<input id="question-${question.questionID}" class="c-input c-input--xs" type="text" name="question" id="question" value="${question.questionName}" />
 		</div>
 		<div class="o-layout__item o-layout--column u-align-middle-svg u-1-of-3">`;
-		let svgClass = "";
-		for(let answer of question.questionAnswers){
-			if(answer.correct){
-				svgClass = "c-svg__active";
-			}
-			else{
-				console.log("incorrect");
-				svgClass = "";
-			}
-			
-			html += `<div class="o-layout u-mb-md">
+	let svgClass = "";
+	for (let answer of question.questionAnswers) {
+		if (answer.correct) {
+			svgClass = "c-svg__active";
+		}
+		else {
+			console.log("incorrect");
+			svgClass = "";
+		}
+
+		html += `<div class="o-layout u-mb-md">
 			<div class="o-layout__item u-align-middle-svg u-1-of-3 u-pt-clear">
 				<svg class="c-svg__check ${svgClass} js-check" xmlns="http://www.w3.org/2000/svg" width="18.684" height="18.684" viewBox="0 0 18.684 18.684">
 				  <path id="Icon_22_" d="M80.608,64H66.076A2.082,2.082,0,0,0,64,66.076V80.608a2.082,2.082,0,0,0,2.076,2.076H80.608a2.082,2.082,0,0,0,2.076-2.076V66.076A2.082,2.082,0,0,0,80.608,64ZM71.266,78.532l-5.19-5.19,1.453-1.453,3.737,3.737,7.889-7.889,1.453,1.453Z" transform="translate(-64 -64)" fill="#192a9a"/>
@@ -1165,7 +1167,7 @@ const generateAdminQuestionHtml = function (question) {
 		</form>`;
 	return html;
 }
-const changeAnswerCorrect = function(){
+const changeAnswerCorrect = function () {
 	this.classList.toggle("c-svg__active");
 }
 const loadAdminPage = function () {
@@ -1173,7 +1175,7 @@ const loadAdminPage = function () {
 	let form = document.querySelector('.js-questionsForm');
 	GetQuestions().then((x) => {
 		let htmlQuestions = "";
-		for(let i of x){
+		for (let i of x) {
 			console.log(i);
 			htmlQuestions += generateAdminQuestionHtml(i);
 		}
@@ -1183,16 +1185,16 @@ const loadAdminPage = function () {
 		for (let checkBox of checkBoxes) {
 			checkBox.addEventListener('click', changeAnswerCorrect);
 		}
-		for(let saveQuestion of saveQuestions){
+		for (let saveQuestion of saveQuestions) {
 			console.log("yeeeeeeeeeeeeee");
-			saveQuestion.addEventListener('click',saveQuestion);
+			saveQuestion.addEventListener('click', saveQuestion);
 		}
 	});
 
-	
+
 
 }
-const loadLoginPage = function() {
+const loadLoginPage = function () {
 	ReplaceRow.innerHTML = loginPage;
 	// Need to use this one later
 	let loginSubmit = document.querySelector('.js-submitLogin');

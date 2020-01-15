@@ -1,5 +1,5 @@
 // global variables
-let SubmitButton, InputFieldValue, ReplaceRow, AnimateRow, QuestionRow, RandomQuestion, AvatarButton, QuestionAvatarsList, ScoreList, PlayerName, userGuid;
+let SubmitButton, InputFieldValue, ReplaceRow, AnimateRow, QuestionRow, RandomQuestion, AvatarButton, QuestionAvatarsList, ScoreList, PlayerName, userGuid, AnswersList, juistAntwoord, juisteButton;
 let client;
 let Communication;
 let players = [];
@@ -20,6 +20,7 @@ let player1_bpm, player2_bpm, player3_bpm, player4_bpm;
 let playerAnswers = [];
 let playersAnswers = [];
 let playersAnswered = [];
+let AnswersGotten = [];
 let playerRestBPM = [ player1_rest_bpm, player2_rest_bpm, player3_rest_bpm, player4_rest_bpm ];
 let playerBPM = [ player1_bpm, player2_bpm, player3_bpm, player4_bpm ];
 
@@ -470,6 +471,12 @@ const ShowQuestionAndAnswers = function() {
 		// Random number to generate random question!
 		let RandomQuestion = QuestionList[Math.floor(Math.random() * QuestionList.length)];
 		console.log(RandomQuestion);
+		// for (let i = 0; i < x.length; i++) {
+		// 	if (x[i].questionAnswers[i].correct == 1) {
+		// 		juistAntwoord = x[i].questionAnswers[i].answer;
+		// 		console.log('Het juiste antwoord van de vraag is ' + juistAntwoord);
+		// 	}
+		// }
 
 		// Selecting question
 		let Question = document.querySelector('.c-question');
@@ -481,6 +488,12 @@ const ShowQuestionAndAnswers = function() {
 		// Inserting everything
 		for (let i = 0; i < RandomQuestion.questionAnswers.length; i++) {
 			AnswerList[i].innerHTML = RandomQuestion.questionAnswers[i].answer;
+			if (RandomQuestion.questionAnswers[i].correct == 1) {
+				juistAntwoord = RandomQuestion.questionAnswers[i].answer;
+				juisteButton = i;
+				console.log('Het juiste antwoord van de vraag is ' + juistAntwoord);
+				console.log('Het juiste antwoord staat op button: ' + i);
+			}
 		}
 	});
 	console.log('yes this is it');
@@ -503,16 +516,16 @@ const ShowQuestionAndAnswers = function() {
 
 	// WIP, have the time tick down over time
 	// 4 timers that count down the amount of seconds, these also get saved in the player variables.
-	intervalAll = setInterval(function(){
-		for(let i = 0;i < ScoreList.length;i++){
-				let TimeLeft = players[i].time_left;
-				let answered = playersAnswered.find(findIfAnswered,players[i].player);
-				if(!answered){
-					ScoreList[i].innerHTML = TimeLeft / 1000;
-					players[i].time_left = TimeLeft - 1000;
-				}
+	intervalAll = setInterval(function() {
+		for (let i = 0; i < ScoreList.length; i++) {
+			let TimeLeft = players[i].time_left;
+			let answered = playersAnswered.find(findIfAnswered, players[i].player);
+			if (!answered) {
+				ScoreList[i].innerHTML = TimeLeft / 1000;
+				players[i].time_left = TimeLeft - 1000;
+			}
 		}
-	},1000)
+	}, 1000);
 };
 const findIfAnswered = function(dict) {
 	if (dict.player == this) {
@@ -671,7 +684,7 @@ const playerAnswer = function(userInfo) {
 		if (QuestionAvatarsList[i].dataset.id == userInfo.player) {
 			console.log(QuestionAvatarsList[i]);
 			console.log(QuestionAvatarsList);
-			console.log("hier zit de fucker");
+			console.log('hier zit de fucker');
 			QuestionAvatarsList[i].style.opacity = 0.3;
 			break;
 		}
@@ -719,7 +732,7 @@ function onMessageArrived(message) {
 			}
 			break;
 		case 'avatar':
-			console.log("er komt iets binne");
+			console.log('er komt iets binne');
 			console.log(message);
 			// Selecting the button and making it hidden
 			AvatarButton = document.querySelector('.c-button');
@@ -773,21 +786,27 @@ function onMessageArrived(message) {
 			break;
 		case 'questions':
 			//This code saves the received button and time needed into a object en adds the object to an array
-			answer = {};
+			AnswersList = document.querySelectorAll('.c-answer');
+			let answer = {};
 			answer.player = jsonMessage.player;
 			answer.button = jsonMessage.button;
 			answer.time_needed = jsonMessage.time_needed;
 			playersAnswers.push(jsonMessage.player);
+			AnswersGotten.push(answer);
 			playerAnswer(answer);
-			console.log('er zijn  ' + playersAnswers.length + ' antwoorden ingegeven van de ' + players.length);
+			//console.log('er zijn  ' + playersAnswers.length + ' antwoorden ingegeven van de ' + players.length);
 			//If the length of playerAnswers equals the length of players we know that we received all answers
-			if (playersAnswers.length == players.length) {
+			console.log('er zijn ' + AnswersGotten.length + ' antwoorden ingedient');
+			console.log('er zijn ' + players.length + ' spelers in het spel');
+			if (AnswersGotten.length == players.length) {
 				console.log('Alle antwoorden zijn ingegeven');
 				QuestionRow.innerHTML = Sporting;
 
 				// Generate the HTML for the question page
 				ReplaceRow.innerHTML = Header;
 				HeaderRow = document.querySelector('.js-headerRow');
+
+				//console.log(AnswersList);
 				let html = '';
 				// For every person playing, generating an avatar
 				for (let i = 0; i < selectedAvatars.length; i++) {
@@ -807,13 +826,21 @@ function onMessageArrived(message) {
 				//5. Rond af wanneer nodig.
 				//LUKA hier moet de punten berekening gebeuren aan de hand van de knop dar werd gegeven en de tijd die nodig was
 				for (let i = 0; i < players.length; i++) {
-					let Berekening = jsonMessage.time_needed / players.time_left;
-					let Berekening2 = Berekening / 2;
-					let Berekening3 = 1 - Berekening2;
-					let Berekening4 = Berekening3 * 10;
-					let FinalBerekening = Math.floor(Berekening4);
-					players[i].points += FinalBerekening;
+					console.log('speler' + AnswersGotten[i].player + ' heeft gedrukt op knop ' + AnswersGotten[i].button);
+					if (AnswersGotten[i].button == juisteButton) {
+						console.log('het juiste antwoord is ingegeven');
+						let tijd_nodig = AnswersGotten[i].time_needed / 1000;
+						let tijd_over = players[i].time_left / 1000;
+						let Berekening = tijd_nodig / tijd_over;
+						let Berekening2 = Berekening / 2;
+						let Berekening3 = 1 - Berekening2;
+						let Berekening4 = Berekening3 * 20;
+						let FinalBerekening = Math.round(Berekening4);
+						players[i].points += FinalBerekening;
+						console.log('Player ' + (i + 1) + ' krijgt ' + FinalBerekening + ' punten');
+					}
 				}
+				console.log(players);
 			}
 
 			break;

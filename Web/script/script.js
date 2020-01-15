@@ -314,8 +314,6 @@ let startPage = `<div class="o-container__centered">
 </div>
 </div>`;
 //#endregion
-//#region MinimalHeader
-//#endregion
 //#region Sporting
 let Sporting = `<div class="c-app o-row--xl c-background--white">
 <div class="o-container">
@@ -337,7 +335,7 @@ let Sporting = `<div class="c-app o-row--xl c-background--white">
 					</div>
 
 					<div class="c-avatar--orange c-countdown">
-						<p class="u-font-size--lg">0</p>
+						<p class="js-delay-question u-font-size--lg">0</p>
 					</div>
 				</div>
 			</div>
@@ -367,6 +365,48 @@ let adminPage = `
 	</div>
 </div>`;
 //#endregion
+//#region SportsWinPage
+let SportsWinPage = `<div class="c-app o-row--xl c-background--white">
+<div class="o-container">
+	<div class="o-row c-text--dark c-custom-header">
+		<h2>Tijd om te sporten! </h2>
+		<p>Probeer je hartslag omhoog te krijgen door te sporten en zo extra tijd te winnen </p>
+	</div>
+	<div class="o-row">
+		<div class="o-layout">
+			<div class="o-layout__item u-align-text-center">
+				<h3>Stilstaand lopen </h3>
+				<div class="c-activity">
+					<svg class="c-activity__symbol" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 510 368.377">
+					  <g id="speed" transform="translate(0 -32.788)">
+						<g id="Group_86" data-name="Group 86" transform="translate(0 32.788)">
+						  <path id="Path_57" data-name="Path 57" d="M378.926,220.908H330.8L317.335,133.38a55.3,55.3,0,1,0-21.463-27.621l-29.98-25.67a33.631,33.631,0,0,0-21.879-8.063h-108a23.509,23.509,0,0,0,0,47.018h97.018l-81.55,64.044a60.965,60.965,0,0,0,4.709,99.235L228.9,329.065,167.6,354.61a23.959,23.959,0,0,0,9.246,46.077,23.76,23.76,0,0,0,9.646-2.044l84.5-37.3a37.634,37.634,0,0,0,10.7-60.729l-48.028-48.034,45.276-39.627,3.5,27.951a30.873,30.873,0,0,0,30.569,27.026h65.916a23.51,23.51,0,0,0,0-47.02ZM347.582,48.452A39.181,39.181,0,1,1,308.4,87.633,39.226,39.226,0,0,1,347.582,48.452Zm31.344,203.8H313.01a15.191,15.191,0,0,1-15.022-13.29l-7.155-57.219-80.1,70.071L270.616,311.7a21.973,21.973,0,0,1-6.1,35.386l-84.364,37.229a8.288,8.288,0,1,1-6.535-15.232l66.6-27.747a12.66,12.66,0,0,0,1.983-22.34l-77.545-49.855a45.333,45.333,0,0,1-3.5-73.768L257.5,119.713l-16.378-16.346H136.008a7.837,7.837,0,1,1,0-15.674h108a17.945,17.945,0,0,1,11.675,4.286l45.41,38.945L317.35,236.579h61.575a7.837,7.837,0,0,1,0,15.674Z" transform="translate(75.565 -32.788)" fill="#295bd4"/>
+						  <path id="Path_58" data-name="Path 58" d="M83.421,301.683a11.55,11.55,0,0,1-17.559-15.007L170.018,161.69l-12.036-10.039L53.817,276.644a27.224,27.224,0,0,0,41.389,35.371l90.35-103.153-11.794-10.328Z" transform="translate(31.91 47.052)" fill="#295bd4"/>
+						  <rect id="Rectangle_23" data-name="Rectangle 23" width="172.393" height="15.672" transform="translate(62.688 101.923)" fill="#295bd4"/>
+						  <rect id="Rectangle_24" data-name="Rectangle 24" width="31.344" height="15.672" transform="translate(15.672 101.923)" fill="#295bd4"/>
+						  <rect id="Rectangle_25" data-name="Rectangle 25" width="117.542" height="15.672" transform="translate(78.361 133.267)" fill="#295bd4"/>
+						  <rect id="Rectangle_26" data-name="Rectangle 26" width="31.344" height="15.672" transform="translate(31.344 133.267)" fill="#295bd4"/>
+						  <rect id="Rectangle_27" data-name="Rectangle 27" width="101.87" height="15.672" transform="translate(86.197 164.611)" fill="#295bd4"/>
+						  <rect id="Rectangle_28" data-name="Rectangle 28" width="23.509" height="15.672" transform="translate(47.016 164.611)" fill="#295bd4"/>
+						  <rect id="Rectangle_29" data-name="Rectangle 29" width="133.214" height="15.672" transform="translate(47.016 70.579)" fill="#295bd4"/>
+						  <rect id="Rectangle_30" data-name="Rectangle 30" width="31.344" height="15.672" transform="translate(0 70.579)" fill="#295bd4"/>
+						  <rect id="Rectangle_31" data-name="Rectangle 31" width="164.558" height="15.672" transform="translate(15.672 86.251)" fill="#ffa517"/>
+						  <rect id="Rectangle_32" data-name="Rectangle 32" width="203.737" height="15.672" transform="translate(31.344 117.595)" fill="#ffa517"/>
+						  <rect id="Rectangle_33" data-name="Rectangle 33" width="148.886" height="15.672" transform="translate(47.016 148.939)" fill="#ffa517"/>
+						  <rect id="Rectangle_34" data-name="Rectangle 34" width="125.377" height="15.672" transform="translate(62.688 180.284)" fill="#ffa517"/>
+						</g>
+					  </g>
+					</svg>
+					<div class="c-avatar--orange c-countdown">
+						<p class="js-delay-question u-font-size--lg">15</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>`;
+//#endregion SportsWinpage
 //#endregion
 
 const addPulsarDevice = function () {
@@ -483,8 +523,8 @@ const loadPulsarDevices = function () {
 };
 
 // Function that GETS questions + answers, and shows them!
-const ShowQuestionAndAnswers = function () {
-	console.log("ik zit in de questions");
+const ShowQuestionAndAnswers = function() {
+	console.log('ik zit in de questions');
 	// IF this is the first question of the quiz, we will send a message to the back-end to read the 'resting' heart beat
 	for (let i = 0; i < players.length; i++) {
 		playersAnswered.push({ player: players[i].player, answered: false });
@@ -503,7 +543,7 @@ const ShowQuestionAndAnswers = function () {
 	}
 
 	// Inserting HTML
-
+	
 	console.log("hier zit het probleem");
 	QuestionRow.innerHTML = Answers;
 
@@ -659,7 +699,7 @@ const stopPlayerInit = function () {
 	client.send(message);
 };
 //pass a 'true' as parameter if the html is meant for the score page, pass a 'false' if html is meant for questionPage
-const generateAvatarHtml = function (scorePage) {
+const generateAvatarHtml = function(scorePage){
 	ReplaceRow.innerHTML = Header;
 	HeaderRow = document.querySelector('.js-headerRow');
 	let html = '';
@@ -669,14 +709,14 @@ const generateAvatarHtml = function (scorePage) {
 		if (!scorePage) {
 			html += Avatar;
 		}
-		else {
+		else{
 			html += AvatarScorePage;
 		}
 		console.log('ik zit in de loooooop');
 	}
 	return html;
 }
-const FillInAvatarHtml = function (scorePage) {
+const FillInAvatarHtml = function(scorePage){
 	let QuestionAvatarsList = document.querySelectorAll('.c-avatar');
 	console.log(QuestionAvatarsList);
 
@@ -686,7 +726,7 @@ const FillInAvatarHtml = function (scorePage) {
 
 	// Selecting all player names
 	console.log(selectedAvatars);
-	console.log("dit zijn de selected");
+	console.log('dit zijn de selected');
 	PlayerName = document.querySelectorAll('.js-PlayerClass');
 	for (let i = 0; i < selectedAvatars.length; i++) {
 		let GekozenAvatar = players[i].avatar;
@@ -704,7 +744,7 @@ const FillInAvatarHtml = function (scorePage) {
 		//QuestionAvatarsList[GekozenAvatar - 1].style.opacity = 1;
 		//QuestionAvatarsList[GekozenAvatar - 1].style.transition = 'opacity 1s';
 	}
-}
+};
 // Function to generate the page with quesiton and answers on it
 const GenerateQuestionPage = function () {
 	// Tell the back end to stop reading avatars
@@ -723,7 +763,7 @@ const GenerateQuestionPage = function () {
 		console.log('ik zit in de loooooop');
 	}*/
 	avatarHtml = generateAvatarHtml(false);
-	console.log("hier zit hem");
+	console.log('hier zit hem');
 
 	HeaderRow.innerHTML += avatarHtml;
 	HeaderRow.innerHTML += footer;
@@ -749,12 +789,29 @@ const playerAnswer = function (userInfo) {
 		if (QuestionAvatarsList[i].dataset.id == userInfo.player) {
 			console.log(QuestionAvatarsList[i]);
 			console.log(QuestionAvatarsList);
-			console.log("hier zit de fucker");
+			console.log('hier zit de fucker');
 			QuestionAvatarsList[i].style.opacity = 0.3;
 			break;
 		}
 	}
 };
+
+const GenerateSportsPage = function() {
+	App = document.querySelector('.c-app');
+	// SportsSelector.document.querySelector('.c-activity');
+	// SportsSelector = document.querySelector('.c-activity__symbol');
+	App.innerHTML = SportsWinPage;
+	clearInterval(intervalSportsPage);
+	GoddelijkeTimer = document.querySelector('.js-delay-question');
+	intervalSportsActivityPage = setInterval(function() {
+		GoddelijkeTimer.innerHTML = GoddelijkeTimer.innerHTML - 1;
+		if (Aftelling.innerHTML == 0) {
+			console.log('ik tel af');
+			//functie uitvoeren voor vragen opnieuw te tonen
+		}
+	}, 1000);
+};
+
 // called when a message arrives
 function onMessageArrived(message) {
 	console.log(message);
@@ -799,7 +856,7 @@ function onMessageArrived(message) {
 			}
 			break;
 		case 'avatar':
-			console.log("er komt iets binne");
+			console.log('er komt iets binne');
 			console.log(message);
 			// Selecting the button and making it hidden
 			AvatarButton = document.querySelector('.c-button');
@@ -824,7 +881,7 @@ function onMessageArrived(message) {
 					QuestionAvatarsList = document.querySelectorAll('.c-avatar');
 					ScoreList = document.querySelectorAll('.c-avatar--orange');
 					GenerateQuestionPage();
-					console.log("thot");
+					console.log('thot');
 					break;
 				}
 
@@ -885,6 +942,17 @@ function onMessageArrived(message) {
 					let FinalBerekening = Math.floor(Berekening4);
 					players[i].points += FinalBerekening;
 				}
+
+				let Aftelling = document.querySelector('.js-delay-question');
+				Aftelling.innerHTML = 5;
+
+				intervalSportsPage = setInterval(function() {
+					Aftelling.innerHTML = Aftelling.innerHTML - 1;
+					if (Aftelling.innerHTML == 0) {
+						console.log('ik tel af');
+						GenerateSportsPage();
+					}
+				}, 1000);
 			}
 
 			break;
@@ -1040,14 +1108,14 @@ const generateAdminQuestionHtml = function (question) {
 			<h4>Vraag</h4>
 		</div>
 		<div class="o-layout__item u-align-middle-svg u-1-of-3 u-pb-clear">
-			<h4>Antwoorden</h4>
+			<h4  data-question="${question.questionID}" id="js-saveQuestion">Antwoorden</h4>
 		</div>
 	</div>
 		<div class="o-layout">
 		<div class="o-layout__item u-align-middle-svg u-align-center-clear u-1-of-3">
 			<div class="o-layout o-layout--gutter-lg u-pt-clear">
-				<div class="o-layout__item u-border-right u-1-of-2">
-						<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg xmlns="http://www.w3.org/2000/svg" data- xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" width="48px" height="48px" viewBox="0 0 512 512" xml:space="preserve"><path fill="#57AB18" d="M461.6 109.6l-54.9-43.3c-1.7-1.4-3.8-2.4-6.2-2.4-2.4 0-4.6 1-6.3 2.5L194.5 323s-78.5-75.5-80.7-77.7c-2.2-2.2-5.1-5.9-9.5-5.9s-6.4 3.1-8.7 5.4c-1.7 1.8-29.7 31.2-43.5 45.8-.8.9-1.3 1.4-2 2.1-1.2 1.7-2 3.6-2 5.7 0 2.2.8 4 2 5.7l2.8 2.6s139.3 133.8 141.6 136.1c2.3 2.3 5.1 5.2 9.2 5.2 4 0 7.3-4.3 9.2-6.2l249.1-320c1.2-1.7 2-3.6 2-5.8 0-2.5-1-4.6-2.4-6.4z"/><metadata><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:Description about="https://iconscout.com/legal#licenses" dc:title="checkmark" dc:description="checkmark" dc:publisher="Iconscout" dc:date="2017-09-24" dc:format="image/svg+xml" dc:language="en"><dc:creator><rdf:Bag><rdf:li>Benjamin J Sperry</rdf:li></rdf:Bag></dc:creator></rdf:Description></rdf:RDF></metadata></svg>
+				<div  class="o-layout__item u-border-right u-1-of-2 ">
+						<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg xmlns="http://www.w3.org/2000/svg"  xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" width="48px" height="48px" viewBox="0 0 512 512" xml:space="preserve"><path fill="#57AB18" d="M461.6 109.6l-54.9-43.3c-1.7-1.4-3.8-2.4-6.2-2.4-2.4 0-4.6 1-6.3 2.5L194.5 323s-78.5-75.5-80.7-77.7c-2.2-2.2-5.1-5.9-9.5-5.9s-6.4 3.1-8.7 5.4c-1.7 1.8-29.7 31.2-43.5 45.8-.8.9-1.3 1.4-2 2.1-1.2 1.7-2 3.6-2 5.7 0 2.2.8 4 2 5.7l2.8 2.6s139.3 133.8 141.6 136.1c2.3 2.3 5.1 5.2 9.2 5.2 4 0 7.3-4.3 9.2-6.2l249.1-320c1.2-1.7 2-3.6 2-5.8 0-2.5-1-4.6-2.4-6.4z"/><metadata><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:Description about="https://iconscout.com/legal#licenses" dc:title="checkmark" dc:description="checkmark" dc:publisher="Iconscout" dc:date="2017-09-24" dc:format="image/svg+xml" dc:language="en"><dc:creator><rdf:Bag><rdf:li>Benjamin J Sperry</rdf:li></rdf:Bag></dc:creator></rdf:Description></rdf:RDF></metadata></svg>
 				</div>
 				<div class="o-layout__item u-align-middle-svg u-1-of-2">
 					<svg class=""xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" width="48px" height="48px" viewBox="0 0 48 48"><path fill="#E2887C" d="M36,44H12a3,3,0,0,1-3-3V12a1,1,0,0,1,1-1H38a1,1,0,0,1,1,1V41A3,3,0,0,1,36,44ZM11,13V41a1,1,0,0,0,1,1H36a1,1,0,0,0,1-1V13Z"/><path fill="#E2887C" d="M35,12V38a2,2,0,0,1-2,2H10v1a2,2,0,0,0,2,2H36a2,2,0,0,0,2-2V12Z" opacity=".35"/><path fill="#E2887C" d="M43 13H5a1 1 0 0 1 0-2H43a1 1 0 0 1 0 2zM17 35a1 1 0 0 1-1-1V20a1 1 0 0 1 2 0V34A1 1 0 0 1 17 35zM31 35a1 1 0 0 1-1-1V20a1 1 0 0 1 2 0V34A1 1 0 0 1 31 35zM24 37a1 1 0 0 1-1-1V18a1 1 0 0 1 2 0V36A1 1 0 0 1 24 37z"/><path fill="#E2887C" d="M33,13H15a1,1,0,0,1-1-1V7a3,3,0,0,1,3-3H31a3,3,0,0,1,3,3v5A1,1,0,0,1,33,13ZM16,11H32V7a1,1,0,0,0-1-1H17a1,1,0,0,0-1,1Z"/></svg>
@@ -1058,17 +1126,17 @@ const generateAdminQuestionHtml = function (question) {
 			<input id="question-${question.questionID}" class="c-input c-input--xs" type="text" name="question" id="question" value="${question.questionName}" />
 		</div>
 		<div class="o-layout__item o-layout--column u-align-middle-svg u-1-of-3">`;
-	let svgClass = "";
-	for (let answer of question.questionAnswers) {
-		if (answer.correct) {
-			svgClass = "c-svg__active";
-		}
-		else {
-			console.log("incorrect");
-			svgClass = "";
-		}
-
-		html += `<div class="o-layout u-mb-md">
+		let svgClass = "";
+		for(let answer of question.questionAnswers){
+			if(answer.correct){
+				svgClass = "c-svg__active";
+			}
+			else{
+				console.log("incorrect");
+				svgClass = "";
+			}
+			
+			html += `<div class="o-layout u-mb-md">
 			<div class="o-layout__item u-align-middle-svg u-1-of-3 u-pt-clear">
 				<svg class="c-svg__check ${svgClass} js-check" xmlns="http://www.w3.org/2000/svg" width="18.684" height="18.684" viewBox="0 0 18.684 18.684">
 				  <path id="Icon_22_" d="M80.608,64H66.076A2.082,2.082,0,0,0,64,66.076V80.608a2.082,2.082,0,0,0,2.076,2.076H80.608a2.082,2.082,0,0,0,2.076-2.076V66.076A2.082,2.082,0,0,0,80.608,64ZM71.266,78.532l-5.19-5.19,1.453-1.453,3.737,3.737,7.889-7.889,1.453,1.453Z" transform="translate(-64 -64)" fill="#192a9a"/>
@@ -1097,29 +1165,34 @@ const generateAdminQuestionHtml = function (question) {
 		</form>`;
 	return html;
 }
-const changeAnswerCorrect = function () {
+const changeAnswerCorrect = function(){
 	this.classList.toggle("c-svg__active");
 }
 const loadAdminPage = function () {
 	ReplaceRow.innerHTML = adminPage;
-	let form = document.querySelector(".js-questionsForm");
+	let form = document.querySelector('.js-questionsForm');
 	GetQuestions().then((x) => {
 		let htmlQuestions = "";
-		for (let i of x) {
+		for(let i of x){
 			console.log(i);
 			htmlQuestions += generateAdminQuestionHtml(i);
 		}
 		form.innerHTML = htmlQuestions;
+		const saveQuestions = document.querySelectorAll('#js-saveQuestion');
 		const checkBoxes = document.querySelectorAll('.js-check');
 		for (let checkBox of checkBoxes) {
 			checkBox.addEventListener('click', changeAnswerCorrect);
 		}
+		for(let saveQuestion of saveQuestions){
+			console.log("yeeeeeeeeeeeeee");
+			saveQuestion.addEventListener('click',saveQuestion);
+		}
 	});
 
-
+	
 
 }
-const loadLoginPage = function () {
+const loadLoginPage = function() {
 	ReplaceRow.innerHTML = loginPage;
 	// Need to use this one later
 	let loginSubmit = document.querySelector('.js-submitLogin');

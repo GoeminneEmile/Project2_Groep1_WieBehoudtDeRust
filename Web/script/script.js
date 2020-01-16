@@ -171,6 +171,23 @@ let Answers = `<div class="c-app o-row--xl c-background--white">
 	</div>
 	<div class="o-row">
 		<div class="o-layout o-layout--gutter-lg">
+		<div class="o-layout__item o-layout-answer__gutter u-1-of-2">
+				<div class="o-layout">
+					<div class="o-layout__item u-align-middle-svg u-1-of-4">
+						<svg xmlns="http://www.w3.org/2000/svg" width="68" height="74" viewBox="0 0 68 74">
+						  <g id="Group_92" data-name="Group 92" transform="translate(-1244 -876)">
+							<circle id="Ellipse_19" data-name="Ellipse 19" cx="11.5" cy="11.5" r="11.5" transform="translate(1244 902)" fill="#57ab18"/>
+							<ellipse id="Ellipse_20" data-name="Ellipse 20" cx="11" cy="11.5" rx="11" ry="11.5" transform="translate(1290 902)" fill="#b7e694"/>
+							<circle id="Ellipse_21" data-name="Ellipse 21" cx="11.5" cy="11.5" r="11.5" transform="translate(1267 876)" fill="#b7e694"/>
+							<circle id="Ellipse_22" data-name="Ellipse 22" cx="11.5" cy="11.5" r="11.5" transform="translate(1267 927)" fill="#b7e694"/>
+						  </g>
+						</svg>
+					</div>
+					<div class="o-layout__item u-1-of-2 u-background-green c-answer">
+						Budapest
+					</div>
+				</div>
+			</div>
 			<div class="o-layout__item o-layout-answer__gutter u-1-of-2">
 				<div class="o-layout">
 					<div class="o-layout__item u-align-middle-svg u-1-of-4">
@@ -188,16 +205,18 @@ let Answers = `<div class="c-app o-row--xl c-background--white">
 					</div>
 				</div>
 			</div>
+		</div>
+		<div class="o-layout o-layout--gutter-lg">
 			<div class="o-layout__item o-layout-answer__gutter u-1-of-2">
 				<div class="o-layout">
 					<div class="o-layout__item u-align-middle-svg u-1-of-4">
 						<svg xmlns="http://www.w3.org/2000/svg" width="68" height="74" viewBox="0 0 68 74">
-						  <g id="Group_91" data-name="Group 91" transform="translate(-1244 -658)">
-							<circle id="Ellipse_15" data-name="Ellipse 15" cx="11.5" cy="11.5" r="11.5" transform="translate(1244 684)" fill="#ff8e7d"/>
-							<ellipse id="Ellipse_16" data-name="Ellipse 16" cx="11" cy="11.5" rx="11" ry="11.5" transform="translate(1290 684)" fill="#d44d39"/>
-							<circle id="Ellipse_17" data-name="Ellipse 17" cx="11.5" cy="11.5" r="11.5" transform="translate(1267 658)" fill="#ff8e7d"/>
-							<circle id="Ellipse_18" data-name="Ellipse 18" cx="11.5" cy="11.5" r="11.5" transform="translate(1267 709)" fill="#ff8e7d"/>
-						  </g>
+				  			<g id="Group_91" data-name="Group 91" transform="translate(-1244 -658)">
+								<circle id="Ellipse_15" data-name="Ellipse 15" cx="11.5" cy="11.5" r="11.5" transform="translate(1244 684)" fill="#ff8e7d"/>
+								<ellipse id="Ellipse_16" data-name="Ellipse 16" cx="11" cy="11.5" rx="11" ry="11.5" transform="translate(1290 684)" fill="#d44d39"/>
+								<circle id="Ellipse_17" data-name="Ellipse 17" cx="11.5" cy="11.5" r="11.5" transform="translate(1267 658)" fill="#ff8e7d"/>
+								<circle id="Ellipse_18" data-name="Ellipse 18" cx="11.5" cy="11.5" r="11.5" transform="translate(1267 709)" fill="#ff8e7d"/>
+				 			 </g>
 						</svg>
 					</div>
 					<div class="o-layout__item u-1-of-2 u-background-red c-answer">
@@ -205,8 +224,6 @@ let Answers = `<div class="c-app o-row--xl c-background--white">
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="o-layout o-layout--gutter-lg">
 			<div class="o-layout__item o-layout-answer__gutter u-1-of-2">
 				<div class="o-layout">
 					<div class="o-layout__item u-align-middle-svg u-1-of-4">
@@ -224,23 +241,7 @@ let Answers = `<div class="c-app o-row--xl c-background--white">
 					</div>
 				</div>
 			</div>
-			<div class="o-layout__item o-layout-answer__gutter u-1-of-2">
-				<div class="o-layout">
-					<div class="o-layout__item u-align-middle-svg u-1-of-4">
-						<svg xmlns="http://www.w3.org/2000/svg" width="68" height="74" viewBox="0 0 68 74">
-						  <g id="Group_92" data-name="Group 92" transform="translate(-1244 -876)">
-							<circle id="Ellipse_19" data-name="Ellipse 19" cx="11.5" cy="11.5" r="11.5" transform="translate(1244 902)" fill="#57ab18"/>
-							<ellipse id="Ellipse_20" data-name="Ellipse 20" cx="11" cy="11.5" rx="11" ry="11.5" transform="translate(1290 902)" fill="#b7e694"/>
-							<circle id="Ellipse_21" data-name="Ellipse 21" cx="11.5" cy="11.5" r="11.5" transform="translate(1267 876)" fill="#b7e694"/>
-							<circle id="Ellipse_22" data-name="Ellipse 22" cx="11.5" cy="11.5" r="11.5" transform="translate(1267 927)" fill="#b7e694"/>
-						  </g>
-						</svg>
-					</div>
-					<div class="o-layout__item u-1-of-2 u-background-green c-answer">
-						Budapest
-					</div>
-				</div>
-			</div>
+			
 		</div>
 	</div>
 </div>
@@ -578,7 +579,6 @@ const ShowQuestionAndAnswers = function() {
 
 	// Inserting HTML
 
-	console.log('hier zit het probleem');
 	QuestionRow.innerHTML = Answers;
 
 	// GET's questions and inserts them onto the HTML, async.
@@ -883,8 +883,14 @@ const GenerateSportsPage = function() {
 	}, 1000);
 };
 // Get the index from the biggest number
-const arrayMaxIndex = function(array) {
-	return array.indexOf(Math.max(array));
+const arrayMaxIndex = function (array) {
+	highest = array[0];
+	for (i = 0; i < array.length; i++) {
+		if (highest.bpm < array[i].bpm) {
+			highest = array[i];
+		}
+	}
+	return highest.player_id;
 };
 // called when a message arrives
 function onMessageArrived(message) {
@@ -1090,33 +1096,57 @@ function onMessageArrived(message) {
 					let timeToGive = [ 20000, 15000, 10000, 5000 ];
 					let lijst = [];
 					for (let i = 1; i < players.length + 1; i++) {
+						playerBpm = {};
 						switch (i) {
 							case 1:
 								let player1Diff = player1_bpm - player1_rest_bpm;
-								lijst.push(player1Diff);
+								playerBpm.player_id = 1;
+								playerBpm.bpm = player1Diff;
+								lijst.push(playerBpm);
 								break;
 							case 2:
 								let player2Diff = player2_bpm - player2_rest_bpm;
-								lijst.push(player2Diff);
+								playerBpm.player_id = 2;
+								playerBpm.bpm = player2Diff;
+								lijst.push(playerBpm);
 								break;
 							case 3:
 								let player3Diff = player3_bpm - player3_rest_bpm;
-								lijst.push(player3Diff);
+								playerBpm.player_id = 3;
+								playerBpm.bpm = player3Diff;
+								lijst.push(playerBpm);
 								break;
 							case 4:
 								let player4Diff = player4_bpm - player4_rest_bpm;
-								lijst.push(player4Diff);
+								playerBpm.player_id = 4;
+								playerBpm.bpm = player4Diff;
+								lijst.push(playerBpm);
 								break;
 						}
 					}
 					console.log(lijst);
-					let lengthBegin = lijst.length;
-					for (i = 0; i < lengthBegin; i++) {
+					let lengthBegin = lijst.length
+					for (let i = 0; i < lengthBegin; i++) {
 						// Checking which index is the highest number, and take the player with the highest heartbeat
 						// Ads the time of the player to the current time
-						players[arrayMaxIndex(lijst)].time_left += timeToGive[0];
+						console.log(arrayMaxIndex(lijst));
+						for (let j = 0; j < lengthBegin; j++) {
+							if (players[j].player == arrayMaxIndex(lijst)) {
+								players[j].time_left += timeToGive[i];
+								break;
+							}
+						}
 						// Delete highest number out of the list
-						lijst.splice(arrayMaxIndex(lijst), 1);
+						highest = lijst[0];
+						array = lijst;
+						for (let k = 0; k < array.length; k++) {
+							if (highest.bpm < array[k].bpm) {
+								highest = array[k];
+							}
+						}
+						lijst.splice(lijst.indexOf(highest), 1);
+						console.log("loop");
+						console.log(lijst);
 					}
 					console.log(players);
 					console.log(lijst);
@@ -1167,7 +1197,7 @@ const loginRequest = async function() {
 	const username = document.querySelector('#username').value;
 	const password = document.querySelector('#password').value;
 	AnimateRow.innerHTML = loader;
-	showMessage(false, 'Trying to log in...');
+	showMessage(false, 'Proberen inloggen...');
 	let serverEndPoint = `https://project2functions.azurewebsites.net/api/GetUser?username=${username}&password=${password}`;
 	const response = await fetch(serverEndPoint, { headers: customheaders, mode: 'cors' });
 	const data = await response.json();
@@ -1191,7 +1221,7 @@ const login = function() {
 			const game = document.querySelector('.js-game');
 			const question = document.querySelector('.js-question');
 			game.addEventListener('click', Page);
-			question.addEventListener('click', function() {
+			question.addEventListener('click', function () {
 				loadAdminPage();
 			});
 		}

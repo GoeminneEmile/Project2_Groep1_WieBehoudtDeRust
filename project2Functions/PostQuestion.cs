@@ -50,10 +50,10 @@ namespace project2Functions
                         resultAnswer.Close();
                         question.QuestionID = Guid.NewGuid();
                         command.Connection = connection;
-                        command.CommandText = "insert into ProjectQuestions (QuestionID,Question) VALUES (@id,@question);";
+                        command.CommandText = "insert into ProjectQuestions (QuestionID,Question,UserID) VALUES (@id,@question,userid);";
                         command.Parameters.AddWithValue("@id", question.QuestionID);
                         command.Parameters.AddWithValue("@question", question.QuestionName);
-
+                        command.Parameters.AddWithValue("@question", question.UserId);
                         var result = command.ExecuteReader();
                         result.Close();
                         // for every answer in a question, we insert the answer with the SAME guid as the question into the database, this is how we link a question to an answer

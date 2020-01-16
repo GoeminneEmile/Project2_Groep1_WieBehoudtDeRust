@@ -46,9 +46,10 @@ namespace project2Functions
                     {
                         // Setting and executing SQL command
                         command.Connection = connection;
-                        command.CommandText = "insert into ProjectQuestions (QuestionID,Question) VALUES (@id,@question);";
+                        command.CommandText = "insert into ProjectQuestions (QuestionID,Question,UserID) VALUES (@id,@question,@userid);";
                         command.Parameters.AddWithValue("@id", question.QuestionID);
                         command.Parameters.AddWithValue("@question", question.QuestionName);
+                        command.Parameters.AddWithValue("@question", question.UserId);
 
                         var result = command.ExecuteReader();
                         result.Close();

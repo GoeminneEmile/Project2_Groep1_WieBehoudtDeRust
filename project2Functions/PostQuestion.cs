@@ -48,14 +48,17 @@ namespace project2Functions
                         command.Parameters.AddWithValue("@questionguid", question.QuestionID);
                         var resultAnswer = await command.ExecuteReaderAsync();
                         resultAnswer.Close();
+                        command.Parameters.Clear();
                         question.QuestionID = Guid.NewGuid();
                         command.Connection = connection;
-                        command.CommandText = "insert into ProjectQuestions (QuestionID,Question,UserID) VALUES (@id,@question,userid);";
+                        command.CommandText = "insert into ProjectQuestions (QuestionID,Question,UserID) VALUES (@id,@question,@userid);";
                         command.Parameters.AddWithValue("@id", question.QuestionID);
                         command.Parameters.AddWithValue("@question", question.QuestionName);
-                        command.Parameters.AddWithValue("@question", question.UserId);
+                        command.Parameters.AddWithValue("@userid", question.UserId);
                         var result = command.ExecuteReader();
                         result.Close();
+                        command.Parameters.Clear();
+
                         // for every answer in a question, we insert the answer with the SAME guid as the question into the database, this is how we link a question to an answer
                         foreach (QuestionAnswers questionAnswer in question.questionAnswers)
                         {

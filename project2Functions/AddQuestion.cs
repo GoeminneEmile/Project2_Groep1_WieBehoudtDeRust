@@ -20,6 +20,11 @@ namespace project2Functions
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
             ILogger logger)
         {
+            try
+            {
+
+            
+            
             // Creating Telemetry client for logging events!
             TelemetryClient telemetry = new TelemetryClient();
             // Getting connection string
@@ -49,7 +54,7 @@ namespace project2Functions
                         command.CommandText = "insert into ProjectQuestions (QuestionID,Question,UserID) VALUES (@id,@question,@userid);";
                         command.Parameters.AddWithValue("@id", question.QuestionID);
                         command.Parameters.AddWithValue("@question", question.QuestionName);
-                        command.Parameters.AddWithValue("@question", question.UserId);
+                        command.Parameters.AddWithValue("@userid", question.UserId);
 
                         var result = command.ExecuteReader();
                         result.Close();
@@ -78,6 +83,11 @@ namespace project2Functions
                 logger.LogInformation("ERROR with SQL Connection: " + ex);
                 telemetry.TrackEvent("Question_Added_NOK");
                 return new StatusCodeResult(500) ;
+            }
+            }
+            catch (Exception ex)
+            {
+                return new StatusCodeResult(400);
             }
         }
     }

@@ -27,7 +27,7 @@ let playerRestBPM = [ player1_rest_bpm, player2_rest_bpm, player3_rest_bpm, play
 let playerBPM = [ player1_bpm, player2_bpm, player3_bpm, player4_bpm ];
 let errorMessageInterval = 10000;
 let intervalErrorMessage;
-let Rankings = [ { Points: '0', PointsGained: '0', Player: '1', Avatar: '' }, { Points: '0', PointsGained: '0', Player: '2', Avatar: '' }, { Points: '0', PointsGained: '0', Player: '3', Avatar: '' }, { Points: '0', PointsGained: '0', Player: '4', Avatar: '' } ];
+let Rankings = [ { Points: '0', PointsGained: '0', Player: '1', Avatar: '', Seconds: '20', SecondsGained: '0' }, { Points: '0', PointsGained: '0', Player: '2', Avatar: '', Seconds: '20', SecondsGained: '0' }, { Points: '0', PointsGained: '0', Player: '3', Avatar: '', Seconds: '20', SecondsGained: '0' }, { Points: '0', PointsGained: '0', Player: '4', Avatar: '', Seconds: '20', SecondsGained: '0' } ];
 
 //#region Panda
 let Panda = `
@@ -745,9 +745,6 @@ const stopPlayerInit = function() {
 };
 //pass a 'true' as parameter if the html is meant for the score page, pass a 'false' if html is meant for questionPage
 const generateAvatarHtml = function(scorePage) {
-	console.log('_________________');
-	console.log('ik doe generateavatarhtml met een ' + scorePage);
-	console.log('_________________');
 	ReplaceRow.innerHTML = Header;
 	HeaderRow = document.querySelector('.js-headerRow');
 	let html = '';
@@ -796,19 +793,6 @@ const FillInAvatarHtml = function(scorePage) {
 const GenerateQuestionPage = function() {
 	// Tell the back end to stop reading avatars
 	stopPlayerInit();
-
-	// Generate the HTML for the question page
-	/*
-	ReplaceRow.innerHTML = Header;
-	HeaderRow = document.querySelector('.js-headerRow');
-	let html = '';
-	// For every person playing, generating an avatar
-	for (let i = 0; i < selectedAvatars.length; i++) {
-		html += `<div class="o-layout__item u-1-of-4 c-avatar__text u-align-text-center">
-		<div class="c-avatar" data-id="${players[i].player}">`;
-		html += Avatar;
-		console.log('ik zit in de loooooop');
-	}*/
 	avatarHtml = generateAvatarHtml(false);
 
 	HeaderRow.innerHTML += avatarHtml;
@@ -848,6 +832,22 @@ const GenerateSecondsPage = function() {
 	QuestionRow.innerHTML = Sporting;
 	let Title = document.querySelector('.c-custom-header');
 	Title.innerHTML = 'Seconden';
+	let PointsGainedList = document.querySelectorAll('.c-points-gained');
+	let NewAvatars = document.querySelectorAll('.c-avatar--score');
+	let TotalScores = document.querySelectorAll('.c-total-points');
+	let PlayerNames = document.querySelectorAll('.js-PlayerName');
+	for (let i = 0; i < players.length; i++) {
+		console.log(players);
+		Rankings[i].Avatar = avatars[players[i].avatar - 1];
+		Rankings[i].Points = players[i].points;
+	}
+	Rankings.sort((a, b) => b.Seconds - a.Seconds);
+	for (let i = 0; i < players.length; i++) {
+		NewAvatars[i].innerHTML = Rankings[i].Avatar;
+		TotalScores[i].innerHTML = Rankings[i].Seconds;
+		PointsGainedList[i].innerHTML = '+ ' + Rankings[i].SecondsGained;
+		PlayerNames[i].innerHTML = 'Speler ' + Rankings[i].Player;
+	}
 
 	let Aftelling = document.querySelector('.js-delay-question');
 	Aftelling.innerHTML = 5;
@@ -869,7 +869,7 @@ const GenerateSportsPage = function() {
 	GoddelijkeTimer = document.querySelector('.js-delay-question');
 	intervalSportsActivityPage = setInterval(function() {
 		GoddelijkeTimer.innerHTML = GoddelijkeTimer.innerHTML - 1;
-		if (GoddelijkeTimer.innerHTML == 3) {
+		if (GoddelijkeTimer.innerHTML == 10) {
 			message = new Paho.Message(JSON.stringify({ type: 'bpm' }));
 			message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 			client.send(message);
@@ -883,7 +883,7 @@ const GenerateSportsPage = function() {
 	}, 1000);
 };
 // Get the index from the biggest number
-const arrayMaxIndex = function (array) {
+const arrayMaxIndex = function(array) {
 	highest = array[0];
 	for (i = 0; i < array.length; i++) {
 		if (highest.bpm < array[i].bpm) {
@@ -995,6 +995,7 @@ function onMessageArrived(message) {
 			answer.button = jsonMessage.button;
 			answer.time_needed = jsonMessage.time_needed;
 			playersAnswers.push(jsonMessage.player);
+
 			AnswersGotten.push(answer);
 			playerAnswer(answer);
 			//console.log('er zijn  ' + playersAnswers.length + ' antwoorden ingegeven van de ' + players.length);
@@ -1125,7 +1126,7 @@ function onMessageArrived(message) {
 						}
 					}
 					console.log(lijst);
-					let lengthBegin = lijst.length
+					let lengthBegin = lijst.length;
 					for (let i = 0; i < lengthBegin; i++) {
 						// Checking which index is the highest number, and take the player with the highest heartbeat
 						// Ads the time of the player to the current time
@@ -1133,6 +1134,8 @@ function onMessageArrived(message) {
 						for (let j = 0; j < lengthBegin; j++) {
 							if (players[j].player == arrayMaxIndex(lijst)) {
 								players[j].time_left += timeToGive[i];
+								Rankings[j].SecondsGained = timeToGive[j];
+								Rankings[j].Seconds = players[j].time_left;
 								break;
 							}
 						}
@@ -1145,7 +1148,7 @@ function onMessageArrived(message) {
 							}
 						}
 						lijst.splice(lijst.indexOf(highest), 1);
-						console.log("loop");
+						console.log('loop');
 						console.log(lijst);
 					}
 					console.log(players);
@@ -1221,7 +1224,7 @@ const login = function() {
 			const game = document.querySelector('.js-game');
 			const question = document.querySelector('.js-question');
 			game.addEventListener('click', Page);
-			question.addEventListener('click', function () {
+			question.addEventListener('click', function() {
 				loadAdminPage();
 			});
 		}

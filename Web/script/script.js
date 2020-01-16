@@ -1,10 +1,10 @@
 // global variables
-let SubmitButton, InputFieldValue, ReplaceRow, AnimateRow, QuestionRow, RandomQuestion, AvatarButton, QuestionAvatarsList, ScoreList, PlayerName, userGuid, AnswersList, juistAntwoord, juisteButton, TimeLeft;
+let SubmitButton, InputFieldValue, ReplaceRow, AnimateRow, QuestionRow, RandomQuestion, AvatarButton, QuestionAvatarsList, ScoreList, PlayerName, userGuid, AnswersList, juistAntwoord, juisteButton, TimeLeft, indexQuestion;
 let client;
 let Communication;
 let players = [];
 let selectedAvatars = [];
-let username = 'admin';
+let username = 'luka';
 let customheaders = new Headers();
 let QuestionList = [];
 let playerCount = 0;
@@ -23,8 +23,8 @@ let playersAnswers = [];
 let playersAnswered = [];
 let AnswersGotten = [];
 let PointsGained = [];
-let playerRestBPM = [player1_rest_bpm, player2_rest_bpm, player3_rest_bpm, player4_rest_bpm];
-let playerBPM = [player1_bpm, player2_bpm, player3_bpm, player4_bpm];
+let playerRestBPM = [ player1_rest_bpm, player2_rest_bpm, player3_rest_bpm, player4_rest_bpm ];
+let playerBPM = [ player1_bpm, player2_bpm, player3_bpm, player4_bpm ];
 let errorMessageInterval = 10000;
 let intervalErrorMessage;
 let Rankings = [ { Points: '0', PointsGained: '0', Player: '1', Avatar: '', Seconds: '20', SecondsGained: '0' }, { Points: '0', PointsGained: '0', Player: '2', Avatar: '', Seconds: '20', SecondsGained: '0' }, { Points: '0', PointsGained: '0', Player: '3', Avatar: '', Seconds: '20', SecondsGained: '0' }, { Points: '0', PointsGained: '0', Player: '4', Avatar: '', Seconds: '20', SecondsGained: '0' } ];
@@ -50,7 +50,7 @@ let Koala = `
 </div>`;
 //#endregion
 
-let avatars = [Koala, Dolphin, Panda, Elephant];
+let avatars = [ Koala, Dolphin, Panda, Elephant ];
 customheaders.append('accept', 'application/json');
 
 // Pre generated HTML code
@@ -395,8 +395,6 @@ let Sporting = `<div class="c-app o-row--xl u-pb-xl c-background--white">
             </div>
         </div>`;
 //#endregion
-
-//#endregion
 //#region SportsWinPage
 let SportsWinPage = `<div class="c-app o-row--xl c-background--white">
 <div class="o-container">
@@ -439,9 +437,39 @@ let SportsWinPage = `<div class="c-app o-row--xl c-background--white">
 </div>
 </div>`;
 //#endregion SportsWinpage
+//#region Podium
+let Podium = `        <div class="c-app o-row--xl c-background--white">
+<div class="o-container">
+	<div class="o-row c-text--dark c-custom-header">
+		<h2>Tijd om te sporten! </h2>
+		<p>Probeer je hartslag omhoog te krijgen door te sporten en zo extra tijd te winnen </p>
+	</div>
+	<div class="o-row">
+		<div class="o-layout">
+			<div class="o-layout__item u-align-text-center">
+				<h3>Stilstaand lopen </h3>
+				<div class="c-activity">
+					<div class="c-winner u-3-of-4">
+						<h3>Winaar: Speler 1 </h3>
+						<div class="c-avatar">
+							<?xml version="1.0" encoding="UTF-8"?><svg class="c-avatar__symbol" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 48 48" xml:space="preserve"><style type="text/css">.st0{fill:#FFD4C3;stroke:#504B46;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st1{fill:#FFC258;} .st2{fill:#4F4B45;} .st3{fill:#FABFA5;} .st4{fill:none;stroke:#504B46;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .Graphic_x0020_Style{opacity:0.15;fill:#45413C;} .st5{opacity:0.15;fill:#45413C;} .st6{fill:#DEBB7E;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st7{fill:#F0D5A8;} .st8{fill:#F7E5C6;} .st9{fill:#DEBB7E;} .st10{fill:none;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st11{fill:#FFE500;} .st12{fill:#EBCB00;} .st13{fill:none;stroke:#EBCB00;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st14{fill:#FF6242;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st15{fill:#FFFFFF;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st16{fill:#E5F8FF;} .st17{fill:#FFFFFF;} .st18{fill:#E8F4FA;} .st19{fill:#E8F4FA;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st20{fill:#FFCCDD;} .st21{fill:#FFB0CA;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st22{fill:#FF87AF;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st23{fill:#E5F8FF;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st24{fill:#BF8256;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st25{fill:#9CEB60;} .st26{fill:#6DD627;} .st27{fill:#C8FFA1;} .st28{fill:#FFFACF;} .st29{fill:#FF87AF;} .st30{fill:#FFB0CA;} .st31{fill:#FF6196;} .st32{fill:#FFCCDD;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st33{fill:#FF6196;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st34{fill:#FFE5EE;} .st35{fill:#00B8F0;} .st36{fill:#4ACFFF;} .st37{fill:#BF8256;} .st38{fill:#DEA47A;} .st39{fill:#915E3A;} .st40{fill:#FFF5E3;} .st41{fill:#F0F0F0;} .st42{fill:#8CA4B8;} .st43{fill:#627B8C;} .st44{fill:#C0DCEB;} .st45{fill:#FFF48C;} .st46{fill:#FFE500;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st47{fill:#FFAA54;} .st48{fill:#6DD627;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st49{fill:#FF8A14;} .st50{fill:#FFCC99;} .st51{fill:#EBCB00;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st52{fill:#00F5BC;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st53{fill:#BF8DF2;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st54{fill:#FF8A14;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st55{fill:#4AEFF7;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st56{fill:#FFF48C;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st57{fill:#FF6242;} .st58{fill:#E04122;} .st59{fill:#46B000;} .st60{fill:none;stroke:#45413C;stroke-miterlimit:10;} .st61{fill:#00B8F0;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st62{fill:#FF866E;} .st63{fill:#9F5AE5;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st64{fill:#E4FFD1;} .st65{fill:#FFFEF2;} .st66{fill:#B89558;} .st67{fill:none;stroke:#915E3A;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st68{fill:#915E3A;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st69{fill:#BF8DF2;} .st70{fill:#9F5AE5;} .st71{fill:#DABFF5;} .st72{fill:none;stroke:#45413C;stroke-linejoin:round;stroke-miterlimit:10;} .st73{fill:#656769;} .st74{fill:#87898C;} .st75{fill:#E0E0E0;} .st76{fill:#BDBEC0;} .st77{fill:#656769;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st78{fill:#45413C;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st79{fill:#FFA694;} .st80{fill:#E04122;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st81{fill:#E0E0E0;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st82{fill:#F0F0F0;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st83{fill:#DAEDF7;} .st84{fill:#BDBEC0;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st85{fill:#87898C;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st86{fill:#00DFEB;} .st87{fill:#4AEFF7;} .st88{fill:#DAEDF7;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st89{fill:#FFDA8F;} .st90{fill:#FFBE3D;} .st91{fill:#FFE9BD;} .st92{fill:#DEA47A;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st93{fill:#45413C;} .st94{fill:#F0C2A1;} .st95{fill:none;stroke:#45413C;stroke-width:1.0064;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st96{fill:#525252;} .st97{fill:#EB6D00;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st98{fill:#EB6D00;} .st99{fill:#E5FEFF;} .st100{fill:#FF866E;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st101{fill:#627B8C;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st102{fill:#FFFCE5;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st103{fill:#A6FBFF;} .st104{fill:#D9FDFF;} .st105{fill:#FFFACF;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st106{fill:#B8ECFF;} .st107{fill:#FFCABF;} .st108{fill:#E5FFF9;} .st109{fill:#C8FFA1;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st110{fill:#4CF4FC;} .st111{fill:#F0D5A8;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st112{fill:#FFDCD1;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st113{fill:#80DDFF;} .st114{fill:#46B000;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st115{fill:#4ACFFF;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st116{fill:#ADC4D9;} .st117{fill:#BDBEC0;stroke:#45413C;stroke-width:1.0064;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st118{fill:#FFFCE5;} .st119{fill:#947746;} .st120{fill:#525252;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}</style><symbol id="New_Symbol_14" viewBox="-6.5 -6.5 13 13"><path class="st0" d="M0-6c2.2 0 4.1 1.5 4.7 3.5C6.3-2.5 6.4 0 5 0v1c0 2.8-2.2 5-5 5s-5-2.2-5-5V0c-1.4 0-1.3-2.5.2-2.5C-4.1-4.5-2.2-6 0-6z" fill="#FFD4C3" stroke="#504B46" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><circle class="st1" cx="-1.6" cy="-0.1" r="0.1" fill="#FFC258"/><path class="st2" d="M-1.6.5c-.3 0-.6-.3-.6-.6s.2-.7.6-.7c.3 0 .6.3.6.7s-.3.6-.6.6z" fill="#4F4B45"/><circle class="st1" cx="1.6" cy="-0.1" r="0.1" fill="#FFC258"/><path class="st2" d="M1.6.5C1.3.5 1 .2 1-.1s.3-.6.6-.6.6.3.6.6-.2.6-.6.6z" fill="#4F4B45"/><circle class="st3" cx="-3" cy="-1.5" r="0.5" fill="#FABFA5"/><circle class="st3" cx="3" cy="-1.5" r="0.5" fill="#FABFA5"/><path class="st4" d="M-1.2-3c.8-.5 1.7-.5 2.5 0" fill="none" stroke="#504B46" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/></symbol><g id="Icons"><g id="XMLID_1315_"><ellipse id="XMLID_1328_" class="st5" cx="24" cy="45" rx="15.5" ry="1.7" fill="#45413C" opacity="0.15"/><ellipse id="XMLID_1298_" transform="matrix(0.5813 -0.8137 0.8137 0.5813 5.8823 33.0741)" class="st73" cx="35.1" cy="10.8" rx="10" ry="8.9" fill="#656769"/><path id="XMLID_1297_" class="st74" d="M27.9 7.9c3.2-4.5 9-5.8 13-3 2 1.4 3.1 3.6 3.4 5.9.3-3.2-.8-6.3-3.4-8.2-4-2.8-9.8-1.5-13 3-1.6 2.3-2.3 4.9-2 7.3.2-1.6.8-3.4 2-5z" fill="#87898C"/><ellipse id="XMLID_1296_" transform="matrix(0.5813 -0.8137 0.8137 0.5813 5.8823 33.0741)" class="st10" cx="35.1" cy="10.8" rx="10" ry="8.9" fill="none" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><ellipse id="XMLID_1295_" transform="matrix(0.5813 -0.8137 0.8137 0.5813 5.8203 32.9535)" class="st75" cx="34.9" cy="10.8" rx="6.8" ry="6.1" fill="#E0E0E0"/><ellipse id="XMLID_1294_" transform="matrix(0.8137 -0.5813 0.5813 0.8137 -3.8553 9.6136)" class="st73" cx="13.1" cy="10.8" rx="8.9" ry="10" fill="#656769"/><path id="XMLID_1293_" class="st74" d="M7.3 4.9c4-2.8 9.8-1.5 13 3 1.1 1.6 1.8 3.4 2 5.1.3-2.4-.4-5.1-2-7.3-3.2-4.5-9-5.8-13-3-2.6 1.8-3.7 5-3.4 8.2.2-2.4 1.4-4.6 3.4-6z" fill="#87898C"/><ellipse id="XMLID_1292_" transform="matrix(0.8137 -0.5813 0.5813 0.8137 -3.8553 9.6136)" class="st10" cx="13.1" cy="10.8" rx="8.9" ry="10" fill="none" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><ellipse id="XMLID_1291_" transform="matrix(0.8137 -0.5813 0.5813 0.8137 -3.8277 9.6997)" class="st75" cx="13.2" cy="10.8" rx="6.1" ry="6.8" fill="#E0E0E0"/><path id="XMLID_1290_" class="st76" d="M30 9.8c2.2-3.1 6.2-4 8.9-2 1.2.9 1.9 2.2 2.2 3.6.4-2.4-.3-4.7-2.2-6.1-2.7-1.9-6.7-1-8.9 2-1.2 1.7-1.6 3.7-1.3 5.5.2-1 .6-2.1 1.3-3z" fill="#BDBEC0"/><path id="XMLID_1289_" class="st76" d="M9.3 7.8c2.7-1.9 6.7-1 8.9 2 .7.9 1.1 2 1.3 3 .3-1.8 0-3.8-1.3-5.5-2.2-3.1-6.2-4-8.9-2C7.4 6.6 6.6 9 7 11.4c.3-1.5 1-2.8 2.3-3.6z" fill="#BDBEC0"/><ellipse id="XMLID_1277_" transform="matrix(0.5813 -0.8137 0.8137 0.5813 5.8203 32.9535)" class="st10" cx="34.9" cy="10.8" rx="6.8" ry="6.1" fill="none" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><ellipse id="XMLID_1263_" transform="matrix(0.8137 -0.5813 0.5813 0.8137 -3.8277 9.6997)" class="st10" cx="13.2" cy="10.8" rx="6.1" ry="6.8" fill="none" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><path id="XMLID_1262_" class="st41" d="M44.8 25.2C43 13.8 34.2 5.5 24 5.5c-10.2 0-19 8.3-20.8 19.7-1.2 7.8 4.1 15 11.1 15H16c1.9 1.6 4.7 2.7 7.9 2.7s6-1 7.9-2.7h2c6.9 0 12.2-7.2 11-15z" fill="#F0F0F0"/><path id="XMLID_1261_" class="st17" d="M3.2 29.6C5 18.2 13.8 9.9 24 9.9c10.2 0 19 8.3 20.8 19.7.2-1.4.2-2.9 0-4.4C43 13.8 34.2 5.5 24 5.5c-10.2 0-19 8.3-20.8 19.7-.2 1.5-.2 3 0 4.4z" fill="#FFF"/><path id="XMLID_1260_" class="st10" d="M44.8 25.2C43 13.8 34.2 5.5 24 5.5c-10.2 0-19 8.3-20.8 19.7-1.2 7.8 4.1 15 11.1 15H16c1.9 1.6 4.7 2.7 7.9 2.7s6-1 7.9-2.7h2c6.9 0 12.2-7.2 11-15z" fill="none" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><path id="XMLID_1259_" class="st77" d="M27.9 32.5c0 1.1-1.7 3-3.9 3s-3.9-1.8-3.9-3c0-1.1 1.7-2 3.9-2s3.9.8 3.9 2z" fill="#656769" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><path id="XMLID_1258_" class="st77" d="M28.1 20.1c-.9 5.1 3.1 7.7 6.1 8.8 3.1 1.2 4.8-1 4.8-4.1-.1-3.1-2-7.3-5.4-8.2-3-.7-5.3 2-5.5 3.5z" fill="#656769" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><path id="XMLID_1257_" class="st77" d="M19.8 20.1c.9 5.1-3.1 7.7-6.1 8.8-3.1 1.2-4.8-1-4.8-4.1.1-3.1 2-7.3 5.4-8.2 3-.7 5.2 2 5.5 3.5z" fill="#656769" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><circle id="XMLID_1256_" class="st78" cx="31.8" cy="22.1" r="1.7" fill="#45413C" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><circle id="XMLID_1255_" class="st78" cx="16.2" cy="22.1" r="1.7" fill="#45413C" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><circle id="XMLID_1254_" class="st79" cx="41.4" cy="29.7" r="2" fill="#FFA694"/><circle id="XMLID_1252_" class="st79" cx="6.6" cy="29.7" r="2" fill="#FFA694"/><path id="XMLID_1251_" class="st10" fill="none" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M24 35.4v2.2"/></g></g><metadata><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:Description about="https://iconscout.com/legal#licenses" dc:title="panda,animal" dc:description="panda,animal" dc:publisher="Iconscout" dc:date="2017-09-21" dc:format="image/svg+xml" dc:language="en"><dc:creator><rdf:Bag><rdf:li>Vincent Le Moign</rdf:li></rdf:Bag></dc:creator></rdf:Description></rdf:RDF></metadata></svg>
+						</div>
+						<h4>hartslag: 104</h4>
+					</div>
+
+					<div class="c-avatar--orange c-countdown">
+						<p class="u-font-size--lg">0</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>`;
+//#endregion Podium
 //#endregion
 
-const addPulsarDevice = function () {
+const addPulsarDevice = function() {
 	const sendPolarButton = document.querySelector('.js-sendPolar');
 	sendPolarButton.addEventListener('click', sendPulsarDevices);
 
@@ -477,7 +505,7 @@ const addPulsarDevice = function () {
 		}
 	}
 };
-const sendPulsarDevices = function () {
+const sendPulsarDevices = function() {
 	let devicesList = [];
 	let playerIndex = 0;
 	for (let i = 0; i < 4; i++) {
@@ -504,7 +532,7 @@ const sendPulsarDevices = function () {
 	AvatarButton = document.querySelector('.c-button');
 	AvatarButton.style.visibility = 'hidden';
 };
-const loadPulsarDevices = function () {
+const loadPulsarDevices = function() {
 	ReplaceRow.innerHTML = Pulsar;
 	let html = '';
 	let pulsarDiv = document.querySelector('.js-pulsarItems');
@@ -551,13 +579,13 @@ const loadPulsarDevices = function () {
 		button.addEventListener('click', addPulsarDevice);
 	}
 };
-const resetQuestions = function () {
+const resetQuestions = function() {
 	playersAnswered = [];
 	playersAnswers = [];
 	AnswersGotten = [];
 };
 // Function that GETS questions + answers, and shows them!
-const ShowQuestionAndAnswers = function () {
+const ShowQuestionAndAnswers = function() {
 	console.log('ik zit in de questions');
 	// IF this is the first question of the quiz, we will send a message to the back-end to read the 'resting' heart beat
 	resetQuestions();
@@ -583,12 +611,18 @@ const ShowQuestionAndAnswers = function () {
 
 	// GET's questions and inserts them onto the HTML, async.
 	// GET's questions and inserts them onto the HTML, async.
-	GetQuestions().then((x) => {
-		console.log(x);
-		QuestionList = x;
 
-		// Random number to generate random question!
-		let RandomQuestion = QuestionList[Math.floor(Math.random() * QuestionList.length)];
+	// Random number to generate random question!
+	console.log(QuestionList);
+	console.log('Er zijn nog ' + QuestionList.length + ' vragen over');
+	if (QuestionList.length == 0) {
+		console.log('_______________________');
+		console.log('Er zijn geen vragen meer');
+		console.log('________________________');
+	} else {
+		indexQuestion = Math.floor(Math.random() * QuestionList.length);
+		console.log('Index Question is ' + indexQuestion);
+		let RandomQuestion = QuestionList[indexQuestion];
 		console.log(RandomQuestion);
 
 		// Selecting question
@@ -608,43 +642,44 @@ const ShowQuestionAndAnswers = function () {
 				console.log('Het juiste antwoord staat op button: ' + i);
 			}
 		}
-	});
-	console.log('yes this is it');
-	//Send a message to Raspberry Pi to indicate that the buttons should be read with a specific time per player
-	playersTimes = [];
-	for (i = 0; i < players.length; i++) {
-		playerTime = {};
-		playerTime.player = i + 1;
-		playerTime.time_left = players[i].time_left;
-		playersTimes.push(playerTime);
-	}
-	message = new Paho.Message(
-		JSON.stringify({
-			type: 'questions',
-			player: playersTimes
-		})
-	);
-	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
-	client.send(message);
 
-	// WIP, have the time tick down over time
-	// 4 timers that count down the amount of seconds, these also get saved in the player variables.
-	console.log('____________');
-	intervalAll = setInterval(function () {
-		for (let i = 0; i < players.length; i++) {
-			console.log(i);
-			//console.log(players);
-			TimeLeft = players[i].time_left;
-			let answered = playersAnswered.find(findIfAnswered, players[i].player);
-			if (!answered) {
-				console.log('ik zit in de answered');
-				ScoreList[i].innerHTML = TimeLeft / 1000;
-				players[i].time_left = TimeLeft - 1000;
-			}
+		QuestionList.splice(indexQuestion, 1);
+		//Send a message to Raspberry Pi to indicate that the buttons should be read with a specific time per player
+		playersTimes = [];
+		for (i = 0; i < players.length; i++) {
+			playerTime = {};
+			playerTime.player = i + 1;
+			playerTime.time_left = players[i].time_left;
+			playersTimes.push(playerTime);
 		}
-	}, 1000);
+		message = new Paho.Message(
+			JSON.stringify({
+				type: 'questions',
+				player: playersTimes
+			})
+		);
+		message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
+		client.send(message);
+
+		// WIP, have the time tick down over time
+		// 4 timers that count down the amount of seconds, these also get saved in the player variables.
+		console.log('____________');
+		intervalAll = setInterval(function() {
+			for (let i = 0; i < players.length; i++) {
+				console.log(i);
+				//console.log(players);
+				TimeLeft = players[i].time_left;
+				let answered = playersAnswered.find(findIfAnswered, players[i].player);
+				if (!answered) {
+					console.log('ik zit in de answered');
+					ScoreList[i].innerHTML = TimeLeft / 1000;
+					players[i].time_left = TimeLeft - 1000;
+				}
+			}
+		}, 1000);
+	}
 };
-const findIfAnswered = function (dict) {
+const findIfAnswered = function(dict) {
 	if (dict.player == this) {
 		if (dict.answered == true) {
 			return true;
@@ -656,14 +691,14 @@ const findIfAnswered = function (dict) {
 	}
 };
 // Function to show the animation screen
-const ShowLoadingScreen = function () {
+const ShowLoadingScreen = function() {
 	AnimateRow = document.querySelector('.js-animate');
 	AnimateRow.classList.toggle('c-form-field');
 	AnimateRow.innerHTML = loader;
 };
 
 // Function to GET all questions
-const GetQuestions = async function () {
+const GetQuestions = async function() {
 	let serverEndPoint = `https://project2functions.azurewebsites.net/api/GetQuestions?username=${username}`;
 	const response = await fetch(serverEndPoint, { headers: customheaders });
 	const data = await response.json();
@@ -671,7 +706,7 @@ const GetQuestions = async function () {
 	return data;
 };
 
-const ConnectToMQTT = function () {
+const ConnectToMQTT = function() {
 	// Go from index page to load page
 	// generate a random client id
 	let clientID = 'clientID_' + parseInt(Math.random() * 100);
@@ -685,7 +720,7 @@ const ConnectToMQTT = function () {
 	// connect the client
 	client.connect({ onSuccess: onConnect, onFailure: onConnectionLost });
 };
-const disconnectTest = function () {
+const disconnectTest = function() {
 	client.disconnect();
 	console;
 };
@@ -695,7 +730,7 @@ function onConnect() {
 	//console.log('onConnect');
 	try {
 		clearInterval(interval);
-	} catch (error) { }
+	} catch (error) {}
 	// client subscribed op dynamische topic!
 	client.subscribe(`/luemniro/PiToJs/${InputFieldValue}`);
 	//console.log(InputFieldValue);
@@ -704,7 +739,7 @@ function onConnect() {
 }
 
 // Initializing communication, we send a test and the python back-end sends a test back
-const initializeCommunication = function () {
+const initializeCommunication = function() {
 	//ReplaceRow.innerHTML = Avatars;
 	//ReplaceRow.innerHTML = Header;
 	//ShowQuestionAndAnswers();
@@ -715,7 +750,7 @@ const initializeCommunication = function () {
 
 	showMessage(false, 'Proberen connectie maken met spel...');
 	//Shows a error message after 10 seconds
-	intervalErrorMessage = setInterval(function () {
+	intervalErrorMessage = setInterval(function() {
 		showMessage(true, 'Er kan geen connectie gemaakt worden met de spel! Bent u zeker dat de game pin juist is?');
 		clearInterval(intervalErrorMessage);
 	}, errorMessageInterval);
@@ -724,7 +759,7 @@ const initializeCommunication = function () {
 // called when the client loses its connection
 function onConnectionLost(responseObject) {
 	//start interval for reconnecting to mqtt server
-	interval = setInterval(function () {
+	interval = setInterval(function() {
 		ConnectToMQTT();
 	}, 10000);
 
@@ -733,21 +768,18 @@ function onConnectionLost(responseObject) {
 	}
 }
 
-const checkPlayerCreated = function (player) {
+const checkPlayerCreated = function(player) {
 	return player.player != this.id;
 };
 
 // Tell the back end to stop reading avatars
-const stopPlayerInit = function () {
+const stopPlayerInit = function() {
 	message = new Paho.Message(JSON.stringify({ type: 'avatar', status: 'end' }));
 	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 	client.send(message);
 };
 //pass a 'true' as parameter if the html is meant for the score page, pass a 'false' if html is meant for questionPage
-const generateAvatarHtml = function (scorePage) {
-	console.log('_________________');
-	console.log('ik doe generateavatarhtml met een ' + scorePage);
-	console.log('_________________');
+const generateAvatarHtml = function(scorePage) {
 	ReplaceRow.innerHTML = Header;
 	HeaderRow = document.querySelector('.js-headerRow');
 	let html = '';
@@ -763,7 +795,7 @@ const generateAvatarHtml = function (scorePage) {
 	}
 	return html;
 };
-const FillInAvatarHtml = function (scorePage) {
+const FillInAvatarHtml = function(scorePage) {
 	let QuestionAvatarsList = document.querySelectorAll('.c-avatar');
 	console.log(QuestionAvatarsList);
 
@@ -793,7 +825,7 @@ const FillInAvatarHtml = function (scorePage) {
 	}
 };
 // Function to generate the page with quesiton and answers on it
-const GenerateQuestionPage = function () {
+const GenerateQuestionPage = function() {
 	// Tell the back end to stop reading avatars
 	stopPlayerInit();
 
@@ -810,7 +842,7 @@ const GenerateQuestionPage = function () {
 };
 
 // A player has answered, the userinfo (the player who has answered) gets sent here, and this function is activated
-const playerAnswer = function (userInfo) {
+const playerAnswer = function(userInfo) {
 	// Clearing the correct interval
 	for (let i = 0; i < players.length; i++) {
 		if (userInfo.player == playersAnswered[i].player) {
@@ -831,7 +863,7 @@ const playerAnswer = function (userInfo) {
 	}
 };
 
-const GenerateSecondsPage = function () {
+const GenerateSecondsPage = function() {
 	clearInterval(intervalSportsActivityPage);
 	console.log('Timer is verwijdert');
 	QuestionRow.innerHTML = Sporting;
@@ -856,7 +888,7 @@ const GenerateSecondsPage = function () {
 
 	let Aftelling = document.querySelector('.js-delay-question');
 	Aftelling.innerHTML = 5;
-	intervalSportsPage = setInterval(function () {
+	intervalSportsPage = setInterval(function() {
 		Aftelling.innerHTML = Aftelling.innerHTML - 1;
 		if (Aftelling.innerHTML == 0) {
 			console.log('ik tel af');
@@ -865,27 +897,33 @@ const GenerateSecondsPage = function () {
 	}, 1000);
 };
 
-const GenerateSportsPage = function () {
-	App = document.querySelector('.c-app');
-	// SportsSelector.document.querySelector('.c-activity');
-	// SportsSelector = document.querySelector('.c-activity__symbol');
-	App.innerHTML = SportsWinPage;
-	clearInterval(intervalSportsPage);
-	GoddelijkeTimer = document.querySelector('.js-delay-question');
-	intervalSportsActivityPage = setInterval(function () {
-		GoddelijkeTimer.innerHTML = GoddelijkeTimer.innerHTML - 1;
-		if (GoddelijkeTimer.innerHTML == 10) {
-			message = new Paho.Message(JSON.stringify({ type: 'bpm' }));
-			message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
-			client.send(message);
-		}
-		if (GoddelijkeTimer.innerHTML == 0) {
-			// Create leaderboard for question here
-			console.log('ik tel af');
-			//functie uitvoeren voor vragen opnieuw te tonen
-			GenerateSecondsPage();
-		}
-	}, 1000);
+const GenerateSportsPage = function() {
+	console.log(QuestionList);
+	if (QuestionList.length == 0) {
+		console.log('Hier al springen naar de podium pagina');
+		App.innerHTML = Podium;
+	} else {
+		App = document.querySelector('.c-app');
+		// SportsSelector.document.querySelector('.c-activity');
+		// SportsSelector = document.querySelector('.c-activity__symbol');
+		App.innerHTML = SportsWinPage;
+		clearInterval(intervalSportsPage);
+		GoddelijkeTimer = document.querySelector('.js-delay-question');
+		intervalSportsActivityPage = setInterval(function() {
+			GoddelijkeTimer.innerHTML = GoddelijkeTimer.innerHTML - 1;
+			if (GoddelijkeTimer.innerHTML == 10) {
+				message = new Paho.Message(JSON.stringify({ type: 'bpm' }));
+				message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
+				client.send(message);
+			}
+			if (GoddelijkeTimer.innerHTML == 0) {
+				// Create leaderboard for question here
+				console.log('ik tel af');
+				//functie uitvoeren voor vragen opnieuw te tonen
+				GenerateSecondsPage();
+			}
+		}, 1000);
+	}
 };
 // Get the index from the biggest number
 const arrayMaxIndex = function(array) {
@@ -971,7 +1009,7 @@ function onMessageArrived(message) {
 				}
 
 				// If an avatar is chosen, it gets a lower opacity, as to show that it's chosen
-				let LijstIcons = ['Koala', 'Dolphin', 'Panda', 'Elephant'];
+				let LijstIcons = [ 'Koala', 'Dolphin', 'Panda', 'Elephant' ];
 				//console.log(LijstIcons[jsonMessage.button - 1]);
 				switch (LijstIcons[jsonMessage.button - 1]) {
 					case 'Koala':
@@ -995,6 +1033,7 @@ function onMessageArrived(message) {
 			break;
 		case 'questions':
 			//This code saves the received button and time needed into a object en adds the object to an array
+
 			answer = {};
 			answer.player = jsonMessage.player;
 			answer.button = jsonMessage.button;
@@ -1067,7 +1106,7 @@ function onMessageArrived(message) {
 				console.log(players);
 				let Aftelling = document.querySelector('.js-delay-question');
 				Aftelling.innerHTML = 5;
-				intervalSportsPage = setInterval(function () {
+				intervalSportsPage = setInterval(function() {
 					Aftelling.innerHTML = Aftelling.innerHTML - 1;
 					if (Aftelling.innerHTML == 0) {
 						console.log('ik tel af');
@@ -1099,7 +1138,7 @@ function onMessageArrived(message) {
 				if (playersBpmCount == players.length) {
 					playersBpmCount = 0;
 					// LUKA deze if wordt uitgevoerd bij het krijgen van de laatste hartslag, hier moet de berekening doen van wie het meest heeft gesport en wie dus het meeste tijd krijgt
-					let timeToGive = [20000, 15000, 10000, 5000];
+					let timeToGive = [ 20000, 15000, 10000, 5000 ];
 					let lijst = [];
 					for (let i = 1; i < players.length + 1; i++) {
 						playerBpm = {};
@@ -1185,7 +1224,7 @@ function onMessageArrived(message) {
 	console.log(typeof jsonMessage.type);
 }
 
-const showMessage = function (isError, message) {
+const showMessage = function(isError, message) {
 	messageBox = document.querySelector('.js-loading-message');
 	messageBox.innerHTML = message;
 	if (isError) {
@@ -1193,7 +1232,7 @@ const showMessage = function (isError, message) {
 	}
 };
 
-const Buttonchecked = function () {
+const Buttonchecked = function() {
 	// Change page here, go from load page to avatar selection page
 	// waarde van input box ophalen
 	InputFieldValue = document.querySelector('#gamePin').value;
@@ -1201,7 +1240,7 @@ const Buttonchecked = function () {
 	showMessage(false, 'Proberen connectie maken met spel...');
 	ConnectToMQTT();
 };
-const loginRequest = async function () {
+const loginRequest = async function() {
 	const username = document.querySelector('#username').value;
 	const password = document.querySelector('#password').value;
 	AnimateRow.innerHTML = loader;
@@ -1211,7 +1250,7 @@ const loginRequest = async function () {
 	const data = await response.json();
 	return data;
 };
-const login = function () {
+const login = function() {
 	loginRequest().then((x) => {
 		if (x == 400) {
 			console.log('wrong credentials');
@@ -1235,28 +1274,28 @@ const login = function () {
 		}
 	});
 };
-const Page = function () {
+const Page = function() {
 	ReplaceRow.innerHTML = pinPage;
 	SubmitButton = document.querySelector('#js-submit');
 	let pinInput = document.querySelector('.js-input-pin');
 	SubmitButton.addEventListener('click', Buttonchecked);
 	pinInput.addEventListener('keyup', autoEnterPin);
 };
-const autoEnterPin = function (event) {
+const autoEnterPin = function(event) {
 	if (event.keyCode === 13) {
 		event.preventDefault();
 		let enter = document.querySelector('#js-submit');
 		enter.click();
 	}
 };
-const autoEnter = function (event) {
+const autoEnter = function(event) {
 	if (event.keyCode === 13) {
 		event.preventDefault();
 		let loginSubmit = document.querySelector('.js-submitLogin').click();
 	}
 };
 
-const loadLoginPage = function () {
+const loadLoginPage = function() {
 	ReplaceRow.innerHTML = loginPage;
 	// Need to use this one later
 	let loginSubmit = document.querySelector('.js-submitLogin');
@@ -1266,12 +1305,16 @@ const loadLoginPage = function () {
 	loginUsername.addEventListener('keyup', autoEnter);
 	loginPassword.addEventListener('keyup', autoEnter);
 };
-const init = function () {
+const init = function() {
 	// Init function
 	ReplaceRow = document.querySelector('.js-row');
 	QuestionRow = document.querySelector('.c-app');
 	loadLoginPage();
 	AnimateRow = document.querySelector('.js-animate');
+	GetQuestions().then((x) => {
+		console.log(x);
+		QuestionList = x;
+	});
 };
 
 document.addEventListener('DOMContentLoaded', init);

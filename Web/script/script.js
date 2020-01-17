@@ -23,11 +23,11 @@ let playersAnswers = [];
 let playersAnswered = [];
 let AnswersGotten = [];
 let PointsGained = [];
-let playerRestBPM = [ player1_rest_bpm, player2_rest_bpm, player3_rest_bpm, player4_rest_bpm ];
-let playerBPM = [ player1_bpm, player2_bpm, player3_bpm, player4_bpm ];
+let playerRestBPM = [player1_rest_bpm, player2_rest_bpm, player3_rest_bpm, player4_rest_bpm];
+let playerBPM = [player1_bpm, player2_bpm, player3_bpm, player4_bpm];
 let errorMessageInterval = 10000;
 let intervalErrorMessage;
-let Rankings = [ { Points: 0, PointsGained: 0, Player: '1', Avatar: '', Seconds: '20', SecondsGained: '0' }, { Points: 0, PointsGained: 0, Player: '2', Avatar: '', Seconds: '20', SecondsGained: '0' }, { Points: 0, PointsGained: 0, Player: '3', Avatar: '', Seconds: '20', SecondsGained: '0' }, { Points: 0, PointsGained: 0, Player: '4', Avatar: '', Seconds: '20', SecondsGained: '0' } ];
+let Rankings = [{ Points: 0, PointsGained: 0, Player: '1', Avatar: '', Seconds: '20', SecondsGained: '0' }, { Points: 0, PointsGained: 0, Player: '2', Avatar: '', Seconds: '20', SecondsGained: '0' }, { Points: 0, PointsGained: 0, Player: '3', Avatar: '', Seconds: '20', SecondsGained: '0' }, { Points: 0, PointsGained: 0, Player: '4', Avatar: '', Seconds: '20', SecondsGained: '0' }];
 
 //#region Panda
 let Panda = `
@@ -50,7 +50,7 @@ let Koala = `
 </div>`;
 //#endregion
 
-let avatars = [ Koala, Dolphin, Panda, Elephant ];
+let avatars = [Koala, Dolphin, Panda, Elephant];
 customheaders.append('accept', 'application/json');
 
 // Pre generated HTML code
@@ -302,23 +302,23 @@ let loginPage = `<div>
 				</div>
 			</form>
 			<div class=" u-align-text-center">
-				<button class="c-button js-submitLogin c-button--xl"> Login </button>
+				<button class="c-button c-button--xl u-mb-md u-tr-clear js-submitLogin"> Login </button>
+				<p>Nog geen account?<a href="register.html">Maak nu een aan</a></p>
 			</div>
 		</div>
 	</div>
 </div>
 </div>`;
-let startPage = `<div class="o-container__centered">
-<div class="c-align--middle">
-	<div class="o-layout u-align-text-center">
-		<div class="o-layout__item u-1-of-2">
-			<button class="c-button c-button--xl js-question"> Vragen toevoegen </button>
-		</div>
-		<div class="o-layout__item u-1-of-2">
-			<button class="c-button c-button--xl js-game"> Nu spelen </button>
-		</div>
-	</div>
-</div>
+let startPage = `
+<div class="o-layout u-align-text-center">
+    <div class="o-container o-container--middle">
+        <div class="o-layout__item u-center-items u-clear-left u-align-middle-svg u-width-full u-1-of-4-bp2 u-mb-lg">
+            <button class="c-button c-button--xl u-tr-clear u-width-xl js-question"> Vragen toevoegen </button>
+        </div>
+        <div class="o-layout__item u-center-items u-width-full u-1-of-4-bp2 u-clear-right u-align-middle-svg u-mb-lg">
+            <button class="c-button c-button--xl u-tr-clear u-width-xl js-game"> Nu spelen </button>
+        </div>
+    </div>
 </div>`;
 //#endregion
 //#region Sporting
@@ -444,7 +444,7 @@ let medal_brons = `<svg xmlns="http://www.w3.org/2000/svg" width="44.502" height
 //#endregion Podium
 //#endregion
 
-const addPulsarDevice = function() {
+const addPulsarDevice = function () {
 	const sendPolarButton = document.querySelector('.js-sendPolar');
 	sendPolarButton.addEventListener('click', sendPulsarDevices);
 
@@ -478,7 +478,7 @@ const addPulsarDevice = function() {
 		}
 	}
 };
-const sendPulsarDevices = function() {
+const sendPulsarDevices = function () {
 	let devicesList = [];
 	let playerIndex = 0;
 	for (let i = 0; i < 4; i++) {
@@ -505,7 +505,7 @@ const sendPulsarDevices = function() {
 	AvatarButton = document.querySelector('.c-button');
 	AvatarButton.style.visibility = 'hidden';
 };
-const loadPulsarDevices = function() {
+const loadPulsarDevices = function () {
 	ReplaceRow.innerHTML = Pulsar;
 	let html = '';
 	let pulsarDiv = document.querySelector('.js-pulsarItems');
@@ -552,13 +552,13 @@ const loadPulsarDevices = function() {
 		button.addEventListener('click', addPulsarDevice);
 	}
 };
-const resetQuestions = function() {
+const resetQuestions = function () {
 	playersAnswered = [];
 	playersAnswers = [];
 	AnswersGotten = [];
 };
 // Function that GETS questions + answers, and shows them!
-const ShowQuestionAndAnswers = function() {
+const ShowQuestionAndAnswers = function () {
 	// IF this is the first question of the quiz, we will send a message to the back-end to read the 'resting' heart beat
 	resetQuestions();
 	for (let i = 0; i < players.length; i++) {
@@ -620,7 +620,7 @@ const ShowQuestionAndAnswers = function() {
 
 		// WIP, have the time tick down over time
 		// 4 timers that count down the amount of seconds, these also get saved in the player variables.
-		intervalAll = setInterval(function() {
+		intervalAll = setInterval(function () {
 			for (let i = 0; i < players.length; i++) {
 				TimeLeft = players[i].time_left;
 				let answered = playersAnswered.find(findIfAnswered, players[i].player);
@@ -632,7 +632,7 @@ const ShowQuestionAndAnswers = function() {
 		}, 1000);
 	}
 };
-const findIfAnswered = function(dict) {
+const findIfAnswered = function (dict) {
 	if (dict.player == this) {
 		if (dict.answered == true) {
 			return true;
@@ -644,21 +644,21 @@ const findIfAnswered = function(dict) {
 	}
 };
 // Function to show the animation screen
-const ShowLoadingScreen = function() {
+const ShowLoadingScreen = function () {
 	AnimateRow = document.querySelector('.js-animate');
 	AnimateRow.classList.toggle('c-form-field');
 	AnimateRow.innerHTML = loader;
 };
 
 // Function to GET all questions
-const GetQuestions = async function() {
+const GetQuestions = async function () {
 	let serverEndPoint = `https://project2functions.azurewebsites.net/api/GetQuestions?username=${username}`;
 	const response = await fetch(serverEndPoint, { headers: customheaders });
 	const data = await response.json();
 	return data;
 };
 
-const ConnectToMQTT = function() {
+const ConnectToMQTT = function () {
 	// Go from index page to load page
 	// generate a random client id
 	let clientID = 'clientID_' + parseInt(Math.random() * 100);
@@ -671,7 +671,7 @@ const ConnectToMQTT = function() {
 	// connect the client
 	client.connect({ onSuccess: onConnect, onFailure: onConnectionLost });
 };
-const disconnectTest = function() {
+const disconnectTest = function () {
 	client.disconnect();
 	console;
 };
@@ -680,7 +680,7 @@ function onConnect() {
 	// Once a connection has been made, make a subscription and send a message.
 	try {
 		clearInterval(interval);
-	} catch (error) {}
+	} catch (error) { }
 	// client subscribed op dynamische topic!
 	client.subscribe(`/luemniro/PiToJs/${InputFieldValue}`);
 	// Kijken of juiste ID is ingegeven!
@@ -688,7 +688,7 @@ function onConnect() {
 }
 
 // Initializing communication, we send a test and the python back-end sends a test back
-const initializeCommunication = function() {
+const initializeCommunication = function () {
 	//ReplaceRow.innerHTML = Avatars;
 	//ReplaceRow.innerHTML = Header;
 	//ShowQuestionAndAnswers();
@@ -698,7 +698,7 @@ const initializeCommunication = function() {
 
 	showMessage(false, 'Proberen connectie maken met spel...');
 	//Shows a error message after 10 seconds
-	intervalErrorMessage = setInterval(function() {
+	intervalErrorMessage = setInterval(function () {
 		showMessage(true, 'Er kan geen connectie gemaakt worden met de spel! Bent u zeker dat de game pin juist is?');
 		clearInterval(intervalErrorMessage);
 	}, errorMessageInterval);
@@ -707,7 +707,7 @@ const initializeCommunication = function() {
 // called when the client loses its connection
 function onConnectionLost(responseObject) {
 	//start interval for reconnecting to mqtt server
-	interval = setInterval(function() {
+	interval = setInterval(function () {
 		ConnectToMQTT();
 	}, 10000);
 
@@ -716,18 +716,18 @@ function onConnectionLost(responseObject) {
 	}
 }
 
-const checkPlayerCreated = function(player) {
+const checkPlayerCreated = function (player) {
 	return player.player != this.id;
 };
 
 // Tell the back end to stop reading avatars
-const stopPlayerInit = function() {
+const stopPlayerInit = function () {
 	message = new Paho.Message(JSON.stringify({ type: 'avatar', status: 'end' }));
 	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 	client.send(message);
 };
 //pass a 'true' as parameter if the html is meant for the score page, pass a 'false' if html is meant for questionPage
-const generateAvatarHtml = function(scorePage) {
+const generateAvatarHtml = function (scorePage) {
 	ReplaceRow.innerHTML = Header;
 	HeaderRow = document.querySelector('.js-headerRow');
 	let html = '';
@@ -743,7 +743,7 @@ const generateAvatarHtml = function(scorePage) {
 	}
 	return html;
 };
-const FillInAvatarHtml = function(scorePage) {
+const FillInAvatarHtml = function (scorePage) {
 	let QuestionAvatarsList = document.querySelectorAll('.c-avatar');
 
 	// Selecting all scores
@@ -769,7 +769,7 @@ const FillInAvatarHtml = function(scorePage) {
 	}
 };
 // Function to generate the page with quesiton and answers on it
-const GenerateQuestionPage = function() {
+const GenerateQuestionPage = function () {
 	// Tell the back end to stop reading avatars
 	stopPlayerInit();
 
@@ -786,7 +786,7 @@ const GenerateQuestionPage = function() {
 };
 
 // A player has answered, the userinfo (the player who has answered) gets sent here, and this function is activated
-const playerAnswer = function(userInfo) {
+const playerAnswer = function (userInfo) {
 	// Clearing the correct interval
 	for (let i = 0; i < players.length; i++) {
 		if (userInfo.player == playersAnswered[i].player) {
@@ -803,7 +803,7 @@ const playerAnswer = function(userInfo) {
 	}
 };
 
-const GenerateSecondsPage = function() {
+const GenerateSecondsPage = function () {
 	clearInterval(intervalSportsActivityPage);
 	QuestionRow.innerHTML = Sporting;
 	let Title = document.querySelector('.c-custom-header');
@@ -838,7 +838,7 @@ const GenerateSecondsPage = function() {
 
 	let Aftelling = document.querySelector('.js-delay-question');
 	Aftelling.innerHTML = 5;
-	intervalSportsPage = setInterval(function() {
+	intervalSportsPage = setInterval(function () {
 		Aftelling.innerHTML = Aftelling.innerHTML - 1;
 		if (Aftelling.innerHTML == 0) {
 			GenerateQuestionPage();
@@ -846,7 +846,7 @@ const GenerateSecondsPage = function() {
 	}, 1000);
 };
 
-const GenerateSportsPage = function() {
+const GenerateSportsPage = function () {
 	if (QuestionList.length == 0) {
 		Rankings.sort((a, b) => b.Points - a.Points);
 		//#region Podium
@@ -911,7 +911,7 @@ const GenerateSportsPage = function() {
 		App.innerHTML = SportsWinPage;
 		clearInterval(intervalSportsPage);
 		GoddelijkeTimer = document.querySelector('.js-delay-question');
-		intervalSportsActivityPage = setInterval(function() {
+		intervalSportsActivityPage = setInterval(function () {
 			GoddelijkeTimer.innerHTML = GoddelijkeTimer.innerHTML - 1;
 			if (GoddelijkeTimer.innerHTML == 10) {
 				message = new Paho.Message(JSON.stringify({ type: 'bpm' }));
@@ -927,7 +927,7 @@ const GenerateSportsPage = function() {
 	}
 };
 // Get the index from the biggest number
-const arrayMaxIndex = function(array) {
+const arrayMaxIndex = function (array) {
 	highest = array[0];
 	for (i = 0; i < array.length; i++) {
 		if (highest.bpm < array[i].bpm) {
@@ -1005,7 +1005,7 @@ function onMessageArrived(message) {
 				}
 
 				// If an avatar is chosen, it gets a lower opacity, as to show that it's chosen
-				let LijstIcons = [ 'Koala', 'Dolphin', 'Panda', 'Elephant' ];
+				let LijstIcons = ['Koala', 'Dolphin', 'Panda', 'Elephant'];
 				switch (LijstIcons[jsonMessage.button - 1]) {
 					case 'Koala':
 						icon = document.querySelector('.js-koala');
@@ -1122,7 +1122,7 @@ function onMessageArrived(message) {
 
 				let Aftelling = document.querySelector('.js-delay-question');
 				Aftelling.innerHTML = 5;
-				intervalSportsPage = setInterval(function() {
+				intervalSportsPage = setInterval(function () {
 					Aftelling.innerHTML = Aftelling.innerHTML - 1;
 					if (Aftelling.innerHTML == 0) {
 						GenerateSportsPage();
@@ -1153,7 +1153,7 @@ function onMessageArrived(message) {
 				if (playersBpmCount == players.length) {
 					playersBpmCount = 0;
 					// LUKA deze if wordt uitgevoerd bij het krijgen van de laatste hartslag, hier moet de berekening doen van wie het meest heeft gesport en wie dus het meeste tijd krijgt
-					let timeToGive = [ 20000, 15000, 10000, 5000 ];
+					let timeToGive = [20000, 15000, 10000, 5000];
 					let lijst = [];
 					for (let i = 1; i < players.length + 1; i++) {
 						playerBpm = {};
@@ -1231,7 +1231,7 @@ function onMessageArrived(message) {
 	}
 }
 
-const showMessage = function(isError, message) {
+const showMessage = function (isError, message) {
 	messageBox = document.querySelector('.js-loading-message');
 	messageBox.innerHTML = message;
 	if (isError) {
@@ -1239,7 +1239,7 @@ const showMessage = function(isError, message) {
 	}
 };
 
-const Buttonchecked = function() {
+const Buttonchecked = function () {
 	// Change page here, go from load page to avatar selection page
 	// waarde van input box ophalen
 	InputFieldValue = document.querySelector('#gamePin').value;
@@ -1247,7 +1247,7 @@ const Buttonchecked = function() {
 	showMessage(false, 'Proberen connectie maken met spel...');
 	ConnectToMQTT();
 };
-const loginRequest = async function() {
+const loginRequest = async function () {
 	username = document.querySelector('#username').value;
 	const password = document.querySelector('#password').value;
 	AnimateRow.innerHTML = loader;
@@ -1257,7 +1257,7 @@ const loginRequest = async function() {
 	const data = await response.json();
 	return data;
 };
-const login = function() {
+const login = function () {
 	loginRequest().then((x) => {
 		if (x == 400) {
 			console.log('wrong credentials');
@@ -1278,34 +1278,34 @@ const login = function() {
 			const game = document.querySelector('.js-game');
 			const question = document.querySelector('.js-question');
 			game.addEventListener('click', Page);
-			question.addEventListener('click', function() {
+			question.addEventListener('click', function () {
 				loadAdminPage();
 			});
 		}
 	});
 };
-const Page = function() {
+const Page = function () {
 	ReplaceRow.innerHTML = pinPage;
 	SubmitButton = document.querySelector('#js-submit');
 	let pinInput = document.querySelector('.js-input-pin');
 	SubmitButton.addEventListener('click', Buttonchecked);
 	pinInput.addEventListener('keyup', autoEnterPin);
 };
-const autoEnterPin = function(event) {
+const autoEnterPin = function (event) {
 	if (event.keyCode === 13) {
 		event.preventDefault();
 		let enter = document.querySelector('#js-submit');
 		enter.click();
 	}
 };
-const autoEnter = function(event) {
+const autoEnter = function (event) {
 	if (event.keyCode === 13) {
 		event.preventDefault();
 		let loginSubmit = document.querySelector('.js-submitLogin').click();
 	}
 };
 
-const loadLoginPage = function() {
+const loadLoginPage = function () {
 	ReplaceRow.innerHTML = loginPage;
 	// Need to use this one later
 	let loginSubmit = document.querySelector('.js-submitLogin');
@@ -1315,7 +1315,7 @@ const loadLoginPage = function() {
 	loginUsername.addEventListener('keyup', autoEnter);
 	loginPassword.addEventListener('keyup', autoEnter);
 };
-const init = function() {
+const init = function () {
 	// Init function
 	ReplaceRow = document.querySelector('.js-row');
 	QuestionRow = document.querySelector('.c-app');

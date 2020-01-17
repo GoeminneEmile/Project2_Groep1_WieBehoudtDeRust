@@ -73,7 +73,7 @@ namespace project2Functions
                                 command.Parameters.Clear();
                                 result.Close();
                             }
-                            return new OkObjectResult(201);
+                            return new OkObjectResult("{id:question.QuestionID }");
 
 
 

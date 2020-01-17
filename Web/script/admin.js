@@ -58,13 +58,12 @@ const generateAdminQuestionHtml = function(question) {
 		if (answer.correct) {
 			svgClass = 'c-svg__active';
 		} else {
-			console.log('incorrect');
 			svgClass = '';
 		}
 
 		html += `<div class="o-layout u-mb-md">
 			<div class="o-layout__item u-align-middle-svg u-1-of-3 u-pt-clear">
-				<svg class="c-svg__check ${svgClass} js-check" data-correct="${answer.correct}" data-question="${question.questionID}" data-index="${index}"  xmlns="http://www.w3.org/2000/svg" width="18.684" height="18.684" viewBox="0 0 18.684 18.684">
+				<svg class="c-svg__check ${svgClass} js-check js-check-${question.questionID}" data-correct="${answer.correct}" data-question="${question.questionID}" data-index="${index}"  xmlns="http://www.w3.org/2000/svg" width="18.684" height="18.684" viewBox="0 0 18.684 18.684">
 				  <path id="Icon_22_" d="M80.608,64H66.076A2.082,2.082,0,0,0,64,66.076V80.608a2.082,2.082,0,0,0,2.076,2.076H80.608a2.082,2.082,0,0,0,2.076-2.076V66.076A2.082,2.082,0,0,0,80.608,64ZM71.266,78.532l-5.19-5.19,1.453-1.453,3.737,3.737,7.889-7.889,1.453,1.453Z" transform="translate(-64 -64)" fill="#192a9a"/>
 				</svg>
 			</div>
@@ -120,7 +119,6 @@ const changeAnswerCorrect = function() {
 const initializeEventListeners = function(){
 	// gets all plus buttons using js-addNewAnswer class
 	const allAddNewAnwsers = document.querySelectorAll(".js-addNewAnswer");
-	console.log(allAddNewAnwsers);
 	
 	for(let addNewAnswersvg of allAddNewAnwsers){
 		addNewAnswersvg.addEventListener('click',addNewAnswer);
@@ -128,46 +126,24 @@ const initializeEventListeners = function(){
 	const saveQuestions = document.querySelectorAll('#js-saveQuestion');
 	const checkBoxes = document.querySelectorAll('.js-check');
 	const newQuestion = document.querySelector('#js-addQuestion')
-		
+	for (let checkBox of checkBoxes) {
+		try {
+			checkBox.removeEventListener('click', changeAnswerCorrect);
+		} catch (error) {
+		}
+	}
+	for (let saveQuestion of saveQuestions) {
+		try {
+			saveQuestion.removeEventListener('click', saveNewQuestion);
+		} catch (error) {
+		}
+	}
 	for (let checkBox of checkBoxes) {
 		checkBox.addEventListener('click', changeAnswerCorrect);
 	}
+	
 	for (let saveQuestion of saveQuestions) {
-		saveQuestion.addEventListener('click', function(){
-			console.log("deze doen het ook");
-		
-		const Answers = document.querySelectorAll(`#answer-${this.dataset.question}`);
-		const Question = document.querySelector(`#question-${this.dataset.question}`).value;
-		
-		let answers = [];
-		let json = {};
-		for(let Answer of Answers){
-			if((this.dataset.question).length < 36){
-				answers.push({questionAnswer:"00000000-0000-0000-0000-000000000000",answer:Answer.value,correct:Answer.dataset.correct})
-			}
-			else{
-				answers.push({questionAnswer:this.dataset.question,answer:Answer.value,correct:Answer.dataset.correct})
-			}
-		}
-		if((this.dataset.question).length < 36){
-			json = {
-				questionID:"00000000-0000-0000-0000-000000000000",
-				questionName: Question,
-				UserId:userGuid,
-				questionAnswers:answers
-			}
-		}
-		else{
-			json = {
-				questionID: this.dataset.question,
-				questionName: Question,
-				UserId:userGuid,
-				questionAnswers:answers
-				}
-			}
-			console.log(json);
-			postQuestion(json);
-		});
+		saveQuestion.addEventListener('click', saveNewQuestion);
 	}
 	newQuestion.addEventListener("click",addQuestion);
 
@@ -201,14 +177,72 @@ const loadAdminPage = function() {
 		
 	});
 };
+const saveNewQuestion = function(){
+		
+	const Answers = document.querySelectorAll(`#answer-${this.dataset.question}`);
+	const Question = document.querySelector(`#question-${this.dataset.question}`).value;
+	
+	let answers = [];
+	let json = {};
+	for(let Answer of Answers){
+		if((this.dataset.question).length < 36){
+			answers.push({questionAnswer:"00000000-0000-0000-0000-000000000000",answer:Answer.value,correct:Answer.dataset.correct})
+		}
+		else{
+			answers.push({questionAnswer:this.dataset.question,answer:Answer.value,correct:Answer.dataset.correct})
+		}
+	}
+	if((this.dataset.question).length < 36){
+		json = {
+			questionID:"00000000-0000-0000-0000-000000000000",
+			questionName: Question,
+			UserId:userGuid,
+			questionAnswers:answers
+		}
+	}
+	else{
+		json = {
+			questionID: this.dataset.question,
+			questionName: Question,
+			UserId:userGuid,
+			questionAnswers:answers
+			}
+		}
+		console.log(json);
+		postQuestion(json).then((x) => {
+			console.log(x);
+			QuestionList = x;
+	
+			// Random number to generate random question!
+			let RandomQuestion = QuestionList[Math.floor(Math.random() * QuestionList.length)];
+			console.log(RandomQuestion);
+	
+			// Selecting question
+			let Question = document.querySelector('.c-question');
+			Question.innerHTML = RandomQuestion.questionName;
+	
+			// Selecting answers
+			let AnswerList = document.querySelectorAll('.c-answer');
+	
+			// Inserting everything
+			for (let i = 0; i < RandomQuestion.questionAnswers.length; i++) {
+				AnswerList[i].innerHTML = RandomQuestion.questionAnswers[i].answer;
+				if (RandomQuestion.questionAnswers[i].correct == 1) {
+					juistAntwoord = RandomQuestion.questionAnswers[i].answer;
+					juisteButton = i;
+					console.log('Het juiste antwoord van de vraag is ' + juistAntwoord);
+					console.log('Het juiste antwoord staat op button: ' + i);
+				}
+			}
+		});
+}
 const addNewAnswer = function(){
 	const currentAnswers = document.querySelectorAll(`#answer-${this.dataset.question}`);
-	console.log(currentAnswers);
 	if(currentAnswers.length < 4){
 		const answersBox = document.querySelector(`.js-questionAnswersBox-${this.dataset.question}`)
 		answersBox.insertAdjacentHTML('afterbegin', `<div class="o-layout u-mb-md">
 		<div class="o-layout__item u-align-middle-svg u-1-of-3 u-pt-clear">
-			<svg class="c-svg__check js-check" data-correct="0" data-question="${this.dataset.question}" data-index="1"  xmlns="http://www.w3.org/2000/svg" width="18.684" height="18.684" viewBox="0 0 18.684 18.684">
+			<svg class="c-svg__check js-check js-check-${this.dataset.question}" data-correct="0" data-question="${this.dataset.question}" data-index="1"  xmlns="http://www.w3.org/2000/svg" width="18.684" height="18.684" viewBox="0 0 18.684 18.684">
 			  <path id="Icon_22_" d="M80.608,64H66.076A2.082,2.082,0,0,0,64,66.076V80.608a2.082,2.082,0,0,0,2.076,2.076H80.608a2.082,2.082,0,0,0,2.076-2.076V66.076A2.082,2.082,0,0,0,80.608,64ZM71.266,78.532l-5.19-5.19,1.453-1.453,3.737,3.737,7.889-7.889,1.453,1.453Z" transform="translate(-64 -64)" fill="#192a9a"/>
 			</svg>
 		</div>
@@ -218,9 +252,23 @@ const addNewAnswer = function(){
 	</div>`);
 	}
 	initializeEventListeners();
+	reassignAnswerIndex(this.dataset.question);
+}
+const reassignAnswerIndex = function(id){
+	const inputs = document.querySelectorAll(`#answer-${id}`);
+	const answers = document.querySelectorAll(`.js-check-${id}`);
+	index = 0;
+	for(let answer of answers){
+		answer.dataset.index = index;
+		index++;
+	}
+	index = 0;
+	for(let input of inputs){
+		input.dataset.index = index;
+		index++;
+	}
 }
 const addQuestion = function(){
-	console.log("this motherfocker works");
 	const form = document.querySelector('.js-questionsForm');
 
 	const addQuestionNode = document.querySelector('.js-addQuestionDiv');
@@ -255,12 +303,12 @@ const addQuestion = function(){
 		<div class="o-layout__item o-layout--column u-align-middle-svg u-1-of-3 js-questionAnswersBox-${newQuestionIndex}">
 			<div class="o-layout u-mb-md">
 				<div class="o-layout__item u-align-middle-svg u-1-of-3 u-pt-clear">
-					<svg class="c-svg__check js-check" xmlns="http://www.w3.org/2000/svg" width="18.684" height="18.684" viewBox="0 0 18.684 18.684">
+					<svg class="c-svg__check js-check js-check-${newQuestionIndex}" xmlns="http://www.w3.org/2000/svg" data-correct="0" data-question="${newQuestionIndex}" width="18.684" height="18.684" viewBox="0 0 18.684 18.684">
 					  <path id="Icon_22_" d="M80.608,64H66.076A2.082,2.082,0,0,0,64,66.076V80.608a2.082,2.082,0,0,0,2.076,2.076H80.608a2.082,2.082,0,0,0,2.076-2.076V66.076A2.082,2.082,0,0,0,80.608,64ZM71.266,78.532l-5.19-5.19,1.453-1.453,3.737,3.737,7.889-7.889,1.453,1.453Z" transform="translate(-64 -64)" fill="#192a9a"/>
 					</svg>
 				</div>
 				<div class="o-layout__item u-align-middle-svg u-2-of-3">
-					<input id="answer-${newQuestionIndex}" data-question="${newQuestionIndex}" class="c-input c-input--xs c-input__answer js-newAnswer-${newQuestionIndex}" type="text" name="answer" id="answer" value="....." />
+					<input id="answer-${newQuestionIndex}" data-question="${newQuestionIndex}" class="c-input c-input--xs c-input__answer js-newAnswer-${newQuestionIndex}"data-correct="0" type="text" name="answer" id="answer" value="....." />
 				</div>
 			</div>
 			

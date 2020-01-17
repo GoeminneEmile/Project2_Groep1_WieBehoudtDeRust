@@ -73,7 +73,8 @@ namespace project2Functions
                                 command.Parameters.Clear();
                                 result.Close();
                             }
-                            return new OkObjectResult("{id:question.QuestionID }");
+                            Question questionReturn = new Question() { QuestionID = question.QuestionID };
+                            return new OkObjectResult(questionReturn);
 
 
 

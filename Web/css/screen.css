@@ -99,8 +99,8 @@ html {
 body {
 	padding-bottom: 50px;
 	display: flex;
-  flex-flow: column;
-  height: 100vh;
+	flex-flow: column;
+	height: 100vh;
 }
 
 @media (min-width: 960px) {
@@ -190,7 +190,7 @@ text {
 	}
 }
 @media (min-width: 2600px) {
-	h2{
+	h2 {
 		font-size: 64px;
 		padding-top: 100px;
 	}
@@ -202,7 +202,7 @@ h3 {
 	padding: 0 0 var(--global-whitespace);
 }
 @media (min-width: 2600px) {
-	h3{
+	h3 {
 		font-size: 64px;
 	}
 }
@@ -218,7 +218,7 @@ h6 {
 }
 
 @media (min-width: 2600px) {
-	h4{
+	h4 {
 		font-size: 48px;
 	}
 }
@@ -236,7 +236,7 @@ p {
 	margin: 0 0 10px;
 }
 @media (min-width: 2600px) {
-	p{
+	p {
 		font-size: 48px;
 	}
 }
@@ -356,7 +356,6 @@ text {
 	.o-row--xs {
 		padding-bottom: 100px;
 	}
-
 }
 
 /* size modifiers */
@@ -665,43 +664,43 @@ text {
 	margin: 0 auto;
 	color: var(--global-color-alpha-x-dark);
 }
-.c-winner h4{
+.c-winner h4 {
 	color: var(--global-color-alpha-x-dark);
 }
-.c-winner__silver{
+.c-winner__silver {
 	background: silver;
 	height: 85%;
 }
-.c-winner__silver h3{
+.c-winner__silver h3 {
 	padding: 0;
 }
-.c-winner__bronze{
+.c-winner__bronze {
 	background: #cd7f32;
 	color: var(--global-color-alpha-x-dark);
 	height: 80%;
 }
-.c-winner__bronze h3{
+.c-winner__bronze h3 {
 	padding: 0;
 }
-.c-winner__bronze h4{
+.c-winner__bronze h4 {
 	background: #cd7f32;
 	color: var(--global-color-alpha-x-dark);
 }
 
-.c-winner__absolute{
+.c-winner__absolute {
 	position: absolute;
 	bottom: 0;
-	  left: 25%;
-	  margin-left: -50px;
-	  margin-top: -50px;
+	left: 25%;
+	margin-left: -50px;
+	margin-top: -50px;
 }
 
-.c-winner__relative{
+.c-winner__relative {
 	position: relative;
 }
 
 @media (min-width: 2600px) {
-	.c-winner{
+	.c-winner {
 		padding: 56px 102px;
 	}
 }
@@ -752,7 +751,7 @@ text {
 		padding: 40px 50px;
 		font-size: 56px;
 	}
-	.c-question{
+	.c-question {
 		font-size: 56px;
 	}
 }
@@ -1007,8 +1006,9 @@ text {
 .c-app {
 	/*padding-top: 25px;*/
 	flex: 1 1 auto;
+	height: 100%;
 	width: 100%;
-	padding-bottom: 100px;
+	/*padding-bottom: 100px;*/
 }
 
 .c-not-selected {
@@ -1076,16 +1076,16 @@ text {
 .c-svg__symbol {
 	height: 100%;
 }
-.c-svg-medal{
+.c-svg-medal {
 	height: 64px;
 }
 
-.c-svg-medal__symbol{
+.c-svg-medal__symbol {
 	height: 100%;
 }
 
 @media (min-width: 2100px) {
-	.c-svg-medal{
+	.c-svg-medal {
 		height: 156px;
 	}
 }
@@ -1127,16 +1127,16 @@ text {
 	.c-logo {
 		height: 128px;
 	}
-	text{
+	text {
 		font-size: 48px;
 	}
-	#Group_87{
-		transform: translate(100px, -57px)
+	#Group_87 {
+		transform: translate(100px, -57px);
 	}
-	#Group_87 > #like{
+	#Group_87 > #like {
 		height: 128px;
 		width: 128px;
-		transform: translate(1150px, 50px)
+		transform: translate(1150px, 50px);
 	}
 }
 
@@ -1144,8 +1144,8 @@ text {
 	.c-logo {
 		height: 200px;
 	}
-	#Group_87{
-		transform: translate(400px, -57px)
+	#Group_87 {
+		transform: translate(400px, -57px);
 	}
 }
 
@@ -1153,8 +1153,8 @@ text {
 	.c-logo {
 		height: 200px;
 	}
-	#Group_87{
-		transform: translate(600px, -57px)
+	#Group_87 {
+		transform: translate(600px, -57px);
 	}
 }
 
@@ -1427,7 +1427,7 @@ more padding on the right to avoid overlap
 		font-size: 40px;
 		padding-bottom: 50px;
 	}
-	.c-label{
+	.c-label {
 		font-size: 48px;
 	}
 
@@ -1435,11 +1435,11 @@ more padding on the right to avoid overlap
 		padding-top: 100px;
 	}
 
-	.c-input--sm{
+	.c-input--sm {
 		font-size: 48px;
 		padding: 20px;
 	}
-	.c-input__middle{
+	.c-input__middle {
 		width: 50%;
 	}
 }
@@ -1449,21 +1449,20 @@ more padding on the right to avoid overlap
 		font-size: 56px;
 		padding-bottom: 50px;
 	}
-	.c-label{
+	.c-label {
 		font-size: 56px;
 		padding-bottom: 50px;
 	}
-
 
 	.c-field + .c-field {
 		padding-top: 100px;
 	}
 
-	.c-input--sm{
+	.c-input--sm {
 		font-size: 56px;
 		padding: 20px;
 	}
-	.c-input__middle{
+	.c-input__middle {
 		width: 50%;
 	}
 }
@@ -1498,10 +1497,10 @@ more padding on the right to avoid overlap
 		top: 79px;
 	}
 	.c-input__icon-background {
-	    top: 76px;
+		top: 76px;
 		padding: 42px 40px;
 	}
-	.c-input{
+	.c-input {
 		font-size: 64px;
 	}
 }
@@ -1511,10 +1510,10 @@ more padding on the right to avoid overlap
 		top: 79px;
 	}
 	.c-input__icon-background {
-	    top: 76px;
+		top: 76px;
 		padding: 42px 40px;
 	}
-	.c-input{
+	.c-input {
 		font-size: 64px;
 	}
 }
@@ -1661,19 +1660,19 @@ more padding on the right to avoid overlap
     ---
     Messages
 */
-.c-message__loader{
-  font-size: calc(var(--global-baseline) * 3.5);
-  text-align: center;
+.c-message__loader {
+	font-size: calc(var(--global-baseline) * 3.5);
+	text-align: center;
 }
 
-.c-message__loader-error{
-  color: #D8000C;
+.c-message__loader-error {
+	color: #d8000c;
 }
 
 @media (min-width: 2100px) {
-	.c-message__loader{
-	  font-size: calc(var(--global-baseline) * 7);
-	  text-align: center;
+	.c-message__loader {
+		font-size: calc(var(--global-baseline) * 7);
+		text-align: center;
 	}
 }
 
@@ -1967,13 +1966,13 @@ li span {
 	border-bottom: 4px solid #192A9A1A;
 }
 
-.u-font-size-xl{
-    font-size: 32px;
+.u-font-size-xl {
+	font-size: 32px;
 }
 
 @media (min-width: 2600px) {
-	.u-font-size-xl{
-	    font-size: 64px;
+	.u-font-size-xl {
+		font-size: 64px;
 	}
 }
 

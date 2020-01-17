@@ -78,9 +78,9 @@ KNOPPEN = {
     ecodes.KEY_G: 2,
     272: 3,
     ecodes.KEY_SPACE: 4,
-    ecodes.KEY_LEFT: 1,
+    ecodes.KEY_LEFT: 3,
     ecodes.KEY_UP: 2,
-    ecodes.KEY_RIGHT: 3,
+    ecodes.KEY_RIGHT: 1,
     ecodes.KEY_DOWN: 4,
     10000: 1,
     10001: 2,
@@ -455,10 +455,11 @@ def read_keyboard_question(player_id, time_left):
                         (player_id == 3 and knop in PLAYER3_INPUTS) or (player_id == 4 and knop in PLAYER4_INPUTS):
                     threat = threading.Thread(target=mqtt_doorsturen_knop_question,
                                               args=(player_id, huidige_tijd, knop))
+                    read_knoppen = False
                     threat.start()
                     threat.join()
                     knop = None
-                    read_knoppen = False
+                    break
         except Exception as ex:
             huidige_tijd = round((time.time() - start_tijd) * 1000, 0)
             if huidige_tijd > time_left:

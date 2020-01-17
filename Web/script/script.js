@@ -732,7 +732,7 @@ const generateAvatarHtml = function(scorePage) {
 	HeaderRow = document.querySelector('.js-headerRow');
 	let html = '';
 	players.sort((a, b) => a.player - b.player);
-	for (let i = 0; i < selectedAvatars.length; i++) {
+	for (let i = 0; i < players.length; i++) {
 		html += `<div class="o-layout__item u-1-of-4 c-avatar__text u-align-text-center">
 		<div class="c-avatar" data-id="${players[i].player}">`;
 		if (!scorePage) {
@@ -751,7 +751,7 @@ const FillInAvatarHtml = function(scorePage) {
 
 	// Selecting all player names
 	PlayerName = document.querySelectorAll('.js-PlayerClass');
-	for (let i = 0; i < selectedAvatars.length; i++) {
+	for (let i = 0; i < players.length; i++) {
 		let GekozenAvatar = players[i].avatar;
 		let GekozenPlayer = players[i].player;
 		console.log('Speler ' + GekozenPlayer + ' heeft gekozen voor avatars ' + GekozenAvatar);
@@ -1032,6 +1032,7 @@ function onMessageArrived(message) {
 			answer = {};
 			answer.player = jsonMessage.player;
 			answer.button = jsonMessage.button;
+
 			answer.time_needed = jsonMessage.time_needed;
 			playersAnswers.push(jsonMessage.player);
 
@@ -1079,6 +1080,21 @@ function onMessageArrived(message) {
 						Rankings[i].PointsGained = FinalBerekening;
 						Rankings[i].Points += FinalBerekening;
 					}
+				}
+
+				if (jsonMessage.button == 0) {
+					for (let i = 0; i < players.length; i++) {
+						if (Rankings[i].player == answer.player) {
+							console.log('_______________');
+							console.log(Rankings);
+							console.log('De Rankings zijn schoongemaakt');
+							Rankings.splice(i, 1);
+						}
+					}
+					console.log('De players zijn schoongemaakt');
+					console.log(players);
+					players.splice(answer.player - 1, 1);
+					console.log('_______________________');
 				}
 
 				let NewAvatars = document.querySelectorAll('.c-avatar--score');

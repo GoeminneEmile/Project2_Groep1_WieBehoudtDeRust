@@ -669,7 +669,7 @@ text {
 }
 .c-winner__silver {
 	background: silver;
-	height: 85%;
+	height: 80%;
 }
 .c-winner__silver h3 {
 	padding: 0;
@@ -691,8 +691,9 @@ text {
 	position: absolute;
 	bottom: 0;
 	left: 25%;
+	width: 75%;
 	margin-left: -50px;
-	margin-top: -50px;
+	margin-top: 43px;
 }
 
 .c-winner__relative {
@@ -1915,8 +1916,6 @@ li span {
     ---
     Utility classes to put specific margins and paddings onto elements
 */
-
-
 
 .u-pt-clear {
 	padding-top: 0 !important;

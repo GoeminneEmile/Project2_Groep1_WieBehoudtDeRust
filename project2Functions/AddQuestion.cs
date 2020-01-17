@@ -20,6 +20,11 @@ namespace project2Functions
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
             ILogger logger)
         {
+            try
+            {
+
+            
+            
             // Creating Telemetry client for logging events!
             TelemetryClient telemetry = new TelemetryClient();
             // Getting connection string
@@ -46,16 +51,17 @@ namespace project2Functions
                     {
                         // Setting and executing SQL command
                         command.Connection = connection;
-                        command.CommandText = "insert into ProjectQuestions (QuestionID,Question) VALUES (@id,@question);";
+                        command.CommandText = "insert into ProjectQuestions (QuestionID,Question,UserID) VALUES (@id,@question,@userid);";
                         command.Parameters.AddWithValue("@id", question.QuestionID);
                         command.Parameters.AddWithValue("@question", question.QuestionName);
+                        command.Parameters.AddWithValue("@userid", question.UserId);
 
                         var result = command.ExecuteReader();
                         result.Close();
                         // for every answer in a question, we insert the answer with the SAME guid as the question into the database, this is how we link a question to an answer
-                        foreach(QuestionAnswer questionAnswer in question.questionAnswers)
+                        foreach(QuestionAnswers questionAnswer in question.questionAnswers)
                         {
-                            questionAnswer.QuestionAnswerGuid = Guid.NewGuid();
+                            questionAnswer.QuestionAnswer = Guid.NewGuid();
                             command.Connection = connection;
                             command.CommandText = "insert into ProjectAnswers (QuestionAnswer,Answer,correct) VALUES (@questionid,@answer,@correct);";
                             command.Parameters.AddWithValue("@questionid", question.QuestionID);
@@ -77,6 +83,11 @@ namespace project2Functions
                 logger.LogInformation("ERROR with SQL Connection: " + ex);
                 telemetry.TrackEvent("Question_Added_NOK");
                 return new StatusCodeResult(500) ;
+            }
+            }
+            catch (Exception ex)
+            {
+                return new StatusCodeResult(400);
             }
         }
     }

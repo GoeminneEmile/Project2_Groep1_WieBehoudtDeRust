@@ -68,14 +68,14 @@ const generateAdminQuestionHtml = function(question) {
 				</svg>
 			</div>
 			<div class="o-layout__item u-align-middle-svg u-2-of-3">
-				<input id="answer-${question.questionID}" class="c-input c-input--xs c-input__answer" type="text" data-correct="${answer.correct}" data-index="${index}" name="answer" data- value="${answer.answer}" />
+				<input class="c-input c-input--xs c-input__answer answer-${question.questionID}" type="text" data-correct="${answer.correct}" data-index="${index}" name="answer" data- value="${answer.answer}" />
 			</div>
 		</div>`;
 		index++;
 	}
 
 	html += `
-			<svg xmlns="http://www.w3.org/2000/svg" id="addAnswer-${question.questionID}" class="js-addNewAnswer" data-question="${question.questionID}" width="19" height="19" viewBox="0 0 19 19">
+			<svg xmlns="http://www.w3.org/2000/svg" class="js-addNewAnswer addAnswer-${question.questionID}" data-question="${question.questionID}" width="19" height="19" viewBox="0 0 19 19">
 			  <g id="Page-1" transform="translate(0 0.414)">
 				<g id="Artboard" transform="translate(1 1)">
 				  <g id="plus-square" transform="translate(0 0)">
@@ -96,7 +96,7 @@ const generateAdminQuestionHtml = function(question) {
 
 const changeAnswerCorrect = function() {
 	this.classList.toggle('c-svg__active');
-	const Answers = document.querySelectorAll(`#answer-${this.dataset.question}`);
+	const Answers = document.querySelectorAll(`.answer-${this.dataset.question}`);
 	for(let Answer of Answers){
 		console.log(Answer.dataset.index);
 		if(Answer.dataset.index == this.dataset.index){
@@ -179,7 +179,7 @@ const loadAdminPage = function() {
 };
 const saveNewQuestion = function(){
 		
-	const Answers = document.querySelectorAll(`#answer-${this.dataset.question}`);
+	const Answers = document.querySelectorAll(`.answer-${this.dataset.question}`);
 	const Question = document.querySelector(`#question-${this.dataset.question}`).value;
 	
 	let answers = [];
@@ -237,7 +237,7 @@ const saveNewQuestion = function(){
 		});
 }
 const addNewAnswer = function(){
-	const currentAnswers = document.querySelectorAll(`#answer-${this.dataset.question}`);
+	const currentAnswers = document.querySelectorAll(`.answer-${this.dataset.question}`);
 	if(currentAnswers.length < 4){
 		const answersBox = document.querySelector(`.js-questionAnswersBox-${this.dataset.question}`)
 		answersBox.insertAdjacentHTML('afterbegin', `<div class="o-layout u-mb-md">
@@ -247,7 +247,7 @@ const addNewAnswer = function(){
 			</svg>
 		</div>
 		<div class="o-layout__item u-align-middle-svg u-2-of-3">
-			<input id="answer-${this.dataset.question}" class="c-input c-input--xs c-input__answer" type="text" data-correct="0" data-index="1" name="answer" data- value="....." />
+			<input  class="c-input c-input--xs c-input__answer answer-${this.dataset.question}" type="text" data-correct="0" data-index="1" name="answer" data- value="....." />
 		</div>
 	</div>`);
 	}
@@ -255,7 +255,7 @@ const addNewAnswer = function(){
 	reassignAnswerIndex(this.dataset.question);
 }
 const reassignAnswerIndex = function(id){
-	const inputs = document.querySelectorAll(`#answer-${id}`);
+	const inputs = document.querySelectorAll(`.answer-${id}`);
 	const answers = document.querySelectorAll(`.js-check-${id}`);
 	index = 0;
 	for(let answer of answers){
@@ -308,11 +308,11 @@ const addQuestion = function(){
 					</svg>
 				</div>
 				<div class="o-layout__item u-align-middle-svg u-2-of-3">
-					<input id="answer-${newQuestionIndex}" data-question="${newQuestionIndex}" class="c-input c-input--xs c-input__answer js-newAnswer-${newQuestionIndex}"data-correct="0" type="text" name="answer" id="answer" value="....." />
+					<input  data-question="${newQuestionIndex}" class="c-input c-input--xs c-input__answer answer-${newQuestionIndex}"data-correct="0" type="text" name="answer" id="answer" value="....." />
 				</div>
 			</div>
 			
-			<svg xmlns="http://www.w3.org/2000/svg" id="addAnswer-${newQuestionIndex}" class="js-addNewAnswer" data-question="${newQuestionIndex}" width="19" height="19" viewBox="0 0 19 19">
+			<svg xmlns="http://www.w3.org/2000/svg"  class="js-addNewAnswer addAnswer-${newQuestionIndex}" data-question="${newQuestionIndex}" width="19" height="19" viewBox="0 0 19 19">
 			  <g id="Page-1" transform="translate(0 0.414)">
 				<g id="Artboard" transform="translate(1 1)">
 				  <g id="plus-square" transform="translate(0 0)">

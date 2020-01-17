@@ -4,7 +4,7 @@ let client;
 let Communication;
 let players = [];
 let selectedAvatars = [];
-let username = 'Luka';
+let username = 'admin';
 let customheaders = new Headers();
 let QuestionList = [];
 let playerCount = 0;
@@ -655,6 +655,7 @@ const ShowLoadingScreen = function () {
 
 // Function to GET all questions
 const GetQuestions = async function () {
+	console.log(username);
 	let serverEndPoint = `https://project2functions.azurewebsites.net/api/GetQuestions?username=${username}`;
 	const response = await fetch(serverEndPoint, { headers: customheaders });
 	const data = await response.json();

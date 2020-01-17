@@ -1083,6 +1083,16 @@ text {
 .c-svg-medal__symbol{
 	height: 100%;
 }
+.c-answer-svg {
+	height: 32px;
+	display: flex;
+	justify-content: center;
+	text-align: center;
+}
+
+.c-answer-svg__garbage {
+	height: 100%;
+}
 
 @media (min-width: 2100px) {
 	.c-svg-medal{
@@ -1907,6 +1917,8 @@ li span {
     Utility classes to put specific margins and paddings onto elements
 */
 
+
+
 .u-pt-clear {
 	padding-top: 0 !important;
 	padding-bottom: 0 !important;
@@ -1959,7 +1971,7 @@ li span {
 }
 
 .u-tr-clear {
-	top: 0;
+	top: 0 !important;
 	right: 0;
 }
 

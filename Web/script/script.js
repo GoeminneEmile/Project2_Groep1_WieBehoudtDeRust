@@ -1061,7 +1061,6 @@ function onMessageArrived(message) {
 				//3. Trek die waarde van 1 af. Dus 1 - 0,125 = 0,875.
 				//4. Vermenigvuldig de punten met de maximale waarde die je kan krijgen. Dus 0,875 x 10 = 8,75.
 				//5. Rond af wanneer nodig.
-				//LUKA hier moet de punten berekening gebeuren aan de hand van de knop dar werd gegeven en de tijd die nodig was
 				FillInAvatarHtml(true);
 				AnswersGotten.push(answer);
 

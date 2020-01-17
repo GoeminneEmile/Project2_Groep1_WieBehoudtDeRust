@@ -27,7 +27,7 @@ let playerRestBPM = [ player1_rest_bpm, player2_rest_bpm, player3_rest_bpm, play
 let playerBPM = [ player1_bpm, player2_bpm, player3_bpm, player4_bpm ];
 let errorMessageInterval = 10000;
 let intervalErrorMessage;
-let Rankings = [ { Points: '0', PointsGained: '0', Player: '1', Avatar: '', Seconds: '20', SecondsGained: '0' }, { Points: '0', PointsGained: '0', Player: '2', Avatar: '', Seconds: '20', SecondsGained: '0' }, { Points: '0', PointsGained: '0', Player: '3', Avatar: '', Seconds: '20', SecondsGained: '0' }, { Points: '0', PointsGained: '0', Player: '4', Avatar: '', Seconds: '20', SecondsGained: '0' } ];
+let Rankings = [ { Points: 0, PointsGained: 0, Player: '1', Avatar: '', Seconds: '20', SecondsGained: '0' }, { Points: 0, PointsGained: 0, Player: '2', Avatar: '', Seconds: '20', SecondsGained: '0' }, { Points: 0, PointsGained: 0, Player: '3', Avatar: '', Seconds: '20', SecondsGained: '0' }, { Points: 0, PointsGained: 0, Player: '4', Avatar: '', Seconds: '20', SecondsGained: '0' } ];
 
 //#region Panda
 let Panda = `
@@ -596,7 +596,7 @@ const ShowQuestionAndAnswers = function() {
 				juistAntwoord = RandomQuestion.questionAnswers[i].answer;
 				juisteButton = i + 1;
 				console.log('Het juiste antwoord van de vraag is ' + juistAntwoord);
-				console.log('Het juiste antwoord staat op button: ' + i + 1);
+				console.log('Het juiste antwoord staat op button: ' + (i + 1));
 			}
 		}
 
@@ -731,6 +731,7 @@ const generateAvatarHtml = function(scorePage) {
 	ReplaceRow.innerHTML = Header;
 	HeaderRow = document.querySelector('.js-headerRow');
 	let html = '';
+	players.sort((a, b) => a.player - b.player);
 	for (let i = 0; i < selectedAvatars.length; i++) {
 		html += `<div class="o-layout__item u-1-of-4 c-avatar__text u-align-text-center">
 		<div class="c-avatar" data-id="${players[i].player}">`;
@@ -813,9 +814,6 @@ const GenerateSecondsPage = function() {
 	let PlayerNames = document.querySelectorAll('.js-PlayerName');
 	let medal = document.querySelectorAll('.js-medal');
 
-	for (let i = 0; i < players.length; i++) {
-		Rankings[i].Points = players[i].points;
-	}
 	Rankings.sort((a, b) => b.Seconds - a.Seconds);
 	for (let i = 0; i < players.length; i++) {
 		NewAvatars[i].innerHTML = Rankings[i].Avatar;
@@ -901,10 +899,6 @@ const GenerateSportsPage = function() {
 		//console.log(PodiumAvatars);
 		console.log(Rankings);
 		console.log('___________________');
-
-		// Winnaar.innerHTML = 'Speler ' + Rankings[0].Player;
-		// SecondPlace.innerHTML = 'Speler ' + Rankings[1].Player;
-		// ThirdPlace.innerHTML = 'Speler ' + Rankings[2].Player;
 
 		console.log(Rankings[0].Avatar);
 		AvatarW.innerHTML = Rankings[0].Avatar;
@@ -1070,9 +1064,10 @@ function onMessageArrived(message) {
 				let PointsGainedList = document.querySelectorAll('.c-points-gained');
 
 				for (let i = 0; i < players.length; i++) {
+					Rankings[i].PointsGained = '0';
 					console.log('speler' + AnswersGotten[i].player + ' heeft gedrukt op knop ' + AnswersGotten[i].button);
-					if (AnswersGotten[i + 1].button == juisteButton) {
-						Rankings[i].PointsGained = '+ 0';
+					if (AnswersGotten[i].button == juisteButton) {
+						Rankings.sort((a, b) => a.Player - b.Player);
 						console.log('het juiste antwoord is ingegeven');
 						let tijd_nodig = AnswersGotten[i].time_needed / 1000;
 						let tijd_over = players[i].time_left / 1000;
@@ -1082,8 +1077,8 @@ function onMessageArrived(message) {
 						let Berekening4 = Berekening3 * 20;
 						let FinalBerekening = Math.round(Berekening4);
 						players[i].points += FinalBerekening;
-						//PointsGainedList[i].innerHTML = '+ ' + FinalBerekening;
 						Rankings[i].PointsGained = FinalBerekening;
+						Rankings[i].Points += FinalBerekening;
 					}
 				}
 
@@ -1091,11 +1086,6 @@ function onMessageArrived(message) {
 				let TotalScores = document.querySelectorAll('.c-total-points');
 				let PlayerNames = document.querySelectorAll('.js-PlayerName');
 				let medal = document.querySelectorAll('.js-medal');
-				for (let i = 0; i < players.length; i++) {
-					console.log(players);
-					//Rankings[i].Avatar = avatars[players[i].avatar - 1];
-					Rankings[i].Points = players[i].points;
-				}
 				Rankings.sort((a, b) => b.Points - a.Points);
 				for (let i = 0; i < players.length; i++) {
 					NewAvatars[i].innerHTML = Rankings[i].Avatar;

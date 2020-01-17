@@ -346,6 +346,7 @@ def send_id_request():
 def read_keyboard_avatar():
     global knoppen_pressed, knop_pressed, threat_knoppen_versturen
     mouse_done = []
+    dev = InputDevice('/dev/input/by-id/usb-Unknown_USB_IO_Board-if02-event-mouse')
     while knoppen_stoppen is False:
         try:
             for event in dev.read():
@@ -411,6 +412,7 @@ def read_keyboard_question(player_id, time_left):
     start_tijd = time.time()
     huidige_tijd = 0
     knop = None
+    dev = InputDevice('/dev/input/by-id/usb-Unknown_USB_IO_Board-if02-event-mouse')
     while read_knoppen is True:
         try:
             for event in dev.read():
@@ -459,6 +461,7 @@ def read_keyboard_question(player_id, time_left):
                     threat.start()
                     threat.join()
                     knop = None
+                    dev.close()
                     break
         except Exception as ex:
             huidige_tijd = round((time.time() - start_tijd) * 1000, 0)

@@ -1,34 +1,54 @@
-// global variables
-let SubmitButton, InputFieldValue, ReplaceRow, AnimateRow, QuestionRow, RandomQuestion, AvatarButton, QuestionAvatarsList, ScoreList, PlayerName, userGuid, AnswersList, juistAntwoord, juisteButton, TimeLeft, indexQuestion;
-let client;
-let Communication;
-let players = [];
-let selectedAvatars = [];
-let username = 'Luka';
-let customheaders = new Headers();
-let QuestionList = [];
-let playerCount = 0;
-let gameStep = 0;
-let pulsarList = [];
-let tempPulsarList = { 0: undefined, 1: undefined, 2: undefined, 3: undefined };
-let IsFirstQuestion = true,
+// global LET's
+let SubmitButton,
+	InputFieldValue,
+	ReplaceRow,
+	AnimateRow,
+	QuestionRow,
+	RandomQuestion,
+	AvatarButton,
+	QuestionAvatarsList,
+	ScoreList,
+	PlayerName,
+	userGuid,
+	AnswersList,
+	juistAntwoord,
+	juisteButton,
+	TimeLeft,
+	indexQuestion,
+	username = 'Luka',
+	playerCount = 0,
+	gameStep = 0,
+	IsFirstQuestion = true,
 	IsRestBpm = true,
 	RestBpmCount = 0,
 	playersBpmCount = 0;
+let client;
+let Communication;
 let player1_rest_bpm, player2_rest_bpm, player3_rest_bpm, player4_rest_bpm;
 let player1_bpm, player2_bpm, player3_bpm, player4_bpm;
+let errorMessageInterval = 10000;
+let intervalErrorMessage;
+// global Lists
+let players = [];
+let selectedAvatars = [];
+let QuestionList = [];
+let pulsarList = [];
 let PlayerBPMList = [];
 let playerAnswers = [];
 let playersAnswers = [];
 let playersAnswered = [];
 let AnswersGotten = [];
 let PointsGained = [];
-let playerRestBPM = [player1_rest_bpm, player2_rest_bpm, player3_rest_bpm, player4_rest_bpm];
-let playerBPM = [player1_bpm, player2_bpm, player3_bpm, player4_bpm];
-let errorMessageInterval = 10000;
-let intervalErrorMessage;
-let Rankings = [{ Points: 0, PointsGained: 0, Player: '1', Avatar: '', Seconds: '20', SecondsGained: '0' }, { Points: 0, PointsGained: 0, Player: '2', Avatar: '', Seconds: '20', SecondsGained: '0' }, { Points: 0, PointsGained: 0, Player: '3', Avatar: '', Seconds: '20', SecondsGained: '0' }, { Points: 0, PointsGained: 0, Player: '4', Avatar: '', Seconds: '20', SecondsGained: '0' }];
+let playerRestBPM = [ player1_rest_bpm, player2_rest_bpm, player3_rest_bpm, player4_rest_bpm ];
+let playerBPM = [ player1_bpm, player2_bpm, player3_bpm, player4_bpm ];
+// global customheaders for GET request
+let customheaders = new Headers();
 
+// global array's
+let tempPulsarList = { 0: undefined, 1: undefined, 2: undefined, 3: undefined };
+let Rankings = [ { Points: 0, PointsGained: 0, Player: '1', Avatar: '', Seconds: '20', SecondsGained: '0' }, { Points: 0, PointsGained: 0, Player: '2', Avatar: '', Seconds: '20', SecondsGained: '0' }, { Points: 0, PointsGained: 0, Player: '3', Avatar: '', Seconds: '20', SecondsGained: '0' }, { Points: 0, PointsGained: 0, Player: '4', Avatar: '', Seconds: '20', SecondsGained: '0' } ];
+
+//#region Avatars
 //#region Panda
 let Panda = `
 <?xml version="1.0" encoding="UTF-8"?><svg class="c-avatar__symbol" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 48 48" xml:space="preserve"><style type="text/css">.st0{fill:#FFD4C3;stroke:#504B46;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st1{fill:#FFC258;} .st2{fill:#4F4B45;} .st3{fill:#FABFA5;} .st4{fill:none;stroke:#504B46;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .Graphic_x0020_Style{opacity:0.15;fill:#45413C;} .st5{opacity:0.15;fill:#45413C;} .st6{fill:#DEBB7E;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st7{fill:#F0D5A8;} .st8{fill:#F7E5C6;} .st9{fill:#DEBB7E;} .st10{fill:none;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st11{fill:#FFE500;} .st12{fill:#EBCB00;} .st13{fill:none;stroke:#EBCB00;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st14{fill:#FF6242;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st15{fill:#FFFFFF;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st16{fill:#E5F8FF;} .st17{fill:#FFFFFF;} .st18{fill:#E8F4FA;} .st19{fill:#E8F4FA;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st20{fill:#FFCCDD;} .st21{fill:#FFB0CA;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st22{fill:#FF87AF;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st23{fill:#E5F8FF;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st24{fill:#BF8256;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st25{fill:#9CEB60;} .st26{fill:#6DD627;} .st27{fill:#C8FFA1;} .st28{fill:#FFFACF;} .st29{fill:#FF87AF;} .st30{fill:#FFB0CA;} .st31{fill:#FF6196;} .st32{fill:#FFCCDD;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st33{fill:#FF6196;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st34{fill:#FFE5EE;} .st35{fill:#00B8F0;} .st36{fill:#4ACFFF;} .st37{fill:#BF8256;} .st38{fill:#DEA47A;} .st39{fill:#915E3A;} .st40{fill:#FFF5E3;} .st41{fill:#F0F0F0;} .st42{fill:#8CA4B8;} .st43{fill:#627B8C;} .st44{fill:#C0DCEB;} .st45{fill:#FFF48C;} .st46{fill:#FFE500;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st47{fill:#FFAA54;} .st48{fill:#6DD627;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st49{fill:#FF8A14;} .st50{fill:#FFCC99;} .st51{fill:#EBCB00;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st52{fill:#00F5BC;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st53{fill:#BF8DF2;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st54{fill:#FF8A14;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st55{fill:#4AEFF7;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st56{fill:#FFF48C;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st57{fill:#FF6242;} .st58{fill:#E04122;} .st59{fill:#46B000;} .st60{fill:none;stroke:#45413C;stroke-miterlimit:10;} .st61{fill:#00B8F0;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st62{fill:#FF866E;} .st63{fill:#9F5AE5;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st64{fill:#E4FFD1;} .st65{fill:#FFFEF2;} .st66{fill:#B89558;} .st67{fill:none;stroke:#915E3A;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st68{fill:#915E3A;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st69{fill:#BF8DF2;} .st70{fill:#9F5AE5;} .st71{fill:#DABFF5;} .st72{fill:none;stroke:#45413C;stroke-linejoin:round;stroke-miterlimit:10;} .st73{fill:#656769;} .st74{fill:#87898C;} .st75{fill:#E0E0E0;} .st76{fill:#BDBEC0;} .st77{fill:#656769;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st78{fill:#45413C;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st79{fill:#FFA694;} .st80{fill:#E04122;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st81{fill:#E0E0E0;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st82{fill:#F0F0F0;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st83{fill:#DAEDF7;} .st84{fill:#BDBEC0;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st85{fill:#87898C;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st86{fill:#00DFEB;} .st87{fill:#4AEFF7;} .st88{fill:#DAEDF7;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st89{fill:#FFDA8F;} .st90{fill:#FFBE3D;} .st91{fill:#FFE9BD;} .st92{fill:#DEA47A;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st93{fill:#45413C;} .st94{fill:#F0C2A1;} .st95{fill:none;stroke:#45413C;stroke-width:1.0064;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st96{fill:#525252;} .st97{fill:#EB6D00;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st98{fill:#EB6D00;} .st99{fill:#E5FEFF;} .st100{fill:#FF866E;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st101{fill:#627B8C;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st102{fill:#FFFCE5;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st103{fill:#A6FBFF;} .st104{fill:#D9FDFF;} .st105{fill:#FFFACF;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st106{fill:#B8ECFF;} .st107{fill:#FFCABF;} .st108{fill:#E5FFF9;} .st109{fill:#C8FFA1;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st110{fill:#4CF4FC;} .st111{fill:#F0D5A8;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st112{fill:#FFDCD1;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st113{fill:#80DDFF;} .st114{fill:#46B000;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st115{fill:#4ACFFF;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st116{fill:#ADC4D9;} .st117{fill:#BDBEC0;stroke:#45413C;stroke-width:1.0064;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st118{fill:#FFFCE5;} .st119{fill:#947746;} .st120{fill:#525252;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}</style><symbol id="New_Symbol_14" viewBox="-6.5 -6.5 13 13"><path class="st0" d="M0-6c2.2 0 4.1 1.5 4.7 3.5C6.3-2.5 6.4 0 5 0v1c0 2.8-2.2 5-5 5s-5-2.2-5-5V0c-1.4 0-1.3-2.5.2-2.5C-4.1-4.5-2.2-6 0-6z" fill="#FFD4C3" stroke="#504B46" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><circle class="st1" cx="-1.6" cy="-0.1" r="0.1" fill="#FFC258"/><path class="st2" d="M-1.6.5c-.3 0-.6-.3-.6-.6s.2-.7.6-.7c.3 0 .6.3.6.7s-.3.6-.6.6z" fill="#4F4B45"/><circle class="st1" cx="1.6" cy="-0.1" r="0.1" fill="#FFC258"/><path class="st2" d="M1.6.5C1.3.5 1 .2 1-.1s.3-.6.6-.6.6.3.6.6-.2.6-.6.6z" fill="#4F4B45"/><circle class="st3" cx="-3" cy="-1.5" r="0.5" fill="#FABFA5"/><circle class="st3" cx="3" cy="-1.5" r="0.5" fill="#FABFA5"/><path class="st4" d="M-1.2-3c.8-.5 1.7-.5 2.5 0" fill="none" stroke="#504B46" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/></symbol><g id="Icons"><g id="XMLID_1315_"><ellipse id="XMLID_1328_" class="st5" cx="24" cy="45" rx="15.5" ry="1.7" fill="#45413C" opacity="0.15"/><ellipse id="XMLID_1298_" transform="matrix(0.5813 -0.8137 0.8137 0.5813 5.8823 33.0741)" class="st73" cx="35.1" cy="10.8" rx="10" ry="8.9" fill="#656769"/><path id="XMLID_1297_" class="st74" d="M27.9 7.9c3.2-4.5 9-5.8 13-3 2 1.4 3.1 3.6 3.4 5.9.3-3.2-.8-6.3-3.4-8.2-4-2.8-9.8-1.5-13 3-1.6 2.3-2.3 4.9-2 7.3.2-1.6.8-3.4 2-5z" fill="#87898C"/><ellipse id="XMLID_1296_" transform="matrix(0.5813 -0.8137 0.8137 0.5813 5.8823 33.0741)" class="st10" cx="35.1" cy="10.8" rx="10" ry="8.9" fill="none" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><ellipse id="XMLID_1295_" transform="matrix(0.5813 -0.8137 0.8137 0.5813 5.8203 32.9535)" class="st75" cx="34.9" cy="10.8" rx="6.8" ry="6.1" fill="#E0E0E0"/><ellipse id="XMLID_1294_" transform="matrix(0.8137 -0.5813 0.5813 0.8137 -3.8553 9.6136)" class="st73" cx="13.1" cy="10.8" rx="8.9" ry="10" fill="#656769"/><path id="XMLID_1293_" class="st74" d="M7.3 4.9c4-2.8 9.8-1.5 13 3 1.1 1.6 1.8 3.4 2 5.1.3-2.4-.4-5.1-2-7.3-3.2-4.5-9-5.8-13-3-2.6 1.8-3.7 5-3.4 8.2.2-2.4 1.4-4.6 3.4-6z" fill="#87898C"/><ellipse id="XMLID_1292_" transform="matrix(0.8137 -0.5813 0.5813 0.8137 -3.8553 9.6136)" class="st10" cx="13.1" cy="10.8" rx="8.9" ry="10" fill="none" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><ellipse id="XMLID_1291_" transform="matrix(0.8137 -0.5813 0.5813 0.8137 -3.8277 9.6997)" class="st75" cx="13.2" cy="10.8" rx="6.1" ry="6.8" fill="#E0E0E0"/><path id="XMLID_1290_" class="st76" d="M30 9.8c2.2-3.1 6.2-4 8.9-2 1.2.9 1.9 2.2 2.2 3.6.4-2.4-.3-4.7-2.2-6.1-2.7-1.9-6.7-1-8.9 2-1.2 1.7-1.6 3.7-1.3 5.5.2-1 .6-2.1 1.3-3z" fill="#BDBEC0"/><path id="XMLID_1289_" class="st76" d="M9.3 7.8c2.7-1.9 6.7-1 8.9 2 .7.9 1.1 2 1.3 3 .3-1.8 0-3.8-1.3-5.5-2.2-3.1-6.2-4-8.9-2C7.4 6.6 6.6 9 7 11.4c.3-1.5 1-2.8 2.3-3.6z" fill="#BDBEC0"/><ellipse id="XMLID_1277_" transform="matrix(0.5813 -0.8137 0.8137 0.5813 5.8203 32.9535)" class="st10" cx="34.9" cy="10.8" rx="6.8" ry="6.1" fill="none" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><ellipse id="XMLID_1263_" transform="matrix(0.8137 -0.5813 0.5813 0.8137 -3.8277 9.6997)" class="st10" cx="13.2" cy="10.8" rx="6.1" ry="6.8" fill="none" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><path id="XMLID_1262_" class="st41" d="M44.8 25.2C43 13.8 34.2 5.5 24 5.5c-10.2 0-19 8.3-20.8 19.7-1.2 7.8 4.1 15 11.1 15H16c1.9 1.6 4.7 2.7 7.9 2.7s6-1 7.9-2.7h2c6.9 0 12.2-7.2 11-15z" fill="#F0F0F0"/><path id="XMLID_1261_" class="st17" d="M3.2 29.6C5 18.2 13.8 9.9 24 9.9c10.2 0 19 8.3 20.8 19.7.2-1.4.2-2.9 0-4.4C43 13.8 34.2 5.5 24 5.5c-10.2 0-19 8.3-20.8 19.7-.2 1.5-.2 3 0 4.4z" fill="#FFF"/><path id="XMLID_1260_" class="st10" d="M44.8 25.2C43 13.8 34.2 5.5 24 5.5c-10.2 0-19 8.3-20.8 19.7-1.2 7.8 4.1 15 11.1 15H16c1.9 1.6 4.7 2.7 7.9 2.7s6-1 7.9-2.7h2c6.9 0 12.2-7.2 11-15z" fill="none" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><path id="XMLID_1259_" class="st77" d="M27.9 32.5c0 1.1-1.7 3-3.9 3s-3.9-1.8-3.9-3c0-1.1 1.7-2 3.9-2s3.9.8 3.9 2z" fill="#656769" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><path id="XMLID_1258_" class="st77" d="M28.1 20.1c-.9 5.1 3.1 7.7 6.1 8.8 3.1 1.2 4.8-1 4.8-4.1-.1-3.1-2-7.3-5.4-8.2-3-.7-5.3 2-5.5 3.5z" fill="#656769" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><path id="XMLID_1257_" class="st77" d="M19.8 20.1c.9 5.1-3.1 7.7-6.1 8.8-3.1 1.2-4.8-1-4.8-4.1.1-3.1 2-7.3 5.4-8.2 3-.7 5.2 2 5.5 3.5z" fill="#656769" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><circle id="XMLID_1256_" class="st78" cx="31.8" cy="22.1" r="1.7" fill="#45413C" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><circle id="XMLID_1255_" class="st78" cx="16.2" cy="22.1" r="1.7" fill="#45413C" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><circle id="XMLID_1254_" class="st79" cx="41.4" cy="29.7" r="2" fill="#FFA694"/><circle id="XMLID_1252_" class="st79" cx="6.6" cy="29.7" r="2" fill="#FFA694"/><path id="XMLID_1251_" class="st10" fill="none" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M24 35.4v2.2"/></g></g><metadata><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:Description about="https://iconscout.com/legal#licenses" dc:title="panda,animal" dc:description="panda,animal" dc:publisher="Iconscout" dc:date="2017-09-21" dc:format="image/svg+xml" dc:language="en"><dc:creator><rdf:Bag><rdf:li>Vincent Le Moign</rdf:li></rdf:Bag></dc:creator></rdf:Description></rdf:RDF></metadata></svg>
@@ -49,8 +69,11 @@ let Koala = `
 <?xml version="1.0" encoding="UTF-8"?><svg class="c-avatar__symbol" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 48 48" xml:space="preserve"><style type="text/css">.st0{fill:#FFD4C3;stroke:#504B46;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st1{fill:#FFC258;} .st2{fill:#4F4B45;} .st3{fill:#FABFA5;} .st4{fill:none;stroke:#504B46;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .Graphic_x0020_Style{opacity:0.15;fill:#45413C;} .st5{opacity:0.15;fill:#45413C;} .st6{fill:#DEBB7E;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st7{fill:#F0D5A8;} .st8{fill:#F7E5C6;} .st9{fill:#DEBB7E;} .st10{fill:none;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st11{fill:#FFE500;} .st12{fill:#EBCB00;} .st13{fill:none;stroke:#EBCB00;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st14{fill:#FF6242;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st15{fill:#FFFFFF;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st16{fill:#E5F8FF;} .st17{fill:#FFFFFF;} .st18{fill:#E8F4FA;} .st19{fill:#E8F4FA;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st20{fill:#FFCCDD;} .st21{fill:#FFB0CA;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st22{fill:#FF87AF;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st23{fill:#E5F8FF;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st24{fill:#BF8256;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st25{fill:#9CEB60;} .st26{fill:#6DD627;} .st27{fill:#C8FFA1;} .st28{fill:#FFFACF;} .st29{fill:#FF87AF;} .st30{fill:#FFB0CA;} .st31{fill:#FF6196;} .st32{fill:#FFCCDD;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st33{fill:#FF6196;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st34{fill:#FFE5EE;} .st35{fill:#00B8F0;} .st36{fill:#4ACFFF;} .st37{fill:#BF8256;} .st38{fill:#DEA47A;} .st39{fill:#915E3A;} .st40{fill:#FFF5E3;} .st41{fill:#F0F0F0;} .st42{fill:#8CA4B8;} .st43{fill:#627B8C;} .st44{fill:#C0DCEB;} .st45{fill:#FFF48C;} .st46{fill:#FFE500;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st47{fill:#FFAA54;} .st48{fill:#6DD627;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st49{fill:#FF8A14;} .st50{fill:#FFCC99;} .st51{fill:#EBCB00;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st52{fill:#00F5BC;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st53{fill:#BF8DF2;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st54{fill:#FF8A14;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st55{fill:#4AEFF7;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st56{fill:#FFF48C;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st57{fill:#FF6242;} .st58{fill:#E04122;} .st59{fill:#46B000;} .st60{fill:none;stroke:#45413C;stroke-miterlimit:10;} .st61{fill:#00B8F0;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st62{fill:#FF866E;} .st63{fill:#9F5AE5;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st64{fill:#E4FFD1;} .st65{fill:#FFFEF2;} .st66{fill:#B89558;} .st67{fill:none;stroke:#915E3A;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st68{fill:#915E3A;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st69{fill:#BF8DF2;} .st70{fill:#9F5AE5;} .st71{fill:#DABFF5;} .st72{fill:none;stroke:#45413C;stroke-linejoin:round;stroke-miterlimit:10;} .st73{fill:#656769;} .st74{fill:#87898C;} .st75{fill:#E0E0E0;} .st76{fill:#BDBEC0;} .st77{fill:#656769;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st78{fill:#45413C;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st79{fill:#FFA694;} .st80{fill:#E04122;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st81{fill:#E0E0E0;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st82{fill:#F0F0F0;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st83{fill:#DAEDF7;} .st84{fill:#BDBEC0;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st85{fill:#87898C;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st86{fill:#00DFEB;} .st87{fill:#4AEFF7;} .st88{fill:#DAEDF7;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st89{fill:#FFDA8F;} .st90{fill:#FFBE3D;} .st91{fill:#FFE9BD;} .st92{fill:#DEA47A;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st93{fill:#45413C;} .st94{fill:#F0C2A1;} .st95{fill:none;stroke:#45413C;stroke-width:1.0064;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st96{fill:#525252;} .st97{fill:#EB6D00;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st98{fill:#EB6D00;} .st99{fill:#E5FEFF;} .st100{fill:#FF866E;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st101{fill:#627B8C;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st102{fill:#FFFCE5;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st103{fill:#A6FBFF;} .st104{fill:#D9FDFF;} .st105{fill:#FFFACF;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st106{fill:#B8ECFF;} .st107{fill:#FFCABF;} .st108{fill:#E5FFF9;} .st109{fill:#C8FFA1;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st110{fill:#4CF4FC;} .st111{fill:#F0D5A8;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st112{fill:#FFDCD1;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st113{fill:#80DDFF;} .st114{fill:#46B000;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st115{fill:#4ACFFF;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st116{fill:#ADC4D9;} .st117{fill:#BDBEC0;stroke:#45413C;stroke-width:1.0064;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st118{fill:#FFFCE5;} .st119{fill:#947746;} .st120{fill:#525252;stroke:#45413C;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}</style><symbol id="New_Symbol_14" viewBox="-6.5 -6.5 13 13"><path class="st0" d="M0-6c2.2 0 4.1 1.5 4.7 3.5C6.3-2.5 6.4 0 5 0v1c0 2.8-2.2 5-5 5s-5-2.2-5-5V0c-1.4 0-1.3-2.5.2-2.5C-4.1-4.5-2.2-6 0-6z" fill="#FFD4C3" stroke="#504B46" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><circle class="st1" cx="-1.6" cy="-0.1" r="0.1" fill="#FFC258"/><path class="st2" d="M-1.6.5c-.3 0-.6-.3-.6-.6s.2-.7.6-.7c.3 0 .6.3.6.7s-.3.6-.6.6z" fill="#4F4B45"/><circle class="st1" cx="1.6" cy="-0.1" r="0.1" fill="#FFC258"/><path class="st2" d="M1.6.5C1.3.5 1 .2 1-.1s.3-.6.6-.6.6.3.6.6-.2.6-.6.6z" fill="#4F4B45"/><circle class="st3" cx="-3" cy="-1.5" r="0.5" fill="#FABFA5"/><circle class="st3" cx="3" cy="-1.5" r="0.5" fill="#FABFA5"/><path class="st4" d="M-1.2-3c.8-.5 1.7-.5 2.5 0" fill="none" stroke="#504B46" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/></symbol><g id="Icons"><g id="XMLID_1958_"><path id="XMLID_2524_" class="st26" d="M17.7 36.9a6.38 6.38 0 0 0-1.5 5.3c1.7.1 3.6-.7 5-2.3 1.4-1.6 1.8-3.6 1.5-5.3-1.8-.1-3.7.7-5 2.3z" fill="#6DD627"/><path id="XMLID_2523_" class="st59" d="M22.6 34.6c-1.7-.1-3.6.7-5 2.3-.3.4-.6.8-.8 1.2.9.9 2.3 1.7 4.2 1.9l.2-.2c1.3-1.6 1.8-3.6 1.4-5.2z" fill="#46B000"/><path id="XMLID_2522_" class="st10" d="M17.7 36.9a6.38 6.38 0 0 0-1.5 5.3c1.7.1 3.6-.7 5-2.3 1.4-1.6 1.8-3.6 1.5-5.3-1.8-.1-3.7.7-5 2.3z" fill="none" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><path id="XMLID_2521_" class="st76" d="M34.7 3c-4.4.7-6.9 5.3-5.9 9.5s5.2 7.1 9.5 6.1l1.1-2s1.4 2.9 2.4 2c1-.9 1.4-4.8 1.4-4.8s1.4 3.7 2.2 1.7c.8-1.9.4-5.6-.8-7.8C42.5 3.9 39 2.3 34.7 3z" fill="#BDBEC0"/><path id="XMLID_2520_" class="st76" d="M13.3 3c4.4.7 6.9 5.3 5.9 9.5s-5.2 7.1-9.5 6.1l-1.1-2s-1.4 2.9-2.4 2c-1-.9-1.4-4.8-1.4-4.8s-1.4 3.7-2.2 1.7c-.8-1.9-.4-5.6.8-7.8C5.6 3.9 9.1 2.3 13.3 3z" fill="#BDBEC0"/><path id="XMLID_2519_" class="st75" d="M34.7 6.1c4.2-.7 7.7.9 9.9 4.7.6 1 1 2.3 1.1 3.6.4-2-.1-4.9-1.1-6.7C42.5 3.9 39 2.3 34.7 3c-4.2.7-6.8 5.1-6 9.1.7-2.9 2.9-5.5 6-6z" fill="#E0E0E0"/><path id="XMLID_2518_" class="st75" d="M3.4 10.8C5.6 7 9.1 5.4 13.3 6.1c3.2.5 5.4 3.1 6 6 .8-4.1-1.7-8.5-6-9.1-4.2-.7-7.7.9-9.9 4.7-1.1 1.8-1.5 4.7-1.1 6.7.2-1.3.6-2.6 1.1-3.6z" fill="#E0E0E0"/><path id="XMLID_2517_" class="st10" d="M34.7 3c-4.4.7-6.9 5.3-5.9 9.5s5.2 7.1 9.5 6.1l1.1-2s1.4 2.9 2.4 2c1-.9 1.4-4.8 1.4-4.8s1.4 3.7 2.2 1.7c.8-1.9.4-5.6-.8-7.8C42.5 3.9 39 2.3 34.7 3z" fill="none" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><path id="XMLID_2516_" class="st10" d="M13.3 3c4.4.7 6.9 5.3 5.9 9.5s-5.2 7.1-9.5 6.1l-1.1-2s-1.4 2.9-2.4 2c-1-.9-1.4-4.8-1.4-4.8s-1.4 3.7-2.2 1.7c-.8-1.9-.4-5.6.8-7.8C5.6 3.9 9.1 2.3 13.3 3z" fill="none" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><ellipse id="XMLID_2515_" class="st5" cx="23.9" cy="43.5" rx="12.8" ry="1.7" fill="#45413C" opacity="0.15"/><path id="XMLID_1120_" class="st76" d="M38.3 20.9V18c0-7.1-6.4-12.9-14.4-12.9C16 5.1 9.5 10.9 9.5 18v2.9c-1.1 1.5-1.8 3.3-1.8 5.2 0 5 4 9.1 9.6 9.1h.3c.8 0 1.6.3 2.3.7 1.1.6 2.4 1 4 1 1.5 0 2.9-.4 4-1 .7-.4 1.5-.7 2.3-.7h.3c5.6 0 9.6-4.1 9.6-9.1 0-1.9-.7-3.7-1.8-5.2z" fill="#BDBEC0"/><path id="XMLID_1119_" class="st75" d="M38.3 20.9V18c0-7.1-6.4-12.9-14.4-12.9C16 5.1 9.5 10.9 9.5 18V21.6c0-7.1 6.4-12.9 14.4-12.9 7.9 0 14.4 5.8 14.4 12.9v-.7z" fill="#E0E0E0"/><path id="XMLID_1118_" class="st10" d="M38.3 20.9V18c0-7.1-6.4-12.9-14.4-12.9C16 5.1 9.5 10.9 9.5 18v2.9c-1.1 1.5-1.8 3.3-1.8 5.2 0 5 4 9.1 9.6 9.1h.3c.8 0 1.6.3 2.3.7 1.1.6 2.4 1 4 1 1.5 0 2.9-.4 4-1 .7-.4 1.5-.7 2.3-.7h.3c5.6 0 9.6-4.1 9.6-9.1 0-1.9-.7-3.7-1.8-5.2z" fill="none" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><path id="XMLID_1117_" class="st77" d="M27.8 27c0 3.4-1.7 4.4-3.9 4.4S20 30.4 20 27c0-3.4 1.7-6.8 3.9-6.8s3.9 3.4 3.9 6.8z" fill="#656769" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><circle id="XMLID_1116_" class="st78" cx="31.7" cy="20.2" r="1.7" fill="#45413C" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><circle id="XMLID_1115_" class="st78" cx="16.1" cy="20.2" r="1.7" fill="#45413C" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><ellipse id="XMLID_1114_" class="st20" cx="35.8" cy="27.7" rx="2" ry="1" fill="#FCD"/><ellipse id="XMLID_1113_" class="st20" cx="12" cy="27.7" rx="2" ry="1" fill="#FCD"/><path id="XMLID_1112_" class="st10" d="M18.2 35.3s2.2-.1 3.6-.7" fill="none" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><path id="XMLID_1111_" class="st10" d="M30.5 35.2s-1.6-.1-3.3-.6" fill="none" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><path id="XMLID_1105_" class="st10" d="M15.1 7.9s-3.6-1.9-6.6.3" fill="none" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><path id="XMLID_1104_" class="st10" d="M33.1 7.9s3.6-1.9 6.6.3" fill="none" stroke="#45413C" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/></g></g><metadata><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:Description about="https://iconscout.com/legal#licenses" dc:title="animal" dc:description="animal" dc:publisher="Iconscout" dc:date="2017-09-21" dc:format="image/svg+xml" dc:language="en"><dc:creator><rdf:Bag><rdf:li>Vincent Le Moign</rdf:li></rdf:Bag></dc:creator></rdf:Description></rdf:RDF></metadata></svg>
 </div>`;
 //#endregion
+//#endregion
+// List with correct avatar order in
+let avatars = [ Koala, Dolphin, Panda, Elephant ];
 
-let avatars = [Koala, Dolphin, Panda, Elephant];
+// Adding the custom headers to the json
 customheaders.append('accept', 'application/json');
 
 // Pre generated HTML code
@@ -444,7 +467,8 @@ let medal_brons = `<svg xmlns="http://www.w3.org/2000/svg" width="44.502" height
 //#endregion Podium
 //#endregion
 
-const addPulsarDevice = function () {
+// Function to add a pulsar device
+const addPulsarDevice = function() {
 	const sendPolarButton = document.querySelector('.js-sendPolar');
 	sendPolarButton.addEventListener('click', sendPulsarDevices);
 
@@ -478,7 +502,9 @@ const addPulsarDevice = function () {
 		}
 	}
 };
-const sendPulsarDevices = function () {
+
+// Function that requests a scan to the back-end, the back-end will return the bluetooth devices in the area
+const sendPulsarDevices = function() {
 	let devicesList = [];
 	let playerIndex = 0;
 	for (let i = 0; i < 4; i++) {
@@ -505,7 +531,9 @@ const sendPulsarDevices = function () {
 	AvatarButton = document.querySelector('.c-button');
 	AvatarButton.style.visibility = 'hidden';
 };
-const loadPulsarDevices = function () {
+
+// Loading the returned pulsar devices onto the HTML after generating the page
+const loadPulsarDevices = function() {
 	ReplaceRow.innerHTML = Pulsar;
 	let html = '';
 	let pulsarDiv = document.querySelector('.js-pulsarItems');
@@ -552,13 +580,15 @@ const loadPulsarDevices = function () {
 		button.addEventListener('click', addPulsarDevice);
 	}
 };
-const resetQuestions = function () {
+
+// Since we are looping the questions, we need to empty some lists every now and again
+const resetQuestions = function() {
 	playersAnswered = [];
 	playersAnswers = [];
 	AnswersGotten = [];
 };
 // Function that GETS questions + answers, and shows them!
-const ShowQuestionAndAnswers = function () {
+const ShowQuestionAndAnswers = function() {
 	// IF this is the first question of the quiz, we will send a message to the back-end to read the 'resting' heart beat
 	resetQuestions();
 	for (let i = 0; i < players.length; i++) {
@@ -620,7 +650,7 @@ const ShowQuestionAndAnswers = function () {
 
 		// WIP, have the time tick down over time
 		// 4 timers that count down the amount of seconds, these also get saved in the player variables.
-		intervalAll = setInterval(function () {
+		intervalAll = setInterval(function() {
 			for (let i = 0; i < players.length; i++) {
 				TimeLeft = players[i].time_left;
 				let answered = playersAnswered.find(findIfAnswered, players[i].player);
@@ -632,7 +662,9 @@ const ShowQuestionAndAnswers = function () {
 		}, 1000);
 	}
 };
-const findIfAnswered = function (dict) {
+
+// Checking if answered
+const findIfAnswered = function(dict) {
 	if (dict.player == this) {
 		if (dict.answered == true) {
 			return true;
@@ -644,21 +676,22 @@ const findIfAnswered = function (dict) {
 	}
 };
 // Function to show the animation screen
-const ShowLoadingScreen = function () {
+const ShowLoadingScreen = function() {
 	AnimateRow = document.querySelector('.js-animate');
 	AnimateRow.classList.toggle('c-form-field');
 	AnimateRow.innerHTML = loader;
 };
 
 // Function to GET all questions
-const GetQuestions = async function () {
+const GetQuestions = async function() {
 	let serverEndPoint = `https://project2functions.azurewebsites.net/api/GetQuestions?username=${username}`;
 	const response = await fetch(serverEndPoint, { headers: customheaders });
 	const data = await response.json();
 	return data;
 };
 
-const ConnectToMQTT = function () {
+// Connecting to MQTT
+const ConnectToMQTT = function() {
 	// Go from index page to load page
 	// generate a random client id
 	let clientID = 'clientID_' + parseInt(Math.random() * 100);
@@ -671,16 +704,13 @@ const ConnectToMQTT = function () {
 	// connect the client
 	client.connect({ onSuccess: onConnect, onFailure: onConnectionLost });
 };
-const disconnectTest = function () {
-	client.disconnect();
-	console;
-};
+
 // called when the client connects
 function onConnect() {
 	// Once a connection has been made, make a subscription and send a message.
 	try {
 		clearInterval(interval);
-	} catch (error) { }
+	} catch (error) {}
 	// client subscribed op dynamische topic!
 	client.subscribe(`/luemniro/PiToJs/${InputFieldValue}`);
 	// Kijken of juiste ID is ingegeven!
@@ -688,7 +718,7 @@ function onConnect() {
 }
 
 // Initializing communication, we send a test and the python back-end sends a test back
-const initializeCommunication = function () {
+const initializeCommunication = function() {
 	//ReplaceRow.innerHTML = Avatars;
 	//ReplaceRow.innerHTML = Header;
 	//ShowQuestionAndAnswers();
@@ -698,7 +728,7 @@ const initializeCommunication = function () {
 
 	showMessage(false, 'Proberen connectie maken met spel...');
 	//Shows a error message after 10 seconds
-	intervalErrorMessage = setInterval(function () {
+	intervalErrorMessage = setInterval(function() {
 		showMessage(true, 'Er kan geen connectie gemaakt worden met de spel! Bent u zeker dat de game pin juist is?');
 		clearInterval(intervalErrorMessage);
 	}, errorMessageInterval);
@@ -707,7 +737,7 @@ const initializeCommunication = function () {
 // called when the client loses its connection
 function onConnectionLost(responseObject) {
 	//start interval for reconnecting to mqtt server
-	interval = setInterval(function () {
+	interval = setInterval(function() {
 		ConnectToMQTT();
 	}, 10000);
 
@@ -716,18 +746,19 @@ function onConnectionLost(responseObject) {
 	}
 }
 
-const checkPlayerCreated = function (player) {
+// Checking if a player has been created
+const checkPlayerCreated = function(player) {
 	return player.player != this.id;
 };
 
 // Tell the back end to stop reading avatars
-const stopPlayerInit = function () {
+const stopPlayerInit = function() {
 	message = new Paho.Message(JSON.stringify({ type: 'avatar', status: 'end' }));
 	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 	client.send(message);
 };
 //pass a 'true' as parameter if the html is meant for the score page, pass a 'false' if html is meant for questionPage
-const generateAvatarHtml = function (scorePage) {
+const generateAvatarHtml = function(scorePage) {
 	ReplaceRow.innerHTML = Header;
 	HeaderRow = document.querySelector('.js-headerRow');
 	let html = '';
@@ -743,7 +774,9 @@ const generateAvatarHtml = function (scorePage) {
 	}
 	return html;
 };
-const FillInAvatarHtml = function (scorePage) {
+
+// Function that dynamically generates avatar HTML
+const FillInAvatarHtml = function(scorePage) {
 	let QuestionAvatarsList = document.querySelectorAll('.c-avatar');
 
 	// Selecting all scores
@@ -763,13 +796,11 @@ const FillInAvatarHtml = function (scorePage) {
 		if (!scorePage) {
 			ScoreList[i].innerHTML = players[i].time_left / 1000;
 		}
-		// Chosen Avatar gets opacity faded to 0.5
-		//QuestionAvatarsList[GekozenAvatar - 1].style.opacity = 1;
-		//QuestionAvatarsList[GekozenAvatar - 1].style.transition = 'opacity 1s';
 	}
 };
+
 // Function to generate the page with quesiton and answers on it
-const GenerateQuestionPage = function () {
+const GenerateQuestionPage = function() {
 	// Tell the back end to stop reading avatars
 	stopPlayerInit();
 
@@ -786,7 +817,7 @@ const GenerateQuestionPage = function () {
 };
 
 // A player has answered, the userinfo (the player who has answered) gets sent here, and this function is activated
-const playerAnswer = function (userInfo) {
+const playerAnswer = function(userInfo) {
 	// Clearing the correct interval
 	for (let i = 0; i < players.length; i++) {
 		if (userInfo.player == playersAnswered[i].player) {
@@ -803,7 +834,8 @@ const playerAnswer = function (userInfo) {
 	}
 };
 
-const GenerateSecondsPage = function () {
+// Generating the page with the SECONDS leaderboard
+const GenerateSecondsPage = function() {
 	clearInterval(intervalSportsActivityPage);
 	QuestionRow.innerHTML = Sporting;
 	let Title = document.querySelector('.c-custom-header');
@@ -838,7 +870,7 @@ const GenerateSecondsPage = function () {
 
 	let Aftelling = document.querySelector('.js-delay-question');
 	Aftelling.innerHTML = 5;
-	intervalSportsPage = setInterval(function () {
+	intervalSportsPage = setInterval(function() {
 		Aftelling.innerHTML = Aftelling.innerHTML - 1;
 		if (Aftelling.innerHTML == 0) {
 			GenerateQuestionPage();
@@ -846,7 +878,8 @@ const GenerateSecondsPage = function () {
 	}, 1000);
 };
 
-const GenerateSportsPage = function () {
+// Function that generates the PODIUM onto the HTML
+const GenerateSportsPage = function() {
 	if (QuestionList.length == 0) {
 		Rankings.sort((a, b) => b.Points - a.Points);
 		//#region Podium
@@ -894,24 +927,15 @@ const GenerateSportsPage = function () {
 		let AvatarW = document.querySelector('.c-avatar__gold');
 		let AvatarS = document.querySelector('.c-avatar__silver');
 		let AvatarB = document.querySelector('.c-avatar__bronze');
-
-		console.log('___________________');
-		//console.log(PodiumAvatars);
-		console.log(Rankings);
-		console.log('___________________');
-
-		console.log(Rankings[0].Avatar);
 		AvatarW.innerHTML = Rankings[0].Avatar;
 		AvatarS.innerHTML = Rankings[1].Avatar;
 		AvatarB.innerHTML = Rankings[2].Avatar;
 	} else {
 		App = document.querySelector('.c-app');
-		// SportsSelector.document.querySelector('.c-activity');
-		// SportsSelector = document.querySelector('.c-activity__symbol');
 		App.innerHTML = SportsWinPage;
 		clearInterval(intervalSportsPage);
 		GoddelijkeTimer = document.querySelector('.js-delay-question');
-		intervalSportsActivityPage = setInterval(function () {
+		intervalSportsActivityPage = setInterval(function() {
 			GoddelijkeTimer.innerHTML = GoddelijkeTimer.innerHTML - 1;
 			if (GoddelijkeTimer.innerHTML == 10) {
 				message = new Paho.Message(JSON.stringify({ type: 'bpm' }));
@@ -927,7 +951,7 @@ const GenerateSportsPage = function () {
 	}
 };
 // Get the index from the biggest number
-const arrayMaxIndex = function (array) {
+const arrayMaxIndex = function(array) {
 	highest = array[0];
 	for (i = 0; i < array.length; i++) {
 		if (highest.bpm < array[i].bpm) {
@@ -1005,7 +1029,7 @@ function onMessageArrived(message) {
 				}
 
 				// If an avatar is chosen, it gets a lower opacity, as to show that it's chosen
-				let LijstIcons = ['Koala', 'Dolphin', 'Panda', 'Elephant'];
+				let LijstIcons = [ 'Koala', 'Dolphin', 'Panda', 'Elephant' ];
 				switch (LijstIcons[jsonMessage.button - 1]) {
 					case 'Koala':
 						icon = document.querySelector('.js-koala');
@@ -1138,7 +1162,7 @@ function onMessageArrived(message) {
 
 				let Aftelling = document.querySelector('.js-delay-question');
 				Aftelling.innerHTML = 5;
-				intervalSportsPage = setInterval(function () {
+				intervalSportsPage = setInterval(function() {
 					Aftelling.innerHTML = Aftelling.innerHTML - 1;
 					if (Aftelling.innerHTML == 0) {
 						GenerateSportsPage();
@@ -1169,7 +1193,7 @@ function onMessageArrived(message) {
 				if (playersBpmCount == players.length) {
 					playersBpmCount = 0;
 					// LUKA deze if wordt uitgevoerd bij het krijgen van de laatste hartslag, hier moet de berekening doen van wie het meest heeft gesport en wie dus het meeste tijd krijgt
-					let timeToGive = [20000, 15000, 10000, 5000];
+					let timeToGive = [ 20000, 15000, 10000, 5000 ];
 					let lijst = [];
 					for (let i = 1; i < players.length + 1; i++) {
 						playerBpm = {};
@@ -1247,7 +1271,7 @@ function onMessageArrived(message) {
 	}
 }
 
-const showMessage = function (isError, message) {
+const showMessage = function(isError, message) {
 	messageBox = document.querySelector('.js-loading-message');
 	messageBox.innerHTML = message;
 	if (isError) {
@@ -1255,7 +1279,7 @@ const showMessage = function (isError, message) {
 	}
 };
 
-const Buttonchecked = function () {
+const Buttonchecked = function() {
 	// Change page here, go from load page to avatar selection page
 	// waarde van input box ophalen
 	InputFieldValue = document.querySelector('#gamePin').value;
@@ -1263,7 +1287,7 @@ const Buttonchecked = function () {
 	showMessage(false, 'Proberen connectie maken met spel...');
 	ConnectToMQTT();
 };
-const loginRequest = async function () {
+const loginRequest = async function() {
 	username = document.querySelector('#username').value;
 	const password = document.querySelector('#password').value;
 	AnimateRow.innerHTML = loader;
@@ -1273,7 +1297,7 @@ const loginRequest = async function () {
 	const data = await response.json();
 	return data;
 };
-const login = function () {
+const login = function() {
 	loginRequest().then((x) => {
 		if (x == 400) {
 			console.log('wrong credentials');
@@ -1294,34 +1318,34 @@ const login = function () {
 			const game = document.querySelector('.js-game');
 			const question = document.querySelector('.js-question');
 			game.addEventListener('click', Page);
-			question.addEventListener('click', function () {
+			question.addEventListener('click', function() {
 				loadAdminPage();
 			});
 		}
 	});
 };
-const Page = function () {
+const Page = function() {
 	ReplaceRow.innerHTML = pinPage;
 	SubmitButton = document.querySelector('#js-submit');
 	let pinInput = document.querySelector('.js-input-pin');
 	SubmitButton.addEventListener('click', Buttonchecked);
 	pinInput.addEventListener('keyup', autoEnterPin);
 };
-const autoEnterPin = function (event) {
+const autoEnterPin = function(event) {
 	if (event.keyCode === 13) {
 		event.preventDefault();
 		let enter = document.querySelector('#js-submit');
 		enter.click();
 	}
 };
-const autoEnter = function (event) {
+const autoEnter = function(event) {
 	if (event.keyCode === 13) {
 		event.preventDefault();
 		let loginSubmit = document.querySelector('.js-submitLogin').click();
 	}
 };
 
-const loadLoginPage = function () {
+const loadLoginPage = function() {
 	ReplaceRow.innerHTML = loginPage;
 	// Need to use this one later
 	let loginSubmit = document.querySelector('.js-submitLogin');
@@ -1331,7 +1355,7 @@ const loadLoginPage = function () {
 	loginUsername.addEventListener('keyup', autoEnter);
 	loginPassword.addEventListener('keyup', autoEnter);
 };
-const init = function () {
+const init = function() {
 	// Init function
 	ReplaceRow = document.querySelector('.js-row');
 	QuestionRow = document.querySelector('.c-app');

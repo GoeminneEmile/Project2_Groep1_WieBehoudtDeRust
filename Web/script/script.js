@@ -41,12 +41,12 @@ let AnswersGotten = [];
 let PointsGained = [];
 let playerRestBPM = [ player1_rest_bpm, player2_rest_bpm, player3_rest_bpm, player4_rest_bpm ];
 let playerBPM = [ player1_bpm, player2_bpm, player3_bpm, player4_bpm ];
+let Rankings = [ { Points: 0, PointsGained: 0, Player: '1', Avatar: '', Seconds: '20', SecondsGained: '0' }, { Points: 0, PointsGained: 0, Player: '2', Avatar: '', Seconds: '20', SecondsGained: '0' }, { Points: 0, PointsGained: 0, Player: '3', Avatar: '', Seconds: '20', SecondsGained: '0' }, { Points: 0, PointsGained: 0, Player: '4', Avatar: '', Seconds: '20', SecondsGained: '0' } ];
 // global customheaders for GET request
 let customheaders = new Headers();
 
 // global array's
 let tempPulsarList = { 0: undefined, 1: undefined, 2: undefined, 3: undefined };
-let Rankings = [ { Points: 0, PointsGained: 0, Player: '1', Avatar: '', Seconds: '20', SecondsGained: '0' }, { Points: 0, PointsGained: 0, Player: '2', Avatar: '', Seconds: '20', SecondsGained: '0' }, { Points: 0, PointsGained: 0, Player: '3', Avatar: '', Seconds: '20', SecondsGained: '0' }, { Points: 0, PointsGained: 0, Player: '4', Avatar: '', Seconds: '20', SecondsGained: '0' } ];
 
 //#region Avatars
 //#region Panda
@@ -617,7 +617,6 @@ const ShowQuestionAndAnswers = function() {
 
 		// Selecting answers
 		let AnswerList = document.querySelectorAll('.c-answer');
-		console.log(AnswerList);
 
 		// Inserting everything
 		for (let i = 0; i < RandomQuestion.questionAnswers.length; i++) {
@@ -1024,7 +1023,6 @@ function onMessageArrived(message) {
 						console.log(players);
 						Rankings[i].Avatar = avatars[players[i].avatar - 1];
 					}
-					console.log('thot');
 					break;
 				}
 
@@ -1062,11 +1060,12 @@ function onMessageArrived(message) {
 
 			AnswersGotten.push(answer);
 			playerAnswer(answer);
-			//console.log('er zijn  ' + playersAnswers.length + ' antwoorden ingegeven van de ' + players.length);
+			console.log('___________________________');
 			console.log('er zijn ' + AnswersGotten.length + ' antwoorden ingedient');
 			console.log('er zijn ' + players.length + ' spelers in het spel');
 			//If the length of playerAnswers equals the length of players, we know that we received all answers
 			console.log('antwoorden ontvangen : ' + AnswersGotten.length);
+			console.log('___________________________');
 
 			if (AnswersGotten.length == players.length) {
 				clearInterval(intervalAll);
@@ -1081,7 +1080,7 @@ function onMessageArrived(message) {
 				//4. Vermenigvuldig de punten met de maximale waarde die je kan krijgen. Dus 0,875 x 10 = 8,75.
 				//5. Rond af wanneer nodig.
 				FillInAvatarHtml(true);
-				AnswersGotten.push(answer);
+				//AnswersGotten.push(answer);
 
 				console.log('Alle antwoorden zijn ingegeven');
 				QuestionRow.innerHTML = Sporting;
@@ -1090,9 +1089,14 @@ function onMessageArrived(message) {
 				for (let i = 0; i < players.length; i++) {
 					Rankings[i].PointsGained = '0';
 					console.log('speler' + AnswersGotten[i].player + ' heeft gedrukt op knop ' + AnswersGotten[i].button);
+					Rankings.sort((a, b) => a.player - b.player);
+					AnswersGotten.sort((a, b) => a.player - b.player);
 					if (AnswersGotten[i].button == juisteButton) {
-						Rankings.sort((a, b) => a.Player - b.Player);
 						console.log('het juiste antwoord is ingegeven');
+						console.log('____________________');
+						console.log(AnswersGotten);
+						console.log(players);
+						console.log('____________________');
 						let tijd_nodig = AnswersGotten[i].time_needed / 1000;
 						let tijd_over = players[i].time_left / 1000;
 						let Berekening = tijd_nodig / tijd_over;

@@ -1,10 +1,7 @@
 //#region adminPage
 let newQuestionIndex = 0;
-
 let adminPage = `            
 <div class="o-container c-admin c-background--white js-questionsForm">
-
-
 <div class="o-layout u-pb-lg">
 	<div class="o-layout__item u-align-middle-svg u-pt-md">
 		<svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19">

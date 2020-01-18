@@ -21,13 +21,20 @@ let SubmitButton,
 	IsFirstQuestion = true,
 	IsRestBpm = true,
 	RestBpmCount = 0,
-	playersBpmCount = 0;
-let client;
-let Communication;
-let player1_rest_bpm, player2_rest_bpm, player3_rest_bpm, player4_rest_bpm;
-let player1_bpm, player2_bpm, player3_bpm, player4_bpm;
-let errorMessageInterval = 10000;
-let intervalErrorMessage;
+	playersBpmCount = 0,
+	client,
+	Communication,
+	player1_rest_bpm,
+	player2_rest_bpm,
+	player3_rest_bpm,
+	player4_rest_bpm,
+	player1_bpm,
+	player2_bpm,
+	player3_bpm,
+	player4_bpm,
+	errorMessageInterval = 10000,
+	intervalErrorMessage;
+
 // global Lists
 let players = [];
 let selectedAvatars = [];
@@ -596,13 +603,9 @@ const ShowQuestionAndAnswers = function() {
 	}
 
 	// Inserting HTML
-
 	QuestionRow.innerHTML = Answers;
 
-	// GET's questions and inserts them onto the HTML, async.
-	// GET's questions and inserts them onto the HTML, async.
-
-	// Random number to generate random question!
+	// If there's no more questions left
 	if (QuestionList.length == 0) {
 		console.log('_______________________');
 		console.log('Er zijn geen vragen meer');
@@ -756,7 +759,8 @@ const stopPlayerInit = function() {
 	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 	client.send(message);
 };
-//pass a 'true' as parameter if the html is meant for the score page, pass a 'false' if html is meant for questionPage
+
+// Pass a 'true' as parameter if the html is meant for the score page, pass a 'false' if html is meant for questionPage
 const generateAvatarHtml = function(scorePage) {
 	ReplaceRow.innerHTML = Header;
 	HeaderRow = document.querySelector('.js-headerRow');
@@ -979,10 +983,10 @@ function onMessageArrived(message) {
 				client.send(message);
 				gameStep++;
 			}
+
 			// Here we are showing a messsega that the scan has started
 			showMessage(false, 'Spel succesvol geconnecteerd! Zoeken naar hartslagsensoren...');
 			clearInterval(intervalErrorMessage);
-
 			break;
 		case 'scan':
 			// When we receive a list of devices in the area, add them to a list
@@ -1063,22 +1067,16 @@ function onMessageArrived(message) {
 			console.log('___________________________');
 			console.log('er zijn ' + AnswersGotten.length + ' antwoorden ingedient');
 			console.log('er zijn ' + players.length + ' spelers in het spel');
-			//If the length of playerAnswers equals the length of players, we know that we received all answers
 			console.log('antwoorden ontvangen : ' + AnswersGotten.length);
 			console.log('___________________________');
 
+			//If the length of playerAnswers equals the length of players, we know that we received all answers
 			if (AnswersGotten.length == players.length) {
 				clearInterval(intervalAll);
 				// Generate the HTML for the question page
 				avatarHtml = generateAvatarHtml(true);
 				HeaderRow.innerHTML += avatarHtml;
 				HeaderRow.innerHTML += footer;
-				//1. Tijd die ik krijg (van robbe z'n python) delen door de totale tijd.
-				//bv: Ik krijg een json waarin staat dat een speler 5 seconden nodig had. 5 / 20 = 0,25.
-				//2. Deel die waarde door 2.
-				//3. Trek die waarde van 1 af. Dus 1 - 0,125 = 0,875.
-				//4. Vermenigvuldig de punten met de maximale waarde die je kan krijgen. Dus 0,875 x 10 = 8,75.
-				//5. Rond af wanneer nodig.
 				FillInAvatarHtml(true);
 				//AnswersGotten.push(answer);
 
@@ -1091,6 +1089,8 @@ function onMessageArrived(message) {
 					console.log('speler' + AnswersGotten[i].player + ' heeft gedrukt op knop ' + AnswersGotten[i].button);
 					Rankings.sort((a, b) => a.player - b.player);
 					AnswersGotten.sort((a, b) => a.player - b.player);
+
+					// If someone presses the CORRECT button, we will calculate how long it took them, and give them a score based on that
 					if (AnswersGotten[i].button == juisteButton) {
 						console.log('het juiste antwoord is ingegeven');
 						console.log('____________________');
@@ -1110,6 +1110,7 @@ function onMessageArrived(message) {
 					}
 				}
 
+				// If i get a 0 as button, this means that the back-end is reporting a player has gone OVER  their left over time. This means we flush the player from the lists!
 				if (jsonMessage.button == 0) {
 					for (let i = 0; i < players.length; i++) {
 						if (Rankings[i].player == answer.player) {
@@ -1151,6 +1152,7 @@ function onMessageArrived(message) {
 					}
 				}
 
+				// We send a bpm BEFORE the first sporting page, so we can measure the RESTING BPM.
 				if (IsFirstQuestion == true) {
 					message = new Paho.Message(
 						JSON.stringify({
@@ -1164,6 +1166,7 @@ function onMessageArrived(message) {
 					client.send(message);
 				}
 
+				// The countdown timer for all players.
 				let Aftelling = document.querySelector('.js-delay-question');
 				Aftelling.innerHTML = 5;
 				intervalSportsPage = setInterval(function() {
@@ -1275,6 +1278,7 @@ function onMessageArrived(message) {
 	}
 }
 
+// Show a message in a specific part of the HTML
 const showMessage = function(isError, message) {
 	messageBox = document.querySelector('.js-loading-message');
 	messageBox.innerHTML = message;
@@ -1291,6 +1295,8 @@ const Buttonchecked = function() {
 	showMessage(false, 'Proberen connectie maken met spel...');
 	ConnectToMQTT();
 };
+
+// This is the function where we get the username and password values, and do a GET request to our user database
 const loginRequest = async function() {
 	username = document.querySelector('#username').value;
 	const password = document.querySelector('#password').value;
@@ -1301,6 +1307,9 @@ const loginRequest = async function() {
 	const data = await response.json();
 	return data;
 };
+
+//The actual LOGIN function
+// If we get a 400 response, this means the user has NOT logged in succesfully
 const login = function() {
 	loginRequest().then((x) => {
 		if (x == 400) {
@@ -1328,6 +1337,8 @@ const login = function() {
 		}
 	});
 };
+
+// Creating the pin page
 const Page = function() {
 	ReplaceRow.innerHTML = pinPage;
 	SubmitButton = document.querySelector('#js-submit');
@@ -1335,6 +1346,8 @@ const Page = function() {
 	SubmitButton.addEventListener('click', Buttonchecked);
 	pinInput.addEventListener('keyup', autoEnterPin);
 };
+
+// If you press the enter button, this will also get submitted, mainly for UX purposes
 const autoEnterPin = function(event) {
 	if (event.keyCode === 13) {
 		event.preventDefault();
@@ -1342,13 +1355,15 @@ const autoEnterPin = function(event) {
 		enter.click();
 	}
 };
+
+// Pressing enter will also submit the login
 const autoEnter = function(event) {
 	if (event.keyCode === 13) {
 		event.preventDefault();
 		let loginSubmit = document.querySelector('.js-submitLogin').click();
 	}
 };
-
+// Loading the login page
 const loadLoginPage = function() {
 	ReplaceRow.innerHTML = loginPage;
 	// Need to use this one later
@@ -1359,6 +1374,8 @@ const loadLoginPage = function() {
 	loginUsername.addEventListener('keyup', autoEnter);
 	loginPassword.addEventListener('keyup', autoEnter);
 };
+
+// Init function for loading DOM and loading first page
 const init = function() {
 	// Init function
 	ReplaceRow = document.querySelector('.js-row');

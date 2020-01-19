@@ -24,7 +24,9 @@ const generateAdminQuestionHtml = function(question) {
 	let html = '';
 	html += `<form id="form-${question.questionID}" class="u-border-bottom">
 	<div class="o-layout">
-		
+		<div class="o-layout__item u-align-middle-svg u-1-of-3 u-pb-clear">
+			<h4 id="questionHeader-${question.questionID}">Question ID : 000000</h4>
+		</div>
 		<div class="o-layout__item u-align-middle-svg u-1-of-3 u-pb-clear">
 			<h4>Vraag</h4>
 		</div>

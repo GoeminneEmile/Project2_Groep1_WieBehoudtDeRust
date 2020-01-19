@@ -24,9 +24,7 @@ const generateAdminQuestionHtml = function(question) {
 	let html = '';
 	html += `<form id="form-${question.questionID}" class="u-border-bottom">
 	<div class="o-layout">
-		<div class="o-layout__item u-align-middle-svg u-1-of-3 u-pb-clear">
-			<h4 id="questionHeader-${question.questionID}">Question ID : ${question.questionID}</h4>
-		</div>
+		
 		<div class="o-layout__item u-align-middle-svg u-1-of-3 u-pb-clear">
 			<h4>Vraag</h4>
 		</div>
@@ -41,7 +39,7 @@ const generateAdminQuestionHtml = function(question) {
 						<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg xmlns="http://www.w3.org/2000/svg" id="js-saveQuestion" data-question="${question.questionID}"  xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" width="48px" height="48px" viewBox="0 0 512 512" xml:space="preserve"><path fill="#57AB18" d="M461.6 109.6l-54.9-43.3c-1.7-1.4-3.8-2.4-6.2-2.4-2.4 0-4.6 1-6.3 2.5L194.5 323s-78.5-75.5-80.7-77.7c-2.2-2.2-5.1-5.9-9.5-5.9s-6.4 3.1-8.7 5.4c-1.7 1.8-29.7 31.2-43.5 45.8-.8.9-1.3 1.4-2 2.1-1.2 1.7-2 3.6-2 5.7 0 2.2.8 4 2 5.7l2.8 2.6s139.3 133.8 141.6 136.1c2.3 2.3 5.1 5.2 9.2 5.2 4 0 7.3-4.3 9.2-6.2l249.1-320c1.2-1.7 2-3.6 2-5.8 0-2.5-1-4.6-2.4-6.4z"/><metadata><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:Description about="https://iconscout.com/legal#licenses" dc:title="checkmark" dc:description="checkmark" dc:publisher="Iconscout" dc:date="2017-09-24" dc:format="image/svg+xml" dc:language="en"><dc:creator><rdf:Bag><rdf:li>Benjamin J Sperry</rdf:li></rdf:Bag></dc:creator></rdf:Description></rdf:RDF></metadata></svg>
 				</div>
 				<div class="o-layout__item u-align-middle-svg u-1-of-2">
-					<svg id="js-removeQuestion"xmlns="http://www.w3.org/2000/svg" data-question="${question.questionID}"data-name="Layer 1" width="48px" height="48px" viewBox="0 0 48 48"><path fill="#E2887C" d="M36,44H12a3,3,0,0,1-3-3V12a1,1,0,0,1,1-1H38a1,1,0,0,1,1,1V41A3,3,0,0,1,36,44ZM11,13V41a1,1,0,0,0,1,1H36a1,1,0,0,0,1-1V13Z"/><path fill="#E2887C" d="M35,12V38a2,2,0,0,1-2,2H10v1a2,2,0,0,0,2,2H36a2,2,0,0,0,2-2V12Z" opacity=".35"/><path fill="#E2887C" d="M43 13H5a1 1 0 0 1 0-2H43a1 1 0 0 1 0 2zM17 35a1 1 0 0 1-1-1V20a1 1 0 0 1 2 0V34A1 1 0 0 1 17 35zM31 35a1 1 0 0 1-1-1V20a1 1 0 0 1 2 0V34A1 1 0 0 1 31 35zM24 37a1 1 0 0 1-1-1V18a1 1 0 0 1 2 0V36A1 1 0 0 1 24 37z"/><path fill="#E2887C" d="M33,13H15a1,1,0,0,1-1-1V7a3,3,0,0,1,3-3H31a3,3,0,0,1,3,3v5A1,1,0,0,1,33,13ZM16,11H32V7a1,1,0,0,0-1-1H17a1,1,0,0,0-1,1Z"/></svg>
+					<svg class="js-removeQuestion"xmlns="http://www.w3.org/2000/svg" data-question="${question.questionID}"data-name="Layer 1" width="48px" height="48px" viewBox="0 0 48 48"><path fill="#E2887C" d="M36,44H12a3,3,0,0,1-3-3V12a1,1,0,0,1,1-1H38a1,1,0,0,1,1,1V41A3,3,0,0,1,36,44ZM11,13V41a1,1,0,0,0,1,1H36a1,1,0,0,0,1-1V13Z"/><path fill="#E2887C" d="M35,12V38a2,2,0,0,1-2,2H10v1a2,2,0,0,0,2,2H36a2,2,0,0,0,2-2V12Z" opacity=".35"/><path fill="#E2887C" d="M43 13H5a1 1 0 0 1 0-2H43a1 1 0 0 1 0 2zM17 35a1 1 0 0 1-1-1V20a1 1 0 0 1 2 0V34A1 1 0 0 1 17 35zM31 35a1 1 0 0 1-1-1V20a1 1 0 0 1 2 0V34A1 1 0 0 1 31 35zM24 37a1 1 0 0 1-1-1V18a1 1 0 0 1 2 0V36A1 1 0 0 1 24 37z"/><path fill="#E2887C" d="M33,13H15a1,1,0,0,1-1-1V7a3,3,0,0,1,3-3H31a3,3,0,0,1,3,3v5A1,1,0,0,1,33,13ZM16,11H32V7a1,1,0,0,0-1-1H17a1,1,0,0,0-1,1Z"/></svg>
 				</div>
 			</div>
 		</div>
@@ -58,7 +56,7 @@ const generateAdminQuestionHtml = function(question) {
 			svgClass = '';
 		}
 
-		html += `<div class="o-layout u-mb-md">
+		html += `<div class="o-layout u-mb-md js-answerDiv-${question.questionID}">
 			<div class="o-layout__item u-align-middle-svg u-1-of-3 u-pt-clear">
 				<svg class="c-svg__check ${svgClass} js-check js-check-${question.questionID}" data-correct="${answer.correct}" data-question="${question.questionID}" data-index="${index}"  xmlns="http://www.w3.org/2000/svg" width="18.684" height="18.684" viewBox="0 0 18.684 18.684">
 				  <path id="Icon_22_" d="M80.608,64H66.076A2.082,2.082,0,0,0,64,66.076V80.608a2.082,2.082,0,0,0,2.076,2.076H80.608a2.082,2.082,0,0,0,2.076-2.076V66.076A2.082,2.082,0,0,0,80.608,64ZM71.266,78.532l-5.19-5.19,1.453-1.453,3.737,3.737,7.889-7.889,1.453,1.453Z" transform="translate(-64 -64)" fill="#192a9a"/>
@@ -67,6 +65,11 @@ const generateAdminQuestionHtml = function(question) {
 			<div class="o-layout__item u-align-middle-svg u-2-of-3">
 				<input class="c-input c-input--xs c-input__answer answer-${question.questionID}" type="text" data-correct="${answer.correct}" data-index="${index}" name="answer" data- value="${answer.answer}" />
 			</div>
+            <div class="o-layout__item u-align-middle-svg u-1-of-4 u-pt-clear ">
+                <div class="c-answer-svg">
+                    <svg class="c-answer-svg__garbage c-removeAnswer-${question.questionID}" data-question="${question.questionID}" data-index="${index}"xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 48 48"><path fill="#E2887C" d="M36,44H12a3,3,0,0,1-3-3V12a1,1,0,0,1,1-1H38a1,1,0,0,1,1,1V41A3,3,0,0,1,36,44ZM11,13V41a1,1,0,0,0,1,1H36a1,1,0,0,0,1-1V13Z"/><path fill="#E2887C" d="M35,12V38a2,2,0,0,1-2,2H10v1a2,2,0,0,0,2,2H36a2,2,0,0,0,2-2V12Z" opacity=".35"/><path fill="#E2887C" d="M43 13H5a1 1 0 0 1 0-2H43a1 1 0 0 1 0 2zM17 35a1 1 0 0 1-1-1V20a1 1 0 0 1 2 0V34A1 1 0 0 1 17 35zM31 35a1 1 0 0 1-1-1V20a1 1 0 0 1 2 0V34A1 1 0 0 1 31 35zM24 37a1 1 0 0 1-1-1V18a1 1 0 0 1 2 0V36A1 1 0 0 1 24 37z"/><path fill="#E2887C" d="M33,13H15a1,1,0,0,1-1-1V7a3,3,0,0,1,3-3H31a3,3,0,0,1,3,3v5A1,1,0,0,1,33,13ZM16,11H32V7a1,1,0,0,0-1-1H17a1,1,0,0,0-1,1Z"/></svg>
+                </div>
+            </div>
 		</div>`;
 		index++;
 	}
@@ -112,18 +115,32 @@ const changeAnswerCorrect = function() {
 	}
 
 };
+const deleteAnswer = function(){
+	const questionBox = document.querySelector(`.js-answerDiv-${this.dataset.question}`);
+	questionBox.remove();
+}
 //let's all plus buttons add a new answer to a question
 const initializeEventListeners = function(){
 	// gets all plus buttons using js-addNewAnswer class
 	const allAddNewAnwsers = document.querySelectorAll(".js-addNewAnswer");
-	
 	for(let addNewAnswersvg of allAddNewAnwsers){
 		addNewAnswersvg.addEventListener('click',addNewAnswer);
 	}
 	const saveQuestions = document.querySelectorAll('#js-saveQuestion');
+	const deleteAnswers = document.querySelectorAll('.c-answer-svg__garbage');
 	const checkBoxes = document.querySelectorAll('.js-check');
 	const newQuestion = document.querySelector('#js-addQuestion');
-	const deleteQuestions = document.querySelectorAll("#js-removeQuestion");
+	const deleteQuestions = document.querySelectorAll(".js-removeQuestion");
+	for(let deleteAnswer of deleteAnswers){
+		try {
+			deleteAnswer.removeEventListener('click',deleteAnswer);
+		} catch (error) {
+			
+		}
+	}
+	for(let deleteAnswerAdd of deleteAnswers){
+		deleteAnswerAdd.addEventListener('click',deleteAnswer);
+	}
 	for(let deleteQuestion of deleteQuestions){
 		try {
 			deleteQuestion.removeEventListener('click',deleteQuestion);
@@ -131,6 +148,8 @@ const initializeEventListeners = function(){
 			
 		}
 	}
+	console.log(deleteQuestions);
+
 	for(let deleteQuestionButton of deleteQuestions){
 		deleteQuestionButton.addEventListener('click',deleteQuestion);
 	}
@@ -216,9 +235,7 @@ const saveNewQuestion = function(){
 			questionAnswers:answers
 			}
 		}
-		console.log(json);
 		postQuestion(json).then((x) => {
-			console.log(x);
 			refreshQuestion(this.dataset.question,x.questionID);
 			this.dataset.question = x.questionID;
 		});
@@ -252,25 +269,35 @@ const deleteQuestionRequest = async function(guid){
 	return data;
 }
 const refreshQuestion = function(oldId,newId){
+	const trashCans = document.querySelectorAll(`.c-removeAnswer-${oldId}`);
+	const answerDiv = document.querySelector(`.js-answerDiv-${oldId}`);
 	const header = document.querySelector(`#questionHeader-${oldId}`);
 	header.id = `questionHeader-${newId}`;
 	header.innerHTML = `Question ID :${newId}`;
+	answerDiv.classList.remove(`js-answerDiv-${oldId}`);
+	answerDiv.classList.add(`js-answerDiv-${newId}`);
 	const question = document.querySelector(`#question-${oldId}`);
 	question.id = `question-${newId}`;
 	const checkBoxes = document.querySelectorAll(`.js-check-${oldId}`);
+	for(let trashCan of trashCans){
+		trashCan.classList.remove(`c-removeAnswer-${oldId}`);
+		trashCan.classList.add(`c-removeAnswer-${newId}`);
+		trashCan.dataset.question = newId;
+	}
 	for(let checkBox of checkBoxes){
 		checkBox.classList.remove(`js-check-${oldId}`);
 		checkBox.classList.add(`js-check-${newId}`);
 		checkBox.dataset.question = newId;
 	}
-	const answers = document.querySelectorAll(`.answer-ec8d80cd-b29f-42cf-8ec4-0f9bf0c8dd6c`);
+	const answers = document.querySelectorAll(`.answer-${oldId}`);
 	for(let answer of answers){
+		console.log("ik ben de answer aan het veranderen");
 		answer.classList.remove(`answer-${oldId}`);
 		answer.classList.add(`answer-${newId}`);
 	}
 	const form = document.querySelector(`#form-${oldId}`);
 	form.id = `form-${newId}`;
-	const deleteQuestions = document.querySelectorAll(`#js-removeQuestion`);
+	const deleteQuestions = document.querySelectorAll(`.js-removeQuestion`);
 	for(let deleteQuestion of deleteQuestions){
 		deleteQuestion.dataset.question = newId;
 	}
@@ -279,15 +306,21 @@ const addNewAnswer = function(){
 	const currentAnswers = document.querySelectorAll(`.answer-${this.dataset.question}`);
 	if(currentAnswers.length < 4){
 		const answersBox = document.querySelector(`.js-questionAnswersBox-${this.dataset.question}`)
-		answersBox.insertAdjacentHTML('afterbegin', `<div class="o-layout u-mb-md">
+		answersBox.insertAdjacentHTML('afterbegin', `<div class="o-layout u-mb-md js-answerDiv-${this.dataset.question}">
 		<div class="o-layout__item u-align-middle-svg u-1-of-3 u-pt-clear">
 			<svg class="c-svg__check js-check js-check-${this.dataset.question}" data-correct="0" data-question="${this.dataset.question}" data-index="1"  xmlns="http://www.w3.org/2000/svg" width="18.684" height="18.684" viewBox="0 0 18.684 18.684">
 			  <path id="Icon_22_" d="M80.608,64H66.076A2.082,2.082,0,0,0,64,66.076V80.608a2.082,2.082,0,0,0,2.076,2.076H80.608a2.082,2.082,0,0,0,2.076-2.076V66.076A2.082,2.082,0,0,0,80.608,64ZM71.266,78.532l-5.19-5.19,1.453-1.453,3.737,3.737,7.889-7.889,1.453,1.453Z" transform="translate(-64 -64)" fill="#192a9a"/>
 			</svg>
 		</div>
 		<div class="o-layout__item u-align-middle-svg u-2-of-3">
-			<input  class="c-input c-input--xs c-input__answer answer-${this.dataset.question}" type="text" data-correct="0" data-index="1" name="answer" data- value="....." />
+			<input  class="c-input c-input--xs c-input__answer answer-${this.dataset.question}" type="text" data-correct="0" data-index="1" name="answer" data- placeholder="....." />
 		</div>
+		<div class="o-layout__item u-align-middle-svg u-1-of-4 u-pt-clear ">
+
+		<div class="c-answer-svg">
+                <svg class="c-answer-svg__garbage c-removeAnswer-${this.dataset.question}" data-question="${this.dataset.question}" data-index="1"xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 48 48"><path fill="#E2887C" d="M36,44H12a3,3,0,0,1-3-3V12a1,1,0,0,1,1-1H38a1,1,0,0,1,1,1V41A3,3,0,0,1,36,44ZM11,13V41a1,1,0,0,0,1,1H36a1,1,0,0,0,1-1V13Z"/><path fill="#E2887C" d="M35,12V38a2,2,0,0,1-2,2H10v1a2,2,0,0,0,2,2H36a2,2,0,0,0,2-2V12Z" opacity=".35"/><path fill="#E2887C" d="M43 13H5a1 1 0 0 1 0-2H43a1 1 0 0 1 0 2zM17 35a1 1 0 0 1-1-1V20a1 1 0 0 1 2 0V34A1 1 0 0 1 17 35zM31 35a1 1 0 0 1-1-1V20a1 1 0 0 1 2 0V34A1 1 0 0 1 31 35zM24 37a1 1 0 0 1-1-1V18a1 1 0 0 1 2 0V36A1 1 0 0 1 24 37z"/><path fill="#E2887C" d="M33,13H15a1,1,0,0,1-1-1V7a3,3,0,0,1,3-3H31a3,3,0,0,1,3,3v5A1,1,0,0,1,33,13ZM16,11H32V7a1,1,0,0,0-1-1H17a1,1,0,0,0-1,1Z"/></svg>
+                 </div>
+        </div>
 	</div>`);
 	}
 	initializeEventListeners();
@@ -332,23 +365,28 @@ const addQuestion = function(){
 						<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg xmlns="http://www.w3.org/2000/svg"  xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="js-saveQuestion" data-question="${newQuestionIndex}" x="0px" y="0px" width="48px" height="48px" viewBox="0 0 512 512" xml:space="preserve"><path fill="#57AB18" d="M461.6 109.6l-54.9-43.3c-1.7-1.4-3.8-2.4-6.2-2.4-2.4 0-4.6 1-6.3 2.5L194.5 323s-78.5-75.5-80.7-77.7c-2.2-2.2-5.1-5.9-9.5-5.9s-6.4 3.1-8.7 5.4c-1.7 1.8-29.7 31.2-43.5 45.8-.8.9-1.3 1.4-2 2.1-1.2 1.7-2 3.6-2 5.7 0 2.2.8 4 2 5.7l2.8 2.6s139.3 133.8 141.6 136.1c2.3 2.3 5.1 5.2 9.2 5.2 4 0 7.3-4.3 9.2-6.2l249.1-320c1.2-1.7 2-3.6 2-5.8 0-2.5-1-4.6-2.4-6.4z"/><metadata><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:Description about="https://iconscout.com/legal#licenses" dc:title="checkmark" dc:description="checkmark" dc:publisher="Iconscout" dc:date="2017-09-24" dc:format="image/svg+xml" dc:language="en"><dc:creator><rdf:Bag><rdf:li>Benjamin J Sperry</rdf:li></rdf:Bag></dc:creator></rdf:Description></rdf:RDF></metadata></svg>
 				</div>
 				<div class="o-layout__item u-align-middle-svg u-1-of-2">
-					<svg id="js-removeQuestion" data-question="${newQuestionIndex}"xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" width="48px" height="48px" viewBox="0 0 48 48"><path fill="#E2887C" d="M36,44H12a3,3,0,0,1-3-3V12a1,1,0,0,1,1-1H38a1,1,0,0,1,1,1V41A3,3,0,0,1,36,44ZM11,13V41a1,1,0,0,0,1,1H36a1,1,0,0,0,1-1V13Z"/><path fill="#E2887C" d="M35,12V38a2,2,0,0,1-2,2H10v1a2,2,0,0,0,2,2H36a2,2,0,0,0,2-2V12Z" opacity=".35"/><path fill="#E2887C" d="M43 13H5a1 1 0 0 1 0-2H43a1 1 0 0 1 0 2zM17 35a1 1 0 0 1-1-1V20a1 1 0 0 1 2 0V34A1 1 0 0 1 17 35zM31 35a1 1 0 0 1-1-1V20a1 1 0 0 1 2 0V34A1 1 0 0 1 31 35zM24 37a1 1 0 0 1-1-1V18a1 1 0 0 1 2 0V36A1 1 0 0 1 24 37z"/><path fill="#E2887C" d="M33,13H15a1,1,0,0,1-1-1V7a3,3,0,0,1,3-3H31a3,3,0,0,1,3,3v5A1,1,0,0,1,33,13ZM16,11H32V7a1,1,0,0,0-1-1H17a1,1,0,0,0-1,1Z"/></svg>
+					<svg class="js-removeQuestion" data-question="${newQuestionIndex}"xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" width="48px" height="48px" viewBox="0 0 48 48"><path fill="#E2887C" d="M36,44H12a3,3,0,0,1-3-3V12a1,1,0,0,1,1-1H38a1,1,0,0,1,1,1V41A3,3,0,0,1,36,44ZM11,13V41a1,1,0,0,0,1,1H36a1,1,0,0,0,1-1V13Z"/><path fill="#E2887C" d="M35,12V38a2,2,0,0,1-2,2H10v1a2,2,0,0,0,2,2H36a2,2,0,0,0,2-2V12Z" opacity=".35"/><path fill="#E2887C" d="M43 13H5a1 1 0 0 1 0-2H43a1 1 0 0 1 0 2zM17 35a1 1 0 0 1-1-1V20a1 1 0 0 1 2 0V34A1 1 0 0 1 17 35zM31 35a1 1 0 0 1-1-1V20a1 1 0 0 1 2 0V34A1 1 0 0 1 31 35zM24 37a1 1 0 0 1-1-1V18a1 1 0 0 1 2 0V36A1 1 0 0 1 24 37z"/><path fill="#E2887C" d="M33,13H15a1,1,0,0,1-1-1V7a3,3,0,0,1,3-3H31a3,3,0,0,1,3,3v5A1,1,0,0,1,33,13ZM16,11H32V7a1,1,0,0,0-1-1H17a1,1,0,0,0-1,1Z"/></svg>
 				</div>
 			</div>
 		</div>
 		<div class="o-layout__item u-1-of-3">
-			<input id="question-${newQuestionIndex}" data-NewQuestion="${newQuestionIndex}" class="c-input c-input--xs js-newQuestion-${newQuestionIndex}" type="text" name="question" id="question" value="....." />
+			<input id="question-${newQuestionIndex}" data-NewQuestion="${newQuestionIndex}" class="c-input c-input--xs js-newQuestion-${newQuestionIndex}" type="text" name="question" id="question" placeholder="....." />
 		</div>
 		<div class="o-layout__item o-layout--column u-align-middle-svg u-1-of-3 js-questionAnswersBox-${newQuestionIndex}">
-			<div class="o-layout u-mb-md">
+			<div class="o-layout u-mb-md js-answerDiv-${newQuestionIndex}">
 				<div class="o-layout__item u-align-middle-svg u-1-of-3 u-pt-clear">
 					<svg class="c-svg__check js-check js-check-${newQuestionIndex}" xmlns="http://www.w3.org/2000/svg" data-correct="0" data-question="${newQuestionIndex}" width="18.684" height="18.684" viewBox="0 0 18.684 18.684">
 					  <path id="Icon_22_" d="M80.608,64H66.076A2.082,2.082,0,0,0,64,66.076V80.608a2.082,2.082,0,0,0,2.076,2.076H80.608a2.082,2.082,0,0,0,2.076-2.076V66.076A2.082,2.082,0,0,0,80.608,64ZM71.266,78.532l-5.19-5.19,1.453-1.453,3.737,3.737,7.889-7.889,1.453,1.453Z" transform="translate(-64 -64)" fill="#192a9a"/>
 					</svg>
 				</div>
 				<div class="o-layout__item u-align-middle-svg u-2-of-3">
-					<input  data-question="${newQuestionIndex}" class="c-input c-input--xs c-input__answer answer-${newQuestionIndex}"data-correct="0" type="text" name="answer" id="answer" value="....." />
+					<input  data-question="${newQuestionIndex}" class="c-input c-input--xs c-input__answer answer-${newQuestionIndex}"data-correct="0" type="text" name="answer" id="answer" placeholder="....." />
 				</div>
+				<div class="o-layout__item u-align-middle-svg u-1-of-4 u-pt-clear ">
+                <div class="c-answer-svg">
+                    <svg class="c-answer-svg__garbage c-removeAnswer-${newQuestionIndex}" data-question="${newQuestionIndex}" data-index="${newQuestionIndex}" xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 48 48"><path fill="#E2887C" d="M36,44H12a3,3,0,0,1-3-3V12a1,1,0,0,1,1-1H38a1,1,0,0,1,1,1V41A3,3,0,0,1,36,44ZM11,13V41a1,1,0,0,0,1,1H36a1,1,0,0,0,1-1V13Z"/><path fill="#E2887C" d="M35,12V38a2,2,0,0,1-2,2H10v1a2,2,0,0,0,2,2H36a2,2,0,0,0,2-2V12Z" opacity=".35"/><path fill="#E2887C" d="M43 13H5a1 1 0 0 1 0-2H43a1 1 0 0 1 0 2zM17 35a1 1 0 0 1-1-1V20a1 1 0 0 1 2 0V34A1 1 0 0 1 17 35zM31 35a1 1 0 0 1-1-1V20a1 1 0 0 1 2 0V34A1 1 0 0 1 31 35zM24 37a1 1 0 0 1-1-1V18a1 1 0 0 1 2 0V36A1 1 0 0 1 24 37z"/><path fill="#E2887C" d="M33,13H15a1,1,0,0,1-1-1V7a3,3,0,0,1,3-3H31a3,3,0,0,1,3,3v5A1,1,0,0,1,33,13ZM16,11H32V7a1,1,0,0,0-1-1H17a1,1,0,0,0-1,1Z"/></svg>
+                </div>
+            </div>
 			</div>
 			
 			<svg xmlns="http://www.w3.org/2000/svg"  class="js-addNewAnswer addAnswer-${newQuestionIndex}" data-question="${newQuestionIndex}" width="19" height="19" viewBox="0 0 19 19">
@@ -383,6 +421,7 @@ const addQuestion = function(){
 		  </g>
 		</svg>
 	</div>
+	
 	`;
 	form.appendChild(newAddQuestions);
 
@@ -393,6 +432,7 @@ const addQuestion = function(){
 	initializeEventListeners();
 }
 const postQuestion = async function (questionJson) {
+	console.log(questionJson);
 	let serverEndPoint = `https://project2functions.azurewebsites.net/api/PostQuestion`;
 	const response = await fetch(serverEndPoint, { headers: customheaders ,method:"POST",mode:"cors",body:JSON.stringify(questionJson)});
 	const data = await response.json();

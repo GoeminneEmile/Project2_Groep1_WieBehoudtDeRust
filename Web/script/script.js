@@ -1345,6 +1345,7 @@ const Page = function() {
 	let pinInput = document.querySelector('.js-input-pin');
 	SubmitButton.addEventListener('click', Buttonchecked);
 	pinInput.addEventListener('keyup', autoEnterPin);
+	new Audio('./assets/ID.mp3').play();
 };
 
 // If you press the enter button, this will also get submitted, mainly for UX purposes

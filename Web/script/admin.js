@@ -19,7 +19,7 @@ let adminPage = `
 </div>`;
 //#endregion
 
-
+// Generating all the questions through HTML dynamically
 const generateAdminQuestionHtml = function(question) {
 	let html = '';
 	html += `<form id="form-${question.questionID}" class="u-border-bottom">
@@ -97,89 +97,84 @@ const generateAdminQuestionHtml = function(question) {
 	return html;
 };
 
-
-
+// Changing the correct answer
 const changeAnswerCorrect = function() {
 	this.classList.toggle('c-svg__active');
 	const Answers = document.querySelectorAll(`.answer-${this.dataset.question}`);
-	for(let Answer of Answers){
+	for (let Answer of Answers) {
 		console.log(Answer.dataset.index);
-		if(Answer.dataset.index == this.dataset.index){
+		if (Answer.dataset.index == this.dataset.index) {
 			console.log(Answer.dataset.correct);
-			if(Answer.dataset.correct == 0){
+			if (Answer.dataset.correct == 0) {
 				Answer.dataset.correct = 1;
 				this.dataset.correct = 1;
 				break;
-			}
-			else{
+			} else {
 				Answer.dataset.correct = 0;
 				this.dataset.correct = 0;
 				break;
 			}
 		}
 	}
-
 };
-const deleteAnswer = function(){
+
+// Removing an already added answer
+const deleteAnswer = function() {
 	const questionBox = document.querySelector(`.js-answerDiv-${this.dataset.question}`);
 	questionBox.remove();
-}
+};
+
 //let's all plus buttons add a new answer to a question
-const initializeEventListeners = function(){
+const initializeEventListeners = function() {
 	// gets all plus buttons using js-addNewAnswer class
-	const allAddNewAnwsers = document.querySelectorAll(".js-addNewAnswer");
-	for(let addNewAnswersvg of allAddNewAnwsers){
-		addNewAnswersvg.addEventListener('click',addNewAnswer);
+	const allAddNewAnwsers = document.querySelectorAll('.js-addNewAnswer');
+	for (let addNewAnswersvg of allAddNewAnwsers) {
+		addNewAnswersvg.addEventListener('click', addNewAnswer);
 	}
 	const saveQuestions = document.querySelectorAll('#js-saveQuestion');
 	const deleteAnswers = document.querySelectorAll('.c-answer-svg__garbage');
 	const checkBoxes = document.querySelectorAll('.js-check');
 	const newQuestion = document.querySelector('#js-addQuestion');
-	const deleteQuestions = document.querySelectorAll(".js-removeQuestion");
-	for(let deleteAnswer of deleteAnswers){
+	const deleteQuestions = document.querySelectorAll('.js-removeQuestion');
+	for (let deleteAnswer of deleteAnswers) {
 		try {
-			deleteAnswer.removeEventListener('click',deleteAnswer);
-		} catch (error) {
-			
-		}
+			deleteAnswer.removeEventListener('click', deleteAnswer);
+		} catch (error) {}
 	}
-	for(let deleteAnswerAdd of deleteAnswers){
-		deleteAnswerAdd.addEventListener('click',deleteAnswer);
+	for (let deleteAnswerAdd of deleteAnswers) {
+		deleteAnswerAdd.addEventListener('click', deleteAnswer);
 	}
-	for(let deleteQuestion of deleteQuestions){
+	for (let deleteQuestion of deleteQuestions) {
 		try {
-			deleteQuestion.removeEventListener('click',deleteQuestion);
-		} catch (error) {
-			
-		}
+			deleteQuestion.removeEventListener('click', deleteQuestion);
+		} catch (error) {}
 	}
 	console.log(deleteQuestions);
 
-	for(let deleteQuestionButton of deleteQuestions){
-		deleteQuestionButton.addEventListener('click',deleteQuestion);
+	for (let deleteQuestionButton of deleteQuestions) {
+		deleteQuestionButton.addEventListener('click', deleteQuestion);
 	}
 	for (let checkBox of checkBoxes) {
 		try {
 			checkBox.removeEventListener('click', changeAnswerCorrect);
-		} catch (error) {
-		}
+		} catch (error) {}
 	}
 	for (let saveQuestion of saveQuestions) {
 		try {
 			saveQuestion.removeEventListener('click', saveNewQuestion);
-		} catch (error) {
-		}
+		} catch (error) {}
 	}
 	for (let checkBox of checkBoxes) {
 		checkBox.addEventListener('click', changeAnswerCorrect);
 	}
-	
+
 	for (let saveQuestion of saveQuestions) {
 		saveQuestion.addEventListener('click', saveNewQuestion);
 	}
-	newQuestion.addEventListener("click",addQuestion);
-	
-}
+	newQuestion.addEventListener('click', addQuestion);
+};
+
+// Loading the page
 const loadAdminPage = function() {
 	newQuestion = 0;
 	ReplaceRow.innerHTML = adminPage;
@@ -206,74 +201,74 @@ const loadAdminPage = function() {
 	</div>`;
 		form.innerHTML = htmlQuestions;
 		initializeEventListeners();
-		
 	});
 };
-const saveNewQuestion = function(){
-		
+
+// Saving a new question with all the parameters to the database
+const saveNewQuestion = function() {
 	const Answers = document.querySelectorAll(`.answer-${this.dataset.question}`);
 	const Question = document.querySelector(`#question-${this.dataset.question}`).value;
-	
+
 	let answers = [];
 	let json = {};
-	for(let Answer of Answers){
-		if((this.dataset.question).length < 36){
-			answers.push({questionAnswer:"00000000-0000-0000-0000-000000000000",answer:Answer.value,correct:Answer.dataset.correct})
-		}
-		else{
-			answers.push({questionAnswer:this.dataset.question,answer:Answer.value,correct:Answer.dataset.correct})
+	for (let Answer of Answers) {
+		if (this.dataset.question.length < 36) {
+			answers.push({ questionAnswer: '00000000-0000-0000-0000-000000000000', answer: Answer.value, correct: Answer.dataset.correct });
+		} else {
+			answers.push({ questionAnswer: this.dataset.question, answer: Answer.value, correct: Answer.dataset.correct });
 		}
 	}
-	if((this.dataset.question).length < 36){
+	if (this.dataset.question.length < 36) {
 		json = {
-			questionID:"00000000-0000-0000-0000-000000000000",
+			questionID: '00000000-0000-0000-0000-000000000000',
 			questionName: Question,
-			UserId:userGuid,
-			questionAnswers:answers
-		}
-	}
-	else{
+			UserId: userGuid,
+			questionAnswers: answers
+		};
+	} else {
 		json = {
 			questionID: this.dataset.question,
 			questionName: Question,
-			UserId:userGuid,
-			questionAnswers:answers
-			}
-		}
-		postQuestion(json).then((x) => {
-			refreshQuestion(this.dataset.question,x.questionID);
-			this.dataset.question = x.questionID;
-		});
-}
-const deleteQuestion = function(){
-	console.log("yes");
-	if((this.dataset.question).length < 36){
+			UserId: userGuid,
+			questionAnswers: answers
+		};
+	}
+	postQuestion(json).then((x) => {
+		refreshQuestion(this.dataset.question, x.questionID);
+		this.dataset.question = x.questionID;
+	});
+};
+
+// Deleting a question
+const deleteQuestion = function() {
+	console.log('yes');
+	if (this.dataset.question.length < 36) {
 		const form = document.querySelector(`#form-${this.dataset.question}`);
 		form.remove();
-	}
-	else{
+	} else {
 		deleteQuestionRequest(this.dataset.question).then((x) => {
-			if(x != 400){
-				console.log("deleted");
+			if (x != 400) {
+				console.log('deleted');
 				const form = document.querySelector(`#form-${this.dataset.question}`);
 				form.remove();
-
-			}
-			else{
-				console.log("er is een probleem");
+			} else {
+				console.log('er is een probleem');
 			}
 		});
 	}
-	
-}
-const deleteQuestionRequest = async function(guid){
+};
+
+// WIP
+const deleteQuestionRequest = async function(guid) {
 	let serverEndPoint = `https://project2functions.azurewebsites.net/api/DeleteQuestion?guid=${guid}`;
-	const response = await fetch(serverEndPoint, { headers: customheaders ,method:"GET",mode:"cors"});
+	const response = await fetch(serverEndPoint, { headers: customheaders, method: 'GET', mode: 'cors' });
 	const data = await response.status;
 	//console.log(data);
 	return data;
-}
-const refreshQuestion = function(oldId,newId){
+};
+
+// WIP
+const refreshQuestion = function(oldId, newId) {
 	const trashCans = document.querySelectorAll(`.c-removeAnswer-${oldId}`);
 	const answerDiv = document.querySelector(`.js-answerDiv-${oldId}`);
 	const header = document.querySelector(`#questionHeader-${oldId}`);
@@ -284,34 +279,38 @@ const refreshQuestion = function(oldId,newId){
 	const question = document.querySelector(`#question-${oldId}`);
 	question.id = `question-${newId}`;
 	const checkBoxes = document.querySelectorAll(`.js-check-${oldId}`);
-	for(let trashCan of trashCans){
+	for (let trashCan of trashCans) {
 		trashCan.classList.remove(`c-removeAnswer-${oldId}`);
 		trashCan.classList.add(`c-removeAnswer-${newId}`);
 		trashCan.dataset.question = newId;
 	}
-	for(let checkBox of checkBoxes){
+	for (let checkBox of checkBoxes) {
 		checkBox.classList.remove(`js-check-${oldId}`);
 		checkBox.classList.add(`js-check-${newId}`);
 		checkBox.dataset.question = newId;
 	}
 	const answers = document.querySelectorAll(`.answer-${oldId}`);
-	for(let answer of answers){
-		console.log("ik ben de answer aan het veranderen");
+	for (let answer of answers) {
+		console.log('ik ben de answer aan het veranderen');
 		answer.classList.remove(`answer-${oldId}`);
 		answer.classList.add(`answer-${newId}`);
 	}
 	const form = document.querySelector(`#form-${oldId}`);
 	form.id = `form-${newId}`;
 	const deleteQuestions = document.querySelectorAll(`.js-removeQuestion`);
-	for(let deleteQuestion of deleteQuestions){
+	for (let deleteQuestion of deleteQuestions) {
 		deleteQuestion.dataset.question = newId;
 	}
-}
-const addNewAnswer = function(){
+};
+
+// Adding a custom answer to your question
+const addNewAnswer = function() {
 	const currentAnswers = document.querySelectorAll(`.answer-${this.dataset.question}`);
-	if(currentAnswers.length < 4){
-		const answersBox = document.querySelector(`.js-questionAnswersBox-${this.dataset.question}`)
-		answersBox.insertAdjacentHTML('afterbegin', `<div class="o-layout u-mb-md js-answerDiv-${this.dataset.question}">
+	if (currentAnswers.length < 4) {
+		const answersBox = document.querySelector(`.js-questionAnswersBox-${this.dataset.question}`);
+		answersBox.insertAdjacentHTML(
+			'afterbegin',
+			`<div class="o-layout u-mb-md js-answerDiv-${this.dataset.question}">
 		<div class="o-layout__item u-align-middle-svg u-1-of-3 u-pt-clear">
 			<svg class="c-svg__check js-check js-check-${this.dataset.question}" data-correct="0" data-question="${this.dataset.question}" data-index="1"  xmlns="http://www.w3.org/2000/svg" width="18.684" height="18.684" viewBox="0 0 18.684 18.684">
 			  <path id="Icon_22_" d="M80.608,64H66.076A2.082,2.082,0,0,0,64,66.076V80.608a2.082,2.082,0,0,0,2.076,2.076H80.608a2.082,2.082,0,0,0,2.076-2.076V66.076A2.082,2.082,0,0,0,80.608,64ZM71.266,78.532l-5.19-5.19,1.453-1.453,3.737,3.737,7.889-7.889,1.453,1.453Z" transform="translate(-64 -64)" fill="#192a9a"/>
@@ -326,28 +325,32 @@ const addNewAnswer = function(){
                 <svg class="c-answer-svg__garbage c-removeAnswer-${this.dataset.question}" data-question="${this.dataset.question}" data-index="1"xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 48 48"><path fill="#E2887C" d="M36,44H12a3,3,0,0,1-3-3V12a1,1,0,0,1,1-1H38a1,1,0,0,1,1,1V41A3,3,0,0,1,36,44ZM11,13V41a1,1,0,0,0,1,1H36a1,1,0,0,0,1-1V13Z"/><path fill="#E2887C" d="M35,12V38a2,2,0,0,1-2,2H10v1a2,2,0,0,0,2,2H36a2,2,0,0,0,2-2V12Z" opacity=".35"/><path fill="#E2887C" d="M43 13H5a1 1 0 0 1 0-2H43a1 1 0 0 1 0 2zM17 35a1 1 0 0 1-1-1V20a1 1 0 0 1 2 0V34A1 1 0 0 1 17 35zM31 35a1 1 0 0 1-1-1V20a1 1 0 0 1 2 0V34A1 1 0 0 1 31 35zM24 37a1 1 0 0 1-1-1V18a1 1 0 0 1 2 0V36A1 1 0 0 1 24 37z"/><path fill="#E2887C" d="M33,13H15a1,1,0,0,1-1-1V7a3,3,0,0,1,3-3H31a3,3,0,0,1,3,3v5A1,1,0,0,1,33,13ZM16,11H32V7a1,1,0,0,0-1-1H17a1,1,0,0,0-1,1Z"/></svg>
                  </div>
         </div>
-	</div>`);
+	</div>`
+		);
 	}
 	initializeEventListeners();
 	reassignAnswerIndex(this.dataset.question);
-}
-const reassignAnswerIndex = function(id){
+};
+
+// WIP
+const reassignAnswerIndex = function(id) {
 	const inputs = document.querySelectorAll(`.answer-${id}`);
 	const answers = document.querySelectorAll(`.js-check-${id}`);
 	index = 0;
-	for(let answer of answers){
+	for (let answer of answers) {
 		answer.dataset.index = index;
 		index++;
 	}
 	index = 0;
-	for(let input of inputs){
+	for (let input of inputs) {
 		input.dataset.index = index;
 		index++;
 	}
-}
-const addQuestion = function(){
-	const form = document.querySelector('.js-questionsForm');
+};
 
+// Loading in all the questions into the HTML
+const addQuestion = function() {
+	const form = document.querySelector('.js-questionsForm');
 	const addQuestionNode = document.querySelector('.js-addQuestionDiv');
 	addQuestionNode.remove();
 	const newForm = document.createElement('FORM');
@@ -407,11 +410,11 @@ const addQuestion = function(){
 			</svg>
 		</div>
 	</div></form>`;
-	newForm.className = "u-border-bottom";
+	newForm.className = 'u-border-bottom';
 	newForm.id = `form-${newQuestionIndex}`;
 	form.appendChild(newForm);
-	const newAddQuestions = document.createElement("div");
-	newAddQuestions.className = "o-layout u-pb-lg js-addQuestionDiv";
+	const newAddQuestions = document.createElement('div');
+	newAddQuestions.className = 'o-layout u-pb-lg js-addQuestionDiv';
 	newAddQuestions.innerHTML = `
 	<div class="o-layout__item u-align-middle-svg u-pt-md">
 		<svg xmlns="http://www.w3.org/2000/svg" width="19" id="js-addQuestion" height="19" viewBox="0 0 19 19">
@@ -429,21 +432,18 @@ const addQuestion = function(){
 	
 	`;
 	form.appendChild(newAddQuestions);
-
-	
-	const newQuestion = document.querySelector('#js-addQuestion')
-	newQuestion.addEventListener("click",addQuestion);
+	const newQuestion = document.querySelector('#js-addQuestion');
+	newQuestion.addEventListener('click', addQuestion);
 	newQuestionIndex++;
 	initializeEventListeners();
-}
-const postQuestion = async function (questionJson) {
+};
+
+// Post Question function, adding a question to the database
+const postQuestion = async function(questionJson) {
 	console.log(questionJson);
 	let serverEndPoint = `https://project2functions.azurewebsites.net/api/PostQuestion`;
-	const response = await fetch(serverEndPoint, { headers: customheaders ,method:"POST",mode:"cors",body:JSON.stringify(questionJson)});
+	const response = await fetch(serverEndPoint, { headers: customheaders, method: 'POST', mode: 'cors', body: JSON.stringify(questionJson) });
 	const data = await response.json();
 	//console.log(data);
 	return data;
 };
-
-
-

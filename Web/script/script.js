@@ -1084,11 +1084,11 @@ function onMessageArrived(message) {
 				QuestionRow.innerHTML = Sporting;
 				let PointsGainedList = document.querySelectorAll('.c-points-gained');
 
+				Rankings.sort((a, b) => a.Player - b.Player);
+				AnswersGotten.sort((a, b) => a.player - b.player);
 				for (let i = 0; i < players.length; i++) {
 					Rankings[i].PointsGained = '0';
 					console.log('speler' + AnswersGotten[i].player + ' heeft gedrukt op knop ' + AnswersGotten[i].button);
-					Rankings.sort((a, b) => a.player - b.player);
-					AnswersGotten.sort((a, b) => a.player - b.player);
 
 					// If someone presses the CORRECT button, we will calculate how long it took them, and give them a score based on that
 					if (AnswersGotten[i].button == juisteButton) {
@@ -1096,6 +1096,7 @@ function onMessageArrived(message) {
 						console.log('____________________');
 						console.log(AnswersGotten);
 						console.log(players);
+						console.log(Rankings);
 						console.log('____________________');
 						let tijd_nodig = AnswersGotten[i].time_needed / 1000;
 						let tijd_over = players[i].time_left / 1000;
@@ -1131,6 +1132,10 @@ function onMessageArrived(message) {
 				let PlayerNames = document.querySelectorAll('.js-PlayerName');
 				let medal = document.querySelectorAll('.js-medal');
 				Rankings.sort((a, b) => b.Points - a.Points);
+				console.log('_______________');
+				console.log(Rankings);
+				console.log('_______________');
+
 				for (let i = 0; i < players.length; i++) {
 					NewAvatars[i].innerHTML = Rankings[i].Avatar;
 					TotalScores[i].innerHTML = Rankings[i].Points;
@@ -1344,7 +1349,7 @@ const Page = function() {
 	let pinInput = document.querySelector('.js-input-pin');
 	SubmitButton.addEventListener('click', Buttonchecked);
 	pinInput.addEventListener('keyup', autoEnterPin);
-	new Audio('./assets/ID.mp3').play();
+	//new Audio('./assets/ID.mp3').play();
 };
 
 // If you press the enter button, this will also get submitted, mainly for UX purposes

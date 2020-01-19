@@ -1199,7 +1199,6 @@ function onMessageArrived(message) {
 				// This if-structure checks if the heartbeat of the last player is received, if so, the player with the highest difference between current heartbeat and rest heartbeat will receive the most seconds
 				if (playersBpmCount == players.length) {
 					playersBpmCount = 0;
-					// LUKA deze if wordt uitgevoerd bij het krijgen van de laatste hartslag, hier moet de berekening doen van wie het meest heeft gesport en wie dus het meeste tijd krijgt
 					let timeToGive = [ 20000, 15000, 10000, 5000 ];
 					let lijst = [];
 					for (let i = 1; i < players.length + 1; i++) {
@@ -1308,7 +1307,7 @@ const loginRequest = async function() {
 	return data;
 };
 
-//The actual LOGIN function
+// The actual LOGIN function
 // If we get a 400 response, this means the user has NOT logged in succesfully
 const login = function() {
 	loginRequest().then((x) => {
@@ -1378,7 +1377,6 @@ const loadLoginPage = function() {
 
 // Init function for loading DOM and loading first page
 const init = function() {
-	// Init function
 	ReplaceRow = document.querySelector('.js-row');
 	QuestionRow = document.querySelector('.c-app');
 	loadLoginPage();

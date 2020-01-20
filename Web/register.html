@@ -59,15 +59,20 @@
                                                     <input id="username" class="c-input c-input--sm js-username-input u-mb-xl" type="text"
                                                         name="username" placeholder="JohnDoe" />
                                                 </div>
-                                                <div class="c-field">
-                                                    <label class="c-label c-label--sm" for="email">Paswoord</label>
-                                                    <input id="password" class="c-input c-input--sm" type="password"
-                                                        name="email" />
+                                                <div class="c-field js-password-field">
+                                                    <label class="c-label c-label--sm" for="password">Paswoord
+                                                    </label>
+                                                    <input id="password" class="c-input c-input--sm js-password-input" type="password"
+                                                        name="password" />
                                                 </div>
-                                                <div class="c-field">
-                                                    <label class="c-label c-label--sm" for="confirm_password">Bevestig
-                                                        paswoord</label>
-                                                    <input id="confirm_password" class="c-input c-input--sm"
+                                                <div class="c-field js-confirm-password-field">
+                                                    <label class="c-label c-label--sm js-confirm-password-label" for="confirm_password">Bevestig
+                                                        paswoord
+                                                        <span class="c-label__error-message js-password-error-message">
+                                                            Wachtwoord is niet het zelvde.
+                                                        </span>
+                                                    </label>
+                                                    <input id="confirm_password" class="c-input c-input--sm js-confirm-password-input"
                                                         type="password" name="password" />
                                                 </div>
                                             </div>

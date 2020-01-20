@@ -25,11 +25,9 @@ const generateAdminQuestionHtml = function(question) {
 	html += `<form id="form-${question.questionID}" class="u-border-bottom">
 	<div class="o-layout">
 	<div class="o-layout__item u-align-middle-svg u-1-of-3 u-pb-clear">
-	<h4 id="questionHeader-${question.questionID}">Question ID : ${question.questionID}</h4>
+	<h4 style="visibility:hidden" id="questionHeader-${question.questionID}">Question ID : ${question.questionID}</h4>
 </div>
-		<div class="o-layout__item u-align-middle-svg u-1-of-3 u-pb-clear">
-			<h4 id="questionHeader-${question.questionID}">Question ID : 000000</h4>
-		</div>
+		
 		<div class="o-layout__item u-align-middle-svg u-1-of-3 u-pb-clear">
 			<h4>Vraag</h4>
 		</div>
@@ -357,7 +355,7 @@ const addQuestion = function() {
 	newForm.innerHTML = `<form class="u-border-bottom">
 	<div class="o-layout">
 		<div class="o-layout__item u-align-middle-svg u-1-of-3 u-pb-clear">
-			<h4 id="questionHeader-${newQuestionIndex}">Question ID : ${newQuestionIndex}</h4>
+			<h4 style="visibility:hidden" id="questionHeader-${newQuestionIndex}">Question ID : ${newQuestionIndex}</h4>
 		</div>
 		<div class="o-layout__item u-align-middle-svg u-1-of-3 u-pb-clear">
 			<h4>Vraag</h4>

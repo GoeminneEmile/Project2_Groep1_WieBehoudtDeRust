@@ -715,6 +715,7 @@ text {
 
 .c-activity {
 	width: 384px;
+	//height: 200px;
 	margin: 0 auto;
 	position: relative;
 }

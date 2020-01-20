@@ -754,6 +754,13 @@ text {
 	top: 15px;
 }
 
+.c-input-admin-answer-svg{
+	height: 32px;
+	display: flex;
+	justify-content: center;
+	text-align: center;
+}
+
 @media (min-width: 2100px) {
 	.c-answer-svg {
 		height: 156px;

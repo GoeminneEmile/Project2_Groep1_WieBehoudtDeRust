@@ -1,6 +1,11 @@
 //#region adminPage
 let newQuestionIndex = 0;
 let adminPage = `            
+<div class="o-layout">
+                            <div class="o-layout__item u-mb-lg">
+                                <button class="c-button c-button--xl u-tr-clear js-return"> Back </button>
+                            </div>
+                        </div>
 <div class="o-container c-admin c-background--white js-questionsForm">
 <div class="o-layout u-pb-lg">
 	<div class="o-layout__item u-align-middle-svg u-pt-md">
@@ -199,6 +204,8 @@ const loadAdminPage = function() {
 	</div>`;
 		form.innerHTML = htmlQuestions;
 		initializeEventListeners();
+		const backButton = document.querySelector(".js-return");
+		backButton.addEventListener('click',loadLoggedInPage);
 	});
 };
 

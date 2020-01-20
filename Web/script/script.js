@@ -1330,6 +1330,15 @@ const loginRequest = async function() {
 
 // The actual LOGIN function
 // If we get a 400 response, this means the user has NOT logged in succesfully
+const loadLoggedInPage = function(){
+	ReplaceRow.innerHTML = startPage;
+	const game = document.querySelector('.js-game');
+	const question = document.querySelector('.js-question');
+	game.addEventListener('click', Page);
+	question.addEventListener('click', function() {
+		loadAdminPage();
+	});
+}
 const login = function() {
 	loginRequest().then((x) => {
 		if (x == 400) {
@@ -1347,13 +1356,7 @@ const login = function() {
 				QuestionList = x;
 			});
 			userGuid = x.userGuid;
-			ReplaceRow.innerHTML = startPage;
-			const game = document.querySelector('.js-game');
-			const question = document.querySelector('.js-question');
-			game.addEventListener('click', Page);
-			question.addEventListener('click', function() {
-				loadAdminPage();
-			});
+			loadLoggedInPage();
 		}
 	});
 };

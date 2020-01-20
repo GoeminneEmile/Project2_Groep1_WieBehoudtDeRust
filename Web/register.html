@@ -17,6 +17,7 @@
         <meta name="theme-color" content="#e85e00">
         <script src="script/paho.js"></script>
         <script src="script/script.js"></script>
+        <script src="script/validation.js"></script>
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="https://use.typekit.net/wva8hpx.css">
         <link rel="stylesheet" href="css/screen.css">
@@ -49,10 +50,13 @@
                                     <div class="o-layout__item u-width-full">
                                         <form class="c-form-field js-animate">
                                             <div class="c-input__middle u-width-full u-1-of-2-bp2">
-                                                <div class="c-field">
-                                                    <label class="c-label c-label--sm"
-                                                        for="username">Gebruikersnaam</label>
-                                                    <input id="username" class="c-input c-input--sm" type="text"
+                                                <div class="c-field js-username-field">
+                                                    <label class="c-label c-label--sm  js-username-label" for="username">Gebruikersnaam
+                                                        <span class="c-label__error-message js-username-error-message">
+                                                            Dit veld moet ingevuld zijn.
+                                                        </span>
+                                                    </label>
+                                                    <input id="username" class="c-input c-input--sm js-username-input u-mb-xl" type="text"
                                                         name="username" placeholder="JohnDoe" />
                                                 </div>
                                                 <div class="c-field">
@@ -69,7 +73,7 @@
                                             </div>
                                         </form>
                                         <div class=" u-align-text-center">
-                                            <button class="c-button c-button--xl"> Resgistreer </button>
+                                            <button class="o-button-reset c-button c-button--xl js-sign-in-button"> Resgistreer </button>
                                         </div>
                                     </div>
                                 </div>

@@ -1349,7 +1349,7 @@ const Page = function() {
 	let pinInput = document.querySelector('.js-input-pin');
 	SubmitButton.addEventListener('click', Buttonchecked);
 	pinInput.addEventListener('keyup', autoEnterPin);
-	myAudio = new Audio('./assets/rust.mp3');
+	myAudio = new Audio('./assets/ID.mp3');
 	myAudio.loop = true;
 	myAudio.play();
 };

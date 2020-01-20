@@ -288,7 +288,7 @@ a {
 }
 
 a:visited {
-	/*color: var(--link-visited-color, var(--global-color-alpha));*/
+	color: var(--link-visited-color, var(--global-color-gamma));*/
 }
 
 a:hover {
@@ -742,14 +742,24 @@ text {
 	font-weight: 500;
 }
 .c-answer-svg {
-	height: 74px;
+	height: 56px;
 	display: flex;
 	justify-content: center;
 	text-align: center;
+	position: relative;
 }
 
 .c-answer-svg__symbol {
 	height: 100%;
+	position: absolute;
+	top: 15px;
+}
+
+.c-input-admin-answer-svg{
+	height: 32px;
+	display: flex;
+	justify-content: center;
+	text-align: center;
 }
 
 @media (min-width: 2100px) {
@@ -772,6 +782,122 @@ text {
 
 .c-custom-header {
 	text-align: center;
+}
+
+.heart-slow {
+	opacity: 0.5;
+	-webkit-animation: heart-slow 2s ease-out infinite;
+	animation: heart-slow 2s ease-out infinite;
+}
+
+@-webkit-keyframes heart-slow {
+	0% {
+		opacity: 0.5;
+	}
+	50% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0.5;
+	}
+}
+@keyframes heart-slow {
+	0% {
+		opacity: 0.5;
+	}
+	50% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0.5;
+	}
+}
+
+.heart-medium {
+	opacity: 0.5;
+	-webkit-animation: heart-medium 1.5s ease-out infinite;
+	animation: heart-medium 1.5s ease-out infinite;
+}
+
+@-webkit-keyframes heart-medium {
+	0% {
+		opacity: 0.5;
+	}
+	50% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0.5;
+	}
+}
+@keyframes heart-medium {
+	0% {
+		opacity: 0.5;
+	}
+	50% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0.5;
+	}
+}
+
+.heart-fast {
+	opacity: 0.5;
+	-webkit-animation: heart-fast 1s ease-out infinite;
+	animation: heart-fast 1s ease-out infinite;
+}
+
+@-webkit-keyframes heart-fast {
+	0% {
+		opacity: 0.5;
+	}
+	50% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0.5;
+	}
+}
+@keyframes heart-fast {
+	0% {
+		opacity: 0.5;
+	}
+	50% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0.5;
+	}
+}
+
+.heart-x-fast {
+	opacity: 0.5;
+	-webkit-animation: heart-x-fast 0.5s ease-out infinite;
+	animation: heart-x-fast 0.5s ease-out infinite;
+}
+
+@-webkit-keyframes heart-x-fast {
+	0% {
+		opacity: 0.5;
+	}
+	50% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0.5;
+	}
+}
+@keyframes heart-x-fast {
+	0% {
+		opacity: 0.5;
+	}
+	50% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0.5;
+	}
 }
 
 .rotate-center {
@@ -1091,12 +1217,6 @@ text {
 
 .c-svg-medal__symbol {
 	height: 100%;
-}
-.c-answer-svg {
-	height: 32px;
-	display: flex;
-	justify-content: center;
-	text-align: center;
 }
 
 .c-answer-svg__garbage {

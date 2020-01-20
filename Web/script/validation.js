@@ -3,6 +3,7 @@
 let userlogin = {},
 	user = {},
 	password = {},
+	confirmPass = {},
 	signInButton;
 /* -------------------------------------------------------------------------- */
 
@@ -16,8 +17,9 @@ const isEmpty = function(fieldValue) {
 
 /* -------------------------------------------------------------------------- */
 const doubleCheckuserloginAddress = function() {
-	if (isEmpty(userlogin.input.value)) {
+	if (isEmpty(userlogin.input.value) == false) {
 		// Stop met dit veld in de gaten te houden; het is in orde.
+		userlogin.errorMessage.innerText = ' ';
 		userlogin.input.removeEventListener('input', doubleCheckuserloginAddress);
 		removeErrors(userlogin);
 	} else {
@@ -27,6 +29,24 @@ const doubleCheckuserloginAddress = function() {
 		}
 	}
 };
+
+const doubleCheckPasswd = function() {
+	if (isEmpty(confirmPass.input.value)) {
+		// Stop met dit veld in de gaten te houden; het is in orde.
+		confirmPass.input.removeEventListener('input', doubleCheckPasswd);
+		removeErrors(confirmPass);
+	}else if (password.input.value == confirmPass.input.value){
+		// Stop met dit veld in de gaten te houden; het is in orde.
+		confirmPass.input.removeEventListener('input', doubleCheckPasswd);
+		removeErrors(confirmPass);
+	} else {
+		// Stuk herhalende code.
+		if (isEmpty(confirmPass.input.value)) {
+			confirmPass.errorMessage.innerText = 'This field is required';
+		}
+	}
+};
+
 
 const addErrors = function(formField) {
 	formField.field.classList.add('has-error');
@@ -45,6 +65,11 @@ const getDOMElements = function() {
 	userlogin.errorMessage = userlogin.label.querySelector('.js-username-error-message');
 	userlogin.input = document.querySelector('.js-username-input');
 	userlogin.field = document.querySelector('.js-username-field');
+	password.input = document.querySelector('.js-password-input');
+	confirmPass.label = document.querySelector('.js-confirm-password-label');
+	confirmPass.errorMessage = confirmPass.label.querySelector('.js-password-error-message');
+	confirmPass.input = document.querySelector('.js-confirm-password-input');
+	confirmPass.field = document.querySelector('.js-confirm-password-field');
 
 	// Optional
 	// remember.label = document.querySelector('.js-remember-label');
@@ -69,14 +94,25 @@ const getDOMElements = function() {
 const enableListeners = function() {
 	userlogin.input.addEventListener('input', function() {
 		if (isEmpty(userlogin.input.value)) {
-			user.errorMessage.innerText = 'This field is required';
-			console.log(user.errorMessage.innerText)
+			userlogin.errorMessage.innerText = 'This field is required';
+			console.log(userlogin.errorMessage.innerText)
 		}
 
 		addErrors(userlogin);
 
 		// Gebruik een named function (doubleCheckPassword), om die er weer af te kunnen halen. Dit vermijd ook het dubbel toevoegen ervan.
 		userlogin.input.addEventListener('input', doubleCheckuserloginAddress);
+	});
+	confirmPass.input.addEventListener('input', function() {
+		if (password.input.value != confirmPass.input.value){
+			confirmPass.errorMessage.innerText = 'Wachtwoord is niet het zelvde.';
+			console.log(confirmPass.errorMessage.innerText);
+		}
+
+		addErrors(confirmPass);
+
+		// Gebruik een named function (doubleCheckPassword), om die er weer af te kunnen halen. Dit vermijd ook het dubbel toevoegen ervan.
+		confirmPass.input.addEventListener('input', doubleCheckPasswd);
 	});
 
 	signInButton.addEventListener('click', function(e) {
@@ -89,6 +125,14 @@ const enableListeners = function() {
 		} else {
 			addErrors(userlogin);
 			userlogin.input.addEventListener('oninput', doubleCheckuserloginAddress);
+		}
+
+		if (
+			isEmpty(confirmPass.input.value) == false) {
+			console.log('Form is good to go!');
+		} else {
+			addErrors(confirmPass);
+			confirmPass.input.addEventListener('oninput', doubleCheckPasswd);
 		}
 	});
 };

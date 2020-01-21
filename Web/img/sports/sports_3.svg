@@ -1,0 +1,18 @@
+<svg class="c-activity__symbol" xmlns="http://www.w3.org/2000/svg" width="291.855" height="360" viewBox="0 0 291.855 596.952">
+  <g id="Jumpingjack" transform="translate(7.67 7.482)">
+    <path id="Path_83" data-name="Path 83" d="M164,315.93c14.72,6.87,62.14,32.63,97.42,93a17.361,17.361,0,0,0,3.94,4.47c9.15,6.63,20.39,4.45,25-.9.27-.31.63-.56.87-.89,7.34-10.07,7.22-22.28-.46-32.75-26.47-43-52.94-66.16-80.56-81.68a10.94,10.94,0,0,1-5.61-9.4c-.55-52.3-1.08-83.12-1.27-93.44a10.72,10.72,0,0,1,2.32-6.88c17.41-21.91,46.21-69.25,3.59-138.34-.23-.37-.48-.73-.74-1.07C192.21,27.06,190,19.82,181,22.23a11,11,0,0,0-7.92,8.3c-2.82,13,2.08,15.7,7.38,24.11.33.52,1.24,1.45,2.1,2.62,14.79,20.2,33.14,61.93,6.86,113.24a10.91,10.91,0,0,1-9.49,5.94c-16.24.32-27.26.73-34.54,1.1a14.88,14.88,0,0,1-13.24-6.8c-22.2-34.19-27.5-65.76,14-127.69A10.86,10.86,0,0,0,148,35.87c-.06-.57-.13-1.12-.22-1.65a10.79,10.79,0,0,0-18.1-6C106.21,50.68,59.53,128,114.18,191a10.85,10.85,0,0,1,2.67,7.19c-.26,55.25,0,79,.13,88.57a10.71,10.71,0,0,1-4.77,9.14C80.38,317.13-3.27,392.62,26.1,410.64,43,422,56.45,411.35,61.39,405c22.37-38,57.14-72.69,93.63-89.13A10.82,10.82,0,0,1,164,315.93Z" transform="translate(-19.95 -21.79)" fill="none" stroke="#295bd4" stroke-width="15"/>
+    <path id="Path_84" data-name="Path 84" d="M35.29,0A35.29,35.29,0,1,1,0,35.29,35.29,35.29,0,0,1,35.29,0Z" transform="translate(103.05 75.5)" fill="none" stroke="#295bd4" stroke-width="15"/>
+    <rect id="Rectangle_23" data-name="Rectangle 23" width="15.67" height="172.39" transform="translate(119.25 354.39)" fill="#295bd4"/>
+    <rect id="Rectangle_24" data-name="Rectangle 24" width="15.67" height="31.34" transform="translate(119.25 542.46)" fill="#295bd4"/>
+    <rect id="Rectangle_25" data-name="Rectangle 25" width="15.67" height="117.54" transform="translate(150.59 393.57)" fill="#295bd4"/>
+    <rect id="Rectangle_26" data-name="Rectangle 26" width="15.67" height="31.34" transform="translate(150.59 526.78)" fill="#295bd4"/>
+    <rect id="Rectangle_27" data-name="Rectangle 27" width="15.67" height="101.87" transform="translate(181.94 401.41)" fill="#295bd4"/>
+    <rect id="Rectangle_28" data-name="Rectangle 28" width="15.67" height="23.51" transform="translate(181.94 518.95)" fill="#295bd4"/>
+    <rect id="Rectangle_29" data-name="Rectangle 29" width="15.67" height="133.21" transform="translate(87.9 409.24)" fill="#295bd4"/>
+    <rect id="Rectangle_30" data-name="Rectangle 30" width="15.67" height="31.34" transform="translate(87.9 558.13)" fill="#295bd4"/>
+    <rect id="Rectangle_31" data-name="Rectangle 31" width="15.67" height="164.56" transform="translate(103.58 409.24)" fill="#ffa517"/>
+    <rect id="Rectangle_32" data-name="Rectangle 32" width="15.67" height="203.74" transform="translate(134.92 354.39)" fill="#ffa517"/>
+    <rect id="Rectangle_33" data-name="Rectangle 33" width="15.67" height="148.89" transform="translate(166.27 393.57)" fill="#ffa517"/>
+    <rect id="Rectangle_34" data-name="Rectangle 34" width="15.67" height="125.38" transform="translate(197.61 401.41)" fill="#ffa517"/>
+  </g>
+</svg>

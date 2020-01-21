@@ -42,7 +42,7 @@ namespace project2Functions
                     {
                         // Setting up and executing a SQL command
                         command.Connection = connection;
-                        command.CommandText = "Select * From ProjectAnswers as a left join ProjectQuestions as b on a.QuestionAnswer = b.QuestionID left join Users as c on b.UserID = c.UserGuid where c.UserName = @username;";
+                        command.CommandText = "Select * From ProjectAnswers as a left join ProjectQuestions as b on a.QuestionAnswer = b.QuestionID left join Users as c on b.UserID = c.UserGuid where c.UserName = @username order by rand();";
                         command.Parameters.AddWithValue("@username", name);
                         var result = await command.ExecuteReaderAsync();
                         // Creating empty variable to change later
@@ -67,6 +67,13 @@ namespace project2Functions
                                 questions[questions.Count - 1].questionAnswers.Add(questionAnswer);
                             }
                         }
+                    }
+                }
+                foreach(Question vragen in questions)
+                {
+                    if(questions.Count > 10)
+                    {
+                        questions.RemoveAt(0);
                     }
                 }
                 // logging event

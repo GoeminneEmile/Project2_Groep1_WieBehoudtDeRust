@@ -50,7 +50,7 @@ let PointsGained = [];
 let SportsDescriptions = [ 'Stilstaand lopen', 'Push ups', 'Jumping Jacks' ];
 let playerRestBPM = [ player1_rest_bpm, player2_rest_bpm, player3_rest_bpm, player4_rest_bpm ];
 let playerBPM = [ player1_bpm, player2_bpm, player3_bpm, player4_bpm ];
-let Rankings = [ { Points: 0, PointsGained: 0, Player: '1', Avatar: '', Seconds: '20', SecondsGained: '0' }, { Points: 0, PointsGained: 0, Player: '2', Avatar: '', Seconds: '20', SecondsGained: '0' }, { Points: 0, PointsGained: 0, Player: '3', Avatar: '', Seconds: '20', SecondsGained: '0' }, { Points: 0, PointsGained: 0, Player: '4', Avatar: '', Seconds: '20', SecondsGained: '0' } ];
+let Rankings = [ { Points: 0, PointsGained: 0, Player: '1', Avatar: '', Seconds: '20000', SecondsGained: '0' }, { Points: 0, PointsGained: 0, Player: '2', Avatar: '', Seconds: '20000', SecondsGained: '0' }, { Points: 0, PointsGained: 0, Player: '3', Avatar: '', Seconds: '20000', SecondsGained: '0' }, { Points: 0, PointsGained: 0, Player: '4', Avatar: '', Seconds: '20000', SecondsGained: '0' } ];
 let sports = [ './img/sports_1.svg', './img/sports_2.svg', './img/sports_3.svg' ];
 // global customheaders for GET request
 let customheaders = new Headers();
@@ -516,7 +516,7 @@ const sendPulsarDevices = function() {
 	message = new Paho.Message(JSON.stringify(jsonPulsar));
 	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 	client.send(message);
-	
+
 	ReplaceRow.innerHTML = Avatars;
 	message = new Paho.Message(JSON.stringify({ type: 'avatar', status: 'start' }));
 	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
@@ -836,7 +836,7 @@ const GenerateSecondsPage = function() {
 	let PlayerNames = document.querySelectorAll('.js-PlayerName');
 	let medal = document.querySelectorAll('.js-medal');
 
-	Rankings.sort((a, b) => b.Seconds - a.Seconds);
+	Rankings.sort((a, b) => b.SecondsGained - a.SecondsGained);
 	for (let i = 0; i < players.length; i++) {
 		NewAvatars[i].innerHTML = Rankings[i].Avatar;
 		TotalScores[i].innerHTML = Rankings[i].Seconds / 1000;
@@ -979,10 +979,9 @@ function onMessageArrived(message) {
 				clearInterval(intervalErrorMessage);
 			}
 
-			
 			break;
 		case 'scan':
-			if(gameStep == 1){
+			if (gameStep == 1) {
 				gameStep = -1;
 				// When we receive a list of devices in the area, add them to a list
 				if (jsonMessage.status == 'devices') {
@@ -996,10 +995,10 @@ function onMessageArrived(message) {
 				}
 			}
 			break;
-			
+
 		case 'avatar':
 			console.log(gameStep);
-			if(gameStep == 2){
+			if (gameStep == 2) {
 				// Selecting the button and making it hidden
 				AvatarButton = document.querySelector('.c-button');
 				AvatarButton.addEventListener('click', GenerateQuestionPage);
@@ -1019,7 +1018,6 @@ function onMessageArrived(message) {
 
 					// If all 4 avatars have been chosen
 					if (players.length == playerCount) {
-						
 						QuestionAvatarsList = document.querySelectorAll('.c-avatar');
 						ScoreList = document.querySelectorAll('.c-avatar--orange');
 						GenerateQuestionPage();
@@ -1053,27 +1051,30 @@ function onMessageArrived(message) {
 				}
 				break;
 			}
-			
+
 		case 'questions':
+			console.log(jsonMessage);
+			console.log(jsonMessage.type);
 			//This code saves the received button and time needed into a object en adds the object to an array
-			if(gameStep == 3){
+			if (gameStep == 3 && jsonMessage.type === 'questions') {
+				console.log('ik zit toch goed');
 				answer = {};
 				answer.player = jsonMessage.player;
 				answer.button = jsonMessage.button;
-	
+
 				answer.time_needed = jsonMessage.time_needed;
-				if(!playersAnswers.includes(jsonMessage.player)){
+				if (!playersAnswers.includes(jsonMessage.player)) {
 					playersAnswers.push(jsonMessage.player);
 					AnswersGotten.push(answer);
 					playerAnswer(answer);
 				}
-				
+
 				console.log('___________________________');
 				console.log('er zijn ' + AnswersGotten.length + ' antwoorden ingedient');
 				console.log('er zijn ' + players.length + ' spelers in het spel');
 				console.log('antwoorden ontvangen : ' + AnswersGotten.length);
 				console.log('___________________________');
-	
+
 				//If the length of playerAnswers equals the length of players, we know that we received all answers
 				if (AnswersGotten.length == players.length) {
 					gameStep++;
@@ -1084,17 +1085,17 @@ function onMessageArrived(message) {
 					HeaderRow.innerHTML += footer;
 					FillInAvatarHtml(true);
 					//AnswersGotten.push(answer);
-	
+
 					console.log('Alle antwoorden zijn ingegeven');
 					QuestionRow.innerHTML = Sporting;
 					let PointsGainedList = document.querySelectorAll('.c-points-gained');
-	
+
 					Rankings.sort((a, b) => a.Player - b.Player);
 					AnswersGotten.sort((a, b) => a.player - b.player);
 					for (let i = 0; i < players.length; i++) {
 						Rankings[i].PointsGained = '0';
 						console.log('speler' + AnswersGotten[i].player + ' heeft gedrukt op knop ' + AnswersGotten[i].button);
-	
+
 						// If someone presses the CORRECT button, we will calculate how long it took them, and give them a score based on that
 						if (AnswersGotten[i].button == juisteButton) {
 							console.log('het juiste antwoord is ingegeven');
@@ -1103,19 +1104,22 @@ function onMessageArrived(message) {
 							console.log(players);
 							console.log(Rankings);
 							console.log('____________________');
-							let tijd_nodig = AnswersGotten[i].time_needed / 1000;
-							let tijd_over = players[i].time_left / 1000;
+							let tijd_nodig = Math.floor(AnswersGotten[i].time_needed / 1000);
+							//let tijd_over = players[i].time_left / 1000;
+							let tijd_over = Rankings[i].Seconds / 1000;
+							console.log(tijd_nodig);
+							console.log(tijd_over);
 							let Berekening = tijd_nodig / tijd_over;
-							let Berekening2 = Berekening / 2;
-							let Berekening3 = 1 - Berekening2;
-							let Berekening4 = Berekening3 * 20;
+							//let Berekening2 = Berekening / 2;
+							let Berekening3 = 1 - Berekening;
+							let Berekening4 = Berekening3 * tijd_over;
 							let FinalBerekening = Math.round(Berekening4);
 							players[i].points += FinalBerekening;
 							Rankings[i].PointsGained = FinalBerekening;
 							Rankings[i].Points += FinalBerekening;
 						}
 					}
-	
+
 					// If i get a 0 as button, this means that the back-end is reporting a player has gone OVER  their left over time. This means we flush the player from the lists!
 					if (jsonMessage.button == 0) {
 						for (let i = 0; i < players.length; i++) {
@@ -1131,16 +1135,16 @@ function onMessageArrived(message) {
 						players.splice(answer.player - 1, 1);
 						console.log('_______________________');
 					}
-	
+
 					let NewAvatars = document.querySelectorAll('.c-avatar--score');
 					let TotalScores = document.querySelectorAll('.c-total-points');
 					let PlayerNames = document.querySelectorAll('.js-PlayerName');
 					let medal = document.querySelectorAll('.js-medal');
-					Rankings.sort((a, b) => b.Points - a.Points);
+					Rankings.sort((a, b) => b.PointsGained - a.PointsGained);
 					console.log('_______________');
 					console.log(Rankings);
 					console.log('_______________');
-	
+
 					for (let i = 0; i < players.length; i++) {
 						NewAvatars[i].innerHTML = Rankings[i].Avatar;
 						TotalScores[i].innerHTML = Rankings[i].Points;
@@ -1161,7 +1165,7 @@ function onMessageArrived(message) {
 							}
 						}
 					}
-	
+
 					// We send a bpm BEFORE the first sporting page, so we can measure the RESTING BPM.
 					if (IsFirstQuestion == true) {
 						message = new Paho.Message(
@@ -1169,13 +1173,13 @@ function onMessageArrived(message) {
 								type: 'bpm'
 							})
 						);
-	
+
 						// Setting bool on false, so this only gets executed once.
 						IsFirstQuestion = false;
 						message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 						client.send(message);
 					}
-	
+
 					// The countdown timer for all players.
 					let Aftelling = document.querySelector('.js-delay-question');
 					Aftelling.innerHTML = 5;
@@ -1186,10 +1190,10 @@ function onMessageArrived(message) {
 						}
 					}, 1000);
 				}
-	
+
 				break;
 			}
-			
+
 		case 'bpm':
 			// If the RestBpmCount equals to the players list length, we know that the heartbeats are the current heartbeats
 			if (RestBpmCount == players.length) {
@@ -1212,7 +1216,7 @@ function onMessageArrived(message) {
 				if (playersBpmCount == players.length) {
 					gameStep++;
 					playersBpmCount = 0;
-					let timeToGive = [ 20000, 15000, 10000, 5000 ];
+					let timeToGive = [ 5000, 4000, 2000, 0 ];
 					let lijst = [];
 					for (let i = 1; i < players.length + 1; i++) {
 						playerBpm = {};
@@ -1250,6 +1254,7 @@ function onMessageArrived(message) {
 						for (let j = 0; j < lengthBegin; j++) {
 							if (players[j].player == arrayMaxIndex(lijst)) {
 								players[j].time_left += timeToGive[i];
+								Rankings[i].Seconds += timeToGive[i];
 								Rankings[j].SecondsGained = timeToGive[j];
 								Rankings[j].Seconds = players[j].time_left;
 								break;
@@ -1289,14 +1294,13 @@ function onMessageArrived(message) {
 			break;
 	}
 }
-const CheckPlayerAnswered = function(item){
-	if(item == this){
+const CheckPlayerAnswered = function(item) {
+	if (item == this) {
 		return true;
-	}
-	else{
+	} else {
 		return false;
 	}
-}
+};
 
 // Show a message in a specific part of the HTML
 const showMessage = function(isError, message) {
@@ -1330,7 +1334,7 @@ const loginRequest = async function() {
 
 // The actual LOGIN function
 // If we get a 400 response, this means the user has NOT logged in succesfully
-const loadLoggedInPage = function(){
+const loadLoggedInPage = function() {
 	ReplaceRow.innerHTML = startPage;
 	const game = document.querySelector('.js-game');
 	const question = document.querySelector('.js-question');
@@ -1338,7 +1342,7 @@ const loadLoggedInPage = function(){
 	question.addEventListener('click', function() {
 		loadAdminPage();
 	});
-}
+};
 const login = function() {
 	loginRequest().then((x) => {
 		if (x == 400) {
@@ -1368,7 +1372,7 @@ const Page = function() {
 	let pinInput = document.querySelector('.js-input-pin');
 	SubmitButton.addEventListener('click', Buttonchecked);
 	pinInput.addEventListener('keyup', autoEnterPin);
-	myAudio = new Audio('./assets/ID.mp3');
+	myAudio = new Audio('./assets/rustdrum.mp3');
 	myAudio.loop = true;
 	myAudio.play();
 };

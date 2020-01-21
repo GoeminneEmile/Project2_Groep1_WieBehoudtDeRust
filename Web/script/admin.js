@@ -182,7 +182,7 @@ const loadAdminPage = function() {
 	newQuestion = 0;
 	ReplaceRow.innerHTML = adminPage;
 	let form = document.querySelector('.js-questionsForm');
-	GetQuestions().then((x) => {
+	GetQuestions(true).then((x) => {
 		let htmlQuestions = '';
 		for (let i of x.reverse()) {
 			htmlQuestions += generateAdminQuestionHtml(i);

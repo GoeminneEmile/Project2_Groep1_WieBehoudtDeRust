@@ -671,8 +671,8 @@ const ShowLoadingScreen = function() {
 };
 
 // Function to GET all questions
-const GetQuestions = async function() {
-	let serverEndPoint = `https://project2functions.azurewebsites.net/api/GetQuestions?username=${username}`;
+const GetQuestions = async function(AllQuestions) {
+	let serverEndPoint = `https://project2functions.azurewebsites.net/api/GetQuestions?username=${username}?AllQuestions=${AllQuestions}`;
 	const response = await fetch(serverEndPoint, { headers: customheaders });
 	const data = await response.json();
 	return data;
@@ -1356,7 +1356,7 @@ const login = function() {
 			loginPassword.addEventListener('keyup', autoEnter);
 			loginSubmit.addEventListener('click', login);
 		} else {
-			GetQuestions().then((x) => {
+			GetQuestions(false).then((x) => {
 				QuestionList = x;
 			});
 			userGuid = x.userGuid;

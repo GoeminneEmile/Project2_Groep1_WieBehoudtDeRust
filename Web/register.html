@@ -60,16 +60,30 @@
                                                     <input id="password" class="c-input c-input--sm" type="password"
                                                         name="email" />
                                                 </div>
-                                                <div class="c-field">
-                                                    <label class="c-label c-label--sm" for="confirm_password">Bevestig
-                                                        paswoord</label>
-                                                    <input id="confirm_password" class="c-input c-input--sm"
+                                                <div class="c-field js-confirm-password-field">
+                                                    <label class="c-label c-label--sm js-confirm-password-label" for="confirm_password">Bevestig
+                                                        paswoord
+                                                        <span class="c-label__error-message js-password-error-message">
+                                                            Wachtwoord is niet hetzelfde.
+                                                        </span>
+                                                    </label>
+                                                    <input id="confirm_password" class="c-input c-input--sm js-confirm-password-input"
                                                         type="password" name="password" />
                                                 </div>
                                             </div>
                                         </form>
-                                        <div class=" u-align-text-center">
-                                            <button class="c-button c-button--xl"> Resgistreer </button>
+                                        <div class="o-layout o-layout--justify-center o-layout--gutter-lg">
+                                            <div class="o-layout__item u-width-full u-1-of-4-bp3">
+                                                <div class="u-align-text-center">
+                                                    <button class="c-button c-button--md u-width-full"> Back </button>
+                                                </div>
+                                            </div>
+                                            <div class="o-layout__item u-width-full u-1-of-4-bp3">
+                                                <div class="u-align-text-center">
+                                                    <button class="c-button c-button--md js-sign-in-button u-width-full"> Resgistreer </button>
+
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

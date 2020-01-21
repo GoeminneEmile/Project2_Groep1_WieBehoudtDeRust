@@ -1000,6 +1000,7 @@ function onMessageArrived(message) {
 		case 'avatar':
 			console.log(gameStep);
 			if(gameStep == 2){
+				console.log("wtf is dees");
 				// Selecting the button and making it hidden
 				AvatarButton = document.querySelector('.c-button');
 				AvatarButton.addEventListener('click', GenerateQuestionPage);
@@ -1055,8 +1056,11 @@ function onMessageArrived(message) {
 			}
 			
 		case 'questions':
+			console.log(jsonMessage);
+			console.log(jsonMessage.type);
 			//This code saves the received button and time needed into a object en adds the object to an array
-			if(gameStep == 3){
+			if(gameStep == 3 && (jsonMessage.type === 'questions')){
+				console.log("ik zit toch goed");
 				answer = {};
 				answer.player = jsonMessage.player;
 				answer.button = jsonMessage.button;

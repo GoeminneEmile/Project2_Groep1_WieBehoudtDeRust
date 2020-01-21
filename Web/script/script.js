@@ -672,7 +672,7 @@ const ShowLoadingScreen = function() {
 
 // Function to GET all questions
 const GetQuestions = async function(AllQuestions) {
-	let serverEndPoint = `https://project2functions.azurewebsites.net/api/GetQuestions?username=${username}?AllQuestions=${AllQuestions}`;
+	let serverEndPoint = `https://project2functions.azurewebsites.net/api/GetQuestions?username=${username}&AllQuestions=${AllQuestions}`;
 	const response = await fetch(serverEndPoint, { headers: customheaders });
 	const data = await response.json();
 	return data;

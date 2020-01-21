@@ -50,7 +50,7 @@ let PointsGained = [];
 let SportsDescriptions = [ 'Stilstaand lopen', 'Push ups', 'Jumping Jacks' ];
 let playerRestBPM = [ player1_rest_bpm, player2_rest_bpm, player3_rest_bpm, player4_rest_bpm ];
 let playerBPM = [ player1_bpm, player2_bpm, player3_bpm, player4_bpm ];
-let Rankings = [ { Points: 0, PointsGained: 0, Player: '1', Avatar: '', Seconds: '20000', SecondsGained: '0' }, { Points: 0, PointsGained: 0, Player: '2', Avatar: '', Seconds: '20000', SecondsGained: '0' }, { Points: 0, PointsGained: 0, Player: '3', Avatar: '', Seconds: '20000', SecondsGained: '0' }, { Points: 0, PointsGained: 0, Player: '4', Avatar: '', Seconds: '20000', SecondsGained: '0' } ];
+let Rankings = [ { Points: 0, PointsGained: 0, Player: '1', Avatar: '', Seconds: '20000', SecondsGained: '0', time_needed: '0' }, { Points: 0, PointsGained: 0, Player: '2', Avatar: '', Seconds: '20000', SecondsGained: '0', time_needed: '0' }, { Points: 0, PointsGained: 0, Player: '3', Avatar: '', Seconds: '20000', SecondsGained: '0', time_needed: '0' }, { Points: 0, PointsGained: 0, Player: '4', Avatar: '', Seconds: '20000', SecondsGained: '0', time_needed: '0' } ];
 let sports = [ './img/sports_1.svg', './img/sports_2.svg', './img/sports_3.svg' ];
 // global customheaders for GET request
 let customheaders = new Headers();
@@ -1104,16 +1104,21 @@ function onMessageArrived(message) {
 							console.log(players);
 							console.log(Rankings);
 							console.log('____________________');
+
 							let tijd_nodig = Math.floor(AnswersGotten[i].time_needed / 1000);
+							let FinalBerekening = 20 - Math.floor(AnswersGotten[i].time_needed / 1000);
+							Rankings[i].time_needed = Answers[i].time_needed;
 							//let tijd_over = players[i].time_left / 1000;
-							let tijd_over = Rankings[i].Seconds / 1000;
-							console.log(tijd_nodig);
-							console.log(tijd_over);
-							let Berekening = tijd_nodig / tijd_over;
-							//let Berekening2 = Berekening / 2;
-							let Berekening3 = 1 - Berekening;
-							let Berekening4 = Berekening3 * tijd_over;
-							let FinalBerekening = Math.round(Berekening4);
+							// let tijd_over = Rankings[i].Seconds / 1000;
+							// console.log(tijd_nodig);
+							// console.log(tijd_over);
+							// let Berekening = tijd_nodig / tijd_over;
+							// let Berekening2 = Berekening / 2;
+							// let Berekening3 = 1 - Berekening2;
+							// let Berekening4 = Berekening3 * 20;
+							// let Berekening5 = Berekening4 - 10;
+							//let FinalBerekening = Math.round(Berekening4);
+							Rankings[i].time_needed = Answers[i].time_needed;
 							players[i].points += FinalBerekening;
 							Rankings[i].PointsGained = FinalBerekening;
 							Rankings[i].Points += FinalBerekening;

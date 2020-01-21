@@ -1054,7 +1054,6 @@ text {
 	border-radius: 6px;
 	padding: 24px 48px;
 }
-
 .c-button--md {
 	position: relative;
 	background: var(--global-color-gamma);
@@ -1399,6 +1398,11 @@ text {
 	display: flex;
 	justify-content: center;
 }
+
+.c-form-field--sm {
+	display: flex;
+	justify-content: center;
+}
 .c-input__middle {
 	display: flex;
 	width: 100%;
@@ -1408,6 +1412,9 @@ text {
 }
 
 @media (min-width: 1200px) {
+	.c-form-field {
+		height: 500px;
+	}
 	.c-input__middle {
 		align-self: center;
 		display: flex;
@@ -1549,6 +1556,11 @@ more padding on the right to avoid overlap
 
 .is-floating,
 .c-form-field:focus-within .c-label--floating {
+	transform: translateY(calc(var(--global-baseline) * -3));
+}
+
+.is-floating,
+.c-form-field--sm:focus-within .c-label--floating {
 	transform: translateY(calc(var(--global-baseline) * -3));
 }
 

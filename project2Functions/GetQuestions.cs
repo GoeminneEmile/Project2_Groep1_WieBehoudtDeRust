@@ -25,6 +25,7 @@ namespace project2Functions
             TelemetryClient telemetry = new TelemetryClient();
             // Take the data out of the reauest
             string name = req.Query["username"];
+            string AllQuestions = req.Query["AllQuestions"];
             // Getting connection strings
             telemetry.InstrumentationKey = Environment.GetEnvironmentVariable("insightsString");
             string connectionString = Environment.GetEnvironmentVariable("ConnectionString");
@@ -42,7 +43,16 @@ namespace project2Functions
                     {
                         // Setting up and executing a SQL command
                         command.Connection = connection;
-                        command.CommandText = "Select * From ProjectAnswers as a left join ProjectQuestions as b on a.QuestionAnswer = b.QuestionID left join Users as c on b.UserID = c.UserGuid where c.UserName = @username order by rand();";
+                        if (AllQuestions == "false")
+                        {
+                            command.CommandText = "Select * From ProjectAnswers as a left join ProjectQuestions as b on a.QuestionAnswer = b.QuestionID left join Users as c on b.UserID = c.UserGuid where c.UserName = @username order by rand();";
+
+                        }
+                        else
+                        {
+                            command.CommandText = "Select * From ProjectAnswers as a left join ProjectQuestions as b on a.QuestionAnswer = b.QuestionID left join Users as c on b.UserID = c.UserGuid where c.UserName = @username";
+
+                        }
                         command.Parameters.AddWithValue("@username", name);
                         var result = await command.ExecuteReaderAsync();
                         // Creating empty variable to change later
@@ -69,13 +79,19 @@ namespace project2Functions
                         }
                     }
                 }
-                foreach(Question vragen in questions)
+                if (AllQuestions == "false")
                 {
-                    if(questions.Count > 10)
+                    for (int i = 0; i < questions.Count; i++)
                     {
-                        questions.RemoveAt(0);
+                        if (questions.Count > 10)
+                        {
+                            questions.RemoveAt(0);
+                        }
                     }
                 }
+
+              
+           
                 // logging event
                 logger.LogInformation("GET has been succesfully executed");
                 telemetry.TrackEvent("GetQuestions");

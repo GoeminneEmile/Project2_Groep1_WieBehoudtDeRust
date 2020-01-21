@@ -25,14 +25,14 @@ let adminPage = `
 //#endregion
 
 // Generating all the questions through HTML dynamically
-const generateAdminQuestionHtml = function(question) {
+const generateAdminQuestionHtml = function (question) {
 	let html = '';
 	html += `<form id="form-${question.questionID}" class="u-border-bottom">
 	<div class="o-layout">
 	<div class="o-layout__item u-align-middle-svg u-1-of-3 u-pb-clear">
-	<h4 style="visibility:hidden" id="questionHeader-${question.questionID}">Question ID : ${question.questionID}</h4>
+	<h4 id="questionHeader-${question.questionID}">Opslaan of verwijderen</h4>
 </div>
-		
+
 		<div class="o-layout__item u-align-middle-svg u-1-of-3 u-pb-clear">
 			<h4>Vraag</h4>
 		</div>
@@ -101,7 +101,7 @@ const generateAdminQuestionHtml = function(question) {
 };
 
 // Changing the correct answer
-const changeAnswerCorrect = function() {
+const changeAnswerCorrect = function () {
 	this.classList.toggle('c-svg__active');
 	const Answers = document.querySelectorAll(`.answer-${this.dataset.question}`);
 	for (let Answer of Answers) {
@@ -122,13 +122,13 @@ const changeAnswerCorrect = function() {
 };
 
 // Removing an already added answer
-const deleteAnswer = function() {
+const deleteAnswer = function () {
 	const questionBox = document.querySelector(`.js-answerDiv-${this.dataset.question}`);
 	questionBox.remove();
 };
 
 //let's all plus buttons add a new answer to a question
-const initializeEventListeners = function() {
+const initializeEventListeners = function () {
 	// gets all plus buttons using js-addNewAnswer class
 	const allAddNewAnwsers = document.querySelectorAll('.js-addNewAnswer');
 	for (let addNewAnswersvg of allAddNewAnwsers) {
@@ -142,7 +142,7 @@ const initializeEventListeners = function() {
 	for (let deleteAnswer of deleteAnswers) {
 		try {
 			deleteAnswer.removeEventListener('click', deleteAnswer);
-		} catch (error) {}
+		} catch (error) { }
 	}
 	for (let deleteAnswerAdd of deleteAnswers) {
 		deleteAnswerAdd.addEventListener('click', deleteAnswer);
@@ -150,7 +150,7 @@ const initializeEventListeners = function() {
 	for (let deleteQuestion of deleteQuestions) {
 		try {
 			deleteQuestion.removeEventListener('click', deleteQuestion);
-		} catch (error) {}
+		} catch (error) { }
 	}
 	console.log(deleteQuestions);
 
@@ -160,12 +160,12 @@ const initializeEventListeners = function() {
 	for (let checkBox of checkBoxes) {
 		try {
 			checkBox.removeEventListener('click', changeAnswerCorrect);
-		} catch (error) {}
+		} catch (error) { }
 	}
 	for (let saveQuestion of saveQuestions) {
 		try {
 			saveQuestion.removeEventListener('click', saveNewQuestion);
-		} catch (error) {}
+		} catch (error) { }
 	}
 	for (let checkBox of checkBoxes) {
 		checkBox.addEventListener('click', changeAnswerCorrect);
@@ -178,7 +178,7 @@ const initializeEventListeners = function() {
 };
 
 // Loading the page
-const loadAdminPage = function() {
+const loadAdminPage = function () {
 	newQuestion = 0;
 	ReplaceRow.innerHTML = adminPage;
 	let form = document.querySelector('.js-questionsForm');
@@ -205,12 +205,12 @@ const loadAdminPage = function() {
 		form.innerHTML = htmlQuestions;
 		initializeEventListeners();
 		const backButton = document.querySelector(".js-return");
-		backButton.addEventListener('click',loadLoggedInPage);
+		backButton.addEventListener('click', loadLoggedInPage);
 	});
 };
 
 // Saving a new question with all the parameters to the database
-const saveNewQuestion = function() {
+const saveNewQuestion = function () {
 	const Answers = document.querySelectorAll(`.answer-${this.dataset.question}`);
 	const Question = document.querySelector(`#question-${this.dataset.question}`).value;
 
@@ -245,7 +245,7 @@ const saveNewQuestion = function() {
 };
 
 // Deleting a question
-const deleteQuestion = function() {
+const deleteQuestion = function () {
 	console.log('yes');
 	if (this.dataset.question.length < 36) {
 		const form = document.querySelector(`#form-${this.dataset.question}`);
@@ -264,7 +264,7 @@ const deleteQuestion = function() {
 };
 
 // WIP
-const deleteQuestionRequest = async function(guid) {
+const deleteQuestionRequest = async function (guid) {
 	let serverEndPoint = `https://project2functions.azurewebsites.net/api/DeleteQuestion?guid=${guid}`;
 	const response = await fetch(serverEndPoint, { headers: customheaders, method: 'GET', mode: 'cors' });
 	const data = await response.status;
@@ -273,7 +273,7 @@ const deleteQuestionRequest = async function(guid) {
 };
 
 // WIP
-const refreshQuestion = function(oldId, newId) {
+const refreshQuestion = function (oldId, newId) {
 	const trashCans = document.querySelectorAll(`.c-removeAnswer-${oldId}`);
 	const answerDiv = document.querySelector(`.js-answerDiv-${oldId}`);
 	const header = document.querySelector(`#questionHeader-${oldId}`);
@@ -309,7 +309,7 @@ const refreshQuestion = function(oldId, newId) {
 };
 
 // Adding a custom answer to your question
-const addNewAnswer = function() {
+const addNewAnswer = function () {
 	const currentAnswers = document.querySelectorAll(`.answer-${this.dataset.question}`);
 	if (currentAnswers.length < 4) {
 		const answersBox = document.querySelector(`.js-questionAnswersBox-${this.dataset.question}`);
@@ -338,7 +338,7 @@ const addNewAnswer = function() {
 };
 
 // WIP
-const reassignAnswerIndex = function(id) {
+const reassignAnswerIndex = function (id) {
 	const inputs = document.querySelectorAll(`.answer-${id}`);
 	const answers = document.querySelectorAll(`.js-check-${id}`);
 	index = 0;
@@ -354,7 +354,7 @@ const reassignAnswerIndex = function(id) {
 };
 
 // Loading in all the questions into the HTML
-const addQuestion = function() {
+const addQuestion = function () {
 	const form = document.querySelector('.js-questionsForm');
 	const addQuestionNode = document.querySelector('.js-addQuestionDiv');
 	addQuestionNode.remove();
@@ -362,7 +362,7 @@ const addQuestion = function() {
 	newForm.innerHTML = `<form class="u-border-bottom">
 	<div class="o-layout">
 		<div class="o-layout__item u-align-middle-svg u-1-of-3 u-pb-clear">
-			<h4 style="visibility:hidden" id="questionHeader-${newQuestionIndex}">Question ID : ${newQuestionIndex}</h4>
+			<h4 style="visibility:hidden" id="questionHeader-${newQuestionIndex}">Opslaan of verwijderen</h4>
 		</div>
 		<div class="o-layout__item u-align-middle-svg u-1-of-3 u-pb-clear">
 			<h4>Vraag</h4>
@@ -444,7 +444,7 @@ const addQuestion = function() {
 };
 
 // Post Question function, adding a question to the database
-const postQuestion = async function(questionJson) {
+const postQuestion = async function (questionJson) {
 	console.log(questionJson);
 	let serverEndPoint = `https://project2functions.azurewebsites.net/api/PostQuestion`;
 	const response = await fetch(serverEndPoint, { headers: customheaders, method: 'POST', mode: 'cors', body: JSON.stringify(questionJson) });

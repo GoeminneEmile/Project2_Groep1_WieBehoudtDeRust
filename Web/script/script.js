@@ -773,15 +773,22 @@ const FillInAvatarHtml = function(scorePage) {
 
 	// Selecting all player names
 	PlayerName = document.querySelectorAll('.js-PlayerClass');
+	console.log(players.length);
 	for (let i = 0; i < players.length; i++) {
+		console.log(players);
 		let GekozenAvatar = players[i].avatar;
 		let GekozenPlayer = players[i].player;
 		console.log('Speler ' + GekozenPlayer + ' heeft gekozen voor avatars ' + GekozenAvatar);
 
 		// Filling in stats in the header such as score and time_left
+		console.log(PlayerName);
 		PlayerName[i].innerHTML = 'Speler ' + GekozenPlayer;
 		let Avatar = avatars[GekozenAvatar - 1];
+		console.log("tot hier lukt het");
+		console.log("avatar");
+		console.log(Avatar);
 		QuestionAvatarsList[i].innerHTML = Avatar;
+		console.log("avatar lukt");
 		if (!scorePage) {
 			ScoreList[i].innerHTML = players[i].time_left / 1000;
 		}
@@ -1128,9 +1135,16 @@ function onMessageArrived(message) {
 					// If i get a 0 as button, this means that the back-end is reporting a player has gone OVER  their left over time. This means we flush the player from the lists!
 					if (jsonMessage.button == 0) {
 						for (let i = 0; i < players.length; i++) {
-							if (Rankings[i].player == answer.player) {
+							console.log("----------------------------------");
+							console.log("----------------------------------");
+							console.log(Rankings[i].Player);
+							console.log(answer.player);
+							console.log("----------------------------------");
+							console.log("----------------------------------");
+							if (Rankings[i].Player == answer.player) {
 								console.log('_______________');
-								console.log(Rankings);
+								console.log(Rankings[i].Player);
+
 								console.log('De Rankings zijn schoongemaakt');
 								Rankings.splice(i, 1);
 							}
@@ -1139,6 +1153,10 @@ function onMessageArrived(message) {
 						console.log(players);
 						players.splice(answer.player - 1, 1);
 						console.log('_______________________');
+						avatarHtml = generateAvatarHtml(true);
+						HeaderRow.innerHTML += avatarHtml;
+						HeaderRow.innerHTML += footer;
+						FillInAvatarHtml(true);
 					}
 
 					let NewAvatars = document.querySelectorAll('.c-avatar--score');

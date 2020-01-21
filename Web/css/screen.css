@@ -328,6 +328,7 @@ input::placeholder {
 
 span {
 	color: var(--global-color-beta);
+	font-size: 16px;
 }
 
 text {
@@ -1053,6 +1054,13 @@ text {
 	border-radius: 6px;
 	padding: 24px 48px;
 }
+
+.c-button--md {
+	position: relative;
+	background: var(--global-color-gamma);
+	border-radius: 6px;
+	padding: 24px 48px;
+}
 @media (min-width: 1200px) {
 	.c-button--xl {
 		padding: 24px 104px;
@@ -1400,9 +1408,6 @@ text {
 }
 
 @media (min-width: 1200px) {
-	.c-form-field {
-		height: 500px;
-	}
 	.c-input__middle {
 		align-self: center;
 		display: flex;

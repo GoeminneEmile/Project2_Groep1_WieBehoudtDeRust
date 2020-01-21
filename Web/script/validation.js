@@ -18,14 +18,11 @@ const isEmpty = function(fieldValue) {
 /* -------------------------------------------------------------------------- */
 const doubleCheckuserloginAddress = function() {
 	if (isEmpty(userlogin.input.value) == false) {
-		// Stop met dit veld in de gaten te houden; het is in orde.
-		userlogin.errorMessage.innerText = ' ';
-		userlogin.input.removeEventListener('input', doubleCheckuserloginAddress);
 		removeErrors(userlogin);
 	} else {
 		// Stuk herhalende code.
 		if (isEmpty(userlogin.input.value)) {
-			user.errorMessage.innerText = 'This field is required';
+			user.errorMessage.innerText = 'Dit veld moet ingevuld zijn.';
 		}
 	}
 };
@@ -42,7 +39,7 @@ const doubleCheckPasswd = function() {
 	} else {
 		// Stuk herhalende code.
 		if (isEmpty(confirmPass.input.value)) {
-			confirmPass.errorMessage.innerText = 'This field is required';
+			confirmPass.errorMessage.innerText = 'Dit veld moet ingevuld zijn.';
 		}
 	}
 };
@@ -94,7 +91,7 @@ const getDOMElements = function() {
 const enableListeners = function() {
 	userlogin.input.addEventListener('input', function() {
 		if (isEmpty(userlogin.input.value)) {
-			userlogin.errorMessage.innerText = 'This field is required';
+			userlogin.errorMessage.innerText = 'Dit veld moet ingevuld zijn';
 			console.log(userlogin.errorMessage.innerText)
 		}
 
@@ -105,7 +102,7 @@ const enableListeners = function() {
 	});
 	confirmPass.input.addEventListener('input', function() {
 		if (password.input.value != confirmPass.input.value){
-			confirmPass.errorMessage.innerText = 'Wachtwoord is niet het zelvde.';
+			confirmPass.errorMessage.innerText = 'Wachtwoord is niet hetzelfde.';
 			console.log(confirmPass.errorMessage.innerText);
 		}
 
@@ -122,6 +119,7 @@ const enableListeners = function() {
 		if (
 			isEmpty(userlogin.input.value) == false) {
 			console.log('Form is good to go!');
+			removeErrors(userlogin);
 		} else {
 			addErrors(userlogin);
 			userlogin.input.addEventListener('oninput', doubleCheckuserloginAddress);

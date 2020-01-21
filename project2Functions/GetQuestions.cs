@@ -69,13 +69,15 @@ namespace project2Functions
                         }
                     }
                 }
-                foreach(Question vragen in questions)
+
+                for (int i = 0; i < questions.Count; i++)
                 {
-                    if(questions.Count > 10)
+                    if (questions.Count > 10)
                     {
                         questions.RemoveAt(0);
                     }
                 }
+             
                 // logging event
                 logger.LogInformation("GET has been succesfully executed");
                 telemetry.TrackEvent("GetQuestions");

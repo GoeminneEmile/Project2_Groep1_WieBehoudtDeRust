@@ -839,7 +839,7 @@ const GenerateSecondsPage = function() {
 	Rankings.sort((a, b) => b.SecondsGained - a.SecondsGained);
 	for (let i = 0; i < players.length; i++) {
 		NewAvatars[i].innerHTML = Rankings[i].Avatar;
-		TotalScores[i].innerHTML = Rankings[i].Seconds / 1000;
+		TotalScores[i].innerHTML = players[i].time_left / 1000;
 		PointsGainedList[i].innerHTML = '+ ' + Rankings[i].SecondsGained / 1000;
 		PlayerNames[i].innerHTML = 'Speler ' + Rankings[i].Player;
 		switch (i) {

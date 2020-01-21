@@ -33,7 +33,8 @@ let SubmitButton,
 	player3_bpm,
 	player4_bpm,
 	errorMessageInterval = 10000,
-	intervalErrorMessage;
+	intervalErrorMessage,
+	RandomImage;
 
 // global Lists
 let players = [];
@@ -46,9 +47,11 @@ let playersAnswers = [];
 let playersAnswered = [];
 let AnswersGotten = [];
 let PointsGained = [];
+let SportsDescriptions = [ 'Stilstaand lopen', 'Push ups', 'Jumping Jacks' ];
 let playerRestBPM = [ player1_rest_bpm, player2_rest_bpm, player3_rest_bpm, player4_rest_bpm ];
 let playerBPM = [ player1_bpm, player2_bpm, player3_bpm, player4_bpm ];
-let Rankings = [ { Points: 0, PointsGained: 0, Player: '1', Avatar: '', Seconds: '20', SecondsGained: '0' }, { Points: 0, PointsGained: 0, Player: '2', Avatar: '', Seconds: '20', SecondsGained: '0' }, { Points: 0, PointsGained: 0, Player: '3', Avatar: '', Seconds: '20', SecondsGained: '0' }, { Points: 0, PointsGained: 0, Player: '4', Avatar: '', Seconds: '20', SecondsGained: '0' } ];
+let Rankings = [ { Points: 0, PointsGained: 0, Player: '1', Avatar: '', Seconds: '20000', SecondsGained: '0' }, { Points: 0, PointsGained: 0, Player: '2', Avatar: '', Seconds: '20000', SecondsGained: '0' }, { Points: 0, PointsGained: 0, Player: '3', Avatar: '', Seconds: '20000', SecondsGained: '0' }, { Points: 0, PointsGained: 0, Player: '4', Avatar: '', Seconds: '20000', SecondsGained: '0' } ];
+let sports = [ './img/sports_1.svg', './img/sports_2.svg', './img/sports_3.svg' ];
 // global customheaders for GET request
 let customheaders = new Headers();
 
@@ -412,28 +415,9 @@ let SportsWinPage = `<div class="c-app o-row--xl c-background--white">
 	<div class="o-row">
 		<div class="o-layout">
 			<div class="o-layout__item u-align-text-center">
-				<h3>Stilstaand lopen </h3>
+				<h3 class="c-Sports-Description"></h3>
 				<div class="c-activity">
-					<svg class="c-activity__symbol" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 510 368.377">
-					  <g id="speed" transform="translate(0 -32.788)">
-						<g id="Group_86" data-name="Group 86" transform="translate(0 32.788)">
-						  <path id="Path_57" data-name="Path 57" d="M378.926,220.908H330.8L317.335,133.38a55.3,55.3,0,1,0-21.463-27.621l-29.98-25.67a33.631,33.631,0,0,0-21.879-8.063h-108a23.509,23.509,0,0,0,0,47.018h97.018l-81.55,64.044a60.965,60.965,0,0,0,4.709,99.235L228.9,329.065,167.6,354.61a23.959,23.959,0,0,0,9.246,46.077,23.76,23.76,0,0,0,9.646-2.044l84.5-37.3a37.634,37.634,0,0,0,10.7-60.729l-48.028-48.034,45.276-39.627,3.5,27.951a30.873,30.873,0,0,0,30.569,27.026h65.916a23.51,23.51,0,0,0,0-47.02ZM347.582,48.452A39.181,39.181,0,1,1,308.4,87.633,39.226,39.226,0,0,1,347.582,48.452Zm31.344,203.8H313.01a15.191,15.191,0,0,1-15.022-13.29l-7.155-57.219-80.1,70.071L270.616,311.7a21.973,21.973,0,0,1-6.1,35.386l-84.364,37.229a8.288,8.288,0,1,1-6.535-15.232l66.6-27.747a12.66,12.66,0,0,0,1.983-22.34l-77.545-49.855a45.333,45.333,0,0,1-3.5-73.768L257.5,119.713l-16.378-16.346H136.008a7.837,7.837,0,1,1,0-15.674h108a17.945,17.945,0,0,1,11.675,4.286l45.41,38.945L317.35,236.579h61.575a7.837,7.837,0,0,1,0,15.674Z" transform="translate(75.565 -32.788)" fill="#295bd4"/>
-						  <path id="Path_58" data-name="Path 58" d="M83.421,301.683a11.55,11.55,0,0,1-17.559-15.007L170.018,161.69l-12.036-10.039L53.817,276.644a27.224,27.224,0,0,0,41.389,35.371l90.35-103.153-11.794-10.328Z" transform="translate(31.91 47.052)" fill="#295bd4"/>
-						  <rect id="Rectangle_23" data-name="Rectangle 23" width="172.393" height="15.672" transform="translate(62.688 101.923)" fill="#295bd4"/>
-						  <rect id="Rectangle_24" data-name="Rectangle 24" width="31.344" height="15.672" transform="translate(15.672 101.923)" fill="#295bd4"/>
-						  <rect id="Rectangle_25" data-name="Rectangle 25" width="117.542" height="15.672" transform="translate(78.361 133.267)" fill="#295bd4"/>
-						  <rect id="Rectangle_26" data-name="Rectangle 26" width="31.344" height="15.672" transform="translate(31.344 133.267)" fill="#295bd4"/>
-						  <rect id="Rectangle_27" data-name="Rectangle 27" width="101.87" height="15.672" transform="translate(86.197 164.611)" fill="#295bd4"/>
-						  <rect id="Rectangle_28" data-name="Rectangle 28" width="23.509" height="15.672" transform="translate(47.016 164.611)" fill="#295bd4"/>
-						  <rect id="Rectangle_29" data-name="Rectangle 29" width="133.214" height="15.672" transform="translate(47.016 70.579)" fill="#295bd4"/>
-						  <rect id="Rectangle_30" data-name="Rectangle 30" width="31.344" height="15.672" transform="translate(0 70.579)" fill="#295bd4"/>
-						  <rect id="Rectangle_31" data-name="Rectangle 31" width="164.558" height="15.672" transform="translate(15.672 86.251)" fill="#ffa517"/>
-						  <rect id="Rectangle_32" data-name="Rectangle 32" width="203.737" height="15.672" transform="translate(31.344 117.595)" fill="#ffa517"/>
-						  <rect id="Rectangle_33" data-name="Rectangle 33" width="148.886" height="15.672" transform="translate(47.016 148.939)" fill="#ffa517"/>
-						  <rect id="Rectangle_34" data-name="Rectangle 34" width="125.377" height="15.672" transform="translate(62.688 180.284)" fill="#ffa517"/>
-						</g>
-					  </g>
-					</svg>
+    				<object id="svg-object" data="" type="image/svg+xml"></object>
 					<div class="c-avatar--orange c-countdown">
 						<p class="js-delay-question u-font-size--lg">15</p>
 					</div>
@@ -512,6 +496,7 @@ const addPulsarDevice = function() {
 
 // Function that requests a scan to the back-end, the back-end will return the bluetooth devices in the area
 const sendPulsarDevices = function() {
+	gameStep = 2;
 	let devicesList = [];
 	let playerIndex = 0;
 	for (let i = 0; i < 4; i++) {
@@ -531,6 +516,7 @@ const sendPulsarDevices = function() {
 	message = new Paho.Message(JSON.stringify(jsonPulsar));
 	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 	client.send(message);
+
 	ReplaceRow.innerHTML = Avatars;
 	message = new Paho.Message(JSON.stringify({ type: 'avatar', status: 'start' }));
 	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
@@ -685,8 +671,8 @@ const ShowLoadingScreen = function() {
 };
 
 // Function to GET all questions
-const GetQuestions = async function() {
-	let serverEndPoint = `https://project2functions.azurewebsites.net/api/GetQuestions?username=${username}`;
+const GetQuestions = async function(AllQuestions) {
+	let serverEndPoint = `https://project2functions.azurewebsites.net/api/GetQuestions?username=${username}?AllQuestions=${AllQuestions}`;
 	const response = await fetch(serverEndPoint, { headers: customheaders });
 	const data = await response.json();
 	return data;
@@ -804,6 +790,7 @@ const FillInAvatarHtml = function(scorePage) {
 
 // Function to generate the page with quesiton and answers on it
 const GenerateQuestionPage = function() {
+	gameStep = 3;
 	// Tell the back end to stop reading avatars
 	stopPlayerInit();
 
@@ -849,7 +836,7 @@ const GenerateSecondsPage = function() {
 	let PlayerNames = document.querySelectorAll('.js-PlayerName');
 	let medal = document.querySelectorAll('.js-medal');
 
-	Rankings.sort((a, b) => b.Seconds - a.Seconds);
+	Rankings.sort((a, b) => b.SecondsGained - a.SecondsGained);
 	for (let i = 0; i < players.length; i++) {
 		NewAvatars[i].innerHTML = Rankings[i].Avatar;
 		TotalScores[i].innerHTML = Rankings[i].Seconds / 1000;
@@ -934,8 +921,13 @@ const GenerateSportsPage = function() {
 		AvatarS.innerHTML = Rankings[1].Avatar;
 		AvatarB.innerHTML = Rankings[2].Avatar;
 	} else {
+		RandomImage = Math.floor(Math.random() * (4 - 1) + 1);
 		App = document.querySelector('.c-app');
 		App.innerHTML = SportsWinPage;
+		let Description = document.querySelector('.c-Sports-Description');
+		Description.innerHTML = SportsDescriptions[RandomImage - 1];
+		let imagesvg = document.getElementById('svg-object');
+		imagesvg.data = `./img/sports/sports_${RandomImage}.svg`;
 		clearInterval(intervalSportsPage);
 		GoddelijkeTimer = document.querySelector('.js-delay-question');
 		intervalSportsActivityPage = setInterval(function() {
@@ -976,208 +968,232 @@ function onMessageArrived(message) {
 			// Getting the 4 generated avatars from the Avatar HTML
 
 			// Communication is made
-			Communication = true;
 			if (gameStep == 0) {
+				Communication = true;
+				gameStep++;
 				message = new Paho.Message(JSON.stringify({ type: 'scan', status: 'start' }));
 				message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 				client.send(message);
-				gameStep++;
+				// Here we are showing a messsega that the scan has started
+				showMessage(false, 'Spel succesvol geconnecteerd! Zoeken naar hartslagsensoren...');
+				clearInterval(intervalErrorMessage);
 			}
 
-			// Here we are showing a messsega that the scan has started
-			showMessage(false, 'Spel succesvol geconnecteerd! Zoeken naar hartslagsensoren...');
-			clearInterval(intervalErrorMessage);
 			break;
 		case 'scan':
-			// When we receive a list of devices in the area, add them to a list
-			if (jsonMessage.status == 'devices') {
-			} else {
-				ReplaceRow.innerHTML = Pulsar;
-				for (let i of jsonMessage.devices) {
-					pulsarList.push(i);
+			if (gameStep == 1) {
+				gameStep = -1;
+				// When we receive a list of devices in the area, add them to a list
+				if (jsonMessage.status == 'devices') {
+				} else {
+					ReplaceRow.innerHTML = Pulsar;
+					for (let i of jsonMessage.devices) {
+						pulsarList.push(i);
+					}
+					// Items in global list will get shown on screen
+					loadPulsarDevices();
 				}
-				// Items in global list will get shown on screen
-				loadPulsarDevices();
 			}
 			break;
+
 		case 'avatar':
-			// Selecting the button and making it hidden
-			AvatarButton = document.querySelector('.c-button');
-			AvatarButton.addEventListener('click', GenerateQuestionPage);
+			console.log(gameStep);
+			if (gameStep == 2) {
+				// Selecting the button and making it hidden
+				AvatarButton = document.querySelector('.c-button');
+				AvatarButton.addEventListener('click', GenerateQuestionPage);
 
-			// Receiving which avatars are being chosen
-			// Also creating objects of players, with their own stats ie: Time_left, points
-			if (!selectedAvatars.includes(jsonMessage.button) && players.every(checkPlayerCreated, { id: jsonMessage.player })) {
-				players.push({ player: jsonMessage.player, avatar: jsonMessage.button, points: 0, time_left: 20000 });
-				selectedAvatars.push(jsonMessage.button);
-				message = new Paho.Message(JSON.stringify({ type: 'avatar', status: 'stop', player: jsonMessage.player }));
-				message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
-				client.send(message);
-				// If there are more than 0 avatars chosen
-				if (players.length != 0) {
-					AvatarButton.style.visibility = 'visible';
-				}
-
-				// If all 4 avatars have been chosen
-				if (players.length == playerCount) {
-					QuestionAvatarsList = document.querySelectorAll('.c-avatar');
-					ScoreList = document.querySelectorAll('.c-avatar--orange');
-					GenerateQuestionPage();
-					for (let i = 0; i < players.length; i++) {
-						console.log(players);
-						Rankings[i].Avatar = avatars[players[i].avatar - 1];
-					}
-					break;
-				}
-
-				// If an avatar is chosen, it gets a lower opacity, as to show that it's chosen
-				let LijstIcons = [ 'Koala', 'Dolphin', 'Panda', 'Elephant' ];
-				switch (LijstIcons[jsonMessage.button - 1]) {
-					case 'Koala':
-						icon = document.querySelector('.js-koala');
-						icon.style.opacity = 0.3;
-						break;
-					case 'Dolphin':
-						icon = document.querySelector('.js-dolphin');
-						icon.style.opacity = 0.3;
-						break;
-					case 'Panda':
-						icon = document.querySelector('.js-panda');
-						icon.style.opacity = 0.3;
-						break;
-					case 'Elephant':
-						icon = document.querySelector('.js-elephant');
-						icon.style.opacity = 0.3;
-						break;
-				}
-			}
-			break;
-		case 'questions':
-			//This code saves the received button and time needed into a object en adds the object to an array
-
-			answer = {};
-			answer.player = jsonMessage.player;
-			answer.button = jsonMessage.button;
-
-			answer.time_needed = jsonMessage.time_needed;
-			playersAnswers.push(jsonMessage.player);
-
-			AnswersGotten.push(answer);
-			playerAnswer(answer);
-			console.log('___________________________');
-			console.log('er zijn ' + AnswersGotten.length + ' antwoorden ingedient');
-			console.log('er zijn ' + players.length + ' spelers in het spel');
-			console.log('antwoorden ontvangen : ' + AnswersGotten.length);
-			console.log('___________________________');
-
-			//If the length of playerAnswers equals the length of players, we know that we received all answers
-			if (AnswersGotten.length == players.length) {
-				clearInterval(intervalAll);
-				// Generate the HTML for the question page
-				avatarHtml = generateAvatarHtml(true);
-				HeaderRow.innerHTML += avatarHtml;
-				HeaderRow.innerHTML += footer;
-				FillInAvatarHtml(true);
-				//AnswersGotten.push(answer);
-
-				console.log('Alle antwoorden zijn ingegeven');
-				QuestionRow.innerHTML = Sporting;
-				let PointsGainedList = document.querySelectorAll('.c-points-gained');
-
-				for (let i = 0; i < players.length; i++) {
-					Rankings[i].PointsGained = '0';
-					console.log('speler' + AnswersGotten[i].player + ' heeft gedrukt op knop ' + AnswersGotten[i].button);
-					Rankings.sort((a, b) => a.player - b.player);
-					AnswersGotten.sort((a, b) => a.player - b.player);
-
-					// If someone presses the CORRECT button, we will calculate how long it took them, and give them a score based on that
-					if (AnswersGotten[i].button == juisteButton) {
-						console.log('het juiste antwoord is ingegeven');
-						console.log('____________________');
-						console.log(AnswersGotten);
-						console.log(players);
-						console.log('____________________');
-						let tijd_nodig = AnswersGotten[i].time_needed / 1000;
-						let tijd_over = players[i].time_left / 1000;
-						let Berekening = tijd_nodig / tijd_over;
-						let Berekening2 = Berekening / 2;
-						let Berekening3 = 1 - Berekening2;
-						let Berekening4 = Berekening3 * 20;
-						let FinalBerekening = Math.round(Berekening4);
-						players[i].points += FinalBerekening;
-						Rankings[i].PointsGained = FinalBerekening;
-						Rankings[i].Points += FinalBerekening;
-					}
-				}
-
-				// If i get a 0 as button, this means that the back-end is reporting a player has gone OVER  their left over time. This means we flush the player from the lists!
-				if (jsonMessage.button == 0) {
-					for (let i = 0; i < players.length; i++) {
-						if (Rankings[i].player == answer.player) {
-							console.log('_______________');
-							console.log(Rankings);
-							console.log('De Rankings zijn schoongemaakt');
-							Rankings.splice(i, 1);
-						}
-					}
-					console.log('De players zijn schoongemaakt');
-					console.log(players);
-					players.splice(answer.player - 1, 1);
-					console.log('_______________________');
-				}
-
-				let NewAvatars = document.querySelectorAll('.c-avatar--score');
-				let TotalScores = document.querySelectorAll('.c-total-points');
-				let PlayerNames = document.querySelectorAll('.js-PlayerName');
-				let medal = document.querySelectorAll('.js-medal');
-				Rankings.sort((a, b) => b.Points - a.Points);
-				for (let i = 0; i < players.length; i++) {
-					NewAvatars[i].innerHTML = Rankings[i].Avatar;
-					TotalScores[i].innerHTML = Rankings[i].Points;
-					PointsGainedList[i].innerHTML = '+ ' + Rankings[i].PointsGained;
-					PlayerNames[i].innerHTML = 'Speler ' + Rankings[i].Player;
-					switch (i) {
-						case 0: {
-							medal[i].innerHTML = medal_gold;
-							break;
-						}
-						case 1: {
-							medal[i].innerHTML = medal_silver;
-							break;
-						}
-						case 2: {
-							medal[i].innerHTML = medal_brons;
-							break;
-						}
-					}
-				}
-
-				// We send a bpm BEFORE the first sporting page, so we can measure the RESTING BPM.
-				if (IsFirstQuestion == true) {
-					message = new Paho.Message(
-						JSON.stringify({
-							type: 'bpm'
-						})
-					);
-
-					// Setting bool on false, so this only gets executed once.
-					IsFirstQuestion = false;
+				// Receiving which avatars are being chosen
+				// Also creating objects of players, with their own stats ie: Time_left, points
+				if (!selectedAvatars.includes(jsonMessage.button) && players.every(checkPlayerCreated, { id: jsonMessage.player })) {
+					players.push({ player: jsonMessage.player, avatar: jsonMessage.button, points: 0, time_left: 20000 });
+					selectedAvatars.push(jsonMessage.button);
+					message = new Paho.Message(JSON.stringify({ type: 'avatar', status: 'stop', player: jsonMessage.player }));
 					message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 					client.send(message);
-				}
-
-				// The countdown timer for all players.
-				let Aftelling = document.querySelector('.js-delay-question');
-				Aftelling.innerHTML = 5;
-				intervalSportsPage = setInterval(function() {
-					Aftelling.innerHTML = Aftelling.innerHTML - 1;
-					if (Aftelling.innerHTML == 0) {
-						GenerateSportsPage();
+					// If there are more than 0 avatars chosen
+					if (players.length != 0) {
+						AvatarButton.style.visibility = 'visible';
 					}
-				}, 1000);
+
+					// If all 4 avatars have been chosen
+					if (players.length == playerCount) {
+						QuestionAvatarsList = document.querySelectorAll('.c-avatar');
+						ScoreList = document.querySelectorAll('.c-avatar--orange');
+						GenerateQuestionPage();
+						for (let i = 0; i < players.length; i++) {
+							console.log(players);
+							Rankings[i].Avatar = avatars[players[i].avatar - 1];
+						}
+						break;
+					}
+
+					// If an avatar is chosen, it gets a lower opacity, as to show that it's chosen
+					let LijstIcons = [ 'Koala', 'Dolphin', 'Panda', 'Elephant' ];
+					switch (LijstIcons[jsonMessage.button - 1]) {
+						case 'Koala':
+							icon = document.querySelector('.js-koala');
+							icon.style.opacity = 0.3;
+							break;
+						case 'Dolphin':
+							icon = document.querySelector('.js-dolphin');
+							icon.style.opacity = 0.3;
+							break;
+						case 'Panda':
+							icon = document.querySelector('.js-panda');
+							icon.style.opacity = 0.3;
+							break;
+						case 'Elephant':
+							icon = document.querySelector('.js-elephant');
+							icon.style.opacity = 0.3;
+							break;
+					}
+				}
+				break;
 			}
 
-			break;
+		case 'questions':
+			console.log(jsonMessage);
+			console.log(jsonMessage.type);
+			//This code saves the received button and time needed into a object en adds the object to an array
+			if (gameStep == 3 && jsonMessage.type === 'questions') {
+				console.log('ik zit toch goed');
+				answer = {};
+				answer.player = jsonMessage.player;
+				answer.button = jsonMessage.button;
+
+				answer.time_needed = jsonMessage.time_needed;
+				if (!playersAnswers.includes(jsonMessage.player)) {
+					playersAnswers.push(jsonMessage.player);
+					AnswersGotten.push(answer);
+					playerAnswer(answer);
+				}
+
+				console.log('___________________________');
+				console.log('er zijn ' + AnswersGotten.length + ' antwoorden ingedient');
+				console.log('er zijn ' + players.length + ' spelers in het spel');
+				console.log('antwoorden ontvangen : ' + AnswersGotten.length);
+				console.log('___________________________');
+
+				//If the length of playerAnswers equals the length of players, we know that we received all answers
+				if (AnswersGotten.length == players.length) {
+					gameStep++;
+					clearInterval(intervalAll);
+					// Generate the HTML for the question page
+					avatarHtml = generateAvatarHtml(true);
+					HeaderRow.innerHTML += avatarHtml;
+					HeaderRow.innerHTML += footer;
+					FillInAvatarHtml(true);
+					//AnswersGotten.push(answer);
+
+					console.log('Alle antwoorden zijn ingegeven');
+					QuestionRow.innerHTML = Sporting;
+					let PointsGainedList = document.querySelectorAll('.c-points-gained');
+
+					Rankings.sort((a, b) => a.Player - b.Player);
+					AnswersGotten.sort((a, b) => a.player - b.player);
+					for (let i = 0; i < players.length; i++) {
+						Rankings[i].PointsGained = '0';
+						console.log('speler' + AnswersGotten[i].player + ' heeft gedrukt op knop ' + AnswersGotten[i].button);
+
+						// If someone presses the CORRECT button, we will calculate how long it took them, and give them a score based on that
+						if (AnswersGotten[i].button == juisteButton) {
+							console.log('het juiste antwoord is ingegeven');
+							console.log('____________________');
+							console.log(AnswersGotten);
+							console.log(players);
+							console.log(Rankings);
+							console.log('____________________');
+							let tijd_nodig = Math.floor(AnswersGotten[i].time_needed / 1000);
+							//let tijd_over = players[i].time_left / 1000;
+							let tijd_over = Rankings[i].Seconds / 1000;
+							console.log(tijd_nodig);
+							console.log(tijd_over);
+							let Berekening = tijd_nodig / tijd_over;
+							//let Berekening2 = Berekening / 2;
+							let Berekening3 = 1 - Berekening;
+							let Berekening4 = Berekening3 * tijd_over;
+							let FinalBerekening = Math.round(Berekening4);
+							players[i].points += FinalBerekening;
+							Rankings[i].PointsGained = FinalBerekening;
+							Rankings[i].Points += FinalBerekening;
+						}
+					}
+
+					// If i get a 0 as button, this means that the back-end is reporting a player has gone OVER  their left over time. This means we flush the player from the lists!
+					if (jsonMessage.button == 0) {
+						for (let i = 0; i < players.length; i++) {
+							if (Rankings[i].player == answer.player) {
+								console.log('_______________');
+								console.log(Rankings);
+								console.log('De Rankings zijn schoongemaakt');
+								Rankings.splice(i, 1);
+							}
+						}
+						console.log('De players zijn schoongemaakt');
+						console.log(players);
+						players.splice(answer.player - 1, 1);
+						console.log('_______________________');
+					}
+
+					let NewAvatars = document.querySelectorAll('.c-avatar--score');
+					let TotalScores = document.querySelectorAll('.c-total-points');
+					let PlayerNames = document.querySelectorAll('.js-PlayerName');
+					let medal = document.querySelectorAll('.js-medal');
+					Rankings.sort((a, b) => b.PointsGained - a.PointsGained);
+					console.log('_______________');
+					console.log(Rankings);
+					console.log('_______________');
+
+					for (let i = 0; i < players.length; i++) {
+						NewAvatars[i].innerHTML = Rankings[i].Avatar;
+						TotalScores[i].innerHTML = Rankings[i].Points;
+						PointsGainedList[i].innerHTML = '+ ' + Rankings[i].PointsGained;
+						PlayerNames[i].innerHTML = 'Speler ' + Rankings[i].Player;
+						switch (i) {
+							case 0: {
+								medal[i].innerHTML = medal_gold;
+								break;
+							}
+							case 1: {
+								medal[i].innerHTML = medal_silver;
+								break;
+							}
+							case 2: {
+								medal[i].innerHTML = medal_brons;
+								break;
+							}
+						}
+					}
+
+					// We send a bpm BEFORE the first sporting page, so we can measure the RESTING BPM.
+					if (IsFirstQuestion == true) {
+						message = new Paho.Message(
+							JSON.stringify({
+								type: 'bpm'
+							})
+						);
+
+						// Setting bool on false, so this only gets executed once.
+						IsFirstQuestion = false;
+						message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
+						client.send(message);
+					}
+
+					// The countdown timer for all players.
+					let Aftelling = document.querySelector('.js-delay-question');
+					Aftelling.innerHTML = 5;
+					intervalSportsPage = setInterval(function() {
+						Aftelling.innerHTML = Aftelling.innerHTML - 1;
+						if (Aftelling.innerHTML == 0) {
+							GenerateSportsPage();
+						}
+					}, 1000);
+				}
+
+				break;
+			}
+
 		case 'bpm':
 			// If the RestBpmCount equals to the players list length, we know that the heartbeats are the current heartbeats
 			if (RestBpmCount == players.length) {
@@ -1198,9 +1214,9 @@ function onMessageArrived(message) {
 				}
 				// This if-structure checks if the heartbeat of the last player is received, if so, the player with the highest difference between current heartbeat and rest heartbeat will receive the most seconds
 				if (playersBpmCount == players.length) {
+					gameStep++;
 					playersBpmCount = 0;
-					// LUKA deze if wordt uitgevoerd bij het krijgen van de laatste hartslag, hier moet de berekening doen van wie het meest heeft gesport en wie dus het meeste tijd krijgt
-					let timeToGive = [ 20000, 15000, 10000, 5000 ];
+					let timeToGive = [ 5000, 4000, 2000, 0 ];
 					let lijst = [];
 					for (let i = 1; i < players.length + 1; i++) {
 						playerBpm = {};
@@ -1238,6 +1254,7 @@ function onMessageArrived(message) {
 						for (let j = 0; j < lengthBegin; j++) {
 							if (players[j].player == arrayMaxIndex(lijst)) {
 								players[j].time_left += timeToGive[i];
+								Rankings[i].Seconds += timeToGive[i];
 								Rankings[j].SecondsGained = timeToGive[j];
 								Rankings[j].Seconds = players[j].time_left;
 								break;
@@ -1277,6 +1294,13 @@ function onMessageArrived(message) {
 			break;
 	}
 }
+const CheckPlayerAnswered = function(item) {
+	if (item == this) {
+		return true;
+	} else {
+		return false;
+	}
+};
 
 // Show a message in a specific part of the HTML
 const showMessage = function(isError, message) {
@@ -1308,8 +1332,17 @@ const loginRequest = async function() {
 	return data;
 };
 
-//The actual LOGIN function
+// The actual LOGIN function
 // If we get a 400 response, this means the user has NOT logged in succesfully
+const loadLoggedInPage = function() {
+	ReplaceRow.innerHTML = startPage;
+	const game = document.querySelector('.js-game');
+	const question = document.querySelector('.js-question');
+	game.addEventListener('click', Page);
+	question.addEventListener('click', function() {
+		loadAdminPage();
+	});
+};
 const login = function() {
 	loginRequest().then((x) => {
 		if (x == 400) {
@@ -1323,17 +1356,11 @@ const login = function() {
 			loginPassword.addEventListener('keyup', autoEnter);
 			loginSubmit.addEventListener('click', login);
 		} else {
-			GetQuestions().then((x) => {
+			GetQuestions(false).then((x) => {
 				QuestionList = x;
 			});
 			userGuid = x.userGuid;
-			ReplaceRow.innerHTML = startPage;
-			const game = document.querySelector('.js-game');
-			const question = document.querySelector('.js-question');
-			game.addEventListener('click', Page);
-			question.addEventListener('click', function() {
-				loadAdminPage();
-			});
+			loadLoggedInPage();
 		}
 	});
 };
@@ -1345,6 +1372,9 @@ const Page = function() {
 	let pinInput = document.querySelector('.js-input-pin');
 	SubmitButton.addEventListener('click', Buttonchecked);
 	pinInput.addEventListener('keyup', autoEnterPin);
+	myAudio = new Audio('./assets/rustdrum.mp3');
+	myAudio.loop = true;
+	myAudio.play();
 };
 
 // If you press the enter button, this will also get submitted, mainly for UX purposes
@@ -1377,7 +1407,6 @@ const loadLoginPage = function() {
 
 // Init function for loading DOM and loading first page
 const init = function() {
-	// Init function
 	ReplaceRow = document.querySelector('.js-row');
 	QuestionRow = document.querySelector('.c-app');
 	loadLoginPage();

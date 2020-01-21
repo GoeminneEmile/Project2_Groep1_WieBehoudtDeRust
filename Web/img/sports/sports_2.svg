@@ -1,0 +1,17 @@
+<svg class="c-activity__symbol" xmlns="http://www.w3.org/2000/svg" width="473.922" height="360" viewBox="0 0 473.922 416.489">
+  <g id="Push_up" data-name="Push up" transform="translate(-1409.02 -575.226)">
+    <rect id="Rectangle_74" data-name="Rectangle 74" width="172.393" height="15.672" transform="translate(1696.385 637.915) rotate(90)" fill="#295bd4"/>
+    <rect id="Rectangle_75" data-name="Rectangle 75" width="31.344" height="15.672" transform="translate(1696.385 590.898) rotate(90)" fill="#295bd4"/>
+    <rect id="Rectangle_76" data-name="Rectangle 76" width="117.542" height="15.672" transform="translate(1665.041 653.586) rotate(90)" fill="#295bd4"/>
+    <rect id="Rectangle_77" data-name="Rectangle 77" width="31.344" height="15.672" transform="translate(1665.041 606.57) rotate(90)" fill="#295bd4"/>
+    <rect id="Rectangle_78" data-name="Rectangle 78" width="101.87" height="15.672" transform="translate(1634.697 661.423) rotate(90)" fill="#295bd4"/>
+    <rect id="Rectangle_79" data-name="Rectangle 79" width="23.509" height="15.672" transform="translate(1634.697 622.243) rotate(90)" fill="#295bd4"/>
+    <rect id="Rectangle_80" data-name="Rectangle 80" width="133.214" height="15.672" transform="translate(1727.729 622.243) rotate(90)" fill="#295bd4"/>
+    <rect id="Rectangle_81" data-name="Rectangle 81" width="31.344" height="15.672" transform="translate(1727.729 575.226) rotate(90)" fill="#295bd4"/>
+    <rect id="Rectangle_82" data-name="Rectangle 82" width="164.558" height="15.672" transform="translate(1712.057 590.898) rotate(90)" fill="#ffa517"/>
+    <rect id="Rectangle_83" data-name="Rectangle 83" width="203.737" height="15.672" transform="translate(1680.713 606.57) rotate(90)" fill="#ffa517"/>
+    <rect id="Rectangle_84" data-name="Rectangle 84" width="148.886" height="15.672" transform="translate(1649.369 622.243) rotate(90)" fill="#ffa517"/>
+    <rect id="Rectangle_85" data-name="Rectangle 85" width="125.377" height="15.672" transform="translate(1619.025 637.915) rotate(90)" fill="#ffa517"/>
+    <path id="Push" d="M62.923,11.006A44.113,44.113,0,1,0,96.9,26.133,44.107,44.107,0,0,0,62.923,11.006Zm95.588,17.505a35.282,35.282,0,0,0-15.369,65.781v75.5c-6.245,45.161,41.053,35.159,36.142,1.571a4.1,4.1,0,0,1-.38-1.625l-.476-67.863,136.25,19.056a34.354,34.354,0,0,0,4.928.344,35.1,35.1,0,0,0,17.539-4.721l116.4,51.724c2.334,1.034,20.372-2.4,23.294-8.959a17.653,17.653,0,0,0-8.959-23.3L354.719,85.712a35.183,35.183,0,0,0-30.256-34.666L165.645,28.821A34.744,34.744,0,0,0,158.512,28.511Z" transform="translate(1397 784)" fill="none" stroke="#295bd4" stroke-width="15"/>
+  </g>
+</svg>

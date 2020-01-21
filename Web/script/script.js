@@ -836,7 +836,7 @@ const GenerateSecondsPage = function() {
 	let PlayerNames = document.querySelectorAll('.js-PlayerName');
 	let medal = document.querySelectorAll('.js-medal');
 
-	Rankings.sort((a, b) => b.Seconds - a.Seconds);
+	Rankings.sort((a, b) => b.SecondsGained - a.SecondsGained);
 	for (let i = 0; i < players.length; i++) {
 		NewAvatars[i].innerHTML = Rankings[i].Avatar;
 		TotalScores[i].innerHTML = Rankings[i].Seconds / 1000;
@@ -1056,8 +1056,8 @@ function onMessageArrived(message) {
 			console.log(jsonMessage);
 			console.log(jsonMessage.type);
 			//This code saves the received button and time needed into a object en adds the object to an array
-			if(gameStep == 3 && (jsonMessage.type === 'questions')){
-				console.log("ik zit toch goed");
+			if (gameStep == 3 && jsonMessage.type === 'questions') {
+				console.log('ik zit toch goed');
 				answer = {};
 				answer.player = jsonMessage.player;
 				answer.button = jsonMessage.button;
@@ -1111,8 +1111,8 @@ function onMessageArrived(message) {
 							console.log(tijd_over);
 							let Berekening = tijd_nodig / tijd_over;
 							//let Berekening2 = Berekening / 2;
-							//let Berekening3 = 1 - Berekening;
-							let Berekening4 = Berekening * tijd_over;
+							let Berekening3 = 1 - Berekening;
+							let Berekening4 = Berekening3 * tijd_over;
 							let FinalBerekening = Math.round(Berekening4);
 							players[i].points += FinalBerekening;
 							Rankings[i].PointsGained = FinalBerekening;
@@ -1140,7 +1140,7 @@ function onMessageArrived(message) {
 					let TotalScores = document.querySelectorAll('.c-total-points');
 					let PlayerNames = document.querySelectorAll('.js-PlayerName');
 					let medal = document.querySelectorAll('.js-medal');
-					Rankings.sort((a, b) => b.Points - a.Points);
+					Rankings.sort((a, b) => b.PointsGained - a.PointsGained);
 					console.log('_______________');
 					console.log(Rankings);
 					console.log('_______________');
@@ -1216,7 +1216,7 @@ function onMessageArrived(message) {
 				if (playersBpmCount == players.length) {
 					gameStep++;
 					playersBpmCount = 0;
-					let timeToGive = [ 20000, 15000, 10000, 5000 ];
+					let timeToGive = [ 5000, 4000, 2000, 0 ];
 					let lijst = [];
 					for (let i = 1; i < players.length + 1; i++) {
 						playerBpm = {};
@@ -1372,7 +1372,7 @@ const Page = function() {
 	let pinInput = document.querySelector('.js-input-pin');
 	SubmitButton.addEventListener('click', Buttonchecked);
 	pinInput.addEventListener('keyup', autoEnterPin);
-	myAudio = new Audio('./assets/rust.mp3');
+	myAudio = new Audio('./assets/rustdrum.mp3');
 	myAudio.loop = true;
 	myAudio.play();
 };

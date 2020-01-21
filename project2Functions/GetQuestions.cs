@@ -43,7 +43,7 @@ namespace project2Functions
                     {
                         // Setting up and executing a SQL command
                         command.Connection = connection;
-                        if (AllQuestions == true)
+                        if (AllQuestions == "true")
                         {
                             command.CommandText = "Select * From ProjectAnswers as a left join ProjectQuestions as b on a.QuestionAnswer = b.QuestionID left join Users as c on b.UserID = c.UserGuid where c.UserName = @username order by rand();";
 
@@ -79,7 +79,7 @@ namespace project2Functions
                         }
                     }
                 }
-                if (AllQuestions == true)
+                if (AllQuestions == "true")
                 {
                     for (int i = 0; i < questions.Count; i++)
                     {

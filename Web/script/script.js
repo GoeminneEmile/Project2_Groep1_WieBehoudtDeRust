@@ -336,7 +336,7 @@ let loginPage = `<div>
 			</form>
 			<div class=" u-align-text-center">
 				<button class="c-button c-button--xl u-mb-md u-tr-clear js-submitLogin"> Login </button>
-				<p>Nog geen account?<a href="register.html">Maak nu een aan</a></p>
+				<p>Nog geen account?<a id="register">Maak nu een aan</a></p>
 			</div>
 		</div>
 	</div>
@@ -454,7 +454,48 @@ let medal_brons = `<svg xmlns="http://www.w3.org/2000/svg" width="44.502" height
 </g>
 </svg>`;
 //#endregion SportsWinpage
-
+//#region registerPage
+let registerPage = `<div>
+<div class="c-align--middle">
+	<div class="o-layout">
+		<div class="o-layout__item u-width-full">
+			<form class="c-form-field js-animate">
+				<div class="c-input__middle u-width-full u-1-of-2-bp2">
+					<div class="c-field js-username-field">
+						<label class="c-label c-label--sm  js-username-label" for="username">Gebruikersnaam
+							<span class="c-label__error-message js-username-error-message">
+								Dit veld moet ingevuld zijn.
+							</span>
+						</label>
+						<input id="username" class="c-input c-input--sm js-username-input u-mb-xl" type="text"
+							name="username" placeholder="JohnDoe" />
+					</div>
+					<div class="c-field js-password-field">
+						<label class="c-label c-label--sm" for="password">Paswoord
+						</label>
+						<input id="password" class="c-input c-input--sm js-password-input" type="password"
+							name="password" />
+					</div>
+					<div class="c-field js-confirm-password-field">
+						<label class="c-label c-label--sm js-confirm-password-label" for="confirm_password">Bevestig
+							paswoord
+							<span class="c-label__error-message js-password-error-message">
+								Wachtwoord is niet het zelvde.
+							</span>
+						</label>
+						<input id="confirm_password" class="c-input c-input--sm js-confirm-password-input"
+							type="password" name="password" />
+					</div>
+				</div>
+			</form>
+			<div class=" u-align-text-center">
+				<button class="o-button-reset c-button c-button--xl js-sign-in-button"> Resgistreer </button>
+			</div>
+		</div>
+	</div>
+</div>
+</div>`;
+//#endregion registerPage
 //#endregion Podium
 //#endregion
 
@@ -1400,10 +1441,15 @@ const loadLoginPage = function() {
 	let loginSubmit = document.querySelector('.js-submitLogin');
 	let loginUsername = document.querySelector('.js-input--username');
 	let loginPassword = document.querySelector('.js-input--password');
+	let register = document.querySelector("#register");
 	loginSubmit.addEventListener('click', login);
 	loginUsername.addEventListener('keyup', autoEnter);
 	loginPassword.addEventListener('keyup', autoEnter);
+	register.addEventListener('click',loadRegisterPage);
 };
+const loadRegisterPage = function(){
+	ReplaceRow.innerHTML = registerPage;
+}
 
 // Init function for loading DOM and loading first page
 const init = function() {

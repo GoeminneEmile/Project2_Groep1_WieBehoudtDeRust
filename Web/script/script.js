@@ -336,7 +336,7 @@ let loginPage = `<div>
 			</form>
 			<div class=" u-align-text-center">
 				<button class="c-button c-button--xl u-mb-md u-tr-clear js-submitLogin"> Login </button>
-				<p>Nog geen account?<a href="register.html">Maak nu een aan</a></p>
+				<p>Nog geen account?<a class="js-register" href="register.html">Maak nu een aan</a></p>
 			</div>
 		</div>
 	</div>
@@ -784,11 +784,11 @@ const FillInAvatarHtml = function(scorePage) {
 		console.log(PlayerName);
 		PlayerName[i].innerHTML = 'Speler ' + GekozenPlayer;
 		let Avatar = avatars[GekozenAvatar - 1];
-		console.log("tot hier lukt het");
-		console.log("avatar");
+		console.log('tot hier lukt het');
+		console.log('avatar');
 		console.log(Avatar);
 		QuestionAvatarsList[i].innerHTML = Avatar;
-		console.log("avatar lukt");
+		console.log('avatar lukt');
 		if (!scorePage) {
 			ScoreList[i].innerHTML = players[i].time_left / 1000;
 		}
@@ -1135,12 +1135,12 @@ function onMessageArrived(message) {
 					// If i get a 0 as button, this means that the back-end is reporting a player has gone OVER  their left over time. This means we flush the player from the lists!
 					if (jsonMessage.button == 0) {
 						for (let i = 0; i < players.length; i++) {
-							console.log("----------------------------------");
-							console.log("----------------------------------");
+							console.log('----------------------------------');
+							console.log('----------------------------------');
 							console.log(Rankings[i].Player);
 							console.log(answer.player);
-							console.log("----------------------------------");
-							console.log("----------------------------------");
+							console.log('----------------------------------');
+							console.log('----------------------------------');
 							if (Rankings[i].Player == answer.player) {
 								console.log('_______________');
 								console.log(Rankings[i].Player);
@@ -1416,13 +1416,21 @@ const autoEnter = function(event) {
 		let loginSubmit = document.querySelector('.js-submitLogin').click();
 	}
 };
+
+const generateRegisterPage = function() {
+	window.location.href = 'register.html';
+};
+
 // Loading the login page
 const loadLoginPage = function() {
 	ReplaceRow.innerHTML = loginPage;
+
 	// Need to use this one later
+	//let registerSubmit = document.querySelector('.js-register');
 	let loginSubmit = document.querySelector('.js-submitLogin');
 	let loginUsername = document.querySelector('.js-input--username');
 	let loginPassword = document.querySelector('.js-input--password');
+	//registerSubmit.add('click', generateRegisterPage);
 	loginSubmit.addEventListener('click', login);
 	loginUsername.addEventListener('keyup', autoEnter);
 	loginPassword.addEventListener('keyup', autoEnter);

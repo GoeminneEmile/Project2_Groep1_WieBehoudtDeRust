@@ -53,13 +53,13 @@ const SignUpFunction = function() {
 	password = document.querySelector('#password').value;
 	confirmPassword = document.querySelector('#confirm_password').value;
 	errorMessage = document.querySelector('.js-password-error-message');
-	if (password != '' && confirmPassword != '' && username != '') {
-		if (password == confirmPassword) {
+	if (password == confirmPassword) {
+		errorMessage.style.display = 'none';
+		if (password != '' && confirmPassword != '' && username != '') {
 			AddUser();
-			errorMessage.style.display = 'none';
-		} else {
-			errorMessage.style.display = 'block';
 		}
+	} else {
+		errorMessage.style.display = 'block';
 	}
 };
 

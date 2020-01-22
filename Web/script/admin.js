@@ -62,7 +62,7 @@ const generateAdminQuestionHtml = function (question) {
 		if (answer.correct) {
 			svgClass = 'c-svg__active';
 		} else {
-			svgClass = '';
+			svgClass = 'c-svg__hidden';
 		}
 
 		html += `<div class="o-layout u-mb-md js-answerDiv-${question.questionID}">
@@ -397,7 +397,6 @@ const refreshQuestion = function (oldId, newId) {
 	const questionTitle = document.querySelector(`#question-${oldId}`);
 	questionTitle.dataset.question = newId;
 	header.id = `questionHeader-${newId}`;
-	header.innerHTML = `Question ID :${newId}`;
 	answerDiv.classList.remove(`js-answerDiv-${oldId}`);
 	answerDiv.classList.add(`js-answerDiv-${newId}`);
 	const question = document.querySelector(`#question-${oldId}`);
@@ -487,7 +486,7 @@ const addQuestion = function () {
 	newForm.innerHTML = `<form class="u-border-bottom u-border-not-saved">
 	<div class="o-layout">
 		<div class="o-layout__item u-align-middle-svg u-1-of-3 u-pb-clear">
-			<h4 style="visibility:hidden" id="questionHeader-${newQuestionIndex}">Opslaan of verwijderen</h4>
+			<h4 id="questionHeader-${newQuestionIndex}">Opslaan of verwijderen</h4>
 		</div>
 		<div class="o-layout__item u-align-middle-svg u-1-of-3 u-pb-clear">
 			<h4>Vraag</h4>
@@ -513,7 +512,7 @@ const addQuestion = function () {
 		<div class="o-layout__item o-layout--column u-align-middle-svg u-1-of-3 js-questionAnswersBox-${newQuestionIndex}">
 			<div class="o-layout u-mb-md js-answerDiv-${newQuestionIndex}">
 				<div class="o-layout__item u-align-middle-svg u-1-of-3 u-pt-clear">
-					<svg class="js-checkbox-button c-svg__unchecked c-svg-hover-box js-check js-check-${newQuestionIndex}" xmlns="http://www.w3.org/2000/svg" data-correct="0" data-question="${newQuestionIndex}" width="18.684" height="18.684" viewBox="0 0 18.684 18.684">
+					<svg class="js-checkbox-button c-svg__unchecked c-svg__hidden c-svg-hover-box js-check js-check-${newQuestionIndex}" xmlns="http://www.w3.org/2000/svg" data-correct="0" data-question="${newQuestionIndex}" width="18.684" height="18.684" viewBox="0 0 18.684 18.684">
 					  <path id="Icon_22_" d="M80.608,64H66.076A2.082,2.082,0,0,0,64,66.076V80.608a2.082,2.082,0,0,0,2.076,2.076H80.608a2.082,2.082,0,0,0,2.076-2.076V66.076A2.082,2.082,0,0,0,80.608,64ZM71.266,78.532l-5.19-5.19,1.453-1.453,3.737,3.737,7.889-7.889,1.453,1.453Z" transform="translate(-64 -64)" fill="#192a9a"/>
 					</svg>
 				</div>

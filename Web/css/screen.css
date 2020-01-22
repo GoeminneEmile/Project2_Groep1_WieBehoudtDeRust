@@ -630,6 +630,10 @@ text {
 	align-content: space-between;
 }
 
+.o-layout--center-items{
+	margin: 0 auto;
+}
+
 /*
     Object: Button reset
     ---
@@ -662,6 +666,32 @@ text {
 /*------------------------------------*\
 #COMPONENTS
 \*------------------------------------*/
+
+.c-no-flex-mobile{
+	display: block;
+	height: 100%;
+	position: relative;
+}
+@media (max-width: 700px) {
+	.c-no-flex-mobile__bottom{
+		position: absolute;
+		bottom: 60px;
+	}
+}
+@media (max-width: 400px) {
+	.c-no-flex-mobile__bottom{
+		position: absolute;
+		bottom: 40px;
+	}
+}
+.c-no-flex-mobile__center{
+	margin-bottom: 10px;
+}
+@media (min-width: 700px) {
+	.c-no-flex-mobile{
+		display: flex;
+	}
+}
 .c-svg-hover:hover path{
 	fill: var(--global-color-alpha);
 	cursor: pointer;
@@ -1478,7 +1508,7 @@ text {
 
 @media (min-width: 1200px) {
 	.c-form-field {
-		height: 500px;
+		height: 400px;
 	}
 	.c-input__middle {
 		align-self: center;
@@ -1487,6 +1517,16 @@ text {
 		justify-content: center;
 		flex-direction: column;
 		position: relative;
+	}
+}
+@media (min-width: 2100px) {
+	.c-form-field {
+		height: 600px;
+	}
+}
+@media (min-width: 2300px) {
+	.c-form-field {
+		height: 1000px;
 	}
 }
 
@@ -1953,6 +1993,7 @@ li span {
 /*------------------------------------*\
 #UTILITIES
 \*------------------------------------*/
+
 .u-border-right {
 	border-right: solid 4px;
 	height: 48px;

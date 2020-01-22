@@ -336,7 +336,7 @@ let loginPage = `<div>
 			</form>
 			<div class=" u-align-text-center">
 				<button class="c-button c-button--xl u-mb-md u-tr-clear js-submitLogin"> Login </button>
-				<p>Nog geen account?<a class="js-register" href="register.html">Maak nu een aan</a></p>
+				<p>Nog geen account?<a class="js-register" >Maak nu een aan</a></p>
 			</div>
 		</div>
 	</div>
@@ -454,7 +454,56 @@ let medal_brons = `<svg xmlns="http://www.w3.org/2000/svg" width="44.502" height
 </g>
 </svg>`;
 //#endregion SportsWinpage
+//#region Register
+let Register = `<div class="o-row u-mb-xl">
+<div>
+	<div class="c-align--middle">
+		<div class="o-layout">
+			<div class="o-layout__item u-width-full">
+				<form class="c-form-field--sm js-animate">
+					<div class="c-input__middle u-width-full u-1-of-2-bp2">
+						<div class="c-field">
+							<label class="c-label c-label--sm"
+								for="username">Gebruikersnaam</label>
+							<input id="username" class="c-input c-input--sm" type="text"
+								name="username" placeholder="JohnDoe" />
+						</div>
+						<div class="c-field">
+							<label class="c-label c-label--sm" for="email">Paswoord</label>
+							<input id="password" class="c-input c-input--sm" type="password"
+								name="email" />
+						</div>
+						<div class="c-field js-confirm-password-field">
+							<label class="c-label c-label--sm js-confirm-password-label" for="confirm_password">Bevestig
+								paswoord
+								<span class="c-label__error-message js-password-error-message">
+									Wachtwoord is niet hetzelfde.
+								</span>
+							</label>
+							<input id="confirm_password" class="c-input c-input--sm js-confirm-password-input"
+								type="password" name="password" />
+						</div>
+					</div>
+				</form>
+				<div class="o-layout o-layout--justify-center o-layout--gutter-lg">
+					<div class="o-layout__item u-width-full u-1-of-4-bp3">
+						<div class="u-align-text-center">
+							<button class=" js-button-back c-button c-button--md u-width-full"> Back </button>
+						</div>
+					</div>
+					<div class="o-layout__item u-width-full u-1-of-4-bp3">
+						<div class="u-align-text-center">
+							<button  class="c-button c-button--md js-sign-up-button u-width-full"> Registreer </button>
 
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>`;
+//#endregion
 //#endregion Podium
 //#endregion
 
@@ -1359,6 +1408,8 @@ const loginRequest = async function() {
 // If we get a 400 response, this means the user has NOT logged in succesfully
 const loadLoggedInPage = function() {
 	ReplaceRow.innerHTML = startPage;
+	let questions = document.querySelector('.js-questions');
+	questions.innerHTML = '';
 	const game = document.querySelector('.js-game');
 	const question = document.querySelector('.js-question');
 	game.addEventListener('click', Page);
@@ -1417,8 +1468,52 @@ const autoEnter = function(event) {
 	}
 };
 
+const AddUser = async function() {
+	console.log('Adding user');
+	let serverEndPoint = `https://project2functions.azurewebsites.net/api/AddUser`;
+	const Body = {
+		username: username,
+		password: password
+	};
+	const response = await fetch(serverEndPoint, { method: 'POST', body: JSON.stringify(Body) });
+	const data = await response.json();
+	console.log(data);
+	if (data == 201) {
+		window.location.href = 'index.html';
+	} else {
+		window.location.href = 'register.html';
+	}
+	return data;
+};
+
+// Signing in and checking if the given password and confirm password are the same
+const SignUpFunction = function() {
+	username = document.querySelector('#username').value;
+	password = document.querySelector('#password').value;
+	confirmPassword = document.querySelector('#confirm_password').value;
+	errorMessage = document.querySelector('.js-password-error-message');
+	if (password == confirmPassword) {
+		errorMessage.style.display = 'none';
+		if (password != '' && confirmPassword != '' && username != '') {
+			AddUser();
+		}
+	} else {
+		errorMessage.style.display = 'block';
+	}
+};
+
+const returnToLogin = function() {
+	console.log('clicked');
+	window.location.href = 'index.html';
+};
+
 const generateRegisterPage = function() {
-	window.location.href = 'register.html';
+	//window.location.href = 'register.html';
+	ReplaceRow.innerHTML = Register;
+	let BackButton = document.querySelector('.js-button-back');
+	let SignUpButton = document.querySelector('.js-sign-up-button');
+	BackButton.addEventListener('click', returnToLogin);
+	SignUpButton.addEventListener('click', SignUpFunction);
 };
 
 // Loading the login page
@@ -1426,11 +1521,11 @@ const loadLoginPage = function() {
 	ReplaceRow.innerHTML = loginPage;
 
 	// Need to use this one later
-	//let registerSubmit = document.querySelector('.js-register');
+	let registerSubmit = document.querySelector('.js-register');
 	let loginSubmit = document.querySelector('.js-submitLogin');
 	let loginUsername = document.querySelector('.js-input--username');
 	let loginPassword = document.querySelector('.js-input--password');
-	//registerSubmit.add('click', generateRegisterPage);
+	registerSubmit.addEventListener('click', generateRegisterPage);
 	loginSubmit.addEventListener('click', login);
 	loginUsername.addEventListener('keyup', autoEnter);
 	loginPassword.addEventListener('keyup', autoEnter);

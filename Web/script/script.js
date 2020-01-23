@@ -7,6 +7,7 @@ let SubmitButton,
 	RandomQuestion,
 	AvatarButton,
 	QuestionAvatarsList,
+	avatarCounter = 1,
 	ScoreList,
 	PlayerName,
 	userGuid,
@@ -118,7 +119,7 @@ let loader = `<div class="o-row">
 //#endregion
 //#region Avatars
 let Avatars = `<div>
-<h2>Speler 1 kies je avatar!</h2>
+<h2>Kies een avatar!</h2>
 <div class="o-row">
 	<div class="o-container__centered">
 		<div class="c-align--middle">
@@ -465,20 +466,19 @@ let Register = `<div class="o-row u-mb-xl">
 					<div class="c-input__middle u-width-full u-1-of-2-bp2">
 						<div class="c-field">
 							<label class="c-label c-label--sm"
-								for="username">Gebruikersnaam</label>
+								for="username">Username</label>
 							<input id="username" class="c-input c-input--sm" type="text"
 								name="username" placeholder="JohnDoe" />
 						</div>
 						<div class="c-field">
-							<label class="c-label c-label--sm" for="email">Paswoord</label>
+							<label class="c-label c-label--sm" for="email">Password</label>
 							<input id="password" class="c-input c-input--sm" type="password"
 								name="email" />
 						</div>
 						<div class="c-field js-confirm-password-field">
-							<label class="c-label c-label--sm js-confirm-password-label" for="confirm_password">Bevestig
-								paswoord
+							<label class="c-label c-label--sm js-confirm-password-label" for="confirm_password">Confirm password
 								<span class="c-label__error-message js-password-error-message">
-									Wachtwoord is niet hetzelfde.
+									Passwords are not the same
 								</span>
 							</label>
 							<input id="confirm_password" class="c-input c-input--sm js-confirm-password-input"
@@ -1077,6 +1077,7 @@ function onMessageArrived(message) {
 					message = new Paho.Message(JSON.stringify({ type: 'avatar', status: 'stop', player: jsonMessage.player }));
 					message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 					client.send(message);
+
 					// If there are more than 0 avatars chosen
 					if (players.length != 0) {
 						AvatarButton.style.visibility = 'visible';
@@ -1502,13 +1503,18 @@ const SignUpFunction = function() {
 	password = document.querySelector('#password').value;
 	confirmPassword = document.querySelector('#confirm_password').value;
 	errorMessage = document.querySelector('.js-password-error-message');
-	if (password == confirmPassword) {
-		errorMessage.style.display = 'none';
-		if (password != '' && confirmPassword != '' && username != '') {
-			AddUser();
+
+	if (username != null && username != '' && password != null && password != '' && confirmPassword != null && confirmPassword != '') {
+		if (password == confirmPassword) {
+			errorMessage.style.display = 'none';
+				AddUser();
+			
+		} else {
+			errorMessage.style.display = 'block';
 		}
 	} else {
 		errorMessage.style.display = 'block';
+		errorMessage.innerHTML = 'Please fill in all fields';
 	}
 };
 

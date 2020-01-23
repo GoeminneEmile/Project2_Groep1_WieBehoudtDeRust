@@ -325,11 +325,11 @@ let loginPage = `<div>
 			<form class="c-form-field">
 				<div class="c-input__middle">
 					<div class="c-field">
-						<label class="c-label c-label--sm" for="username">Username</label>
+						<label class="c-label c-label--sm" for="username">Gebruikersnaam</label>
 						<input id="username" id="username" class="c-input c-input--sm js-input--username" type="text" name="username" placeholder="JohnDoe" />
 					</div>
 					<div class="c-field">
-						<label class="c-label c-label--sm" for="password">Password</label>
+						<label class="c-label c-label--sm" for="password">Paswoord</label>
 						<input id="password" id="password" class="c-input c-input--sm js-input--password" type="password" name="password" />
 					</div>
 					<div class="c-message__loader js-loading-message">

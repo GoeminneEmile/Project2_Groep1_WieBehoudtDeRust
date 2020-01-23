@@ -4,7 +4,7 @@ let questionsJson = {};
 let adminPage = `            
 <div class="o-layout">
                             <div class="o-layout__item u-mb-lg">
-                                <button class="c-button c-button--xl u-tr-clear js-return"> Back </button>
+                                <button class="c-button c-button--xl u-tr-clear js-return"> Terug</button>
                             </div>
                         </div>
 <div class="o-container c-admin c-background--white js-questionsForm">
@@ -26,7 +26,7 @@ let adminPage = `
 //#endregion
 
 // Generating all the questions through HTML dynamically
-const generateAdminQuestionHtml = function (question) {
+const generateAdminQuestionHtml = function(question) {
 	let html = '';
 	html += `<form id="form-${question.questionID}" class="u-border-bottom">
 	<div class="o-layout">
@@ -102,8 +102,7 @@ const generateAdminQuestionHtml = function (question) {
 };
 
 // Changing the correct answer
-const changeAnswerCorrect = function () {
-	
+const changeAnswerCorrect = function() {
 	this.classList.toggle('c-svg__active');
 	const Answers = document.querySelectorAll(`.answer-${this.dataset.question}`);
 	for (let Answer of Answers) {
@@ -119,25 +118,25 @@ const changeAnswerCorrect = function () {
 			}
 		}
 	}
-	if (this.classList.contains("c-svg__hidden")) {
-		this.classList.remove("c-svg__hidden");
-		this.classList.add("c-svg__active");
+	if (this.classList.contains('c-svg__hidden')) {
+		this.classList.remove('c-svg__hidden');
+		this.classList.add('c-svg__active');
 	} else {
-		this.classList.remove("c-svg__active");
-		this.classList.add("c-svg__hidden");
+		this.classList.remove('c-svg__active');
+		this.classList.add('c-svg__hidden');
 	}
 	changedValue(this.dataset.question);
 };
 
 // Removing an already added answer
-const deleteAnswer = function () {
+const deleteAnswer = function() {
 	const questionBox = document.querySelector(`.js-answerDiv-${this.dataset.question}`);
 	questionBox.remove();
 	changedValue(this.dataset.question);
 };
 
 //let's all plus buttons add a new answer to a question
-const initializeEventListeners = function () {
+const initializeEventListeners = function() {
 	// gets all plus buttons using js-addNewAnswer class
 	const saveQuestions = document.querySelectorAll('#js-saveQuestion');
 	const deleteAnswers = document.querySelectorAll('.c-answer-svg__garbage');
@@ -147,15 +146,15 @@ const initializeEventListeners = function () {
 	const allAddNewAnwsers = document.querySelectorAll('.js-addNewAnswer');
 	const questions = document.querySelectorAll('.js-mainQuestion');
 	const answersText = document.querySelectorAll(`.c-input__answer`);
-	for(let answerTextDel of answersText){
+	for (let answerTextDel of answersText) {
 		try {
-			answerTextDel.removeEventListener('change',changedInput);
-		} catch (error) { }
+			answerTextDel.removeEventListener('change', changedInput);
+		} catch (error) {}
 	}
-	for(let answerText of answersText){
+	for (let answerText of answersText) {
 		try {
-			answerText.addEventListener('change',changedInput);
-		} catch (error) { }
+			answerText.addEventListener('change', changedInput);
+		} catch (error) {}
 	}
 	for (let addNewAnswersvg of allAddNewAnwsers) {
 		addNewAnswersvg.addEventListener('click', addNewAnswer);
@@ -163,18 +162,17 @@ const initializeEventListeners = function () {
 	for (let questionMain of questions) {
 		try {
 			questionMain.removeEventListener('change', changedInput);
-		} catch (error) { }
+		} catch (error) {}
 	}
-	for(let mainQuestion of questions){
-		
+	for (let mainQuestion of questions) {
 		console.log(questions);
-		mainQuestion.addEventListener('change',changedInput);
+		mainQuestion.addEventListener('change', changedInput);
 	}
-	
+
 	for (let deleteAnswer of deleteAnswers) {
 		try {
 			deleteAnswer.removeEventListener('click', deleteAnswer);
-		} catch (error) { }
+		} catch (error) {}
 	}
 	for (let deleteAnswerAdd of deleteAnswers) {
 		deleteAnswerAdd.addEventListener('click', deleteAnswer);
@@ -182,7 +180,7 @@ const initializeEventListeners = function () {
 	for (let deleteQuestion of deleteQuestions) {
 		try {
 			deleteQuestion.removeEventListener('click', deleteQuestion);
-		} catch (error) { }
+		} catch (error) {}
 	}
 	console.log(deleteQuestions);
 
@@ -192,12 +190,12 @@ const initializeEventListeners = function () {
 	for (let checkBox of checkBoxes) {
 		try {
 			checkBox.removeEventListener('click', changeAnswerCorrect);
-		} catch (error) { }
+		} catch (error) {}
 	}
 	for (let saveQuestion of saveQuestions) {
 		try {
 			saveQuestion.removeEventListener('click', saveNewQuestion);
-		} catch (error) { }
+		} catch (error) {}
 	}
 	for (let checkBox of checkBoxes) {
 		checkBox.addEventListener('click', changeAnswerCorrect);
@@ -209,7 +207,7 @@ const initializeEventListeners = function () {
 	newQuestion.addEventListener('click', addQuestion);
 };
 // Loading the page
-const loadAdminPage = function () {
+const loadAdminPage = function() {
 	newQuestion = 0;
 	ReplaceRow.innerHTML = adminPage;
 	let form = document.querySelector('.js-questionsForm');
@@ -237,12 +235,12 @@ const loadAdminPage = function () {
 	</div>`;
 		form.innerHTML = htmlQuestions;
 		initializeEventListeners();
-		const backButton = document.querySelector(".js-return");
+		const backButton = document.querySelector('.js-return');
 		backButton.addEventListener('click', loadLoggedInPage);
 	});
 };
 
-const collectJson = function(guid){
+const collectJson = function(guid) {
 	const Answers = document.querySelectorAll(`.answer-${guid}`);
 	const Question = document.querySelector(`#question-${guid}`).value;
 
@@ -263,7 +261,6 @@ const collectJson = function(guid){
 			questionAnswers: answers
 		};
 		return json;
-
 	} else {
 		json = {
 			questionID: guid,
@@ -272,31 +269,30 @@ const collectJson = function(guid){
 			questionAnswers: answers
 		};
 		return json;
-
 	}
-}
+};
 // Saving a new question with all the parameters to the database
-const saveNewQuestion = function () {
+const saveNewQuestion = function() {
 	let json = collectJson(this.dataset.question);
 	postQuestion(json).then((x) => {
 		refreshQuestion(this.dataset.question, x.questionID);
 		this.dataset.question = x.questionID;
 	});
 };
-const updateJson = function(oldId,newItem){
-	for(let jsonItem of questionsJson){
+const updateJson = function(oldId, newItem) {
+	for (let jsonItem of questionsJson) {
 		console.log(questionsJson.indexOf(jsonItem));
-		if(jsonItem.questionID == oldId){
-			console.log()
-			questionsJson.splice(questionsJson.indexOf(jsonItem),1);
+		if (jsonItem.questionID == oldId) {
+			console.log();
+			questionsJson.splice(questionsJson.indexOf(jsonItem), 1);
 			questionsJson.push(newItem);
 			return true;
 		}
 	}
 	questionsJson.push(newItem);
-}
+};
 // Deleting a question
-const deleteQuestion = function () {
+const deleteQuestion = function() {
 	console.log('yes');
 	if (this.dataset.question.length < 36) {
 		const form = document.querySelector(`#form-${this.dataset.question}`);
@@ -313,75 +309,70 @@ const deleteQuestion = function () {
 		});
 	}
 };
-const modifiedQuestion = function(guid,correct){
+const modifiedQuestion = function(guid, correct) {
 	const form = document.querySelector(`#form-${guid}`);
-	if(correct){
-		if(form.classList.contains('u-border-not-saved')){
+	if (correct) {
+		if (form.classList.contains('u-border-not-saved')) {
 			form.classList.remove('u-border-not-saved');
 			form.classList.add('u-border-saved');
-			setTimeout(function(){form.classList.remove('u-border-saved')},2000);
+			setTimeout(function() {
+				form.classList.remove('u-border-saved');
+			}, 2000);
+		} else if (!form.classList.contains('u-border-saved')) {
+			setTimeout(function() {
+				form.classList.remove('u-border-saved');
+			}, 2000);
 		}
-		else if(!form.classList.contains('u-border-saved')){
-
-			setTimeout(function(){form.classList.remove('u-border-saved')},2000);
-		}
-	}
-	else{
-		if(form.classList.contains('u-border-saved')){
+	} else {
+		if (form.classList.contains('u-border-saved')) {
 			form.classList.remove('u-border-saved');
 			form.classList.add('u-border-not-saved');
 		}
-		if(!form.classList.contains('u-border-not-saved')){
+		if (!form.classList.contains('u-border-not-saved')) {
 			form.classList.add('u-border-not-saved');
 		}
 	}
-}
-const changedInput = function(){
-	if(checkJson(collectJson(this.dataset.question))){
+};
+const changedInput = function() {
+	if (checkJson(collectJson(this.dataset.question))) {
 		console.log(true);
-		modifiedQuestion(this.dataset.question,true);
-	}
-	else{
-		modifiedQuestion(this.dataset.question,false);
+		modifiedQuestion(this.dataset.question, true);
+	} else {
+		modifiedQuestion(this.dataset.question, false);
 		console.log(false);
 	}
-}
-const changedValue = function(guid){
-	if(checkJson(collectJson(guid))){
-		modifiedQuestion(guid,true);
+};
+const changedValue = function(guid) {
+	if (checkJson(collectJson(guid))) {
+		modifiedQuestion(guid, true);
 		console.log(true);
-	}
-	else{
-		modifiedQuestion(guid,false);
+	} else {
+		modifiedQuestion(guid, false);
 		console.log(false);
 	}
-}
-const checkJson = function(json){
-	for(let question of questionsJson){
-		if(question.questionID == json.questionID){
+};
+const checkJson = function(json) {
+	for (let question of questionsJson) {
+		if (question.questionID == json.questionID) {
 			index = 0;
-			if(json.questionName == question.questionName){
-				for(let answer of question.questionAnswers){
-					if(JSON.stringify(answer) === JSON.stringify(json.questionAnswers[index])){
+			if (json.questionName == question.questionName) {
+				for (let answer of question.questionAnswers) {
+					if (JSON.stringify(answer) === JSON.stringify(json.questionAnswers[index])) {
 						console.log();
-					}
-					else{
+					} else {
 						return false;
 					}
 					index++;
 				}
 				return true;
-
-			}
-			else{
+			} else {
 				return false;
 			}
-			
 		}
 	}
-}
+};
 // WIP
-const deleteQuestionRequest = async function (guid) {
+const deleteQuestionRequest = async function(guid) {
 	let serverEndPoint = `https://project2functions.azurewebsites.net/api/DeleteQuestion?guid=${guid}`;
 	const response = await fetch(serverEndPoint, { headers: customheaders, method: 'GET', mode: 'cors' });
 	const data = await response.status;
@@ -390,7 +381,7 @@ const deleteQuestionRequest = async function (guid) {
 };
 
 // WIP
-const refreshQuestion = function (oldId, newId) {
+const refreshQuestion = function(oldId, newId) {
 	const trashCans = document.querySelectorAll(`.c-removeAnswer-${oldId}`);
 	const answerDiv = document.querySelector(`.js-answerDiv-${oldId}`);
 	const header = document.querySelector(`#questionHeader-${oldId}`);
@@ -427,12 +418,12 @@ const refreshQuestion = function (oldId, newId) {
 	}
 	const newJson = collectJson(newId);
 
-	updateJson(oldId,newJson);
+	updateJson(oldId, newJson);
 	changedValue(newId);
 };
 
 // Adding a custom answer to your question
-const addNewAnswer = function () {
+const addNewAnswer = function() {
 	const currentAnswers = document.querySelectorAll(`.answer-${this.dataset.question}`);
 	if (currentAnswers.length < 4) {
 		const answersBox = document.querySelector(`.js-questionAnswersBox-${this.dataset.question}`);
@@ -462,7 +453,7 @@ const addNewAnswer = function () {
 };
 
 // WIP
-const reassignAnswerIndex = function (id) {
+const reassignAnswerIndex = function(id) {
 	const inputs = document.querySelectorAll(`.answer-${id}`);
 	const answers = document.querySelectorAll(`.js-check-${id}`);
 	index = 0;
@@ -478,7 +469,7 @@ const reassignAnswerIndex = function (id) {
 };
 
 // Loading in all the questions into the HTML
-const addQuestion = function () {
+const addQuestion = function() {
 	const form = document.querySelector('.js-questionsForm');
 	const addQuestionNode = document.querySelector('.js-addQuestionDiv');
 	addQuestionNode.remove();
@@ -568,7 +559,7 @@ const addQuestion = function () {
 };
 
 // Post Question function, adding a question to the database
-const postQuestion = async function (questionJson) {
+const postQuestion = async function(questionJson) {
 	console.log(questionJson);
 	let serverEndPoint = `https://project2functions.azurewebsites.net/api/PostQuestion`;
 	const response = await fetch(serverEndPoint, { headers: customheaders, method: 'POST', mode: 'cors', body: JSON.stringify(questionJson) });

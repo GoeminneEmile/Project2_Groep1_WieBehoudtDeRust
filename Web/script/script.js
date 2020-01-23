@@ -1114,22 +1114,8 @@ function onMessageArrived(message) {
 			//This code saves the received button and time needed into a object en adds the object to an array
 			if (gameStep == 3 && jsonMessage.type === 'questions') {
 				console.log('ik zit toch goed');
-				answer = {};
-				answer.player = jsonMessage.player;
-				answer.button = jsonMessage.button;
+				SubmitAnswer({player:jsonMessage.player,button:jsonMessage.button,time_needed:jsonMessage.button});
 
-				answer.time_needed = jsonMessage.time_needed;
-				if (!playersAnswers.includes(jsonMessage.player)) {
-					playersAnswers.push(jsonMessage.player);
-					AnswersGotten.push(answer);
-					playerAnswer(answer);
-				}
-
-				console.log('___________________________');
-				console.log('er zijn ' + AnswersGotten.length + ' antwoorden ingedient');
-				console.log('er zijn ' + players.length + ' spelers in het spel');
-				console.log('antwoorden ontvangen : ' + AnswersGotten.length);
-				console.log('___________________________');
 
 				//If the length of playerAnswers equals the length of players, we know that we received all answers
 				if (AnswersGotten.length == players.length) {
@@ -1145,8 +1131,8 @@ function onMessageArrived(message) {
 					console.log('Alle antwoorden zijn ingegeven');
 					QuestionRow.innerHTML = Sporting;
 					let PointsGainedList = document.querySelectorAll('.c-points-gained');
-
-					Rankings.sort((a, b) => a.Player - b.Player);
+					calcScore();
+					/*Rankings.sort((a, b) => a.Player - b.Player);
 					AnswersGotten.sort((a, b) => a.player - b.player);
 					for (let i = 0; i < players.length; i++) {
 						Rankings[i].PointsGained = '0';
@@ -1179,35 +1165,8 @@ function onMessageArrived(message) {
 							Rankings[i].PointsGained = FinalBerekening;
 							Rankings[i].Points += FinalBerekening;
 						}
-					}
-
-					// If i get a 0 as button, this means that the back-end is reporting a player has gone OVER  their left over time. This means we flush the player from the lists!
-					if (jsonMessage.button == 0) {
-						for (let i = 0; i < players.length; i++) {
-							console.log('----------------------------------');
-							console.log('----------------------------------');
-							console.log(Rankings[i].Player);
-							console.log(answer.player);
-							console.log('----------------------------------');
-							console.log('----------------------------------');
-							if (Rankings[i].Player == answer.player) {
-								console.log('_______________');
-								console.log(Rankings[i].Player);
-
-								console.log('De Rankings zijn schoongemaakt');
-								Rankings.splice(i, 1);
-							}
-						}
-						console.log('De players zijn schoongemaakt');
-						console.log(players);
-						players.splice(answer.player - 1, 1);
-						console.log('_______________________');
-						avatarHtml = generateAvatarHtml(true);
-						HeaderRow.innerHTML += avatarHtml;
-						HeaderRow.innerHTML += footer;
-						FillInAvatarHtml(true);
-					}
-
+					}¨*/
+					refreshAvatars(true);
 					let NewAvatars = document.querySelectorAll('.c-avatar--score');
 					let TotalScores = document.querySelectorAll('.c-total-points');
 					let PlayerNames = document.querySelectorAll('.js-PlayerName');
@@ -1365,6 +1324,86 @@ function onMessageArrived(message) {
 		default:
 			break;
 	}
+}
+const calcScore = function(){
+	Rankings.sort((a, b) => a.Player - b.Player);
+	AnswersGotten.sort((a, b) => a.player - b.player);
+	for (let i = 0; i < players.length; i++) {
+		Rankings[i].PointsGained = '0';
+		console.log('speler' + AnswersGotten[i].player + ' heeft gedrukt op knop ' + AnswersGotten[i].button);
+		// If someone presses the CORRECT button, we will calculate how long it took them, and give them a score based on that
+		if (AnswersGotten[i].button == juisteButton) {
+			console.log('het juiste antwoord is ingegeven');
+			console.log('____________________');
+			console.log(AnswersGotten);
+			console.log(players);
+			console.log(Rankings);
+			console.log('____________________');
+
+			let tijd_nodig = Math.floor(AnswersGotten[i].time_needed / 1000);
+			let FinalBerekening = 20 - Math.floor(AnswersGotten[i].time_needed / 1000);
+			Rankings[i].time_needed = Answers[i].time_needed;
+			//let tijd_over = players[i].time_left / 1000;
+			// let tijd_over = Rankings[i].Seconds / 1000;
+			// console.log(tijd_nodig);
+			// console.log(tijd_over);
+			// let Berekening = tijd_nodig / tijd_over;
+			// let Berekening2 = Berekening / 2;
+			// let Berekening3 = 1 - Berekening2;
+			// let Berekening4 = Berekening3 * 20;
+			// let Berekening5 = Berekening4 - 10;
+			//let FinalBerekening = Math.round(Berekening4);
+			Rankings[i].time_needed = Answers[i].time_needed;
+			players[i].points += FinalBerekening;
+			Rankings[i].PointsGained = FinalBerekening;
+			Rankings[i].Points += FinalBerekening;
+		}
+	}
+}
+const refreshAvatars = function(scorePage){
+	avatarHtml = generateAvatarHtml(scorePage);
+	HeaderRow.innerHTML += avatarHtml;
+	HeaderRow.innerHTML += footer;
+	FillInAvatarHtml(scorePage);
+}
+const removePlayer = function(playerId){
+	try {
+		let QuestionAvatarsList = document.querySelectorAll('.c-avatar');
+		for (let i = 0; i < players.length; i++) {
+			if (QuestionAvatarsList[i].dataset.id == playerId) {
+				QuestionAvatarsList[i].style.opacity = 0.3;
+				break;
+			}
+		}
+		players.splice(players.findIndex(function(item){return item.player == playerId}),1);
+		Rankings.splice(Rankings.findIndex(function(rank){return rank.Player == playerId}), 1);
+		
+	} catch (error) {
+		console.log("user does not exist");
+	}
+}
+const SubmitAnswer = function(answer){
+	if (!playersAnswers.includes(answer.player)) {
+		switch (answer.button) {
+			case 0:
+				removePlayer(answer.player)
+				break;
+		
+			default:
+				playersAnswers.push(answer.player);
+				AnswersGotten.push(answer);
+				playerAnswer(answer)
+				break;
+		}
+		;
+	}
+	
+	
+	console.log('___________________________');
+	console.log('er zijn ' + answer.length + ' antwoorden ingedient');
+	console.log('er zijn ' + players.length + ' spelers in het spel');
+	console.log('antwoorden ontvangen : ' + answer.length);
+	console.log('___________________________');
 }
 const CheckPlayerAnswered = function(item) {
 	if (item == this) {

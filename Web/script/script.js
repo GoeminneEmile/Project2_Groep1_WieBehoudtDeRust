@@ -47,6 +47,7 @@ let playersAnswers = [];
 let playersAnswered = [];
 let AnswersGotten = [];
 let PointsGained = [];
+let juisteButtons = [];
 let SportsDescriptions = [ 'Stilstaand lopen', 'Push ups', 'Jumping Jacks' ];
 let playerRestBPM = [ player1_rest_bpm, player2_rest_bpm, player3_rest_bpm, player4_rest_bpm ];
 let playerBPM = [ player1_bpm, player2_bpm, player3_bpm, player4_bpm ];
@@ -628,6 +629,7 @@ const resetQuestions = function() {
 	playersAnswered = [];
 	playersAnswers = [];
 	AnswersGotten = [];
+	juisteButtons = [];
 };
 // Function that GETS questions + answers, and shows them!
 const ShowQuestionAndAnswers = function() {
@@ -656,16 +658,23 @@ const ShowQuestionAndAnswers = function() {
 		// Selecting answers
 		let AnswerList = document.querySelectorAll('.c-answer');
 
+		for (let i = 0; i < AnswerList.length; i++) {
+			AnswerList[i].innerHTML = '';
+		}
+
 		// Inserting everything
 		for (let i = 0; i < RandomQuestion.questionAnswers.length; i++) {
 			AnswerList[i].innerHTML = RandomQuestion.questionAnswers[i].answer;
 			if (RandomQuestion.questionAnswers[i].correct == 1) {
 				juistAntwoord = RandomQuestion.questionAnswers[i].answer;
 				juisteButton = i + 1;
+				juisteButtons.push(juisteButton);
 				console.log('Het juiste antwoord van de vraag is ' + juistAntwoord);
 				console.log('Het juiste antwoord staat op button: ' + (i + 1));
 			}
 		}
+		console.log('De juiste buttons zijn');
+		console.log(juisteButtons);
 
 		QuestionList.splice(indexQuestion, 1);
 		//Send a message to Raspberry Pi to indicate that the buttons should be read with a specific time per player
@@ -824,20 +833,20 @@ const FillInAvatarHtml = function(scorePage) {
 	PlayerName = document.querySelectorAll('.js-PlayerClass');
 	console.log(players.length);
 	for (let i = 0; i < players.length; i++) {
-		console.log(players);
+		//console.log(players);
 		let GekozenAvatar = players[i].avatar;
 		let GekozenPlayer = players[i].player;
-		console.log('Speler ' + GekozenPlayer + ' heeft gekozen voor avatars ' + GekozenAvatar);
+		//console.log('Speler ' + GekozenPlayer + ' heeft gekozen voor avatars ' + GekozenAvatar);
 
 		// Filling in stats in the header such as score and time_left
-		console.log(PlayerName);
+		//console.log(PlayerName);
 		PlayerName[i].innerHTML = 'Speler ' + GekozenPlayer;
 		let Avatar = avatars[GekozenAvatar - 1];
-		console.log('tot hier lukt het');
-		console.log('avatar');
-		console.log(Avatar);
+		//console.log('tot hier lukt het');
+		//console.log('avatar');
+		//console.log(Avatar);
 		QuestionAvatarsList[i].innerHTML = Avatar;
-		console.log('avatar lukt');
+		//console.log('avatar lukt');
 		if (!scorePage) {
 			ScoreList[i].innerHTML = players[i].time_left / 1000;
 		}
@@ -928,6 +937,8 @@ const GenerateSecondsPage = function() {
 const GenerateSportsPage = function() {
 	if (QuestionList.length == 0) {
 		Rankings.sort((a, b) => b.Points - a.Points);
+		App = document.querySelector('.c-app');
+
 		//#region Podium
 		let Podium = `<div class="c-app o-row--xl u-pb-xl c-background--white">
 <div class="o-container">
@@ -969,7 +980,6 @@ const GenerateSportsPage = function() {
 </div>`;
 		//#endregion
 		App.innerHTML = Podium;
-
 		let AvatarW = document.querySelector('.c-avatar__gold');
 		let AvatarS = document.querySelector('.c-avatar__silver');
 		let AvatarB = document.querySelector('.c-avatar__bronze');
@@ -1153,7 +1163,7 @@ function onMessageArrived(message) {
 						console.log('speler' + AnswersGotten[i].player + ' heeft gedrukt op knop ' + AnswersGotten[i].button);
 
 						// If someone presses the CORRECT button, we will calculate how long it took them, and give them a score based on that
-						if (AnswersGotten[i].button == juisteButton) {
+						if (juisteButtons.includes(AnswersGotten[i].button)) {
 							console.log('het juiste antwoord is ingegeven');
 							console.log('____________________');
 							console.log(AnswersGotten);

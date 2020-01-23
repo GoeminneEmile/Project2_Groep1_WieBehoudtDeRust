@@ -7,6 +7,7 @@ let SubmitButton,
 	RandomQuestion,
 	AvatarButton,
 	QuestionAvatarsList,
+	avatarCounter = 1,
 	ScoreList,
 	PlayerName,
 	userGuid,
@@ -118,7 +119,7 @@ let loader = `<div class="o-row">
 //#endregion
 //#region Avatars
 let Avatars = `<div>
-<h2>Speler 1 kies je avatar!</h2>
+<h2>Kies een avatar!</h2>
 <div class="o-row">
 	<div class="o-container__centered">
 		<div class="c-align--middle">
@@ -324,11 +325,11 @@ let loginPage = `<div>
 			<form class="c-form-field">
 				<div class="c-input__middle">
 					<div class="c-field">
-						<label class="c-label c-label--sm" for="username">Username</label>
+						<label class="c-label c-label--sm" for="username">Gebruikersnaam</label>
 						<input id="username" id="username" class="c-input c-input--sm js-input--username" type="text" name="username" placeholder="JohnDoe" />
 					</div>
 					<div class="c-field">
-						<label class="c-label c-label--sm" for="password">Password</label>
+						<label class="c-label c-label--sm" for="password">Paswoord</label>
 						<input id="password" id="password" class="c-input c-input--sm js-input--password" type="password" name="password" />
 					</div>
 					<div class="c-message__loader js-loading-message">
@@ -475,10 +476,9 @@ let Register = `<div class="o-row u-mb-xl">
 								name="email" />
 						</div>
 						<div class="c-field js-confirm-password-field">
-							<label class="c-label c-label--sm js-confirm-password-label" for="confirm_password">Bevestig
-								paswoord
+							<label class="c-label c-label--sm js-confirm-password-label" for="confirm_password">Bevestig paswoord
 								<span class="c-label__error-message js-password-error-message">
-									Wachtwoord is niet hetzelfde.
+									Paswoorden zijn niet hetzelfde
 								</span>
 							</label>
 							<input id="confirm_password" class="c-input c-input--sm js-confirm-password-input"
@@ -489,7 +489,7 @@ let Register = `<div class="o-row u-mb-xl">
 				<div class="o-layout o-layout--justify-center o-layout--gutter-lg">
 					<div class="o-layout__item u-width-full u-1-of-4-bp3">
 						<div class="u-align-text-center">
-							<button class=" js-button-back c-button c-button--md u-width-full"> Back </button>
+							<button class=" js-button-back c-button c-button--md u-width-full"> Terug </button>
 						</div>
 					</div>
 					<div class="o-layout__item u-width-full u-1-of-4-bp3">
@@ -1077,6 +1077,7 @@ function onMessageArrived(message) {
 					message = new Paho.Message(JSON.stringify({ type: 'avatar', status: 'stop', player: jsonMessage.player }));
 					message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 					client.send(message);
+
 					// If there are more than 0 avatars chosen
 					if (players.length != 0) {
 						AvatarButton.style.visibility = 'visible';
@@ -1502,13 +1503,17 @@ const SignUpFunction = function() {
 	password = document.querySelector('#password').value;
 	confirmPassword = document.querySelector('#confirm_password').value;
 	errorMessage = document.querySelector('.js-password-error-message');
-	if (password == confirmPassword) {
-		errorMessage.style.display = 'none';
-		if (password != '' && confirmPassword != '' && username != '') {
+
+	if (username != null && username != '' && password != null && password != '' && confirmPassword != null && confirmPassword != '') {
+		if (password == confirmPassword) {
+			errorMessage.style.display = 'none';
 			AddUser();
+		} else {
+			errorMessage.style.display = 'block';
 		}
 	} else {
 		errorMessage.style.display = 'block';
+		errorMessage.innerHTML = 'Vul alle velden in';
 	}
 };
 

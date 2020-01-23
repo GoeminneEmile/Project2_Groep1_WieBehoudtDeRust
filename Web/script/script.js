@@ -7,6 +7,7 @@ let SubmitButton,
 	RandomQuestion,
 	AvatarButton,
 	QuestionAvatarsList,
+	avatarCounter = 1,
 	ScoreList,
 	PlayerName,
 	userGuid,
@@ -48,6 +49,7 @@ let playersAnswered = [];
 let AnswersGotten = [];
 let gameOver = false;
 let PointsGained = [];
+let juisteButtons = [];
 let SportsDescriptions = [ 'Stilstaand lopen', 'Push ups', 'Jumping Jacks' ];
 let playerRestBPM = [ player1_rest_bpm, player2_rest_bpm, player3_rest_bpm, player4_rest_bpm ];
 let playerBPM = [ player1_bpm, player2_bpm, player3_bpm, player4_bpm ];
@@ -118,7 +120,7 @@ let loader = `<div class="o-row">
 //#endregion
 //#region Avatars
 let Avatars = `<div>
-<h2>Speler 1 kies je avatar!</h2>
+<h2>Kies een avatar!</h2>
 <div class="o-row">
 	<div class="o-container__centered">
 		<div class="c-align--middle">
@@ -324,11 +326,11 @@ let loginPage = `<div>
 			<form class="c-form-field">
 				<div class="c-input__middle">
 					<div class="c-field">
-						<label class="c-label c-label--sm" for="username">Username</label>
+						<label class="c-label c-label--sm" for="username">Gebruikersnaam</label>
 						<input id="username" id="username" class="c-input c-input--sm js-input--username" type="text" name="username" placeholder="JohnDoe" />
 					</div>
 					<div class="c-field">
-						<label class="c-label c-label--sm" for="password">Password</label>
+						<label class="c-label c-label--sm" for="password">Paswoord</label>
 						<input id="password" id="password" class="c-input c-input--sm js-input--password" type="password" name="password" />
 					</div>
 					<div class="c-message__loader js-loading-message">
@@ -475,10 +477,9 @@ let Register = `<div class="o-row u-mb-xl">
 								name="email" />
 						</div>
 						<div class="c-field js-confirm-password-field">
-							<label class="c-label c-label--sm js-confirm-password-label" for="confirm_password">Bevestig
-								paswoord
+							<label class="c-label c-label--sm js-confirm-password-label" for="confirm_password">Bevestig paswoord
 								<span class="c-label__error-message js-password-error-message">
-									Wachtwoord is niet hetzelfde.
+									Paswoorden zijn niet hetzelfde
 								</span>
 							</label>
 							<input id="confirm_password" class="c-input c-input--sm js-confirm-password-input"
@@ -489,7 +490,7 @@ let Register = `<div class="o-row u-mb-xl">
 				<div class="o-layout o-layout--justify-center o-layout--gutter-lg">
 					<div class="o-layout__item u-width-full u-1-of-4-bp3">
 						<div class="u-align-text-center">
-							<button class=" js-button-back c-button c-button--md u-width-full"> Back </button>
+							<button class=" js-button-back c-button c-button--md u-width-full"> Terug </button>
 						</div>
 					</div>
 					<div class="o-layout__item u-width-full u-1-of-4-bp3">
@@ -629,6 +630,7 @@ const resetQuestions = function() {
 	playersAnswered = [];
 	playersAnswers = [];
 	AnswersGotten = [];
+	juisteButtons = [];
 };
 // Function that GETS questions + answers, and shows them!
 const ShowQuestionAndAnswers = function() {
@@ -657,16 +659,23 @@ const ShowQuestionAndAnswers = function() {
 		// Selecting answers
 		let AnswerList = document.querySelectorAll('.c-answer');
 
+		for (let i = 0; i < AnswerList.length; i++) {
+			AnswerList[i].innerHTML = '';
+		}
+
 		// Inserting everything
 		for (let i = 0; i < RandomQuestion.questionAnswers.length; i++) {
 			AnswerList[i].innerHTML = RandomQuestion.questionAnswers[i].answer;
 			if (RandomQuestion.questionAnswers[i].correct == 1) {
 				juistAntwoord = RandomQuestion.questionAnswers[i].answer;
 				juisteButton = i + 1;
+				juisteButtons.push(juisteButton);
 				console.log('Het juiste antwoord van de vraag is ' + juistAntwoord);
 				console.log('Het juiste antwoord staat op button: ' + (i + 1));
 			}
 		}
+		console.log('De juiste buttons zijn');
+		console.log(juisteButtons);
 
 		QuestionList.splice(indexQuestion, 1);
 		//Send a message to Raspberry Pi to indicate that the buttons should be read with a specific time per player
@@ -825,20 +834,20 @@ const FillInAvatarHtml = function(scorePage) {
 	PlayerName = document.querySelectorAll('.js-PlayerClass');
 	console.log(players.length);
 	for (let i = 0; i < players.length; i++) {
-		console.log(players);
+		//console.log(players);
 		let GekozenAvatar = players[i].avatar;
 		let GekozenPlayer = players[i].player;
-		console.log('Speler ' + GekozenPlayer + ' heeft gekozen voor avatars ' + GekozenAvatar);
+		//console.log('Speler ' + GekozenPlayer + ' heeft gekozen voor avatars ' + GekozenAvatar);
 
 		// Filling in stats in the header such as score and time_left
-		console.log(PlayerName);
+		//console.log(PlayerName);
 		PlayerName[i].innerHTML = 'Speler ' + GekozenPlayer;
 		let Avatar = avatars[GekozenAvatar - 1];
-		console.log('tot hier lukt het');
-		console.log('avatar');
-		console.log(Avatar);
+		//console.log('tot hier lukt het');
+		//console.log('avatar');
+		//console.log(Avatar);
 		QuestionAvatarsList[i].innerHTML = Avatar;
-		console.log('avatar lukt');
+		//console.log('avatar lukt');
 		if (!scorePage) {
 			ScoreList[i].innerHTML = players[i].time_left / 1000;
 		}
@@ -1089,6 +1098,7 @@ function onMessageArrived(message) {
 					message = new Paho.Message(JSON.stringify({ type: 'avatar', status: 'stop', player: jsonMessage.player }));
 					message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 					client.send(message);
+
 					// If there are more than 0 avatars chosen
 					if (players.length != 0) {
 						AvatarButton.style.visibility = 'visible';
@@ -1520,13 +1530,17 @@ const SignUpFunction = function() {
 	password = document.querySelector('#password').value;
 	confirmPassword = document.querySelector('#confirm_password').value;
 	errorMessage = document.querySelector('.js-password-error-message');
-	if (password == confirmPassword) {
-		errorMessage.style.display = 'none';
-		if (password != '' && confirmPassword != '' && username != '') {
+
+	if (username != null && username != '' && password != null && password != '' && confirmPassword != null && confirmPassword != '') {
+		if (password == confirmPassword) {
+			errorMessage.style.display = 'none';
 			AddUser();
+		} else {
+			errorMessage.style.display = 'block';
 		}
 	} else {
 		errorMessage.style.display = 'block';
+		errorMessage.innerHTML = 'Vul alle velden in';
 	}
 };
 

@@ -1121,51 +1121,10 @@ function onMessageArrived(message) {
 				if (AnswersGotten.length == players.length) {
 					gameStep++;
 					clearInterval(intervalAll);
-					// Generate the HTML for the question page
-					avatarHtml = generateAvatarHtml(true);
-					HeaderRow.innerHTML += avatarHtml;
-					HeaderRow.innerHTML += footer;
-					FillInAvatarHtml(true);
-					//AnswersGotten.push(answer);
-
 					console.log('Alle antwoorden zijn ingegeven');
 					QuestionRow.innerHTML = Sporting;
 					let PointsGainedList = document.querySelectorAll('.c-points-gained');
 					calcScore();
-					/*Rankings.sort((a, b) => a.Player - b.Player);
-					AnswersGotten.sort((a, b) => a.player - b.player);
-					for (let i = 0; i < players.length; i++) {
-						Rankings[i].PointsGained = '0';
-						console.log('speler' + AnswersGotten[i].player + ' heeft gedrukt op knop ' + AnswersGotten[i].button);
-
-						// If someone presses the CORRECT button, we will calculate how long it took them, and give them a score based on that
-						if (AnswersGotten[i].button == juisteButton) {
-							console.log('het juiste antwoord is ingegeven');
-							console.log('____________________');
-							console.log(AnswersGotten);
-							console.log(players);
-							console.log(Rankings);
-							console.log('____________________');
-
-							let tijd_nodig = Math.floor(AnswersGotten[i].time_needed / 1000);
-							let FinalBerekening = 20 - Math.floor(AnswersGotten[i].time_needed / 1000);
-							Rankings[i].time_needed = Answers[i].time_needed;
-							//let tijd_over = players[i].time_left / 1000;
-							// let tijd_over = Rankings[i].Seconds / 1000;
-							// console.log(tijd_nodig);
-							// console.log(tijd_over);
-							// let Berekening = tijd_nodig / tijd_over;
-							// let Berekening2 = Berekening / 2;
-							// let Berekening3 = 1 - Berekening2;
-							// let Berekening4 = Berekening3 * 20;
-							// let Berekening5 = Berekening4 - 10;
-							//let FinalBerekening = Math.round(Berekening4);
-							Rankings[i].time_needed = Answers[i].time_needed;
-							players[i].points += FinalBerekening;
-							Rankings[i].PointsGained = FinalBerekening;
-							Rankings[i].Points += FinalBerekening;
-						}
-					}¨*/
 					refreshAvatars(true);
 					let NewAvatars = document.querySelectorAll('.c-avatar--score');
 					let TotalScores = document.querySelectorAll('.c-total-points');

@@ -466,19 +466,19 @@ let Register = `<div class="o-row u-mb-xl">
 					<div class="c-input__middle u-width-full u-1-of-2-bp2">
 						<div class="c-field">
 							<label class="c-label c-label--sm"
-								for="username">Username</label>
+								for="username">Gebruikersnaam</label>
 							<input id="username" class="c-input c-input--sm" type="text"
 								name="username" placeholder="JohnDoe" />
 						</div>
 						<div class="c-field">
-							<label class="c-label c-label--sm" for="email">Password</label>
+							<label class="c-label c-label--sm" for="email">Paswoord</label>
 							<input id="password" class="c-input c-input--sm" type="password"
 								name="email" />
 						</div>
 						<div class="c-field js-confirm-password-field">
-							<label class="c-label c-label--sm js-confirm-password-label" for="confirm_password">Confirm password
+							<label class="c-label c-label--sm js-confirm-password-label" for="confirm_password">Bevestig paswoord
 								<span class="c-label__error-message js-password-error-message">
-									Passwords are not the same
+									Paswoorden zijn niet hetzelfde
 								</span>
 							</label>
 							<input id="confirm_password" class="c-input c-input--sm js-confirm-password-input"
@@ -489,7 +489,7 @@ let Register = `<div class="o-row u-mb-xl">
 				<div class="o-layout o-layout--justify-center o-layout--gutter-lg">
 					<div class="o-layout__item u-width-full u-1-of-4-bp3">
 						<div class="u-align-text-center">
-							<button class=" js-button-back c-button c-button--md u-width-full"> Back </button>
+							<button class=" js-button-back c-button c-button--md u-width-full"> Terug </button>
 						</div>
 					</div>
 					<div class="o-layout__item u-width-full u-1-of-4-bp3">
@@ -1507,14 +1507,13 @@ const SignUpFunction = function() {
 	if (username != null && username != '' && password != null && password != '' && confirmPassword != null && confirmPassword != '') {
 		if (password == confirmPassword) {
 			errorMessage.style.display = 'none';
-				AddUser();
-			
+			AddUser();
 		} else {
 			errorMessage.style.display = 'block';
 		}
 	} else {
 		errorMessage.style.display = 'block';
-		errorMessage.innerHTML = 'Please fill in all fields';
+		errorMessage.innerHTML = 'Vul alle velden in';
 	}
 };
 

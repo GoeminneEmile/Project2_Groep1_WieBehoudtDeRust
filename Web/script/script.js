@@ -1017,7 +1017,7 @@ const GenerateSportsPage = function() {
 		GoddelijkeTimer = document.querySelector('.js-delay-question');
 		intervalSportsActivityPage = setInterval(function() {
 			GoddelijkeTimer.innerHTML = GoddelijkeTimer.innerHTML - 1;
-			if (GoddelijkeTimer.innerHTML == 10) {
+			if (GoddelijkeTimer.innerHTML == 5) {
 				message = new Paho.Message(JSON.stringify({ type: 'bpm' }));
 				message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 				client.send(message);
@@ -1145,7 +1145,7 @@ function onMessageArrived(message) {
 			//This code saves the received button and time needed into a object en adds the object to an array
 			if (gameStep == 3 && jsonMessage.type === 'questions') {
 				console.log('ik zit toch goed');
-				SubmitAnswer({ player: jsonMessage.player, button: jsonMessage.button, time_needed: jsonMessage.button });
+				SubmitAnswer({ player: jsonMessage.player, button: jsonMessage.button, time_needed: jsonMessage.time_needed });
 				if (gameOver) {
 					QuestionRow.innerHTML = Sporting;
 					calcScore();
@@ -1335,9 +1335,10 @@ const calcScore = function() {
 			console.log(Rankings);
 			console.log('____________________');
 
-			let tijd_nodig = Math.floor(AnswersGotten[i].time_needed / 1000);
+			//let tijd_nodig = Math.floor(AnswersGotten[i].time_needed / 1000);
 			let FinalBerekening = 20 - Math.floor(AnswersGotten[i].time_needed / 1000);
 			Rankings[i].time_needed = Answers[i].time_needed;
+
 			//let tijd_over = players[i].time_left / 1000;
 			// let tijd_over = Rankings[i].Seconds / 1000;
 			// console.log(tijd_nodig);
@@ -1405,9 +1406,9 @@ const SubmitAnswer = function(answer) {
 	}
 
 	console.log('___________________________');
-	console.log('er zijn ' + answer.length + ' antwoorden ingedient');
+	console.log('er zijn ' + AnswersGotten.length + ' antwoorden ingedient');
 	console.log('er zijn ' + players.length + ' spelers in het spel');
-	console.log('antwoorden ontvangen : ' + answer.length);
+	console.log('antwoorden ontvangen : ' + AnswersGotten.length);
 	console.log('___________________________');
 };
 const CheckPlayerAnswered = function(item) {

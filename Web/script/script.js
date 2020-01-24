@@ -1147,81 +1147,19 @@ function onMessageArrived(message) {
 			if (gameStep == 3 && jsonMessage.type === 'questions') {
 				console.log('ik zit toch goed');
 				SubmitAnswer({ player: jsonMessage.player, button: jsonMessage.button, time_needed: jsonMessage.time_needed });
-				if (gameOver) {
-					QuestionRow.innerHTML = Sporting;
-					console.log("tot hier gaat het nog goed");
-					//calcScore();
-					console.log("tot hier gaat het nogsteeds goed");
-					refreshAvatars(true);
-					console.log("tot hier gaat het nogaltijd goed");
-
-					generatePodiumPage();
-					console.log("tis gelukt");
-
-				}
 
 				//If the length of playerAnswers equals the length of players, we know that we received all answers
 				if (AnswersGotten.length == players.length) {
+					if (players.length < 2) {
+						gameOver = true;
+						QuestionRow.innerHTML = Sporting;
+						console.log("tot hier gaat het nog goed");
+						generateScorePage();
+						
+						break;
+					}
 					gameStep++;
-					clearInterval(intervalAll);
-					console.log('Alle antwoorden zijn ingegeven');
-					QuestionRow.innerHTML = Sporting;
-					let PointsGainedList = document.querySelectorAll('.c-points-gained');
-					calcScore();
-					refreshAvatars(true);
-					let NewAvatars = document.querySelectorAll('.c-avatar--score');
-					let TotalScores = document.querySelectorAll('.c-total-points');
-					let PlayerNames = document.querySelectorAll('.js-PlayerName');
-					let medal = document.querySelectorAll('.js-medal');
-					Rankings.sort((a, b) => b.PointsGained - a.PointsGained);
-					console.log('_______________');
-					console.log(Rankings);
-					console.log('_______________');
-
-					for (let i = 0; i < players.length; i++) {
-						NewAvatars[i].innerHTML = Rankings[i].Avatar;
-						TotalScores[i].innerHTML = Rankings[i].Points;
-						PointsGainedList[i].innerHTML = '+ ' + Rankings[i].PointsGained;
-						PlayerNames[i].innerHTML = 'Speler ' + Rankings[i].Player;
-						switch (i) {
-							case 0: {
-								medal[i].innerHTML = medal_gold;
-								break;
-							}
-							case 1: {
-								medal[i].innerHTML = medal_silver;
-								break;
-							}
-							case 2: {
-								medal[i].innerHTML = medal_brons;
-								break;
-							}
-						}
-					}
-
-					// We send a bpm BEFORE the first sporting page, so we can measure the RESTING BPM.
-					if (IsFirstQuestion == true) {
-						message = new Paho.Message(
-							JSON.stringify({
-								type: 'bpm'
-							})
-						);
-
-						// Setting bool on false, so this only gets executed once.
-						IsFirstQuestion = false;
-						message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
-						client.send(message);
-					}
-
-					// The countdown timer for all players.
-					let Aftelling = document.querySelector('.js-delay-question');
-					Aftelling.innerHTML = 5;
-					intervalSportsPage = setInterval(function() {
-						Aftelling.innerHTML = Aftelling.innerHTML - 1;
-						if (Aftelling.innerHTML == 0) {
-							GenerateSportsPage();
-						}
-					}, 1000);
+					generateScorePage();
 				}
 
 				break;
@@ -1327,6 +1265,74 @@ function onMessageArrived(message) {
 			break;
 	}
 }
+const generateScorePage = function(){
+	clearInterval(intervalAll);
+	console.log('Alle antwoorden zijn ingegeven');
+	QuestionRow.innerHTML = Sporting;
+	let PointsGainedList = document.querySelectorAll('.c-points-gained');
+	calcScore();
+	refreshAvatars(true);
+	let NewAvatars = document.querySelectorAll('.c-avatar--score');
+	let TotalScores = document.querySelectorAll('.c-total-points');
+	let PlayerNames = document.querySelectorAll('.js-PlayerName');
+	let medal = document.querySelectorAll('.js-medal');
+	Rankings.sort((a, b) => b.PointsGained - a.PointsGained);
+	console.log('_______________');
+	console.log(Rankings);
+	console.log('_______________');
+
+	for (let i = 0; i < players.length; i++) {
+	NewAvatars[i].innerHTML = Rankings[i].Avatar;
+		TotalScores[i].innerHTML = Rankings[i].Points;
+		PointsGainedList[i].innerHTML = '+ ' + Rankings[i].PointsGained;
+		PlayerNames[i].innerHTML = 'Speler ' + Rankings[i].Player;
+		switch (i) {
+			case 0: {
+				medal[i].innerHTML = medal_gold;
+				break;
+			}
+			case 1: {
+				medal[i].innerHTML = medal_silver;
+				break;
+			}
+			case 2: {
+				medal[i].innerHTML = medal_brons;
+				break;
+			}
+		}
+	}
+
+	// We send a bpm BEFORE the first sporting page, so we can measure the RESTING BPM.
+	if (IsFirstQuestion == true) {
+		message = new Paho.Message(
+			JSON.stringify({
+				type: 'bpm'
+			})
+		);
+
+		// Setting bool on false, so this only gets executed once.
+		IsFirstQuestion = false;
+		message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
+		client.send(message);
+	}
+
+	// The countdown timer for all players.
+	let Aftelling = document.querySelector('.js-delay-question');
+	Aftelling.innerHTML = 5;
+	intervalSportsPage = setInterval(function() {
+		Aftelling.innerHTML = Aftelling.innerHTML - 1;
+		if (Aftelling.innerHTML == 0) {
+			if(gameOver){
+				refreshAvatars(true);
+				console.log("tot hier gaat het nogaltijd goed");
+				generatePodiumPage();
+			}
+			else{
+				GenerateSportsPage();
+			}
+		}
+	}, 1000);
+}
 const calcScore = function() {
 	Rankings.sort((a, b) => a.Player - b.Player);
 	AnswersGotten.sort((a, b) => a.player - b.player);
@@ -1335,6 +1341,7 @@ const calcScore = function() {
 	console.log("----__________-----------");
 	for (let i = 0; i < players.length; i++) {
 		Rankings[i].PointsGained = '0';
+		console.log(AnswersGotten);
 		console.log('speler' + AnswersGotten[i].player + ' heeft gedrukt op knop ' + AnswersGotten[i].button);
 		// If someone presses the CORRECT button, we will calculate how long it took them, and give them a score based on that
 		if (juisteButtons.includes(AnswersGotten[i].button)) {
@@ -1403,9 +1410,7 @@ const SubmitAnswer = function(answer) {
 		switch (answer.button) {
 			case 0:
 				removePlayer(answer.player);
-				if (players.length < 2) {
-					gameOver = true;
-				}
+				
 				break;
 
 			default:

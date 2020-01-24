@@ -1145,7 +1145,7 @@ function onMessageArrived(message) {
 			//This code saves the received button and time needed into a object en adds the object to an array
 			if (gameStep == 3 && jsonMessage.type === 'questions') {
 				console.log('ik zit toch goed');
-				SubmitAnswer({ player: jsonMessage.player, button: jsonMessage.button, time_needed: jsonMessage.button });
+				SubmitAnswer({ player: jsonMessage.player, button: jsonMessage.button, time_needed: jsonMessage.time_needed });
 				if (gameOver) {
 					QuestionRow.innerHTML = Sporting;
 					calcScore();

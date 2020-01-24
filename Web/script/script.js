@@ -1147,10 +1147,6 @@ function onMessageArrived(message) {
 			if (gameStep == 3 && jsonMessage.type === 'questions') {
 				console.log('ik zit toch goed');
 				SubmitAnswer({ player: jsonMessage.player, button: jsonMessage.button, time_needed: jsonMessage.time_needed });
-				if (gameOver) {
-					
-
-				}
 
 				//If the length of playerAnswers equals the length of players, we know that we received all answers
 				if (AnswersGotten.length == players.length) {

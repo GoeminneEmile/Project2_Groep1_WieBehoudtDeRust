@@ -219,7 +219,7 @@ let Answers = `<div class="c-app o-row--xl c-background--white">
 						</svg>
 					</div>
 					<div class="o-layout__item u-1-of-2 u-background-green c-answer">
-						Budapest
+						
 					</div>
 				</div>
 			</div>
@@ -236,7 +236,7 @@ let Answers = `<div class="c-app o-row--xl c-background--white">
 						</svg>
 					</div>
 					<div class="o-layout__item u-1-of-2 u-background-yellow c-answer">
-						Boekarest
+						
 					</div>
 				</div>
 			</div>
@@ -255,7 +255,7 @@ let Answers = `<div class="c-app o-row--xl c-background--white">
 						</svg>
 					</div>
 					<div class="o-layout__item u-1-of-2 u-background-red c-answer">
-						Debrecen
+						
 					</div>
 				</div>
 			</div>
@@ -272,7 +272,7 @@ let Answers = `<div class="c-app o-row--xl c-background--white">
 						</svg>
 					</div>
 					<div class="o-layout__item u-1-of-2 u-background-blue c-answer">
-						Brussel
+						
 					</div>
 				</div>
 			</div>

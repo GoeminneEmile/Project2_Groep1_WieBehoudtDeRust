@@ -53,7 +53,7 @@ let juisteButtons = [];
 let SportsDescriptions = [ 'Stilstaand lopen', 'Push ups', 'Jumping Jacks' ];
 let playerRestBPM = [ player1_rest_bpm, player2_rest_bpm, player3_rest_bpm, player4_rest_bpm ];
 let playerBPM = [ player1_bpm, player2_bpm, player3_bpm, player4_bpm ];
-let Rankings = [ ];
+let Rankings = [];
 let sports = [ './img/sports_1.svg', './img/sports_2.svg', './img/sports_3.svg' ];
 // global customheaders for GET request
 let customheaders = new Headers();
@@ -933,21 +933,20 @@ const GenerateSecondsPage = function() {
 		}
 	}, 1000);
 };
-const generatePodiumPage = function(){
+const generatePodiumPage = function() {
 	App = document.querySelector('.c-app');
 	App.innerHTML = SportsWinPage;
 	let podiumLeaderBoard = [];
 	Rankings.sort((a, b) => b.Points - a.Points);
 	//#region Podium
-	for(let i = 0; i<3;i++){
-		console.log("ik ziet hier");
-		if(Rankings.length > i){
-			let json = {player:Rankings[i].Player,score:Rankings[i].Points};
+	for (let i = 0; i < 3; i++) {
+		console.log('ik ziet hier');
+		if (Rankings.length > i) {
+			let json = { player: Rankings[i].Player, score: Rankings[i].Points };
 			console.log(json);
 			podiumLeaderBoard.push(json);
-		}
-		else{
-			podiumLeaderBoard.push({player:"....",score:"...."})
+		} else {
+			podiumLeaderBoard.push({ player: '....', score: '....' });
 		}
 	}
 	//#region podium
@@ -1001,7 +1000,7 @@ const generatePodiumPage = function(){
 	AvatarW.innerHTML = Rankings[0].Avatar;
 	AvatarS.innerHTML = Rankings[1].Avatar;
 	AvatarB.innerHTML = Rankings[2].Avatar;
-}
+};
 // Function that generates the PODIUM onto the HTML
 const GenerateSportsPage = function() {
 	if (QuestionList.length == 0) {
@@ -1093,7 +1092,7 @@ function onMessageArrived(message) {
 				// Also creating objects of players, with their own stats ie: Time_left, points
 				if (!selectedAvatars.includes(jsonMessage.button) && players.every(checkPlayerCreated, { id: jsonMessage.player })) {
 					players.push({ player: jsonMessage.player, avatar: jsonMessage.button, points: 0, time_left: 20000 });
-					Rankings.push({ Points: 0, PointsGained: 0, Player: jsonMessage.player, Avatar: '', Seconds: '20000', SecondsGained: '0', time_needed: '0' })
+					Rankings.push({ Points: 0, PointsGained: 0, Player: jsonMessage.player, Avatar: '', Seconds: '20000', SecondsGained: '0', time_needed: '0' });
 					selectedAvatars.push(jsonMessage.button);
 					message = new Paho.Message(JSON.stringify({ type: 'avatar', status: 'stop', player: jsonMessage.player }));
 					message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
@@ -1146,8 +1145,8 @@ function onMessageArrived(message) {
 			//This code saves the received button and time needed into a object en adds the object to an array
 			if (gameStep == 3 && jsonMessage.type === 'questions') {
 				console.log('ik zit toch goed');
-				SubmitAnswer({player:jsonMessage.player,button:jsonMessage.button,time_needed:jsonMessage.button});
-				if(gameOver){
+				SubmitAnswer({ player: jsonMessage.player, button: jsonMessage.button, time_needed: jsonMessage.button });
+				if (gameOver) {
 					QuestionRow.innerHTML = Sporting;
 					calcScore();
 					refreshAvatars(true);
@@ -1321,14 +1320,14 @@ function onMessageArrived(message) {
 			break;
 	}
 }
-const calcScore = function(){
+const calcScore = function() {
 	Rankings.sort((a, b) => a.Player - b.Player);
 	AnswersGotten.sort((a, b) => a.player - b.player);
 	for (let i = 0; i < players.length; i++) {
 		Rankings[i].PointsGained = '0';
 		console.log('speler' + AnswersGotten[i].player + ' heeft gedrukt op knop ' + AnswersGotten[i].button);
 		// If someone presses the CORRECT button, we will calculate how long it took them, and give them a score based on that
-		if (AnswersGotten[i].button == juisteButton) {
+		if (juisteButtons.includes(AnswersGotten[i].button)) {
 			console.log('het juiste antwoord is ingegeven');
 			console.log('____________________');
 			console.log(AnswersGotten);
@@ -1355,14 +1354,14 @@ const calcScore = function(){
 			Rankings[i].Points += FinalBerekening;
 		}
 	}
-}
-const refreshAvatars = function(scorePage){
+};
+const refreshAvatars = function(scorePage) {
 	avatarHtml = generateAvatarHtml(scorePage);
 	HeaderRow.innerHTML += avatarHtml;
 	HeaderRow.innerHTML += footer;
 	FillInAvatarHtml(scorePage);
-}
-const removePlayer = function(playerId){
+};
+const removePlayer = function(playerId) {
 	try {
 		let QuestionAvatarsList = document.querySelectorAll('.c-avatar');
 		for (let i = 0; i < players.length; i++) {
@@ -1371,39 +1370,46 @@ const removePlayer = function(playerId){
 				break;
 			}
 		}
-		players.splice(players.findIndex(function(item){return item.player == playerId}),1);
-		Rankings.splice(Rankings.findIndex(function(rank){return rank.Player == playerId}), 1);
-		
+		players.splice(
+			players.findIndex(function(item) {
+				return item.player == playerId;
+			}),
+			1
+		);
+		Rankings.splice(
+			Rankings.findIndex(function(rank) {
+				return rank.Player == playerId;
+			}),
+			1
+		);
 	} catch (error) {
-		console.log("user does not exist");
+		console.log('user does not exist');
 	}
-}
-const SubmitAnswer = function(answer){
+};
+const SubmitAnswer = function(answer) {
 	if (!playersAnswers.includes(answer.player)) {
 		switch (answer.button) {
 			case 0:
-				removePlayer(answer.player)
-				if(players.length < 2){
+				removePlayer(answer.player);
+				if (players.length < 2) {
 					gameOver = true;
 				}
 				break;
-		
+
 			default:
 				playersAnswers.push(answer.player);
 				AnswersGotten.push(answer);
-				playerAnswer(answer)
+				playerAnswer(answer);
 				break;
 		}
-		;
 	}
-	
-	
+
 	console.log('___________________________');
 	console.log('er zijn ' + answer.length + ' antwoorden ingedient');
 	console.log('er zijn ' + players.length + ' spelers in het spel');
 	console.log('antwoorden ontvangen : ' + answer.length);
 	console.log('___________________________');
-}
+};
 const CheckPlayerAnswered = function(item) {
 	if (item == this) {
 		return true;

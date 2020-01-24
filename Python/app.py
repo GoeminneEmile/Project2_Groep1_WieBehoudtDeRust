@@ -591,13 +591,6 @@ async def init():
         lcd.write_string("Aanvragen van ID ...")
         # Genereren + controle van ID
         send_id_request()
-        # print("---- ID is accepted ----")
-        # azure_log("RPI ID accepted", PI_ID)
-        # save_js_mqtt_topic()  # Topic opslaan
-        # ID_OK = True
-        # # Display aansturen
-        # lcd.clear_display()
-        # lcd.write_string("Game ID: " + str(PI_ID))
         client.loop_forever()
     except FileNotFoundError:
         azure_log("RPI script opgestart zonder Makey Makey", None)
@@ -609,6 +602,10 @@ async def init():
 # --------------------
 # Main
 # --------------------
-if __name__ == "__main__":
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(init())
+try:
+    if __name__ == "__main__":
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(init())
+except Exception:
+    lcd.clear_display()
+    lcd_toon_error("Fatale error!       Hertstart de Pi")

@@ -509,6 +509,14 @@ let Register = `<div class="o-row u-mb-xl">
 //#endregion Podium
 //#endregion
 
+function shuffleArray(array) {
+	for (let i = array.length - 1; i > 0; i--) {
+		const j = Math.floor(Math.random() * (i + 1));
+		[ array[i], array[j] ] = [ array[j], array[i] ];
+	}
+	return array;
+}
+
 // Function to add a pulsar device
 const addPulsarDevice = function() {
 	const sendPolarButton = document.querySelector('.js-sendPolar');
@@ -663,8 +671,11 @@ const ShowQuestionAndAnswers = function() {
 			AnswerList[i].innerHTML = '';
 		}
 
+		RandomQuestion.questionAnswers = shuffleArray(RandomQuestion.questionAnswers);
+
 		// Inserting everything
 		for (let i = 0; i < RandomQuestion.questionAnswers.length; i++) {
+			console.log(RandomQuestion.questionAnswers[i].answer);
 			AnswerList[i].innerHTML = RandomQuestion.questionAnswers[i].answer;
 			if (RandomQuestion.questionAnswers[i].correct == 1) {
 				juistAntwoord = RandomQuestion.questionAnswers[i].answer;
@@ -942,11 +953,11 @@ const generatePodiumPage = function() {
 	for (let i = 0; i < 3; i++) {
 		console.log('ik ziet hier');
 		if (Rankings.length > i) {
-			let json = { player: Rankings[i].Player, score: Rankings[i].Points ,avatar:Rankings[i].Avatar};
+			let json = { player: Rankings[i].Player, score: Rankings[i].Points, avatar: Rankings[i].Avatar };
 			console.log(json);
 			podiumLeaderBoard.push(json);
 		} else {
-			podiumLeaderBoard.push({ player: '....', score: '....' ,avatar:avatars[3]});
+			podiumLeaderBoard.push({ player: '....', score: '....', avatar: avatars[3] });
 		}
 	}
 	//#region podium
@@ -1149,15 +1160,14 @@ function onMessageArrived(message) {
 				SubmitAnswer({ player: jsonMessage.player, button: jsonMessage.button, time_needed: jsonMessage.time_needed });
 				if (gameOver) {
 					QuestionRow.innerHTML = Sporting;
-					console.log("tot hier gaat het nog goed");
+					console.log('tot hier gaat het nog goed');
 					//calcScore();
-					console.log("tot hier gaat het nogsteeds goed");
+					console.log('tot hier gaat het nogsteeds goed');
 					refreshAvatars(true);
-					console.log("tot hier gaat het nogaltijd goed");
+					console.log('tot hier gaat het nogaltijd goed');
 
 					generatePodiumPage();
-					console.log("tis gelukt");
-
+					console.log('tis gelukt');
 				}
 
 				//If the length of playerAnswers equals the length of players, we know that we received all answers
@@ -1330,9 +1340,9 @@ function onMessageArrived(message) {
 const calcScore = function() {
 	Rankings.sort((a, b) => a.Player - b.Player);
 	AnswersGotten.sort((a, b) => a.player - b.player);
-	console.log("----__________-----------");
+	console.log('----__________-----------');
 	console.log(players);
-	console.log("----__________-----------");
+	console.log('----__________-----------');
 	for (let i = 0; i < players.length; i++) {
 		Rankings[i].PointsGained = '0';
 		console.log('speler' + AnswersGotten[i].player + ' heeft gedrukt op knop ' + AnswersGotten[i].button);
@@ -1488,6 +1498,7 @@ const login = function() {
 		} else {
 			GetQuestions(false).then((x) => {
 				QuestionList = x;
+				console.log(QuestionList);
 			});
 			userGuid = x.userGuid;
 			loadLoggedInPage();

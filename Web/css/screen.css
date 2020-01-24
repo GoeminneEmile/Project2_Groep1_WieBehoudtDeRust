@@ -2049,15 +2049,19 @@ li span {
 
 .u-background-yellow {
 	background: #ffa517;
+	color: #0033B3;
 }
 .u-background-red {
 	background: #ff715b;
+	color: #002C99;
 }
 .u-background-green {
 	background: #9be564;
+	color: #CC1B00;
 }
 .u-background-blue {
 	background: #295bd4;
+	color: #B0E589;
 }
 
 .u-margin__0 {
@@ -2222,6 +2226,15 @@ li span {
 
 .u-mb-md {
 	margin-bottom: 16px !important;
+}
+
+.u-ma-md {
+	margin-top: 24px !important;
+	margin-bottom: 24px !important;
+}
+.u-mlr-md {
+	margin-left: 24px !important;
+	margin-right: 24px !important;
 }
 
 .u-pt-md {

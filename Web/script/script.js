@@ -942,11 +942,11 @@ const generatePodiumPage = function() {
 	for (let i = 0; i < 3; i++) {
 		console.log('ik ziet hier');
 		if (Rankings.length > i) {
-			let json = { player: Rankings[i].Player, score: Rankings[i].Points };
+			let json = { player: Rankings[i].Player, score: Rankings[i].Points ,avatar:Rankings[i].Avatar};
 			console.log(json);
 			podiumLeaderBoard.push(json);
 		} else {
-			podiumLeaderBoard.push({ player: '....', score: '....' });
+			podiumLeaderBoard.push({ player: '....', score: '....' ,avatar:avatars[3]});
 		}
 	}
 	//#region podium
@@ -997,9 +997,10 @@ const generatePodiumPage = function() {
 	let AvatarW = document.querySelector('.c-avatar__gold');
 	let AvatarS = document.querySelector('.c-avatar__silver');
 	let AvatarB = document.querySelector('.c-avatar__bronze');
-	AvatarW.innerHTML = Rankings[0].Avatar;
-	AvatarS.innerHTML = Rankings[1].Avatar;
-	AvatarB.innerHTML = Rankings[2].Avatar;
+
+	AvatarW.innerHTML = podiumLeaderBoard[0].avatar;
+	AvatarS.innerHTML = podiumLeaderBoard[1].avatar;
+	AvatarB.innerHTML = podiumLeaderBoard[2].avatar;
 };
 // Function that generates the PODIUM onto the HTML
 const GenerateSportsPage = function() {
@@ -1148,9 +1149,15 @@ function onMessageArrived(message) {
 				SubmitAnswer({ player: jsonMessage.player, button: jsonMessage.button, time_needed: jsonMessage.time_needed });
 				if (gameOver) {
 					QuestionRow.innerHTML = Sporting;
-					calcScore();
+					console.log("tot hier gaat het nog goed");
+					//calcScore();
+					console.log("tot hier gaat het nogsteeds goed");
 					refreshAvatars(true);
+					console.log("tot hier gaat het nogaltijd goed");
+
 					generatePodiumPage();
+					console.log("tis gelukt");
+
 				}
 
 				//If the length of playerAnswers equals the length of players, we know that we received all answers
@@ -1323,6 +1330,9 @@ function onMessageArrived(message) {
 const calcScore = function() {
 	Rankings.sort((a, b) => a.Player - b.Player);
 	AnswersGotten.sort((a, b) => a.player - b.player);
+	console.log("----__________-----------");
+	console.log(players);
+	console.log("----__________-----------");
 	for (let i = 0; i < players.length; i++) {
 		Rankings[i].PointsGained = '0';
 		console.log('speler' + AnswersGotten[i].player + ' heeft gedrukt op knop ' + AnswersGotten[i].button);
@@ -1365,6 +1375,7 @@ const refreshAvatars = function(scorePage) {
 const removePlayer = function(playerId) {
 	try {
 		let QuestionAvatarsList = document.querySelectorAll('.c-avatar');
+		console.log(players);
 		for (let i = 0; i < players.length; i++) {
 			if (QuestionAvatarsList[i].dataset.id == playerId) {
 				QuestionAvatarsList[i].style.opacity = 0.3;

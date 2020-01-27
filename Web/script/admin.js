@@ -136,6 +136,7 @@ const deleteAnswer = function() {
 };
 
 //let's all plus buttons add a new answer to a question
+// remove all event listeners from the html and add new eventlisteners to all buttons
 const initializeEventListeners = function() {
 	// gets all plus buttons using js-addNewAnswer class
 	const saveQuestions = document.querySelectorAll('#js-saveQuestion');
@@ -146,62 +147,33 @@ const initializeEventListeners = function() {
 	const allAddNewAnwsers = document.querySelectorAll('.js-addNewAnswer');
 	const questions = document.querySelectorAll('.js-mainQuestion');
 	const answersText = document.querySelectorAll(`.c-input__answer`);
-	for (let answerTextDel of answersText) {
-		try {
-			answerTextDel.removeEventListener('change', changedInput);
-		} catch (error) {}
-	}
 	for (let answerText of answersText) {
-		try {
-			answerText.addEventListener('change', changedInput);
-		} catch (error) {}
+		answerText.removeEventListener('change', changedInput);
+		answerText.addEventListener('change', changedInput);
 	}
 	for (let addNewAnswersvg of allAddNewAnwsers) {
 		addNewAnswersvg.addEventListener('click', addNewAnswer);
 	}
-	for (let questionMain of questions) {
-		try {
-			questionMain.removeEventListener('change', changedInput);
-		} catch (error) {}
-	}
 	for (let mainQuestion of questions) {
-		console.log(questions);
+		mainQuestion.removeEventListener('change', changedInput);
 		mainQuestion.addEventListener('change', changedInput);
 	}
-
-	for (let deleteAnswer of deleteAnswers) {
-		try {
-			deleteAnswer.removeEventListener('click', deleteAnswer);
-		} catch (error) {}
-	}
 	for (let deleteAnswerAdd of deleteAnswers) {
+		deleteAnswerAdd.removeEventListener('click', deleteAnswer);
 		deleteAnswerAdd.addEventListener('click', deleteAnswer);
 	}
-	for (let deleteQuestion of deleteQuestions) {
-		try {
-			deleteQuestion.removeEventListener('click', deleteQuestion);
-		} catch (error) {}
-	}
-	console.log(deleteQuestions);
 
 	for (let deleteQuestionButton of deleteQuestions) {
+		deleteQuestionButton.removeEventListener('click', deleteQuestion);
 		deleteQuestionButton.addEventListener('click', deleteQuestion);
 	}
 	for (let checkBox of checkBoxes) {
-		try {
-			checkBox.removeEventListener('click', changeAnswerCorrect);
-		} catch (error) {}
-	}
-	for (let saveQuestion of saveQuestions) {
-		try {
-			saveQuestion.removeEventListener('click', saveNewQuestion);
-		} catch (error) {}
-	}
-	for (let checkBox of checkBoxes) {
+		checkBox.removeEventListener('click', changeAnswerCorrect);
 		checkBox.addEventListener('click', changeAnswerCorrect);
 	}
 
 	for (let saveQuestion of saveQuestions) {
+		saveQuestion.removeEventListener('click', saveNewQuestion);
 		saveQuestion.addEventListener('click', saveNewQuestion);
 	}
 	newQuestion.addEventListener('click', addQuestion);
@@ -239,7 +211,7 @@ const loadAdminPage = function() {
 		backButton.addEventListener('click', loadLoggedInPage);
 	});
 };
-
+// creates a json from the selected question
 const collectJson = function(guid) {
 	const Answers = document.querySelectorAll(`.answer-${guid}`);
 	const Question = document.querySelector(`#question-${guid}`).value;
@@ -279,11 +251,11 @@ const saveNewQuestion = function() {
 		this.dataset.question = x.questionID;
 	});
 };
+// when a question is saved, the question will be updated
 const updateJson = function(oldId, newItem) {
 	for (let jsonItem of questionsJson) {
-		console.log(questionsJson.indexOf(jsonItem));
 		if (jsonItem.questionID == oldId) {
-			console.log();
+			// locate the question and remove the question
 			questionsJson.splice(questionsJson.indexOf(jsonItem), 1);
 			questionsJson.push(newItem);
 			return true;
@@ -309,6 +281,7 @@ const deleteQuestion = function() {
 		});
 	}
 };
+// When a question is modified, the border will change collor to red if the question is different from the original and green if they are the same
 const modifiedQuestion = function(guid, correct) {
 	const form = document.querySelector(`#form-${guid}`);
 	if (correct) {
@@ -338,6 +311,7 @@ const modifiedQuestion = function(guid, correct) {
 		}
 	}
 };
+// function that will compare the modified question with the original
 const changedInput = function() {
 	if (checkJson(collectJson(this.dataset.question))) {
 		console.log(true);
@@ -347,6 +321,7 @@ const changedInput = function() {
 		console.log(false);
 	}
 };
+// function that will compare the modified question with the original
 const changedValue = function(guid) {
 	if (checkJson(collectJson(guid))) {
 		modifiedQuestion(guid, true);
@@ -356,12 +331,14 @@ const changedValue = function(guid) {
 		console.log(false);
 	}
 };
+// this function will check if a question has been modified.
 const checkJson = function(json) {
 	for (let question of questionsJson) {
 		if (question.questionID == json.questionID) {
 			index = 0;
 			if (json.questionName == question.questionName) {
 				for (let answer of question.questionAnswers) {
+					// create a string of both json's to check if they are the same
 					if (JSON.stringify(answer) === JSON.stringify(json.questionAnswers[index])) {
 						console.log();
 					} else {
@@ -376,7 +353,7 @@ const checkJson = function(json) {
 		}
 	}
 };
-// WIP
+// delete a question from the database
 const deleteQuestionRequest = async function(guid) {
 	let serverEndPoint = `https://project2functions.azurewebsites.net/api/DeleteQuestion?guid=${guid}`;
 	const response = await fetch(serverEndPoint, { headers: customheaders, method: 'GET', mode: 'cors' });

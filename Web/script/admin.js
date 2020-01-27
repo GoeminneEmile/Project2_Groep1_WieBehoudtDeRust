@@ -292,10 +292,14 @@ const modifiedQuestion = function(guid, correct) {
 			form.classList.add('u-border-saved');
 			setTimeout(function() {
 				form.classList.remove('u-border-saved');
+				form.classList.remove('disappear-border');
+				form.classList.remove('appear-border');
+
 			}, 2000);
 		} else if (!form.classList.contains('u-border-saved')) {
 			setTimeout(function() {
 				form.classList.remove('u-border-saved');
+
 				//form.classList.add('disappear-border');
 			}, 2000);
 		}

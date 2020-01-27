@@ -1942,7 +1942,7 @@ more padding on the right to avoid overlap
 \*------------------------------------*/
 
 .o-hidden {
-	display: none;
+	display: none !important;
 }
 
 /*

@@ -286,6 +286,8 @@ const modifiedQuestion = function(guid, correct) {
 	const form = document.querySelector(`#form-${guid}`);
 	if (correct) {
 		if (form.classList.contains('u-border-not-saved')) {
+			form.classList.add('disappear-border');
+			console.log('classes added');
 			form.classList.remove('u-border-not-saved');
 			form.classList.add('u-border-saved');
 			setTimeout(function() {
@@ -294,14 +296,17 @@ const modifiedQuestion = function(guid, correct) {
 		} else if (!form.classList.contains('u-border-saved')) {
 			setTimeout(function() {
 				form.classList.remove('u-border-saved');
+				//form.classList.add('disappear-border');
 			}, 2000);
 		}
 	} else {
 		if (form.classList.contains('u-border-saved')) {
+			form.classList.remove('disappear-border');
 			form.classList.remove('u-border-saved');
 			form.classList.add('u-border-not-saved');
 		}
 		if (!form.classList.contains('u-border-not-saved')) {
+			form.classList.add('appear-border');
 			form.classList.add('u-border-not-saved');
 		}
 	}

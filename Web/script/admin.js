@@ -1,5 +1,7 @@
 //#region adminPage
+// when a new question is added, this variable will be incremented 
 let newQuestionIndex = 0;
+// this array will contain the json of all questions so they can be compared to the modified questions
 let questionsJson = {};
 let adminPage = `            
 <div class="o-layout">

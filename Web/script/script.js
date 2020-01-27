@@ -284,17 +284,22 @@ let Answers = `<div class="c-app o-row--xl c-background--white">
 </div>
 </div>`;
 let Pulsar = `<h2>Pair je hartritme sensoren!</h2>
-<div class="o-row">
+<div class="o-row js-animate">
 	<div class="o-container__centered">
 		<div class="c-align--middle js-pulsarItems">
 			<div class="o-layout u-align-text-center">
 				
 			</div>
-			<div class="o-layout u-align-text-center">
-				<div class="o-layout__item">
-					<button class="c-button c-button--xl"> Start </button>
-				</div>
-			</div>
+			<div class="o-layout o-layout--gutter-lg o-layout--justify-center u-mb-xxxl u-align-text-center">
+                <div class="o-layout__item u-align-middle-svg u-width-full u-1-of-4-bp2 u-mb-lg">
+                    <button class="c-button c-button--xl u-plr-clear u-tr-clear u-width-xl js-scanPolar">
+                        Opnieuw zoeken
+                    </button>
+                </div>
+				<div class="o-layout__item u-width-full u-1-of-4-bp2 u-align-middle-svg u-mb-lg">
+                    <button class="c-button c-button--xl u-tr-clear u-width-xl js-sendPolar"> Start </button>
+                </div>
+            </div>
 		</div>
 	</div>
 </div>`;
@@ -520,7 +525,6 @@ function shuffleArray(array) {
 
 // Function to add a pulsar device
 const addPulsarDevice = function() {
-	//tempPulsarList = [];
 	const sendPolarButton = document.querySelector('.js-sendPolar');
 	sendPolarButton.addEventListener('click', sendPulsarDevices);
 
@@ -584,6 +588,7 @@ const sendPulsarDevices = function() {
 	client.send(message);
 	AvatarButton = document.querySelector('.c-button-start');
 	AvatarButton.style.visibility = 'hidden';
+	AvatarButton.classList.add('o-hidden');
 	BackButton = document.querySelector('.c-button-back');
 	BackButton.addEventListener('click', Page);
 };
@@ -625,10 +630,17 @@ const loadPulsarDevices = function() {
 		index += 1;
 	}
 	html += `</div>`;
-	html += `<div class="o-layout u-align-text-center js-sendPolar o-hidden">
-	<div class="o-layout__item">
-		<button class="c-button c-button--xl"> Start </button>
-	</div></div>`;
+	html += `
+	<div class="o-layout o-layout--gutter-lg o-layout--justify-center u-mb-xxxl u-align-text-center">
+                <div class="o-layout__item u-align-middle-svg u-width-full u-1-of-4-bp2 u-mb-lg">
+                    <button class="c-button c-button--xl u-plr-clear u-tr-clear u-width-xl js-scanPolar">
+                        Opnieuw zoeken
+                    </button>
+                </div>
+				<div class="o-layout__item u-width-full u-1-of-4-bp2 u-align-middle-svg u-mb-lg js-sendPolar o-hidden">
+                    <button class="c-button c-button--xl u-tr-clear u-width-xl"> Start </button>
+                </div>
+            </div>`;
 	pulsarDiv.innerHTML = html;
 	let pulsarButtons = document.querySelectorAll('.js-pulsarButton');
 
@@ -1056,6 +1068,13 @@ const arrayMaxIndex = function(array) {
 	}
 	return highest.player_id;
 };
+const rescanDevicesFunction = function() {
+	message = new Paho.Message(JSON.stringify({ type: 'scan', status: 'start' }));
+	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
+	client.send(message);
+	ShowLoadingScreen();
+	gameStep = 1;
+};
 // called when a message arrives
 function onMessageArrived(message) {
 	// Receiving message
@@ -1096,6 +1115,8 @@ function onMessageArrived(message) {
 					}
 					// Items in global list will get shown on screen
 					loadPulsarDevices();
+					let rescanDevices = document.querySelector('.js-scanPolar');
+					rescanDevices.addEventListener('click', rescanDevicesFunction);
 				}
 			}
 			break;
@@ -1120,6 +1141,7 @@ function onMessageArrived(message) {
 					// If there are more than 0 avatars chosen
 					if (players.length != 0) {
 						AvatarButton.style.visibility = 'visible';
+						AvatarButton.classList.remove('o-hidden');
 					}
 
 					// If all 4 avatars have been chosen

@@ -161,7 +161,8 @@ let Avatars = `<div>
 				</div>
 			</div>
 			<div class="u-align-text-center">
-				<button class="c-button c-button--xl"> Start </button>
+				<button class="c-button c-button--xl u-mlr-md c-button-back"> Back </button>
+				<button class="c-button c-button--xl c-button-start"> Start </button>
 			</div>
 		</div>
 	</div>
@@ -519,6 +520,7 @@ function shuffleArray(array) {
 
 // Function to add a pulsar device
 const addPulsarDevice = function() {
+	//tempPulsarList = [];
 	const sendPolarButton = document.querySelector('.js-sendPolar');
 	sendPolarButton.addEventListener('click', sendPulsarDevices);
 
@@ -580,8 +582,10 @@ const sendPulsarDevices = function() {
 	message = new Paho.Message(JSON.stringify({ type: 'avatar', status: 'start' }));
 	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 	client.send(message);
-	AvatarButton = document.querySelector('.c-button');
+	AvatarButton = document.querySelector('.c-button-start');
 	AvatarButton.style.visibility = 'hidden';
+	BackButton = document.querySelector('.c-button-back');
+	BackButton.addEventListener('click', Page);
 };
 
 // Loading the returned pulsar devices onto the HTML after generating the page
@@ -1084,6 +1088,9 @@ function onMessageArrived(message) {
 				if (jsonMessage.status == 'devices') {
 				} else {
 					ReplaceRow.innerHTML = Pulsar;
+					pulsarList = [];
+					tempPulsarList = { 0: undefined, 1: undefined, 2: undefined, 3: undefined };
+
 					for (let i of jsonMessage.devices) {
 						pulsarList.push(i);
 					}
@@ -1097,7 +1104,7 @@ function onMessageArrived(message) {
 			console.log(gameStep);
 			if (gameStep == 2) {
 				// Selecting the button and making it hidden
-				AvatarButton = document.querySelector('.c-button');
+				AvatarButton = document.querySelector('.c-button-start');
 				AvatarButton.addEventListener('click', GenerateQuestionPage);
 
 				// Receiving which avatars are being chosen
@@ -1164,9 +1171,9 @@ function onMessageArrived(message) {
 					if (players.length < 2) {
 						gameOver = true;
 						QuestionRow.innerHTML = Sporting;
-						console.log("tot hier gaat het nog goed");
+						console.log('tot hier gaat het nog goed');
 						generateScorePage();
-						
+
 						break;
 					}
 					gameStep++;
@@ -1276,7 +1283,7 @@ function onMessageArrived(message) {
 			break;
 	}
 }
-const generateScorePage = function(){
+const generateScorePage = function() {
 	clearInterval(intervalAll);
 	console.log('Alle antwoorden zijn ingegeven');
 	QuestionRow.innerHTML = Sporting;
@@ -1293,7 +1300,7 @@ const generateScorePage = function(){
 	console.log('_______________');
 
 	for (let i = 0; i < players.length; i++) {
-	NewAvatars[i].innerHTML = Rankings[i].Avatar;
+		NewAvatars[i].innerHTML = Rankings[i].Avatar;
 		TotalScores[i].innerHTML = Rankings[i].Points;
 		PointsGainedList[i].innerHTML = '+ ' + Rankings[i].PointsGained;
 		PlayerNames[i].innerHTML = 'Speler ' + Rankings[i].Player;
@@ -1333,17 +1340,16 @@ const generateScorePage = function(){
 	intervalSportsPage = setInterval(function() {
 		Aftelling.innerHTML = Aftelling.innerHTML - 1;
 		if (Aftelling.innerHTML == 0) {
-			if(gameOver){
+			if (gameOver) {
 				refreshAvatars(true);
-				console.log("tot hier gaat het nogaltijd goed");
+				console.log('tot hier gaat het nogaltijd goed');
 				generatePodiumPage();
-			}
-			else{
+			} else {
 				GenerateSportsPage();
 			}
 		}
 	}, 1000);
-}
+};
 const calcScore = function() {
 	Rankings.sort((a, b) => a.Player - b.Player);
 	AnswersGotten.sort((a, b) => a.player - b.player);
@@ -1421,7 +1427,7 @@ const SubmitAnswer = function(answer) {
 		switch (answer.button) {
 			case 0:
 				removePlayer(answer.player);
-				
+
 				break;
 
 			default:
@@ -1514,6 +1520,7 @@ const login = function() {
 
 // Creating the pin page
 const Page = function() {
+	gameStep = 0;
 	ReplaceRow.innerHTML = pinPage;
 	SubmitButton = document.querySelector('#js-submit');
 	let pinInput = document.querySelector('.js-input-pin');

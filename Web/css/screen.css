@@ -2300,6 +2300,31 @@ li span {
     Utility classes to put specific max widths onto elements
 */
 
+.u-opacity-half{
+	opacity: 0.2;
+}
+
+/*
+    Utilities: max-width
+    ---
+    Utility classes to put specific max widths onto elements
+*/
+
+.u-position-absolute{
+	position: absolute;
+	left: 50%;
+  	margin-left: -150px;
+  	top: 50%;
+  	margin-top: -50px;
+}
+
+
+/*
+    Utilities: max-width
+    ---
+    Utility classes to put specific max widths onto elements
+*/
+
 .u-max-width-xs {
 	max-width: 27em !important;
 }

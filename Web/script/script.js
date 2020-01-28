@@ -655,7 +655,7 @@ const loadPolarDevices = function () {
 			  <circle cx="50.5" cy="30.5" r="2.5" fill="#ff0"/>
 			</svg>
 		</div>
-		<button data-id="${index}" data-player="-1" class="c-button c-button--xl js-polarButton"> Pair </button>
+		<button data-id="${index}" data-player="-1" class="c-button c-button--xl u-padding--side js-polarButton"> Pair </button>
 	</div>`;
 		index += 1;
 	}
@@ -782,7 +782,7 @@ const ShowLoadingScreen = function () {
 	AnimateRow.innerHTML = loader;
 	AnimateRow.insertAdjacentHTML(
 		'afterend', `<div class="js-returnLoader u-align-text-center">
-		<button class="c-button c-button--xl u-mb-md u-tr-clear js-pinPage"> Terug </button>
+		<button class="c-button c-button--xl u-mb-md u-tr-clear js-pinPage u-margin--top"> Terug </button>
 	</div>`
 	);
 	let returnPin = document.querySelector('.js-pinPage');

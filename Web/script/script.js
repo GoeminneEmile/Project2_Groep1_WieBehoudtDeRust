@@ -599,6 +599,10 @@ const sendPulsarDevices = function () {
 
 // Loading the returned pulsar devices onto the HTML after generating the page
 const loadPulsarDevices = function () {
+	try {
+		document.querySelector('.js-returnLoader').remove();
+	} catch (error) {
+	}
 	ReplaceRow.innerHTML = Pulsar;
 	let html = '';
 	let pulsarDiv = document.querySelector('.js-pulsarItems');
@@ -663,6 +667,7 @@ const resetQuestions = function () {
 // Function that GETS questions + answers, and shows them!
 const ShowQuestionAndAnswers = function () {
 	// IF this is the first question of the quiz, we will send a message to the back-end to read the 'resting' heart beat
+	
 	resetQuestions();
 	for (let i = 0; i < players.length; i++) {
 		playersAnswered.push({ player: players[i].player, answered: false });
@@ -754,7 +759,7 @@ const ShowLoadingScreen = function () {
 	}
 	AnimateRow.innerHTML = loader;
 	AnimateRow.insertAdjacentHTML(
-		'afterend',`<div class=" u-align-text-center">
+		'afterend',`<div class="js-returnLoader u-align-text-center">
 		<button class="c-button c-button--xl u-mb-md u-tr-clear js-pinPage"> Terug </button>
 	</div>`);
 	let returnPin = document.querySelector('.js-pinPage');

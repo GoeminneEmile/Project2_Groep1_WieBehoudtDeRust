@@ -288,11 +288,7 @@ let Answers = `<div class="c-app o-row--xl c-background--white">
 	</div>
 </div>
 </div>`;
-<<<<<<< HEAD
 let Polar = `<h2>Pair je hartritme sensoren!</h2>
-=======
-let Pulsar = `<h2>Connecteer je hartritme sensoren!</h2>
->>>>>>> develop
 <div class="o-row js-animate">
 	<div class="o-container__centered">
 		<div class="c-align--middle js-polarItems">
@@ -538,26 +534,15 @@ const addPolarDevice = function () {
 	sendPolarButton.addEventListener('click', sendPolarDevices);
 
 	for (let i = 0; i < 4; i++) {
-<<<<<<< HEAD
 		if (tempPolarList[i] === undefined && this.dataset.player == '-1') {
 			tempPolarList[i] = this.dataset.id;
 			this.innerHTML = `Player ${i + 1}`;
-=======
-		if (tempPulsarList[i] === undefined && this.dataset.player == '-1') {
-			tempPulsarList[i] = this.dataset.id;
-			this.innerHTML = `Speler ${i + 1}`;
->>>>>>> develop
 			this.dataset.player = i;
 			break;
 		} else if (tempPolarList[i] != undefined && i != this.dataset.player) {
 		} else {
-<<<<<<< HEAD
 			tempPolarList[this.dataset.player] = undefined;
 			this.innerHTML = 'Pair';
-=======
-			tempPulsarList[this.dataset.player] = undefined;
-			this.innerHTML = 'Connecteer';
->>>>>>> develop
 			this.dataset.player = -1;
 			break;
 		}
@@ -649,11 +634,7 @@ const loadPolarDevices = function () {
 			  <circle cx="50.5" cy="30.5" r="2.5" fill="#ff0"/>
 			</svg>
 		</div>
-<<<<<<< HEAD
 		<button data-id="${index}" data-player="-1" class="c-button c-button--xl js-polarButton"> Pair </button>
-=======
-		<button data-id="${index}" data-player="-1" class="c-button c-button--xl u-padding--side js-pulsarButton"> Connecteer </button>
->>>>>>> develop
 	</div>`;
 		index += 1;
 	}
@@ -779,16 +760,10 @@ const ShowLoadingScreen = function () {
 	}
 	AnimateRow.innerHTML = loader;
 	AnimateRow.insertAdjacentHTML(
-<<<<<<< HEAD
 		'afterend', `<div class="js-returnLoader u-align-text-center">
 		<button class="c-button c-button--xl u-mb-md u-tr-clear js-pinPage"> Terug </button>
 	</div>`
 	);
-=======
-		'afterend', `<div class=" u-align-text-center">
-		<button class="c-button c-button--xl u-mb-md u-tr-clear js-pinPage u-margin--top"> Terug </button>
-	</div>`);
->>>>>>> develop
 	let returnPin = document.querySelector('.js-pinPage');
 	returnPin.addEventListener("click", Page);
 };
@@ -841,11 +816,7 @@ const initializeCommunication = function () {
 	showMessage(false, 'Proberen connectie maken met spel...');
 	//Shows a error message after 10 seconds
 	intervalErrorMessage = setInterval(function () {
-<<<<<<< HEAD
 		showMessage(true, 'Er kan geen connectie gemaakt worden met de spel! Bent u zeker dat de game pin juist is?');
-=======
-		showMessage(true, 'Er kan geen connectie gemaakt worden met de spel! Bent u zeker dat het spel pin juist is?');
->>>>>>> develop
 		clearInterval(intervalErrorMessage);
 	}, errorMessageInterval);
 };

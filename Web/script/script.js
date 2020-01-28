@@ -287,7 +287,7 @@ let Answers = `<div class="c-app o-row--xl c-background--white">
 	</div>
 </div>
 </div>`;
-let Pulsar = `<h2>Pair je hartritme sensoren!</h2>
+let Pulsar = `<h2>Connecteer je hartritme sensoren!</h2>
 <div class="o-row js-animate">
 	<div class="o-container__centered">
 		<div class="c-align--middle js-pulsarItems">
@@ -309,7 +309,7 @@ let Pulsar = `<h2>Pair je hartritme sensoren!</h2>
 </div>`;
 let pinPage = `<form class="c-form-field js-animate" onSubmit="return false;">
 <div class="c-input__middle">
-	<label class="c-label" for="gamePin">Game pin</label>
+	<label class="c-label" for="gamePin">Spel pin</label>
 	<input id="gamePin" class="c-input js-input-pin" type="number" name="gamePin" id="gamePin" min=100000 max=999999 placeholder="000000" />
 	<button id="js-submit" class="c-submit" type="button">
 		<svg class="c-input__icon" xmlns="http://www.w3.org/2000/svg" width="20.486" height="35.827" viewBox="0 0 20.486 35.827">
@@ -535,13 +535,13 @@ const addPulsarDevice = function () {
 	for (let i = 0; i < 4; i++) {
 		if (tempPulsarList[i] === undefined && this.dataset.player == '-1') {
 			tempPulsarList[i] = this.dataset.id;
-			this.innerHTML = `Player ${i + 1}`;
+			this.innerHTML = `Speler ${i + 1}`;
 			this.dataset.player = i;
 			break;
 		} else if (tempPulsarList[i] != undefined && i != this.dataset.player) {
 		} else {
 			tempPulsarList[this.dataset.player] = undefined;
-			this.innerHTML = 'Pair';
+			this.innerHTML = 'Connecteer';
 			this.dataset.player = -1;
 			break;
 		}
@@ -629,7 +629,7 @@ const loadPulsarDevices = function () {
 			  <circle cx="50.5" cy="30.5" r="2.5" fill="#ff0"/>
 			</svg>
 		</div>
-		<button data-id="${index}" data-player="-1" class="c-button c-button--xl js-pulsarButton"> Pair </button>
+		<button data-id="${index}" data-player="-1" class="c-button c-button--xl u-padding--side js-pulsarButton"> Connecteer </button>
 	</div>`;
 		index += 1;
 	}
@@ -754,11 +754,11 @@ const ShowLoadingScreen = function () {
 	}
 	AnimateRow.innerHTML = loader;
 	AnimateRow.insertAdjacentHTML(
-		'afterend',`<div class=" u-align-text-center">
-		<button class="c-button c-button--xl u-mb-md u-tr-clear js-pinPage"> Terug </button>
+		'afterend', `<div class=" u-align-text-center">
+		<button class="c-button c-button--xl u-mb-md u-tr-clear js-pinPage u-margin--top"> Terug </button>
 	</div>`);
 	let returnPin = document.querySelector('.js-pinPage');
-	returnPin.addEventListener("click",Page);
+	returnPin.addEventListener("click", Page);
 };
 
 // Function to GET all questions
@@ -809,7 +809,7 @@ const initializeCommunication = function () {
 	showMessage(false, 'Proberen connectie maken met spel...');
 	//Shows a error message after 10 seconds
 	intervalErrorMessage = setInterval(function () {
-		showMessage(true, 'Er kan geen connectie gemaakt worden met de spel! Bent u zeker dat de game pin juist is?');
+		showMessage(true, 'Er kan geen connectie gemaakt worden met de spel! Bent u zeker dat het spel pin juist is?');
 		clearInterval(intervalErrorMessage);
 	}, errorMessageInterval);
 };
@@ -936,7 +936,7 @@ const GenerateSecondsPage = function () {
 
 	Rankings.sort((a, b) => b.SecondsGained - a.SecondsGained);
 	for (let i = 0; i < players.length; i++) {
-		NewAvatars[i].innerHTML = avatars[Rankings[i].Avatar-1];
+		NewAvatars[i].innerHTML = avatars[Rankings[i].Avatar - 1];
 		TotalScores[i].innerHTML = players[i].time_left / 1000;
 		PointsGainedList[i].innerHTML = '+ ' + Rankings[i].SecondsGained / 1000;
 		PlayerNames[i].innerHTML = 'Speler ' + Rankings[i].Player;
@@ -965,8 +965,8 @@ const GenerateSecondsPage = function () {
 		}
 	}, 1000);
 };
-const generatePodiumPage = function() {
-	for(let player of players){
+const generatePodiumPage = function () {
+	for (let player of players) {
 		podiumPlayers.push(player);
 	}
 	App = document.querySelector('.c-app');
@@ -977,10 +977,10 @@ const generatePodiumPage = function() {
 	//#region Podium
 	for (let i = 0; i < 3; i++) {
 		if (podiumPlayers.length > i) {
-			let json = { player: podiumPlayers[i].player, score: podiumPlayers[i].points, avatar: avatars[podiumPlayers[i].avatar -1],visible:"style=''"};
+			let json = { player: podiumPlayers[i].player, score: podiumPlayers[i].points, avatar: avatars[podiumPlayers[i].avatar - 1], visible: "style=''" };
 			podiumLeaderBoard.push(json);
 		} else {
-			podiumLeaderBoard.push({ player: '....', score: '....', avatar: avatars[3],visible:"style='visibility:hidden'" });
+			podiumLeaderBoard.push({ player: '....', score: '....', avatar: avatars[3], visible: "style='visibility:hidden'" });
 		}
 	}
 	//#region podium
@@ -1104,8 +1104,8 @@ const GenerateSportsPage = function () {
 		imagesvg.data = `./img/sports/sports_${RandomImage}.svg`;
 		clearInterval(intervalSportsPage);
 		GoddelijkeTimer = document.querySelector('.js-delay-question');
-		intervalSportsActivityPage = setInterval(function() {
-			if(GoddelijkeTimer.innerHTML != 0){
+		intervalSportsActivityPage = setInterval(function () {
+			if (GoddelijkeTimer.innerHTML != 0) {
 				GoddelijkeTimer.innerHTML = GoddelijkeTimer.innerHTML - 1;
 			}
 			if (GoddelijkeTimer.innerHTML == 5) {
@@ -1116,7 +1116,7 @@ const GenerateSportsPage = function () {
 			if (GoddelijkeTimer.innerHTML == 0) {
 				// Create leaderboard for question here
 				//functie uitvoeren voor vragen opnieuw te tonen
-				if(bpmReceived){
+				if (bpmReceived) {
 					GenerateSecondsPage();
 					bpmReceived = false;
 				}
@@ -1215,7 +1215,7 @@ function onMessageArrived(message) {
 						QuestionAvatarsList = document.querySelectorAll('.c-avatar');
 						ScoreList = document.querySelectorAll('.c-avatar--orange');
 						GenerateQuestionPage();
-						
+
 						break;
 					}
 
@@ -1388,7 +1388,7 @@ const generateScorePage = function () {
 	Rankings.sort((a, b) => b.PointsGained - a.PointsGained);
 
 	for (let i = 0; i < players.length; i++) {
-		NewAvatars[i].innerHTML = avatars[Rankings[i].Avatar-1];
+		NewAvatars[i].innerHTML = avatars[Rankings[i].Avatar - 1];
 		TotalScores[i].innerHTML = Rankings[i].Points;
 		PointsGainedList[i].innerHTML = '+ ' + Rankings[i].PointsGained;
 		PlayerNames[i].innerHTML = 'Speler ' + Rankings[i].Player;
@@ -1423,7 +1423,7 @@ const generateScorePage = function () {
 	}
 
 	// The countdown timer for all players.
-	
+
 	let Aftelling = document.querySelector('.js-delay-question');
 	Aftelling.innerHTML = 5;
 	intervalSportsPage = setInterval(function () {
@@ -1481,7 +1481,7 @@ const removePlayer = function (playerId) {
 				break;
 			}
 		}
-		podiumPlayers.push(players[players.findIndex(function(item) {
+		podiumPlayers.push(players[players.findIndex(function (item) {
 			return item.player == playerId;
 		})]);
 		players.splice(

@@ -557,7 +557,7 @@ const addPolarDevice = function () {
 	for (let i = 0; i < 4; i++) {
 		if (tempPolarList[i] === undefined && this.dataset.player == '-1') {
 			tempPolarList[i] = this.dataset.id;
-			this.innerHTML = `Player ${i + 1}`;
+			this.innerHTML = `Speler ${i + 1}`;
 			this.dataset.player = i;
 			break;
 		} else if (tempPolarList[i] != undefined && i != this.dataset.player) {

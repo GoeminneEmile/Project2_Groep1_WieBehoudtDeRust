@@ -31,7 +31,7 @@ class HRM(Peripheral):
 
 # Methode voor printen van data
 def print_hr_x(cHandle, data):
-    print("Robbe: " + str(data[1]))
+    print("Luka: " + str(data[1]))
 
 def print_hr_y(cHandle, data):
     print("Nick: " + str(data[1]))
@@ -62,7 +62,7 @@ def main(device_id, x):
         else:
             hrm.delegate.handleNotification = print_hr_y
         # 200 keer de data uitlezen
-        for x in range(1):
+        for x in range(200):
             hrm.waitForNotifications(3.)
     # Deconnecteren wanneer hartslag sensor is geconnecteerd
     finally:

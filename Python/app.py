@@ -63,6 +63,14 @@ ontvangen_hartslag_1 = 0
 ontvangen_hartslag_2 = 0
 ontvangen_hartslag_3 = 0
 ontvangen_hartslag_4 = 0
+threat_send_forcefully_1 = None
+threat_send_forcefully_2 = None
+threat_send_forcefully_3 = None
+threat_send_forcefully_4 = None
+stop_forcefully_1 = False
+stop_forcefully_2 = False
+stop_forcefully_3 = False
+stop_forcefully_4 = False
 
 # Knoppen
 dev = None
@@ -117,6 +125,17 @@ class HRM(Peripheral):
 # --------------------
 # Methodes
 # --------------------
+def mqtt_doorsturen_hartslag_forcefully(player_id, hrm):
+    start_tijd = time.time()
+    while (time.time() - start_tijd) * 1000.0 < 8000:
+        pass
+    if (player_id is 1 and stop_forcefully_1 is False) or (player_id is 2 and stop_forcefully_2 is False) or\
+            (player_id is 3 and stop_forcefully_3 is False) or (player_id is 4 and stop_forcefully_4 is False):
+        mqtt_doorsturen_hartslag(player_id, 0)
+        hrm.disconnect()
+        print("---- Forcefully deconnected with bluetooth device of player {0} ----".format(player_id))
+
+
 def lcd_reset():
     start_tijd = time.time()
     while (time.time() - start_tijd) * 1000.0 < 5000:
@@ -230,7 +249,8 @@ def mqtt_init_communicatie():
 
 
 def show_hartslag_1(cHandle, data):
-    global ontvangen_hartslag_1
+    global ontvangen_hartslag_1, stop_forcefully_1
+    stop_forcefully_1 = True
     print("Hartslag speler 1: " + str(data[1]))
     ontvangen_hartslag_1 += 1
     if ontvangen_hartslag_1 == aantal_lees_acties:
@@ -238,7 +258,8 @@ def show_hartslag_1(cHandle, data):
 
 
 def show_hartslag_2(cHandle, data):
-    global ontvangen_hartslag_2
+    global ontvangen_hartslag_2, stop_forcefully_2
+    stop_forcefully_2 = True
     print("Hartslag speler 2: " + str(data[1]))
     ontvangen_hartslag_2 += 1
     if ontvangen_hartslag_2 == aantal_lees_acties:
@@ -246,7 +267,8 @@ def show_hartslag_2(cHandle, data):
 
 
 def show_hartslag_3(cHandle, data):
-    global ontvangen_hartslag_3
+    global ontvangen_hartslag_3, stop_forcefully_3
+    stop_forcefully_3 = True
     print("Hartslag speler 3: " + str(data[1]))
     ontvangen_hartslag_3 += 1
     if ontvangen_hartslag_3 == aantal_lees_acties:
@@ -254,7 +276,8 @@ def show_hartslag_3(cHandle, data):
 
 
 def show_hartslag_4(cHandle, data):
-    global ontvangen_hartslag_4
+    global ontvangen_hartslag_4, stop_forcefully_4
+    stop_forcefully_4 = True
     print("Hartslag speler 4: " + str(data[1]))
     ontvangen_hartslag_4 += 1
     if ontvangen_hartslag_4 == aantal_lees_acties:
@@ -262,8 +285,10 @@ def show_hartslag_4(cHandle, data):
 
 
 def uitlezen_bt_device(device_id, aantal_lees_acties, player):
-    global ontvangen_hartslag_1, ontvangen_hartslag_2, ontvangen_hartslag_3, ontvangen_hartslag_4
+    global ontvangen_hartslag_1, ontvangen_hartslag_2, ontvangen_hartslag_3, ontvangen_hartslag_4, stop_forcefully_1,\
+        stop_forcefully_2, stop_forcefully_3, stop_forcefully_4
     ontvangen_hartslag_1, ontvangen_hartslag_2, ontvangen_hartslag_3, ontvangen_hartslag_4 = 0, 0, 0, 0
+    stop_forcefully_1, stop_forcefully_2, stop_forcefully_3, stop_forcefully_4 = False, False, False, False
     # uuid's opvragen
     cccid = AssignedNumbers.client_characteristic_configuration
     hrmid = AssignedNumbers.heart_rate
@@ -293,12 +318,20 @@ def uitlezen_bt_device(device_id, aantal_lees_acties, player):
         hrm.writeCharacteristic(d.handle, b'\1\0')
         # Callback zetten op print_hr functie bij het ontvangen van notificatie
         if player == 1:
+            threat_send_forcefully_1 = threading.Thread(target=mqtt_doorsturen_hartslag_forcefully, args=(player, hrm))
+            threat_send_forcefully_1.start()
             hrm.delegate.handleNotification = show_hartslag_1
         elif player == 2:
+            threat_send_forcefully_2 = threading.Thread(target=mqtt_doorsturen_hartslag_forcefully, args=(player, hrm))
+            threat_send_forcefully_2.start()
             hrm.delegate.handleNotification = show_hartslag_2
         elif player == 3:
+            threat_send_forcefully_3 = threading.Thread(target=mqtt_doorsturen_hartslag_forcefully, args=(player, hrm))
+            threat_send_forcefully_3.start()
             hrm.delegate.handleNotification = show_hartslag_3
         elif player == 4:
+            threat_send_forcefully_4 = threading.Thread(target=mqtt_doorsturen_hartslag_forcefully, args=(player, hrm))
+            threat_send_forcefully_4.start()
             hrm.delegate.handleNotification = show_hartslag_4
         # Aantal keer de data uitlezen
         for x in range(aantal_lees_acties):

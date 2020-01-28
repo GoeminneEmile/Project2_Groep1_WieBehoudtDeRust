@@ -1264,7 +1264,11 @@ function onMessageArrived(message) {
 
 				//If the length of playerAnswers equals the length of players, we know that we received all answers
 				if (AnswersGotten.length == players.length) {
-					if (players.length < 2) {
+					if(players.length < 1){
+						refreshAvatars(true);
+						generatePodiumPage();
+					}
+					else if (players.length < 2) {
 						gameOver = true;
 						QuestionRow.innerHTML = Sporting;
 						generateScorePage();
@@ -1548,6 +1552,7 @@ const SubmitAnswer = function (answer) {
 					return item.player == answer.player;
 				})
 				players[playerIndex].time_left += 1;
+				players[playerIndex].time_left = math.round(players[playerIndex].time_left);
 				playerAnswer(answer);
 				break;
 		}

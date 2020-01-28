@@ -1154,14 +1154,15 @@ const GenerateSportsPage = function () {
 				// Create leaderboard for question here
 				//functie uitvoeren voor vragen opnieuw te tonen
 				if (bpmReceived) {
-					waitForBpm++;
 					GenerateSecondsPage();
 					bpmReceived = false;
-					if(waitForBpm == 1){
-						timeContainer.classList.add('u-opacity-half');
-						timeContainer.insertAdjacentHTML(
-							'afterend', transparentLoader);
-					}
+					
+				}
+				waitForBpm++;
+				if(waitForBpm == 1){
+					timeContainer.classList.add('u-opacity-half');
+					timeContainer.insertAdjacentHTML(
+						'afterend', transparentLoader);
 				}
 			}
 		}, 1000);

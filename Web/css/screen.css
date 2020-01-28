@@ -2301,7 +2301,49 @@ li span {
 */
 
 .u-opacity-half{
-	opacity: 0.2;
+	opacity: 1;
+	-webkit-animation: u-opacity-half 1s ease-in-out forwards;
+	animation: u-opacity-half 1s ease-in-out forwards;
+}
+
+@-webkit-keyframes u-opacity-half {
+	0% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0.2;
+	}
+}
+@keyframes u-opacity-half {
+	0% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0.2;
+	}
+}
+
+.u-opacity-full{
+	opacity: 0;
+	-webkit-animation: u-opacity-full 2s ease-in-out forwards;
+	animation: u-opacity-full 2s ease-in-out forwards;
+}
+
+@-webkit-keyframes u-opacity-full {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+@keyframes u-opacity-full {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
 }
 
 /*

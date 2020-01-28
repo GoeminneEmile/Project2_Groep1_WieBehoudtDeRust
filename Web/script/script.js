@@ -655,7 +655,7 @@ const loadPolarDevices = function () {
 			  <circle cx="50.5" cy="30.5" r="2.5" fill="#ff0"/>
 			</svg>
 		</div>
-		<button data-id="${index}" data-player="-1" class="c-button c-button--xl u-padding--side js-polarButton"> Pair </button>
+		<button data-id="${index}" data-player="-1" class="c-button c-button--xl u-padding--side js-polarButton"> Connecteer </button>
 	</div>`;
 		index += 1;
 	}

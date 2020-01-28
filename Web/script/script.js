@@ -42,7 +42,7 @@ let myAudio = new Audio('./assets/Rustdrum.mp3');
 let players = [];
 let selectedAvatars = [];
 let QuestionList = [];
-let pulsarList = [];
+let polarList = [];
 let PlayerBPMList = [];
 let playerAnswers = [];
 let playersAnswers = [];
@@ -62,7 +62,7 @@ let sports = [ './img/sports_1.svg', './img/sports_2.svg', './img/sports_3.svg' 
 let customheaders = new Headers();
 
 // global array's
-let tempPulsarList = { 0: undefined, 1: undefined, 2: undefined, 3: undefined };
+let tempPolarList = { 0: undefined, 1: undefined, 2: undefined, 3: undefined };
 
 //#region Avatars
 //#region Panda
@@ -288,10 +288,10 @@ let Answers = `<div class="c-app o-row--xl c-background--white">
 	</div>
 </div>
 </div>`;
-let Pulsar = `<h2>Pair je hartritme sensoren!</h2>
+let Polar = `<h2>Pair je hartritme sensoren!</h2>
 <div class="o-row js-animate">
 	<div class="o-container__centered">
-		<div class="c-align--middle js-pulsarItems">
+		<div class="c-align--middle js-polarItems">
 			<div class="o-layout u-align-text-center">
 				
 			</div>
@@ -528,20 +528,20 @@ function shuffleArray(array) {
 	return array;
 }
 
-// Function to add a pulsar device
-const addPulsarDevice = function() {
+// Function to add a polar device
+const addPolarDevice = function() {
 	const sendPolarButton = document.querySelector('.js-sendPolar');
-	sendPolarButton.addEventListener('click', sendPulsarDevices);
+	sendPolarButton.addEventListener('click', sendPolarDevices);
 
 	for (let i = 0; i < 4; i++) {
-		if (tempPulsarList[i] === undefined && this.dataset.player == '-1') {
-			tempPulsarList[i] = this.dataset.id;
+		if (tempPolarList[i] === undefined && this.dataset.player == '-1') {
+			tempPolarList[i] = this.dataset.id;
 			this.innerHTML = `Player ${i + 1}`;
 			this.dataset.player = i;
 			break;
-		} else if (tempPulsarList[i] != undefined && i != this.dataset.player) {
+		} else if (tempPolarList[i] != undefined && i != this.dataset.player) {
 		} else {
-			tempPulsarList[this.dataset.player] = undefined;
+			tempPolarList[this.dataset.player] = undefined;
 			this.innerHTML = 'Pair';
 			this.dataset.player = -1;
 			break;
@@ -549,7 +549,7 @@ const addPulsarDevice = function() {
 	}
 	let returnState = false;
 	for (let i = 0; i < 4; i++) {
-		if (tempPulsarList[i] != undefined) {
+		if (tempPolarList[i] != undefined) {
 			returnState = true;
 		}
 	}
@@ -565,25 +565,25 @@ const addPulsarDevice = function() {
 };
 
 // Function that requests a scan to the back-end, the back-end will return the bluetooth devices in the area
-const sendPulsarDevices = function() {
+const sendPolarDevices = function() {
 	gameStep = 2;
 	let devicesList = [];
 	let playerIndex = 0;
 	for (let i = 0; i < 4; i++) {
-		if (tempPulsarList[i] != undefined) {
-			let json = { name: pulsarList[tempPulsarList[i]].name, mac: pulsarList[tempPulsarList[i]].mac, player: i + 1 };
+		if (tempPolarList[i] != undefined) {
+			let json = { name: polarList[tempPolarList[i]].name, mac: polarList[tempPolarList[i]].mac, player: i + 1 };
 			devicesList.push(json);
 			playerIndex++;
 		}
 	}
 	playerCount = playerIndex;
 
-	const jsonPulsar = {
+	const jsonPolar = {
 		type: 'scan',
 		status: 'devices',
 		devices: devicesList
 	};
-	message = new Paho.Message(JSON.stringify(jsonPulsar));
+	message = new Paho.Message(JSON.stringify(jsonPolar));
 	message.destinationName = `/luemniro/JsToPi/${InputFieldValue}`;
 	client.send(message);
 
@@ -598,18 +598,18 @@ const sendPulsarDevices = function() {
 	BackButton.addEventListener('click', Page);
 };
 
-// Loading the returned pulsar devices onto the HTML after generating the page
-const loadPulsarDevices = function () {
+// Loading the returned polar devices onto the HTML after generating the page
+const loadPolarDevices = function () {
 	try {
 		document.querySelector('.js-returnLoader').remove();
 	} catch (error) {
 	}
-	ReplaceRow.innerHTML = Pulsar;
+	ReplaceRow.innerHTML = Polar;
 	let html = '';
-	let pulsarDiv = document.querySelector('.js-pulsarItems');
+	let polarDiv = document.querySelector('.js-polarItems');
 	let index = 0;
 	let columnCount = -1;
-	for (let pulsar of pulsarList) {
+	for (let polar of polarList) {
 		if (columnCount == -1) {
 			html += `<div class="o-layout u-align-text-center">`;
 			columnCount++;
@@ -620,7 +620,7 @@ const loadPulsarDevices = function () {
 			columnCount++;
 		}
 		html += `<div class="o-layout__item u-pb-xl u-1-of-4">
-		<h3>${pulsar.name}</h3>
+		<h3>${polar.name}</h3>
 		<div class="c-image">
 			<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 102 102">
 			  <g>
@@ -634,7 +634,7 @@ const loadPulsarDevices = function () {
 			  <circle cx="50.5" cy="30.5" r="2.5" fill="#ff0"/>
 			</svg>
 		</div>
-		<button data-id="${index}" data-player="-1" class="c-button c-button--xl js-pulsarButton"> Pair </button>
+		<button data-id="${index}" data-player="-1" class="c-button c-button--xl js-polarButton"> Pair </button>
 	</div>`;
 		index += 1;
 	}
@@ -650,11 +650,11 @@ const loadPulsarDevices = function () {
                     <button class="c-button c-button--xl u-tr-clear u-width-xl"> Start </button>
                 </div>
             </div>`;
-	pulsarDiv.innerHTML = html;
-	let pulsarButtons = document.querySelectorAll('.js-pulsarButton');
+	polarDiv.innerHTML = html;
+	let polarButtons = document.querySelectorAll('.js-polarButton');
 
-	for (let button of pulsarButtons) {
-		button.addEventListener('click', addPulsarDevice);
+	for (let button of polarButtons) {
+		button.addEventListener('click', addPolarDevice);
 	}
 };
 
@@ -1062,7 +1062,7 @@ const resetLists = function() {
 	IsFirstQuestion = true;
 	selectedAvatars = [];
 	QuestionList = [];
-	pulsarList = [];
+	polarList = [];
 	PlayerBPMList = [];
 	playerAnswers = [];
 	playersAnswers = [];
@@ -1179,15 +1179,15 @@ function onMessageArrived(message) {
 				if (jsonMessage.status == 'devices') {
 				} else {
 					document.querySelector('.js-animate').innerHTML = '';
-					ReplaceRow.innerHTML = Pulsar;
-					pulsarList = [];
-					tempPulsarList = { 0: undefined, 1: undefined, 2: undefined, 3: undefined };
+					ReplaceRow.innerHTML = Polar;
+					polarList = [];
+					tempPolarList = { 0: undefined, 1: undefined, 2: undefined, 3: undefined };
 
 					for (let i of jsonMessage.devices) {
-						pulsarList.push(i);
+						polarList.push(i);
 					}
 					// Items in global list will get shown on screen
-					loadPulsarDevices();
+					loadPolarDevices();
 					let rescanDevices = document.querySelector('.js-scanPolar');
 					rescanDevices.addEventListener('click', rescanDevicesFunction);
 				}

@@ -1294,19 +1294,21 @@ function onMessageArrived(message) {
 
 				//If the length of playerAnswers equals the length of players, we know that we received all answers
 				if (AnswersGotten.length == players.length) {
-					if (players.length < 1) {
-						refreshAvatars(true);
-						generatePodiumPage();
+					for(let player of players){
+						player.time_left = player.time_left + 1;
 					}
-					else if (players.length < 2) {
+					if (players.length < 2 && players.length > 0) {
 						gameOver = true;
 						QuestionRow.innerHTML = Sporting;
 						generateScorePage();
-
+						
+					}
+					else if (players.length < 1) {
+						refreshAvatars(true);
+						generatePodiumPage();
 						break;
 					}
 					gameStep++;
-					generateScorePage();
 				}
 
 				break;
@@ -1586,7 +1588,7 @@ const SubmitAnswer = function (answer) {
 				let playerIndex = players.findIndex(function (item) {
 					return item.player == answer.player;
 				})
-				//players[playerIndex].time_left += 1000;
+				//
 				playerAnswer(answer);
 				break;
 		}

@@ -125,7 +125,7 @@ class HRM(Peripheral):
 # --------------------
 # Methodes
 # --------------------
-def mqtt_doorsturen_hartslag_forcefully(player_id, hrm):
+def mqtt_doorsturen_hartslag_forcefully(player_id, hrm):    
     start_tijd = time.time()
     while (time.time() - start_tijd) * 1000.0 < 8000:
         pass

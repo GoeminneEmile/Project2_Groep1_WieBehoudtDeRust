@@ -1112,6 +1112,7 @@ const GenerateSportsPage = function () {
 		RandomImage = Math.floor(Math.random() * (4 - 1) + 1);
 		App = document.querySelector('.c-app');
 		App.innerHTML = SportsWinPage;
+		let waitForBpm = 0;
 		let Description = document.querySelector('.c-Sports-Description');
 		Description.innerHTML = SportsDescriptions[RandomImage - 1];
 		let imagesvg = document.getElementById('svg-object');
@@ -1131,8 +1132,12 @@ const GenerateSportsPage = function () {
 				// Create leaderboard for question here
 				//functie uitvoeren voor vragen opnieuw te tonen
 				if (bpmReceived) {
+					waitForBpm++;
 					GenerateSecondsPage();
 					bpmReceived = false;
+					if(waitForBpm == 1){
+						
+					}
 				}
 			}
 		}, 1000);

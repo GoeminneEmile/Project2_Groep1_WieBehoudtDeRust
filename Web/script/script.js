@@ -1300,9 +1300,18 @@ function onMessageArrived(message) {
 					players.sort((a, b) => a.player - b.player);
 					for (let i = 1; i < players.length + 1; i++) {
 						//playerBpm = {};
+						console.log("playersBpm");
+						console.log(playersBpm[i-1]);
+						console.log("-----");
+						console.log("playersBpmRest");
+						console.log(playersRestBpm[i-1]);
+						console.log("-----");
 						diffBpmPlayer = playersBpm[i-1]-playersRestBpm[i-1]
 						lijst.push({player_id:i,bpm:diffBpmPlayer});
 						players[i-1].diffBpm = diffBpmPlayer;
+						console.log("dit is de players timeDiff");
+						console.log(players[i-1].diffBpm);
+						console.log("-----");
 						/*switch (i) {
 							case 1:
 								let player1Diff = player1_bpm - player1_rest_bpm;
@@ -1337,20 +1346,20 @@ function onMessageArrived(message) {
 						// Ads the time of the player to the current time
 						for (let j = 0; j < lengthBegin; j++) {
 							if (players[j].player == arrayMaxIndex(lijst)) {
-								console.log('_________________________');
+								/*console.log('_________________________');
 								console.log('dit is de timeLeft ervoor');
 								console.log(players[j].time_left);
 								console.log('dit is de player ervoor');
-								console.log(players[j]);
+								console.log(players[j]);*/
 								players[j].time_left += timeToGive[i];
 								Rankings[i].Seconds += timeToGive[i];
 								Rankings[j].SecondsGained = timeToGive[j];
 								Rankings[j].Seconds = players[j].time_left;
-								console.log('dit is de timeLeft erna');
+								/*console.log('dit is de timeLeft erna');
 								console.log(players[j].time_left);
 								console.log('dit is de player erna');
 								console.log(players[j]);
-								console.log('_________________________');
+								console.log('_________________________');*/
 								break;
 							}
 						}

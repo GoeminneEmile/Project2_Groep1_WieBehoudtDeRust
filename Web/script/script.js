@@ -1552,7 +1552,7 @@ const SubmitAnswer = function (answer) {
 					return item.player == answer.player;
 				})
 				players[playerIndex].time_left += 1;
-				players[playerIndex].time_left = math.round(players[playerIndex].time_left);
+				players[playerIndex].time_left = Math.round(players[playerIndex].time_left);
 				playerAnswer(answer);
 				break;
 		}

@@ -2068,6 +2068,15 @@ li span {
 	margin: 0;
 }
 
+.u-margin--top {
+	margin-top: 64px;
+}
+
+.u-padding--side {
+	padding-left: 80px !important;
+	padding-right: 80px !important;
+}
+
 /*
     Utilities: Grid span
 
@@ -2284,6 +2293,31 @@ li span {
 		font-size: 64px;
 	}
 }
+
+/*
+    Utilities: max-width
+    ---
+    Utility classes to put specific max widths onto elements
+*/
+
+.u-opacity-half{
+	opacity: 0.2;
+}
+
+/*
+    Utilities: max-width
+    ---
+    Utility classes to put specific max widths onto elements
+*/
+
+.u-position-absolute{
+	position: absolute;
+	left: 50%;
+  	margin-left: -150px;
+  	top: 50%;
+  	margin-top: -50px;
+}
+
 
 /*
     Utilities: max-width

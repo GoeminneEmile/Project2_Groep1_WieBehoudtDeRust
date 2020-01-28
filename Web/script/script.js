@@ -1308,7 +1308,10 @@ function onMessageArrived(message) {
 						generatePodiumPage();
 						break;
 					}
-					gameStep++;
+					else{
+						gameStep++;
+						generateScorePage();
+					}
 				}
 
 				break;

@@ -1544,6 +1544,10 @@ const SubmitAnswer = function (answer) {
 			default:
 				playersAnswers.push(answer.player);
 				AnswersGotten.push(answer);
+				let playerIndex = players.findIndex(function(item){
+					return item.player == answer.player;
+				})
+				players[playerIndex].time_left += 1;
 				playerAnswer(answer);
 				break;
 		}

@@ -1264,7 +1264,7 @@ function onMessageArrived(message) {
 
 				//If the length of playerAnswers equals the length of players, we know that we received all answers
 				if (AnswersGotten.length == players.length) {
-					if(players.length < 1){
+					if (players.length < 1) {
 						refreshAvatars(true);
 						generatePodiumPage();
 					}
@@ -1358,20 +1358,20 @@ function onMessageArrived(message) {
 						// Ads the time of the player to the current time
 						for (let j = 0; j < lengthBegin; j++) {
 							if (players[j].player == arrayMaxIndex(lijst)) {
-								/*console.log('_________________________');
+								console.log('_________________________');
 								console.log('dit is de timeLeft ervoor');
 								console.log(players[j].time_left);
 								console.log('dit is de player ervoor');
-								console.log(players[j]);*/
+								console.log(players[j]);
 								players[j].time_left += timeToGive[i];
 								Rankings[i].Seconds += timeToGive[i];
 								Rankings[j].SecondsGained = timeToGive[j];
 								Rankings[j].Seconds = players[j].time_left;
-								/*console.log('dit is de timeLeft erna');
+								console.log('dit is de timeLeft erna');
 								console.log(players[j].time_left);
 								console.log('dit is de player erna');
 								console.log(players[j]);
-								console.log('_________________________');*/
+								console.log('_________________________');
 								break;
 							}
 						}
@@ -1548,7 +1548,7 @@ const SubmitAnswer = function (answer) {
 			default:
 				playersAnswers.push(answer.player);
 				AnswersGotten.push(answer);
-				let playerIndex = players.findIndex(function(item){
+				let playerIndex = players.findIndex(function (item) {
 					return item.player == answer.player;
 				})
 				players[playerIndex].time_left += 1000;

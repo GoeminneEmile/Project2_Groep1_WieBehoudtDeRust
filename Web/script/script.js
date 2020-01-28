@@ -1586,7 +1586,7 @@ const SubmitAnswer = function (answer) {
 				let playerIndex = players.findIndex(function (item) {
 					return item.player == answer.player;
 				})
-				players[playerIndex].time_left += 1000;
+				//players[playerIndex].time_left += 1000;
 				playerAnswer(answer);
 				break;
 		}

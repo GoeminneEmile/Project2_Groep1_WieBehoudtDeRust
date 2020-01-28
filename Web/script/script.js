@@ -1296,7 +1296,7 @@ function onMessageArrived(message) {
 					let playersRestBpm = [player1_rest_bpm,player2_rest_bpm,player3_rest_bpm,player4_rest_bpm];
 					let timeToGive = [ 5000, 4000, 2000, 0 ];
 					let lijst = [];
-					let diffBpm;
+					let diffBpmPlayer;
 					players.sort((a, b) => a.player - b.player);
 					for (let i = 1; i < players.length + 1; i++) {
 						//playerBpm = {};

@@ -1292,11 +1292,18 @@ function onMessageArrived(message) {
 				if (playersBpmCount == players.length) {
 					gameStep++;
 					playersBpmCount = 0;
+					let playersBpm = [player1_bpm,player2_bpm,player3_bpm,player4_bpm];
+					let playersRestBpm = [player1_rest_bpm,player2_rest_bpm,player3_rest_bpm,player4_rest_bpm];
 					let timeToGive = [ 5000, 4000, 2000, 0 ];
 					let lijst = [];
+					let diffBpm;
+					players.sort((a, b) => a.player - b.player);
 					for (let i = 1; i < players.length + 1; i++) {
-						playerBpm = {};
-						switch (i) {
+						//playerBpm = {};
+						diffBpmPlayer = playersBpm[i-1]-playersRestBpm[i-1]
+						lijst.push({player_id:i,bpm:diffBpmPlayer});
+						players[i-1].diffBpm = diffBpmPlayer;
+						/*switch (i) {
 							case 1:
 								let player1Diff = player1_bpm - player1_rest_bpm;
 								playerBpm.player_id = 1;
@@ -1321,9 +1328,10 @@ function onMessageArrived(message) {
 								playerBpm.bpm = player4Diff;
 								lijst.push(playerBpm);
 								break;
-						}
+						}*/
 					}
 					let lengthBegin = lijst.length;
+					players.sort((a, b) => b.diffBpm - a.diffBpm);
 					for (let i = 0; i < lengthBegin; i++) {
 						// Checking which index is the highest number, and take the player with the highest heartbeat
 						// Ads the time of the player to the current time

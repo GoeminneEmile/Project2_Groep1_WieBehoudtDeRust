@@ -309,7 +309,7 @@ let transparentLoader = `<div class="c-loader js-transparentLoader u-position-ab
   </g>
 </svg>
 </div>`;
-let Polar = `<h2>Pair je hartritme sensoren!</h2>
+let Polar = `<h2>Connecteer je hartritme sensoren!</h2>
 <div class="o-row js-animate">
 	<div class="o-container__centered">
 		<div class="c-align--middle js-polarItems">
@@ -563,7 +563,7 @@ const addPolarDevice = function () {
 		} else if (tempPolarList[i] != undefined && i != this.dataset.player) {
 		} else {
 			tempPolarList[this.dataset.player] = undefined;
-			this.innerHTML = 'Pair';
+			this.innerHTML = 'Connecteer';
 			this.dataset.player = -1;
 			break;
 		}
@@ -1156,10 +1156,10 @@ const GenerateSportsPage = function () {
 				if (bpmReceived) {
 					GenerateSecondsPage();
 					bpmReceived = false;
-					
+
 				}
 				waitForBpm++;
-				if(waitForBpm == 1){
+				if (waitForBpm == 1) {
 					timeContainer.classList.add('u-opacity-half');
 					timeContainer.insertAdjacentHTML(
 						'afterend', transparentLoader);
@@ -1333,7 +1333,7 @@ function onMessageArrived(message) {
 				// This if-structure checks if the heartbeat of the last player is received, if so, the player with the highest difference between current heartbeat and rest heartbeat will receive the most seconds
 				if (playersBpmCount == players.length) {
 					let timeContainerHtml = document.querySelector('.js-timeContainer');
-					if(timeContainerHtml.classList.contains('u-opacity-half')){
+					if (timeContainerHtml.classList.contains('u-opacity-half')) {
 						timeContainerHtml.classList.remove('u-opacity-half');
 						document.querySelector('.js-transparentLoader').remove();
 					}

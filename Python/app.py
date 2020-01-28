@@ -132,7 +132,8 @@ def mqtt_doorsturen_hartslag_forcefully(player_id, hrm):
     if (player_id is 1 and stop_forcefully_1 is False) or (player_id is 2 and stop_forcefully_2 is False) or\
             (player_id is 3 and stop_forcefully_3 is False) or (player_id is 4 and stop_forcefully_4 is False):
         mqtt_doorsturen_hartslag(player_id, 0)
-        hrm.disconnect()
+        if hrm:
+            hrm.disconnect()
         print("---- Forcefully deconnected with bluetooth device of player {0} ----".format(player_id))
 
 
@@ -296,6 +297,7 @@ def uitlezen_bt_device(device_id, aantal_lees_acties, player):
     # Start connecteren en uitlezen
     hrm = None
     try:
+        failed_teller = 0
         # Connecteren met device id
         while True:
             try:
@@ -305,7 +307,11 @@ def uitlezen_bt_device(device_id, aantal_lees_acties, player):
                 else:
                     azure_log("RPI can't connect to bluetooth device", device_id)
             except ConnectionError:
-                pass
+                failed_teller += 1
+                if failed_teller is 5:
+                    threat_send_forcefully = threading.Thread(target=mqtt_doorsturen_hartslag_forcefully,
+                                                                args=(player, hrm))
+                    threat_send_forcefully.start()
         print("---- Connected with bluetooth device {0} ----".format(device_id))
         azure_log("RPI connected to bluetooth device", device_id)
         # uuid's uitlezen

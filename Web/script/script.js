@@ -1295,7 +1295,7 @@ function onMessageArrived(message) {
 				//If the length of playerAnswers equals the length of players, we know that we received all answers
 				if (AnswersGotten.length == players.length) {
 					for(let player of players){
-						player.time_left = player.time_left + 1;
+						player.time_left = player.time_left + 1000;
 					}
 					if (players.length < 2 && players.length > 0) {
 						gameOver = true;

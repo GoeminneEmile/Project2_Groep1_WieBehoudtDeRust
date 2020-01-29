@@ -95,6 +95,7 @@ html {
 	box-sizing: border-box;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	cursor: url('../img/Cursor.png'), auto;
 }
 
 body {
@@ -694,12 +695,10 @@ text {
 }
 .c-svg-hover:hover path{
 	fill: var(--global-color-alpha);
-	cursor: pointer;
 }
 
 .c-svg-hover-box:hover path{
 	fill: var(--global-color-gamma);
-	cursor: pointer;
 }
 
 .c-admin {
@@ -1123,6 +1122,7 @@ text {
 	outline: none;
 	box-shadow: var(--button-boxShadow, 0);
 	transition: all var(--global-transitionTiming-alpha) var(--global-transitionEasing-out);
+	cursor: url('../img/Cursor.png'), auto;
 }
 
 .c-button:hover {
@@ -1629,6 +1629,7 @@ more padding on the right to avoid overlap
 	letter-spacing: 2.5px;
 	line-height: calc(var(--global-baseline) * 2);
 	color: var(--label-color, var(--global-label-color));
+	cursor: url('../img/Cursor.png'), auto;
 }
 
 .c-label--sm {

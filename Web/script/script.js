@@ -287,7 +287,7 @@ let Answers = `<div class="c-app o-row--xl c-background--white">
 	</div>
 </div>
 </div>`;
-let transparentLoader = `<div class="c-loader js-transparentLoader u-position-absolute">
+let transparentLoader = `<div class="c-loader js-transparentLoader u-position-absolute u-opacity-full">
 <svg class="c-loader__symbol" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
   xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 128 128">
   <g id="Loader">
